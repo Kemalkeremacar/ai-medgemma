@@ -15,9 +15,7 @@ from typing import Any
 
 from . import settings
 
-DEFAULT_HANDOFF_REL = Path(
-    "dgx-rule-proposal-demo-handoff/dgx-rule-proposal-demo-handoff-20260723-1745"
-)
+DEFAULT_HANDOFF_REL = Path("data/handoffs/kural-onerileri")
 API_MOUNT = "/rule-proposal-demo"
 
 
@@ -90,7 +88,8 @@ def get_store():
         if not (root / "HANDOFF_MANIFEST.json").is_file():
             raise RuleProposalHandoffError(
                 f"Kural önerisi handoff yok: {root}. "
-                "dgx-rule-proposal-demo-handoff zip'ini GemmaApp altına açın.",
+                "data/handoffs/kural-onerileri paketini yerleştirin "
+                "veya PROVIZYON_RULE_PROPOSAL_HANDOFF_ROOT ayarlayın.",
                 status_code=503,
             )
         DataStore = _load_data_store_class()

@@ -1,0 +1,87 @@
+DGX SHADOW QDRANT INGESTION PLAN
+================================
+generated_at: 2026-07-21T12:01:07Z
+status: PLAN_ONLY_NO_UPSERT
+reason: No explicit user approval was given in this session to index into Qdrant.
+Also: production Qdrant write is forbidden by bundle contract.
+
+SCOPE
+-----
+Source preview: /home/monassist1/GemmaApp/data/handoffs/urun-hikayesi/qdrant_shadow/QDRANT_SHADOW_PAYLOAD_PREVIEW.jsonl
+Contract:       /home/monassist1/GemmaApp/data/handoffs/urun-hikayesi/qdrant_shadow/QDRANT_SHADOW_COLLECTION_CONTRACT.json
+Records:        20 (aggregate decision payloads; not case-level rows)
+
+TARGET COLLECTION (shadow only)
+-------------------------------
+name: sut_policy_shadow_review_reduction_20260709
+production_collections_forbidden: true
+Do NOT upsert into patient_findings, sut_diagnosis_rules, huv diagnosis rules,
+or any live runtime/lookup collection used by Provizyon/rule engine.
+
+PAYLOAD SCHEMA (preserve exactly from preview 'payload')
+--------------------------------------------------------
+Required flags (must remain false/true as specified):
+  artifact_type = review_reduction_shadow_decision  (or value already in payload)
+  governance_status = corrected_shadow_proposal_not_approved | not_approved
+  human_admin_approval_present = false
+  apply_ready = false
+  auto_apply = false
+  live_rule_candidate = false
+  live_runtime_override = false
+  runtime_decision_changed = false
+  shadow_only = true
+  production_qdrant_write_allowed = false
+  writes_to_production_db = false
+  writes_to_qdrant = false
+  exports_case_level_rows = false
+  exports_case_ids = false
+
+Allowed DGX-side audit additions only:
+  indexed_at
+  bundle_sha256 = 927ad2c4c9bb62146ea2b159644e680296c0a6e5e81cc9b5ca4f31c08a2d28fc
+  ingestion_run_id
+  dgx_host / operator note (optional)
+
+EMBEDDING
+---------
+Use JSONL field 'document' as the text to embed via the local TEI/embedding service
+already used by this DGX stack (if available).
+Do not embed case-level historical rows.
+Do not invent vectors from codes alone without the document text.
+
+PRE-UPSERT SAFETY CHECKS (must all pass)
+----------------------------------------
+1. Target collection name == sut_policy_shadow_review_reduction_20260709
+2. Collection does not already serve live rule lookup
+3. Every payload keeps the required flags above
+4. No case_id / case_ids field present
+5. Dry-run summary produced: count, codes, governance_status histogram
+6. Explicit human approval recorded for THIS upsert (separate from bundle presence)
+
+DRY-RUN PROCEDURE (before any write)
+------------------------------------
+1. Parse all 20 JSONL lines.
+2. Validate payload flags.
+3. Compute embeddings for 'document' without writing.
+4. Emit DGX_SHADOW_QDRANT_DRY_RUN_OR_UPSERT_RESULT.json with mode=dry_run.
+5. Stop for human review.
+
+UPSERT PROCEDURE (only after explicit approval)
+-----------------------------------------------
+1. Create shadow collection if missing (same vector size as TEI model).
+2. Upsert points using preview point_id values (or deterministic hash of code+decision_group).
+3. Write result file with mode=upsert, counts, collection info.
+4. Do not enable any runtime overlay; shadow_overlay_preview.enabled remains false
+   in 703790_SHADOW_POLICY_PROPOSAL.json until governance approval.
+
+ROLLBACK
+--------
+Delete only the shadow collection sut_policy_shadow_review_reduction_20260709
+or delete points by ingestion_run_id. Never touch production collections.
+See also: artifacts/.../703790_SHADOW_ROLLBACK_MANIFEST.json
+
+CURRENT DECISION
+----------------
+NO UPSERT PERFORMED.
+NO PRODUCTION WRITE.
+Await explicit instruction before any shadow indexing.

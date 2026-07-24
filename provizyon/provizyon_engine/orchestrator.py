@@ -119,39 +119,49 @@ class ProvizyonOrchestrator:
             )
 
         # Adım 2-3: belgeleri çözümle, çıkar, OCR
-        refs = self.document_source.resolve_all(job.documents)
-        existing = [r for r in refs if r.exists]
-        missing = [r for r in refs if not r.exists]
-        if missing:
-            result.warnings.extend(
-                f"Belge bulunamadı: {r.path} ({r.error})" for r in missing
-            )
-
+        # Belgesiz DB intake: belge yok — folder/OCR yolunu tamamen atla.
         extracted: list[ExtractedDocument] = []
-        for ref in existing:
-            doc = extract_document(ref, render_images=True)
-            doc = ocr_document(doc)
-            extracted.append(doc)
+        if docless:
+            existing = []
+            missing = []
+            documents_present = False
+            document_analysis_failed = False
+        else:
+            refs = self.document_source.resolve_all(job.documents)
+            existing = [r for r in refs if r.exists]
+            missing = [r for r in refs if not r.exists]
+            if missing:
+                result.warnings.extend(
+                    f"Belge bulunamadı: {r.path} ({r.error})" for r in missing
+                )
 
-        result.warnings.extend(
-            refine_doc_types(extracted, procedure_names=[p.name for p in job.procedures if p.name])
-        )
-        enrich_document_titles(extracted)
-        if job.cinsiyet == Cinsiyet.BILINMIYOR:
-            inferred = infer_gender_from_documents(extracted)
-            if inferred is not None:
-                job.cinsiyet = inferred
+            for ref in existing:
+                doc = extract_document(ref, render_images=True)
+                doc = ocr_document(doc)
+                extracted.append(doc)
 
-        documents_present = len(existing) > 0
-        document_analysis_failed = documents_present and all(
-            (not doc.combined_text) and all(p.image_path is None for p in doc.pages)
-            for doc in extracted
-        )
+            result.warnings.extend(
+                refine_doc_types(
+                    extracted,
+                    procedure_names=[p.name for p in job.procedures if p.name],
+                )
+            )
+            enrich_document_titles(extracted)
+            if job.cinsiyet == Cinsiyet.BILINMIYOR:
+                inferred = infer_gender_from_documents(extracted)
+                if inferred is not None:
+                    job.cinsiyet = inferred
+
+            documents_present = len(existing) > 0
+            document_analysis_failed = documents_present and all(
+                (not doc.combined_text) and all(p.image_path is None for p in doc.pages)
+                for doc in extracted
+            )
         result.raw["documents"] = {
             "provided": len(job.documents),
             "found": len(existing),
             "missing": len(missing),
-            "missing_files": [r.path.name for r in missing],
+            "missing_files": [r.path.name for r in missing] if missing else [],
             "analysis_failed": document_analysis_failed,
             "items": [
                 {
@@ -250,6 +260,11 @@ class ProvizyonOrchestrator:
                 )
 
         code_source = job.diagnosis_code_source()
+        if code_source == "none":
+            result.warnings.append(
+                "Tanılabilecek HUV/SUT işlem kodu yok (branş/TZH/other); "
+                "tanı katmanları atlandı, karar ağırlıklı MedGemma + merge."
+            )
 
         # Adım 6: HUV+ICD tanı kuralı (HUV provizyonları)
         if self.config.enable_diagnosis and code_source in ("huv", "both"):
@@ -257,10 +272,15 @@ class ProvizyonOrchestrator:
 
             result.tani_kurali = check_diagnoses(job.all_huv_codes(), job.diagnoses)
         elif self.config.enable_diagnosis:
+            skip_msg = (
+                "SUT provizyonu; HUV tanı kuralı değerlendirilmedi."
+                if code_source == "sut"
+                else "Değerlendirilebilir HUV kodu yok; HUV tanı kuralı atlandı."
+            )
             result.tani_kurali = LayerResult(
                 layer="tani_kurali",
                 status=LayerStatus.SKIPPED,
-                message="SUT provizyonu; HUV tanı kuralı değerlendirilmedi.",
+                message=skip_msg,
                 detail={"diagnosis_code_source": code_source},
             )
 
@@ -270,10 +290,15 @@ class ProvizyonOrchestrator:
 
             result.sut_tani_kurali = check_sut_diagnoses(job)
         elif self.config.enable_sut_diagnosis:
+            skip_msg = (
+                "HUV provizyonu; SUT tanı kuralı değerlendirilmedi."
+                if code_source == "huv"
+                else "Değerlendirilebilir SUT kodu yok; SUT tanı kuralı atlandı."
+            )
             result.sut_tani_kurali = LayerResult(
                 layer="sut_tani_kurali",
                 status=LayerStatus.SKIPPED,
-                message="HUV provizyonu; SUT tanı kuralı değerlendirilmedi.",
+                message=skip_msg,
                 detail={"diagnosis_code_source": code_source},
             )
 
@@ -441,6 +466,9 @@ class ProvizyonOrchestrator:
         result.medgemma = out
         result.raw["medgemma_layer"] = layer.model_dump(mode="json")
         layer_detail = (layer.detail or {}) if layer else {}
+        # Üst düzey iz: MedGemma’ya giden / gelen (dashboard’da öne çıkarılır).
+        if isinstance(layer_detail.get("exchange"), dict):
+            result.raw["medgemma_exchange"] = layer_detail["exchange"]
         result.raw["medgemma_evidence"] = {
             "selected_pages": evidence.selected_page_numbers,
             "excluded_pages": evidence.excluded_page_numbers,
@@ -555,6 +583,14 @@ class ProvizyonOrchestrator:
 
         result.nihai_karar = karar
         result.gerekce = gerekce
+        # Nihai skor = MedGemma'nın klinik_skoru (kural özeti + kanıta dayanarak üretir).
+        if result.medgemma is not None:
+            result.klinik_skor = result.medgemma.klinik_skor
+            result.skor_dayanak = (result.medgemma.skor_dayanak or "").strip()
+            if result.klinik_skor is None:
+                result.warnings.append(
+                    "MedGemma klinik_skor üretmedi; nihai skor boş bırakıldı."
+                )
         if decision_type is not None:
             result.decision_type = decision_type
         if risk_level is not None:
@@ -607,7 +643,7 @@ class ProvizyonOrchestrator:
                 result,
                 tc_kimlik=job.tc_kimlik,
                 allow_document_rag=allow_document_rag,
-                institution_name=getattr(job, "institution_name", None),
+                institution_name=job.institution_label(),
                 facility_level=job.facility_level,
                 yas=job.yas,
                 cinsiyet=job.cinsiyet.value if job.cinsiyet else None,

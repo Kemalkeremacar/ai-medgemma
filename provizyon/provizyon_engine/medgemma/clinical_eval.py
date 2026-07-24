@@ -40,6 +40,8 @@ SYSTEM_PROMPT = (
     "Görevin: işlem-belge uyumu, tanı-belge uyumu, yaş/cinsiyet klinik uygunluğu, "
     "şikayet/epikriz ile tetkiklerin klinik uyumu, ödeme/endikasyon uygunluğu ve "
     "klinik çelişkileri tespit etmek; sistemin sorduğu özel sorulara yanıt vermek. "
+    "Ayrıca DETERMINISTIC KURAL SONUCU + belge kanıtına dayanarak 0-100 klinik_skor ver "
+    "ve skor_dayanak ile kısaca açıkla. "
     "SADECE geçerli bir JSON nesnesi döndür; açıklama/markdown ekleme. "
     "Belge tutarlılığı tek başına otomatik ödeme onayı değildir. "
     "Belgelerde önceki iade/red/ödenmez ifadesi, şikayet-tetkik uyumsuzluğu veya "
@@ -55,6 +57,8 @@ DOCLESS_SYSTEM_PROMPT = (
     "yalnızca provizyon üstverisi (yaş, cinsiyet, tanı ICD kodları, işlem kodları/adları) ve "
     "deterministik kural (HUV/SUT) sonuçları verilmiştir. "
     "Görevin: SALT KLİNİK YERİNDELİK — tanı ile işlem klinik uyumu, yaş/cinsiyet uygunluğu, tanı-işlem çelişkisi. "
+    "Çıktın provizyoncuya gösterilecek ANA KLİNİK AÇIKLAMADIR: gerekce alanında 3-6 cümle, "
+    "işlem kodlarını adlarıyla anarak tanı-işlem ilişkisini açıkla. "
     "Belge alanları (islem_belge_destekli, tani_belge_destekli, eksik_evrak) MUTLAKA null; "
     "belge yokluğunu eksik_evrak=true veya belge_destekli=false yapma; gerekçede 'belge yok diye yetersiz' deme. "
     "Tanı-işlem klinik olarak uyumluysa guven=high veya medium olabilir; belge yokluğu tek başına low güven gerekçesi değildir. "
@@ -66,17 +70,19 @@ DOCLESS_SYSTEM_PROMPT = (
     "Tanı-işlem klinik uyumlu ve çelişki yoksa manuel_inceleme_gerekli=false ver. "
     "manuel_inceleme_gerekli=true yalnız şu durumlarda: açık klinik çelişki, yaş/cinsiyet uygunsuzluğu, "
     "veya tanı-işlem endikasyonunun klinik olarak gerçekten belirsiz olması. "
+    "klinik_skor (0-100) zorunlu: kural özeti + klinik dayanaklara göre tek skor ver; skor_dayanak ile kısaca gerekçelendir. "
     "SADECE geçerli bir JSON nesnesi döndür; açıklama/markdown ekleme."
 )
 
 DOCLESS_DEFAULT_MODEL_SORULARI = [
     "Hasta yaşı nedir?",
     "Hasta cinsiyeti nedir?",
-    "Hangi işlemler talep edilmiştir?",
-    "Hangi tanı kodları girilmiştir?",
-    "Tanı ile işlem klinik olarak uyumlu mu?",
-    "Yaş/cinsiyet bu işlem için klinik olarak uygun mu?",
-    "Klinik çelişki veya endikasyon belirsizliği var mı?",
+    "Hangi işlemler talep edilmiştir? (kod + ad)",
+    "Hangi tanı kodları girilmiştir? (ICD + anlam)",
+    "Tanı ile her işlem klinik olarak uyumlu mu? Uyumsuz varsa hangisi?",
+    "Yaş/cinsiyet bu işlemler için klinik olarak uygun mu?",
+    "Klinik çelişki veya endikasyon belirsizliği var mı? Varsa açıkla.",
+    "Bu provizyon klinik yerindelik açısından özetle nasıl değerlendirilir?",
 ]
 
 REPAIR_SYSTEM_PROMPT = (
@@ -93,9 +99,19 @@ JSON_SCHEMA_HINT = """Şu şemada JSON döndür:
   "eksik_evrak": true|false|null,
   "manuel_inceleme_gerekli": true|false,
   "ozel_soru_cevaplari": [{"soru": "...", "cevap": "..."}],
-  "gerekce": "kısa Türkçe gerekçe",
-  "guven": "high|medium|low"
-}"""
+  "gerekce": "3-6 cümle açıklayıcı Türkçe klinik gerekçe: tanı-işlem uyumu, yaş/cinsiyet, çelişki var/yok, neden bu güvende olduğun; işlem kodlarını adlarıyla an",
+  "guven": "high|medium|low",
+  "klinik_skor": 0-100,
+  "skor_dayanak": "1-2 cümle: skoru hangi kural/klinik dayanaklara göre verdin"
+}
+ÖNEMLİ: gerekce alanı provizyoncuya gösterilecek ana klinik açıklamadır; tek satırlık jenerik cümle yazma.
+klinik_skor ZORUNLUDUR (0-100 tam sayı). DETERMINISTIC KURAL SONUCU + üstveri/belge kanıtına göre ver:
+  85-100 güçlü klinik uyum, engelleyici kural/çelişki yok;
+  70-84 genel uyum, hafif belirsizlik veya soft review;
+  50-69 belirgin belirsizlik / kısmi uyumsuzluk;
+  25-49 ciddi klinik veya kural riski;
+  0-24 açık çelişki / engelleyici bulgu.
+ozel_soru_cevaplari her soruya somut, kısa cevap içermeli."""
 
 DEFAULT_MODEL_SORULARI = [
     "Hasta yaşı nedir?",
@@ -264,6 +280,31 @@ def evaluate_clinical(
         parsed, docless_manual_softened = _soften_docless_manual_flag(parsed)
     call_meta = getattr(client, "last_call_meta", None)
     layer = _to_layer(parsed, raw, questions=questions, evidence=evidence, call_meta=call_meta)
+    # Panele: modele giden / modelden gelen tam iz (açıklayıcı değerlendirme).
+    layer.detail["exchange"] = {
+        "mode": "docless" if docless else "with_documents",
+        "system_prompt": system_prompt,
+        "user_prompt": user_text,
+        "user_prompt_chars": len(user_text),
+        "raw_response": raw,
+        "raw_response_chars": len(raw or ""),
+        "questions": questions,
+        "parsed": {
+            "gerekce": parsed.gerekce,
+            "guven": parsed.guven,
+            "klinik_skor": parsed.klinik_skor,
+            "skor_dayanak": parsed.skor_dayanak,
+            "manuel_inceleme_gerekli": parsed.manuel_inceleme_gerekli,
+            "yas_cinsiyet_uygun": parsed.yas_cinsiyet_uygun,
+            "klinik_celiski": parsed.klinik_celiski,
+            "islem_belge_destekli": parsed.islem_belge_destekli,
+            "tani_belge_destekli": parsed.tani_belge_destekli,
+            "eksik_evrak": parsed.eksik_evrak,
+            "ozel_soru_cevaplari": [
+                {"soru": x.soru, "cevap": x.cevap} for x in parsed.ozel_soru_cevaplari
+            ],
+        },
+    }
     if docless_manual_softened:
         layer.detail["docless_manual_softened"] = True
     return parsed, layer
@@ -287,18 +328,41 @@ def _build_prompt(
         )
         lines.append("")
     lines.append("PROVIZYON BİLGİSİ:")
+    lines.append(f"- Provizyon ID: {job.provizyon_id}")
     lines.append(f"- Hasta yaşı: {job.yas if job.yas is not None else 'bilinmiyor'}")
     lines.append(f"- Cinsiyet: {job.cinsiyet.value}")
+    institution = job.institution_label()
+    if institution:
+        lines.append(f"- Kurum: {institution}")
+    code_src = job.diagnosis_code_source()
+    lines.append(f"- Kod ailesi / tanı yönü: {job.code_family or '-'} → {code_src}")
     lines.append(f"- HUV işlem kodları: {', '.join(job.all_huv_codes()) or '-'}")
+    lines.append(f"- SUT işlem kodları: {', '.join(job.all_sut_codes()) or '-'}")
     if job.procedures:
-        proc_labels = [
-            f"{p.code} ({p.name})" if p.name else str(p.code)
-            for p in job.procedures
-            if p.code or p.name
-        ]
-        lines.append(f"- İşlemler: {', '.join(proc_labels)}")
+        proc_labels = []
+        for p in job.procedures:
+            if not (p.code or p.name):
+                continue
+            tip = (p.code_type or "").strip() or "?"
+            label = f"{p.code} [{tip}]"
+            if p.name:
+                label += f" {p.name}"
+            if p.date:
+                label += f" @{p.date}"
+            proc_labels.append(label)
+        lines.append(f"- İşlemler (tip ile): {'; '.join(proc_labels)}")
     lines.append(f"- Girilen tanılar (ICD-10): {', '.join(job.diagnoses) or '-'}")
-    lines.append(f"- Belgeler: {'YOK (belgesiz değerlendirme)' if docless else (', '.join(evidence.document_titles) or '-')}")
+    if job.notes:
+        # Kurum/branş/doktor notları — klinik bağlama yardımcı
+        lines.append(f"- Provizyon notları: {' · '.join(job.notes[:8])}")
+    lines.append(
+        f"- Belgeler: {'YOK (belgesiz değerlendirme)' if docless else (', '.join(evidence.document_titles) or '-')}"
+    )
+    lines.append(
+        "- Görevin: Yukarıdaki bilgileri ve kural özetini kullanarak AÇIKLAYICI klinik "
+        "yerindelik yorumu üret; gerekce alanında 3-6 cümle yaz; klinik_skor (0-100) ve "
+        "skor_dayanak zorunlu."
+    )
 
     if patient_context is not None:
         from ..persistence.patient_context import format_patient_context_for_prompt
@@ -401,6 +465,8 @@ def _parse_output(
             ozel_soru_cevaplari=cevaplar,
             gerekce=str(data.get("gerekce", "")),
             guven=str(data.get("guven", "medium")).lower(),
+            klinik_skor=_as_skor(data.get("klinik_skor")),
+            skor_dayanak=str(data.get("skor_dayanak") or data.get("skor_gerekce") or "").strip(),
         )
     except Exception:
         return MedGemmaClinicalOutput(
@@ -408,6 +474,20 @@ def _parse_output(
             gerekce="MedGemma çıktısı şema doğrulamasından geçmedi.",
             guven="low",
         )
+
+
+def _as_skor(value: Any) -> int | None:
+    """0–100 klinik skor; geçersizse None."""
+
+    if value is None or value is False:
+        return None
+    try:
+        if isinstance(value, str):
+            value = value.strip().replace("%", "")
+        n = int(round(float(value)))
+    except (TypeError, ValueError):
+        return None
+    return max(0, min(100, n))
 
 
 def _as_tribool(value: Any) -> bool | None:

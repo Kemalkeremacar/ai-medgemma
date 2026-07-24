@@ -1,0 +1,130 @@
+{
+  "schema_version": "dgx_bundle_integrity_check.v1",
+  "generated_at": "2026-07-21T12:01:07Z",
+  "bundle_path": "/home/monassist1/GemmaApp/data/handoffs/urun-hikayesi",
+  "zip_path": null,
+  "zip_note": "Opened package lives at data/handoffs/urun-hikayesi/; original transfer zip name was review_reduction_dgx_transfer_bundle_20260709.zip",
+  "zip_sha256": "927ad2c4c9bb62146ea2b159644e680296c0a6e5e81cc9b5ca4f31c08a2d28fc",
+  "manifest_schema_version": "review_reduction_dgx_transfer_bundle.v1",
+  "manifest_generated_at": "2026-07-20T12:28:17",
+  "file_count_unpacked": 90,
+  "required_files_missing": [],
+  "rule_engine_results_csv_absent": true,
+  "rule_engine_results_csv_hits": [],
+  "manifest_sha256_checked": 74,
+  "manifest_sha256_mismatches": [],
+  "case_id_csv_columns_found": [],
+  "case_level_indexing_risk_found": false,
+  "safety_flags_true_in_key_json": [],
+  "qdrant_preview": {
+    "record_count": 20,
+    "lines_read": 20,
+    "payload_bad_flags": [],
+    "governance_statuses": [
+      "corrected_shadow_proposal_not_approved",
+      "not_approved"
+    ],
+    "suggested_collection": "sut_policy_shadow_review_reduction_20260709",
+    "preview_only": true
+  },
+  "decision_register": {
+    "rows": 20,
+    "by_decision_group": {
+      "recommended_shadow_pilot": 1,
+      "conditional_shadow_backlog": 2,
+      "guardrail_blocked_ai_approval": 2,
+      "not_selected_for_shadow_preview": 6,
+      "keep_manual_review": 8,
+      "mapping_backlog": 1
+    },
+    "by_recommended_disposition": {
+      "prepare_shadow_only_policy_proposal_for_governance_review": 1,
+      "keep_as_conditional_shadow_backlog_until_human_or_policy_governance_review": 2,
+      "do_not_shadow_stage_without_stronger_evidence_or_human_governance": 2,
+      "hold_for_human_or_policy_review": 6,
+      "keep_manual_review": 8,
+      "resolve_mapping_before_any_review_reduction_policy": 1
+    }
+  },
+  "headline_from_manifest": {
+    "recommended_shadow_pilot_code": "703790",
+    "candidate_shadow_pass_occurrence_rows": 505,
+    "row_level_full_release_rows": 32,
+    "row_level_partial_resolution_rows": 473,
+    "guardrail_hold_rows": 16
+  },
+  "corrected_703790": {
+    "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_POLICY_PROPOSAL.json",
+    "proposal_present": true,
+    "candidate_prefixes": [
+      "H40"
+    ],
+    "historical_review_rows": 212,
+    "historical_shadow_candidate_rows": 146,
+    "historical_full_release_counterfactual": 7,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  },
+  "manifest_safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_rule_candidate": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "shadow_only": true,
+    "production_qdrant_write_allowed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false
+  },
+  "proposal_safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  },
+  "monitoring_current_status": "not_approved_shadow_only",
+  "monitoring_safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  },
+  "rollback_present": true,
+  "rollback_keys": [
+    "schema_version",
+    "generated_at",
+    "proposal_id",
+    "rollback_type",
+    "live_runtime_changed",
+    "production_rollback_required",
+    "rollback_triggers",
+    "rollback_steps",
+    "expected_post_rollback_state",
+    "safety"
+  ],
+  "official_validator": {
+    "script": "scripts/validate_703790_shadow_bundle.py",
+    "ran": true,
+    "passed": false,
+    "blocker": "Script hard-codes Windows paths for sut_diagnosis_runtime_lookup.json and proposal source; not present on this DGX host. Independent hash/safety validation used instead."
+  },
+  "overall_pass_for_shadow_analysis": true,
+  "apply_ready": false,
+  "human_admin_approval_present": false,
+  "production_write_authorized": false
+}

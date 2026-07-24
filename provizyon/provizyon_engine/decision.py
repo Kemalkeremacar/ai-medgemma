@@ -498,11 +498,15 @@ def merge_decisions(
             medgemma_layer=medgemma_layer,
         )
 
-    # 8) Her şey uygun.
+    # 8) Her şey uygun — klinik anlatımı MedGemma gerekçesinden taşı.
+    uygun_gerekce = (
+        (medgemma.gerekce.strip() if medgemma and medgemma.gerekce else "")
+        or "Tüm kontroller uygun; provizyon onaylanabilir."
+    )
     return _finalize_outcome(
         DecisionOutcome(
             KararDurumu.UYGUN,
-            "Tüm kontroller uygun; provizyon onaylanabilir.",
+            uygun_gerekce,
             warnings,
         ),
         belge_hasta=belge_hasta,

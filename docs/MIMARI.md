@@ -110,8 +110,11 @@ Durum, yönetici cevabı, 703790 brifing, şemalar ve shadow backlog:
 
 ### 3) Provizyon Değerlendirme  (`:8020` + worker + watcher)
 - **Nedir:** Asıl iş mantığı. Bir provizyonu baştan sona değerlendirir
-  (belge–hasta eşleşmesi, zorunlu evrak, HUV/SUT tanı-işlem kuralları, MedGemma
-  klinik değerlendirmesi) → **nihai karar** (uygun / manuel inceleme / red).
+  (belge–hasta, zorunlu evrak, **ayrı** HUV tanı / SUT tanı / SUT işlem kuralları,
+  MedGemma klinik değerlendirmesi) → **nihai karar** (uygun / manuel inceleme / red).
+- **Runtime notu:** HUV→SUT kod eşleştirmesi varsayılan **kapalı**
+  (`PROVIZYON_ENABLE_HUV_SUT_CROSSWALK=0`). Kurallar bozulmaz; yalnızca köprü kesilir.
+  Belgesiz akış diyagramı: [`provizyon/BELGESIZ_AKIS.md`](./provizyon/BELGESIZ_AKIS.md).
 - **Kod/ayar:** `provizyon/` (`provizyon_engine/`, `config/provizyon.env`).
 - **Bileşenler:**
   - **API + Dashboard** (`:8020`) — sonuç sorgulama ve panel.

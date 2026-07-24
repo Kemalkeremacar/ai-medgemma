@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>Anonim Önizleme — Provizyon Kontrol Paneli</title>
+<title>Sistem — Provizyon Kontrol Paneli</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -48,6 +48,8 @@ html.embedded .content{padding-top:16px}
 /* Tabs */
 .tab-bar{display:flex;gap:2px;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:0}
 .tab-btn{padding:10px 22px;font-size:13px;font-weight:600;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;transition:.15s;letter-spacing:.01em}
+#demoFilt .tab-btn{border:1px solid var(--border);border-radius:999px;margin:0;background:#fff}
+#demoFilt .tab-btn.on{background:var(--indigo);color:#fff;border-color:var(--indigo)}
 .tab-btn:hover{color:var(--text);background:var(--bg3);border-radius:8px 8px 0 0}
 .tab-btn.active{color:var(--indigo);border-bottom-color:var(--indigo)}
 .tab-pane{display:none;animation:fadeIn .25s ease}
@@ -308,8 +310,8 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
   <div class="header-left">
     <div class="logo">PV</div>
     <div class="header-titles">
-      <h1><span>Anonim</span> Önizleme <span style="font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.02em">HASTA GİZLİ</span></h1>
-      <div class="header-sub">Provizyonlar + Analiz · hasta bilgileri anonimleştirilmiştir</div>
+      <h1><span>Sistem</span> <span style="font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.02em">HASTA GİZLİ</span></h1>
+      <div class="header-sub">Provizyonlar + Kurum Analiz · hasta bilgileri anonimleştirilmiştir</div>
     </div>
   </div>
   <div class="header-right">
@@ -322,29 +324,35 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
 
 <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
   <div>
-    <div class="page-title">Anonim Önizleme</div>
-    <div class="page-desc">Aynı Provizyonlar ve Analiz görünümü; kimlik alanları maskeli (sunum / dış paylaşım).</div>
+    <div class="page-title">Sistem</div>
+    <div class="page-desc">Provizyonlar ve Kurum Analiz görünümü; kimlik alanları maskeli (sunum / dış paylaşım).</div>
   </div>
 </div>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('prov')">Provizyonlar</button>
-  <button class="tab-btn" onclick="switchTab('analiz')">Analiz &amp; Rapor</button>
+  <button class="tab-btn" onclick="switchTab('analiz')">Kurum Analiz</button>
 </div>
 
 <section class="tab-pane active" id="tabProv" style="animation:fadeIn .3s ease">
 
   <div class="grid g5 g-auto" id="provKpis" style="margin-bottom:var(--gap)">
-    <div class="kpi"><div class="kpi-label">Toplam</div><div class="kpi-val" id="kpiTotal" style="color:var(--indigo)">—</div></div>
+    <div class="kpi"><div class="kpi-label">Toplam</div><div class="kpi-val" id="kpiTotal" style="color:var(--indigo)">—</div><div class="kpi-sub" id="kpiTotalSub"></div></div>
+    <div class="kpi"><div class="kpi-label">Ort. Klinik Skor</div><div class="kpi-val" id="kpiSkor" style="color:var(--cyan)">—</div><div class="kpi-sub" id="kpiSkorSub"></div></div>
     <div class="kpi"><div class="kpi-label">Uygun</div><div class="kpi-val" id="kpiOk" style="color:var(--green)">—</div><div class="kpi-sub" id="kpiOkSub"></div></div>
     <div class="kpi"><div class="kpi-label">Reddedilen</div><div class="kpi-val" id="kpiDenied" style="color:var(--red)">—</div><div class="kpi-sub" id="kpiDeniedSub"></div></div>
-    <div class="kpi"><div class="kpi-label">İnceleme</div><div class="kpi-val" id="kpiReview" style="color:var(--yellow)">—</div><div class="kpi-sub" id="kpiReviewSub"></div></div>
     <div class="kpi"><div class="kpi-label">Kuyruk</div><div class="kpi-val" id="kpiQueue" style="color:var(--blue)">—</div><div class="kpi-sub" id="kpiQueueSub"></div></div>
   </div>
 
   <div class="card" style="margin-bottom:var(--gap)">
     <div class="toolbar">
       <span class="card-title">Son İşler</span>
+      <div id="demoFilt" style="display:flex;gap:6px;flex-wrap:wrap;margin-left:12px">
+        <button type="button" class="tab-btn on" data-f="done" style="font-size:12px;padding:5px 10px">Tamamlanan</button>
+        <button type="button" class="tab-btn" data-f="scored" style="font-size:12px;padding:5px 10px">Skorlu</button>
+        <button type="button" class="tab-btn" data-f="legacy" style="font-size:12px;padding:5px 10px">Eski (skorsuz)</button>
+        <button type="button" class="tab-btn" data-f="all" style="font-size:12px;padding:5px 10px">Tümü</button>
+      </div>
       <button type="button" class="tab-btn" id="btnClearRecent" style="margin-left:auto;font-size:12px;padding:6px 12px">Eski kayıtları sil</button>
       <label class="refresh-toggle"><input type="checkbox" id="autoRefresh" checked style="display:none">
         <span class="live-dot" id="liveDot"></span> Canlı yenile
@@ -352,7 +360,7 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
     </div>
     <div class="card-table-wrap">
     <table>
-      <thead><tr><th style="width:100px">Provizyon</th><th>Hasta</th><th>Durum</th><th>Analiz</th><th>Karar</th><th>Risk</th><th style="max-width:200px">Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
+      <thead><tr><th style="width:100px">Provizyon</th><th>Hasta</th><th>Durum</th><th>Klinik Skor</th><th>Karar</th><th>Risk</th><th style="max-width:200px">Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
       <tbody id="recentTb"><tr><td colspan="9" class="empty-text" style="text-align:center;padding:20px">Yükleniyor…</td></tr></tbody>
     </table>
     </div>
@@ -362,7 +370,7 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
 
   <div class="sys-panel" id="sysHealthPanel">
     <div class="card">
-      <div class="card-header"><span class="card-title">Sistem Sağlığı</span><span class="badge b-gray" id="sysHealthTs"></span></div>
+      <div class="card-header"><span class="card-title">Servisler &amp; Kaynaklar</span><span class="badge b-gray" id="sysHealthTs"></span></div>
       <div class="sys-grid" id="sysHealthGrid">
         <div class="sys-item"><div class="sys-item-val">—</div><div class="sys-item-lbl">Yükleniyor…</div></div>
       </div>
@@ -485,7 +493,7 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
 const PROV_API='';
 
 // ════════════════════════════════════════════════════
-// ANONİMLEŞTİRME KATMANI (Anonim Önizleme paneli)
+// ANONİMLEŞTİRME KATMANI (Sistem paneli)
 // API'den gelen ham veri kopyası üzerinde çalışır; backend hiç değişmez.
 // Gerçek isim / TC / sicil değerlerini tutarlı, gerçekçi sahte
 // karşılıklarıyla değiştirir (aynı gerçek değer -> hep aynı sahte değer).
@@ -830,7 +838,7 @@ const DEV_STEPS=[
   {n:3,name:'Zorunlu Evrak',key:'zorunlu_evrak'},
   {n:4,name:'HUV Tanı',key:'tani_kurali'},
   {n:5,name:'SUT Tanı',key:'sut_tani_kurali'},
-  {n:6,name:'SUT Kuralı',key:'sut_kurali'},
+  {n:6,name:'SUT İşlem',key:'sut_kurali'},
   {n:7,name:'Hasta Bağlamı',key:'_ctx'},
   {n:8,name:'MedGemma',key:'_mg'},
   {n:9,name:'Karar',key:'_karar'},
@@ -854,12 +862,20 @@ function devStepStatus(d,s){
 
 function devStepMessage(d,s){
   if(s.key==='_input') return 'Provizyon iş girdisi yüklendi';
-  if(s.key==='_docs'){const dd=(d.raw||{}).documents||{};return `${dd.found??0}/${dd.provided??0} belge`}
+  if(s.key==='_docs'){
+    const raw=d.raw||{};
+    if((raw.documents_mode||'')==='skipped_full_pipeline') return 'Belgesiz · belge yok';
+    const dd=raw.documents||{};
+    return `${dd.found??0}/${dd.provided??0} belge`;
+  }
   if(s.key==='_ctx'){const pc=(d.raw||{}).patient_context;return pc?`${pc.history_count||0} geçmiş · ${pc.similar_count||0} benzer`:'İlk kayıt'}
   if(s.key==='_mg'){const ev=(d.raw||{}).medgemma_evidence||{};return d.medgemma?`${ev.image_count||0} görsel`:'Atlandı'}
   if(s.key==='_karar') return d.gerekce||'—';
   if(s.key==='_persist'){const p=(d.raw||{}).persistence||{};return `${p.written??0} nokta yazıldı`}
   const layer=d[s.key];
+  if(s.key==='sut_kurali' && layer && (layer.detail||{}).skipped_reason==='huv_sut_crosswalk_disabled'){
+    return 'HUV→SUT eşleştirme kapalı · doğrudan SUT yok';
+  }
   return layer?(layer.message||layer.status||'—'):'Atlandı';
 }
 
@@ -882,9 +898,8 @@ function buildResultBannerBody(d){
     ? reasons.map(r=>r.message).filter(Boolean)
     : full.split(/\s*\|\s*/).filter(Boolean);
   let lead='—';
-  if(karar==='uygun'&&mg){
-    lead=mg;
-  }else if(mg){
+  // Banner lead: MedGemma klinik anlatımı öncelikli
+  if(mg){
     lead=mg;
   }else if(codeLines.length){
     lead=codeLines[0];
@@ -1168,7 +1183,7 @@ async function loadRecent(){
   try{
     const[qd,rd]=await Promise.all([
       fetch(PROV_API+'/queue/stats').then(r=>r.json()).catch(()=>null),
-      fetch(PROV_API+'/queue/recent?limit=100').then(r=>r.json()).catch(()=>({items:[]}))
+      fetch(PROV_API+'/queue/recent?limit=250').then(r=>r.json()).catch(()=>({items:[]}))
     ]);
     const prevActive=_recentItems.find(x=>x.provizyon_id===_activeId);
     _recentItems=(rd.items||[]).map(anonScrub);
@@ -1187,24 +1202,42 @@ async function loadRecent(){
   }
 }
 
+let _listFilt='done';
+function skorPillDemo(n){
+  if(n==null||n==='')return '<span class="badge b-gray" title="Önceki pipeline — skor yok">—</span>';
+  const v=Number(n);
+  const cls=v>=85?'b-green':v>=70?'b-blue':v>=50?'b-yellow':'b-red';
+  return `<span class="badge ${cls}" style="font-size:13px;font-weight:800;padding:4px 10px" title="MedGemma klinik skor">${esc(n)}/100</span>`;
+}
+function filterItemsDemo(items,f){
+  if(f==='all')return items;
+  if(f==='done')return items.filter(x=>x.status==='done'||x.status==='failed');
+  if(f==='scored')return items.filter(x=>x.status==='done'&&x.klinik_skor!=null);
+  if(f==='legacy')return items.filter(x=>x.status==='done'&&x.klinik_skor==null);
+  return items;
+}
 function renderKpis(q,items){
   const done=items.filter(x=>x.status==='done');
+  const scored=done.filter(x=>x.klinik_skor!=null);
+  const legacy=done.filter(x=>x.klinik_skor==null);
   const ok=done.filter(x=>x.nihai_karar==='uygun').length;
   const denied=done.filter(x=>['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz'].includes(x.nihai_karar)).length;
-  const rev=done.filter(x=>x.nihai_karar==='manuel_inceleme').length;
   document.getElementById('kpiTotal').textContent=items.length;
+  const totSub=document.getElementById('kpiTotalSub');
+  if(totSub) totSub.textContent=`${done.length} tamam · ${legacy.length} eski skorsuz`;
   document.getElementById('kpiOk').textContent=ok;
   document.getElementById('kpiDenied').textContent=denied;
-  document.getElementById('kpiReview').textContent=rev;
-  const dtLow=done.filter(x=>x.decision_type==='low_risk').length;
-  const dtDef=done.filter(x=>x.decision_type==='automatic_defensible').length;
-  const dtMan=done.filter(x=>x.decision_type==='manual_review').length;
+  const skorEl=document.getElementById('kpiSkor'), skorSub=document.getElementById('kpiSkorSub');
+  if(skorEl){
+    if(scored.length){
+      skorEl.textContent=Math.round(scored.reduce((a,x)=>a+Number(x.klinik_skor),0)/scored.length);
+      if(skorSub) skorSub.textContent=`${scored.length} skorlu · MedGemma`;
+    }else{skorEl.textContent='—';if(skorSub)skorSub.textContent='Henüz yeni skor yok'}
+  }
   const okSub=document.getElementById('kpiOkSub');
-  if(okSub) okSub.textContent=dtLow?`${dtLow} düşük risk`:'';
+  if(okSub) okSub.textContent='';
   const denSub=document.getElementById('kpiDeniedSub');
-  if(denSub) denSub.textContent=dtDef?`${dtDef} savunulabilir`:'';
-  const revSub=document.getElementById('kpiReviewSub');
-  if(revSub) revSub.textContent=dtMan?`${dtMan} manuel`:'';
+  if(denSub) denSub.textContent='';
   if(q&&q.depth){
     const p=(q.depth.pending||0)+(q.depth.processing||0);
     document.getElementById('kpiQueue').textContent=p;
@@ -1215,41 +1248,23 @@ function renderKpis(q,items){
   }
 }
 
-function renderRecent(items){
+function renderRecent(all){
+  const items=filterItemsDemo(all,_listFilt);
   const tb=document.getElementById('recentTb');
-  if(!items.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:20px">Henüz iş yok</td></tr>';return}
+  if(!items.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:20px">Bu filtrede kayıt yok</td></tr>';return}
   tb.innerHTML=items.map(it=>{
     const kb=KARAR_BADGE[it.nihai_karar]||'b-blue';
     const kl=KARAR_LABEL[it.nihai_karar]||(it.nihai_karar||'—').replace(/_/g,' ');
-    const pl=it.pipeline||'?';
-    const plCls=pipelinePlCls(pl);
-    const plTitle=it.vision_images!=null?`${it.vision_images} görsel`:pl;
     const rl=it.risk_level;
     const rlBadge=rl?RISK_LEVEL_BADGE[rl]||'b-gray':'';
     const rlLabel=rl?RISK_LEVEL_LABEL[rl]||rl:'';
     const rlTitle=it.risk_summary||'';
-    let extras='';
-    if(it.document_count!=null)extras+=`<span class="mini-badge b-gray" title="Belge sayısı">\u{1F4C4}${it.document_count}</span>`;
-    if(it.warnings_count>0)extras+=`<span class="mini-badge b-yellow" title="${it.warnings_count} uyarı">\u26A0\uFE0F${it.warnings_count}</span>`;
-    if(it.medgemma_guven!=null&&it.medgemma_guven!==''){
-      const gv=it.medgemma_guven;
-      const gvNum=typeof gv==='number'?gv:null;
-      const gvKey=typeof gv==='string'?gv.toLowerCase():'';
-      const gvCls=gvNum!=null?(gvNum>=0.7?'b-green':gvNum>=0.4?'b-orange':'b-red')
-        :(gvKey==='high'?'b-green':gvKey==='medium'?'b-orange':'b-red');
-      const gvTxt=gvNum!=null?`${(gvNum*100).toFixed(0)}%`:(CONFIDENCE_LABEL[gvKey]||String(gv));
-      extras+=`<span class="mini-badge ${gvCls}" title="MedGemma güven: ${esc(String(gv))}">${esc(gvTxt)}</span>`;
-    }
-    if(it.partial_vision)extras+=`<span class="mini-badge b-yellow" title="Kısmi görüntü analizi">\u{1F441}</span>`;
-    if(it.shadow_advice_status==='matched_candidate'){
-      extras+=`<span class="mini-badge b-yellow" title="${esc(it.shadow_advice_label||'Gölge aday — canlı karar değişmedi')}">Gölge</span>`;
-    }
     const active=_activeId===it.provizyon_id?' row-active':'';
     return `<tr class="clickable${active}" data-id="${esc(it.provizyon_id||'')}">
       <td style="font-weight:700;font-size:13px">${esc(it.provizyon_id||'—')}</td>
       <td style="font-size:12px;color:var(--text2)">${esc(it.patient_name||it.hasta_id||'—')}</td>
       <td><span class="badge ${it.status==='done'?'b-green':it.status==='failed'?'b-red':'b-blue'}">${esc(JOB_STATUS_LABEL[it.status]||it.status||'—')}</span></td>
-      <td><span class="badge ${plCls}" title="${esc(plTitle)}">${esc(PIPELINE_LABEL[pl]||pl)}</span>${extras}</td>
+      <td>${skorPillDemo(it.klinik_skor)}</td>
       <td><span class="badge ${kb}">${esc(kl)}</span></td>
       <td>${rl?`<span class="badge ${rlBadge}" title="${esc(rlTitle)}">${esc(rlLabel)}</span>`:''}</td>
       <td style="font-size:11px;color:var(--text2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(it.risk_summary||it.gerekce||'')}">${esc((it.risk_summary||it.gerekce||'').slice(0,140))}</td>
@@ -1257,6 +1272,12 @@ function renderRecent(items){
       <td style="font-size:11px;color:var(--text3)">${timeAgo(it.finished_at)}</td>
     </tr>`}).join('');
 }
+document.getElementById('demoFilt')?.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]');if(!b)return;
+  _listFilt=b.dataset.f;
+  document.querySelectorAll('#demoFilt button').forEach(x=>x.classList.toggle('on',x===b));
+  renderRecent(_recentItems);
+});
 
 document.getElementById('recentTb').onclick=e=>{
   const row=e.target.closest('tr[data-id]');if(!row)return;
@@ -1301,13 +1322,30 @@ function renderJobDetailDev(d){
   let h='';
 
   // Result Banner
+  const klinikSkor=d.klinik_skor!=null?d.klinik_skor:((d.medgemma||{}).klinik_skor);
+  const skorCls=klinikSkor==null?'b-gray':klinikSkor>=85?'b-green':klinikSkor>=70?'b-blue':klinikSkor>=50?'b-yellow':'b-red';
   h+=`<div class="result-banner ${cls}" style="margin-bottom:var(--gap)">
     <div class="result-icon">${cls==='allowed'?'✓':cls==='denied'?'✗':'!'}</div>
     <div class="result-text">
-      <h3>${esc(label)}${d.decision_type?` ${decisionTypeBadge(d.decision_type)}`:''}${d.risk_level?` <span class="badge b-gray">${esc(d.risk_level)}</span>`:''}</h3>
+      <h3>${esc(label)}${klinikSkor!=null?` <span class="badge ${skorCls}">Skor ${esc(klinikSkor)}/100</span>`:''}${d.decision_type?` ${decisionTypeBadge(d.decision_type)}`:''}${d.risk_level?` <span class="badge b-gray">${esc(d.risk_level)}</span>`:''}</h3>
       ${buildResultBannerBody(d)}
+      ${d.skor_dayanak?`<div style="margin-top:8px;font-size:12px;color:var(--text2)"><strong>Skor dayanağı:</strong> ${esc(d.skor_dayanak)}</div>`:''}
     </div>
   </div>`;
+
+  if((raw.documents_mode||'')==='skipped_full_pipeline'){
+    const skReason=((d.sut_kurali||{}).detail||{}).skipped_reason||'';
+    h+=`<div class="card" style="margin-bottom:var(--gap);padding:12px 16px;border-left:3px solid var(--indigo);background:#f8fafc">
+      <div style="font-size:13px;font-weight:600;margin-bottom:4px">Belgesiz değerlendirme</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5">
+        Belge–hasta ve zorunlu evrak <span class="badge b-gray">SKIPPED</span>.
+        HUV tanı ve (doğrudan SUT varsa) SUT kuralları ayrı çalışır;
+        <strong>HUV→SUT eşleştirme kapalı</strong>.
+        ${skReason==='huv_sut_crosswalk_disabled'?' SUT işlem kuralı: yalnız HUV olduğu için atlandı.':''}
+        MedGemma üstveri + kural özetiyle çalıştı.
+      </div>
+    </div>`;
+  }
 
   const sa=(d.raw||{}).shadow_advice||d.shadow_advice;
   if(sa&&sa.status&&sa.status!=='not_applicable'){
@@ -1648,15 +1686,27 @@ function renderJobDetailDev(d){
     h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı (Qdrant)','pass',body)}</div>`;
   }else{h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı','skip','<div style="color:var(--text3);font-size:12px">Hasta bağlamı yüklenmedi veya ilk kayıt.</div>')}</div>`}
 
-  // Step 8: MedGemma
+  // Step 8: MedGemma — ana klinik açıklama
   const mg=d.medgemma;
   const mgLayer=raw.medgemma_layer||{};
   const mgEvidence=raw.medgemma_evidence||{};
+  const mgEx=raw.medgemma_exchange||(mgLayer.detail&&mgLayer.detail.exchange)||{};
   if(mg){
     const qa=medgemmaQA(mg,raw);
-    let body=devVisionStatusHtml(mgEvidence,mgLayer,d.warnings);
+    const mgSkor=mg.klinik_skor!=null?mg.klinik_skor:(mgEx.parsed&&mgEx.parsed.klinik_skor);
+    const mgSkorCls=mgSkor==null?'b-gray':mgSkor>=85?'b-green':mgSkor>=70?'b-blue':mgSkor>=50?'b-yellow':'b-red';
+    let body=`<div style="padding:12px 14px;border-radius:10px;background:linear-gradient(165deg,#eef6ff,#fff);border:1px solid #b8d4f0;margin-bottom:12px">
+      <div class="detail-badges" style="margin-bottom:8px">
+        <span class="badge b-blue">ana klinik açıklama</span>
+        ${mgSkor!=null?`<span class="badge ${mgSkorCls}">Skor ${esc(mgSkor)}/100</span>`:''}
+        <span class="badge ${mg.guven==='high'?'b-green':mg.guven==='medium'?'b-yellow':'b-red'}">${esc(CONFIDENCE_LABEL[mg.guven]||mg.guven||'?')}</span>
+        <span class="badge b-gray">${mgEx.mode==='docless'?'Belgesiz üstveri':'Belge + üstveri'}</span>
+      </div>
+      <div style="font-size:14px;line-height:1.55;color:var(--text);white-space:pre-wrap">${esc(mg.gerekce||'')}</div>
+      ${(mg.skor_dayanak||(mgEx.parsed&&mgEx.parsed.skor_dayanak))?`<div style="margin-top:8px;font-size:12px;color:var(--text2)"><strong>Skor dayanağı:</strong> ${esc(mg.skor_dayanak||mgEx.parsed.skor_dayanak)}</div>`:''}
+    </div>`;
+    body+=devVisionStatusHtml(mgEvidence,mgLayer,d.warnings);
     body+=devMedgemmaEvidenceHtml(mgEvidence,pipeCfg,pipe);
-    body+=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(mg.gerekce||'')}</div>`;
     body+=`<div class="detail-grid">
       <div><div class="detail-label">Güven Seviyesi</div><span class="badge ${mg.guven==='high'?'b-green':mg.guven==='medium'?'b-yellow':'b-red'}">${esc(CONFIDENCE_LABEL[mg.guven]||mg.guven||'?')}</span></div>
       <div><div class="detail-label">Manuel İnceleme</div>${mg.manuel_inceleme_gerekli?'<span class="badge b-yellow">Gerekli</span>':'<span class="badge b-green">Gerekli değil</span>'}</div>
@@ -1672,10 +1722,20 @@ function renderJobDetailDev(d){
       body+=`<tr><td style="font-weight:600;color:var(--text)">${esc(x.soru||'')}</td><td style="color:var(--text2);white-space:pre-wrap">${esc(x.cevap||'—')}</td></tr>`;
     });
     body+=`</tbody></table></div>`;
+    if(mgEx.user_prompt||mgEx.raw_response){
+      body+=`<details style="margin-top:12px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
+        <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Modele giden paket (${mgEx.user_prompt_chars||0} karakter)</summary>
+        <pre class="json-box" style="margin-top:8px;max-height:260px">${esc(mgEx.user_prompt||'')}</pre>
+      </details>
+      <details style="margin-top:8px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
+        <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Modelden gelen ham yanıt (${mgEx.raw_response_chars||0} karakter)</summary>
+        <pre class="json-box" style="margin-top:8px;max-height:260px">${esc(mgEx.raw_response||'')}</pre>
+      </details>`;
+    }
     body+=devMedgemmaRawHtml(mg,mgLayer);
     if(mgLayer.message)body+=`<div style="margin-top:8px;font-size:11px;color:var(--text2)">AI değerlendirme notu: ${esc(mgLayer.message)}</div>`;
     const mgStatus=(mgLayer.status||'pass');
-    h+=`<div id="dev-step-8">${stepCard(8,'AI Klinik Değerlendirme (MedGemma)',mgStatus,body)}</div>`;
+    h+=`<div id="dev-step-8">${stepCard(8,'AI Klinik Değerlendirme (MedGemma) — ana açıklama',mgStatus,body)}</div>`;
   }else{
     const reason=asList(d.warnings).find(w=>w.includes('MedGemma'))||'MedGemma değerlendirmesi yapılmadı.';
     h+=`<div id="dev-step-8">${stepCard(8,'MedGemma','skip',`<div style="color:var(--text3);font-size:12px">${esc(reason)}</div>`)}</div>`;
@@ -1688,9 +1748,12 @@ function renderJobDetailDev(d){
     treeHtml+=`<tr${r.decisive?' style="background:var(--yellow-bg)"':''}><td>${r.prio}</td><td>${esc(r.label)}</td><td><span class="badge ${STATUS_BADGE[r.status]||'b-gray'}">${esc(STATUS_LABEL[r.status]||r.status)}</span></td><td>${r.decisive?'<span class="badge b-yellow">Belirleyici</span>':'—'}</td><td style="font-size:10px;color:var(--text2)">${esc(r.message)}</td></tr>`;
   });
   treeHtml+=`</tbody></table>`;
+  const nihaiSkor=d.klinik_skor!=null?d.klinik_skor:((d.medgemma||{}).klinik_skor);
+  const nihaiSkorCls=nihaiSkor==null?'b-gray':nihaiSkor>=85?'b-green':nihaiSkor>=70?'b-blue':nihaiSkor>=50?'b-yellow':'b-red';
   h+=`<div id="dev-step-9">${stepCard(9,'Nihai Karar Birleştirme',karar==='uygun'?'pass':(cls==='denied'?'fail':'review'),`
     <div class="detail-grid">
       <div><div class="detail-label">Karar</div><span class="badge ${KARAR_BADGE[karar]||'b-blue'}" style="font-size:12px;padding:4px 12px">${esc(label)}</span></div>
+      <div><div class="detail-label">Klinik skor (MedGemma)</div>${nihaiSkor!=null?`<span class="badge ${nihaiSkorCls}" style="font-size:12px;padding:4px 12px">${esc(nihaiSkor)}/100</span>`:'<span class="badge b-gray">—</span>'}${d.skor_dayanak?`<div style="font-size:11px;color:var(--text2);margin-top:4px">${esc(d.skor_dayanak)}</div>`:''}</div>
       <div><div class="detail-label">Gerekçe</div><div style="font-size:12px;color:var(--text2)">${esc(d.gerekce||'—')}</div></div>
     </div>
     <div class="detail-label" style="margin:12px 0 6px">Karar ağacı (öncelik sırası)</div>
@@ -1900,7 +1963,7 @@ async function loadAnalytics(){
     document.getElementById('anContent').style.display='block';
     renderAnalytics(d);
   }catch(e){
-    document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Analiz yüklenemedi: '+esc(String(e))+'</span>';
+    document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Kurum analiz yüklenemedi: '+esc(String(e))+'</span>';
   }
 }
 

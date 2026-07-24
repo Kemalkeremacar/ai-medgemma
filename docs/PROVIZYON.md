@@ -173,6 +173,7 @@ Hepsi `config/provizyon.env` dosyasını source eder; öncelik: **ortam değişk
 | `PROVIZYON_SUT_DIAGNOSIS_COLLECTION` | SUT tanı kuralları | `sut_diagnosis_rules` |
 | `PROVIZYON_DIAGNOSIS_PROCEDURE_COLLECTION` | Ödeme eğilimi | `diagnosis_procedure_pilot` |
 | `PROVIZYON_ENABLE_DIAGNOSIS_PAYMENT_SIGNAL` | Adım 9b aç/kapa | `1` |
+| `PROVIZYON_ENABLE_HUV_SUT_CROSSWALK` | HUV→SUT runtime eşleştirme | `0` (kapalı) |
 | `PROVIZYON_API_HOST` / `PORT` | API dinleme | `0.0.0.0:8020` |
 
 ### 4.2 Sadece `settings.py` / `.env` üzerinden
@@ -336,21 +337,37 @@ Giriş: `ProvizyonOrchestrator.run(job)` → `_run_pipeline`.
 
 `OrchestratorConfig` bayrakları: `enable_diagnosis`, `enable_sut_diagnosis`,
 `enable_sut_rules`, `enable_medgemma`, `enable_diagnosis_payment`,
-`enable_persistence`, `enable_patient_context`, `use_qdrant_rag`, `include_vision`.
+`enable_persistence`, `enable_patient_context`, `use_qdrant_rag`, `include_vision`,
+`enable_huv_sut_crosswalk` (varsayılan **False** — env `PROVIZYON_ENABLE_HUV_SUT_CROSSWALK`).
 
 | Adım | Ne yapılır | Erken çıkış / not |
 |---|---|---|
-| **2–3** | Belgeleri çöz (`FilesystemDocumentSource`) → `extract_document` → `ocr_document` → tür/title/cinsiyet zenginleştirme | — |
-| **4** | `match_documents` → katman `belge_hasta` | **FAIL** → `yanlis_hasta_belgesi` (RAG belgeler yazılmaz) |
-| **5** | `check_requirement` → `zorunlu_evrak` | **FAIL** → `evrak_eksik` |
-| **6** | `check_diagnoses` (HUV) — `diagnosis_code_source` ∈ {huv, both} | — |
-| **6b** | `check_sut_diagnoses` — ∈ {sut, both} | — |
-| **7** | `check_sut_rules` | FAIL → sonra merge'te manuel inceleme |
-| **8** | MedGemma `evaluate_clinical` | Atlanır: belge yok / analiz başarısız / **tanı FAIL** |
-| — | `scan_extracted_documents` (iade/red sinyalleri) | Auto-approve'u engelleyebilir |
+| **2–3** | Belgeleri çöz (`FilesystemDocumentSource`) → `extract_document` → `ocr_document` → tür/title/cinsiyet zenginleştirme | Belgesiz modda belge listesi boş |
+| **4** | `match_documents` → katman `belge_hasta` | **FAIL** → `yanlis_hasta_belgesi`; **belgesiz → SKIPPED** |
+| **5** | `check_requirement` → `zorunlu_evrak` | **FAIL** → `evrak_eksik`; **belgesiz → SKIPPED**; crosswalk kapalıyken HUV→SUT ile evrak aranmaz |
+| **6** | `check_diagnoses` (HUV) — `diagnosis_code_source` ∈ {huv, both} | Ayrı HUV motoru; crosswalk’a bağlı değil |
+| **6b** | `check_sut_diagnoses` — ∈ {sut, both} | Ayrı SUT motoru; doğrudan SUT kodu |
+| **7** | `check_sut_rules` | Doğrudan SUT → değerlendir; yalnız HUV + crosswalk kapalı → **SKIP** `huv_sut_crosswalk_disabled` |
+| **8** | MedGemma `evaluate_clinical` | Belgesiz: üstveri + kural özeti (görsel yok). Atlanır: **tanı FAIL** / config kapalı |
+| — | `scan_extracted_documents` (iade/red sinyalleri) | Belgesizde genelde boş |
 | **9** | `merge_decisions` | Nihai `KararDurumu` |
 | **9b** | Tanı–işlem ödeme eğilimi (opsiyonel) | UYGUN/low_risk'i escalate edebilir; hard red'i yumuşatmaz |
 | **10** | `_finalize` → `JobStatus.DONE` + `PatientFindingsWriter.write` | Redis + JSONL + Qdrant |
+
+### 8.1 Belgesiz mod (`documents_mode=skipped_full_pipeline`)
+
+Dashboard CTA / DB intake `skip_documents=true` ile iş açıldığında belge
+indirilmez. Belge–hasta ve zorunlu evrak **SKIPPED** (hata değil); HUV ve SUT
+kural motorları üstveriyle çalışır; MedGemma belgesiz prompt kullanır.
+
+Tam diyagram: [`provizyon/BELGESIZ_AKIS.md`](./provizyon/BELGESIZ_AKIS.md).
+
+### 8.2 HUV→SUT runtime eşleştirme (kapalı)
+
+- **Kapalı (varsayılan):** HUV kodu `huv_sut_crosswalk` / unified catalog üzerinden
+  SUT’a çevrilmez. HUV tanı kuralı ve (doğrudan SUT varsa) SUT kuralları ayrı kalır.
+- **Açık:** `PROVIZYON_ENABLE_HUV_SUT_CROSSWALK=1` + API/worker restart.
+- Katalog dosyası ve Qdrant backfill **silinmez**; yalnızca runtime kapısı kapanır.
 
 ---
 
@@ -397,9 +414,19 @@ deskew ±6°, denoise açık, binarize varsayılan kapalı.
 ### 10.3 SUT kuralları — `engines/sut_rules.py` → `check_sut_rules`
 
 - Katman: `sut_kurali`
-- `unified_catalog.unified_advisor.advise` + `sut_rules_merged.json` / index / unified catalog
-- Erken SKIP: yalnızca TZH, yerel HUV→SUT eşlemesi yok
+- `unified_catalog.unified_advisor.advise(..., allow_huv_crosswalk=…)` +
+  `sut_rules_merged.json` / index
+- **Crosswalk kapalı (varsayılan):** yalnızca job’daki **doğrudan SUT** kodları
+  değerlendirilir; HUV→SUT aday üretilmez. Yalnız HUV →
+  `SKIPPED` / `skipped_reason=huv_sut_crosswalk_disabled`
+- **Crosswalk açık:** eski yol — yerel/Qdrant HUV→SUT eşlemesi + kural
+- Erken SKIP (diğer): yalnızca TZH meta kodları
 - FAIL → merge'te **manuel_inceleme** (hard red tanı gibi değil)
+
+### 10.3b Zorunlu evrak — `documents/requirement.py`
+
+- Crosswalk kapalıyken `_resolve_huv_to_sut` çağrılmaz
+- Belge zorunluluğu: doğrudan SUT + HUV için `document_requirements` exact/prefix
 
 ### 10.4 Tanı–işlem ödeme eğilimi — `engines/diagnosis_payment.py` (adım 9b)
 
@@ -423,9 +450,10 @@ deskew ±6°, denoise açık, binarize varsayılan kapalı.
 **Atlanma koşulları (adım 8):**
 
 - Config'de MedGemma kapalı
-- Belge yok
-- Extract/OCR tamamen boş
 - HUV veya SUT **tanı katmanı FAIL**
+- Belgeli modda: belge yok veya extract/OCR tamamen boş
+- **Belgesiz modda atlanmaz** — üstveri + deterministik kural özetiyle çalışır
+  (`islem_belge_destekli` / belge alanları `null`)
 
 **Çıktı (`MedGemmaClinicalOutput`):**
 
@@ -620,7 +648,7 @@ Normal işletimde `./svc` + `run_*.sh` yeterlidir; systemd kalıcı servis için
 
 - `tests/` — classify, intake, OCR, orchestrator, medgemma client/direct, risk_normalizer, rejection_signals, red regression…
 - `scripts/` — bulk historical prefill, pipeline audit, demo payer trend, contract outputs, DGX shadow review, `validate_shadow_handoff.py`, `medgemma_direct.py`…
-- Review-reduction handoff (read-only): `data/handoffs/review_reduction_dgx_transfer_bundle_20260709/` → API `/shadow/review-reduction/*`, panel Model & Hikâye
+- Expert demolar (read-only): `data/handoffs/` — `urun-hikayesi/` → `/shadow/review-reduction/*` (panel **Ürün Hikâyesi**); `kural-onerileri/` → `/rule-proposal-demo/*` (panel **Kural Önerileri**). İndeks: `data/handoffs/README.md`
 
 ---
 

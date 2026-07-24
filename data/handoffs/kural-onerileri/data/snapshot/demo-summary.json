@@ -1,0 +1,47 @@
+{
+  "counts": {
+    "completedPackets": 1639,
+    "deterministicProposals": 799,
+    "engineSignals": 2322,
+    "officialEvidence": 1391,
+    "procedureCoverage": 2060,
+    "stage": {
+      "crosswalk_adjudication": 1416,
+      "rule_synthesis": 223
+    },
+    "stageStatus": {
+      "crosswalk_adjudication": {
+        "accepted": 684,
+        "blocked": 732
+      },
+      "rule_synthesis": {
+        "accepted": 159,
+        "blocked": 63,
+        "call_or_parse_error": 1
+      }
+    },
+    "status": {
+      "accepted": 843,
+      "blocked": 795,
+      "call_or_parse_error": 1
+    }
+  },
+  "limitations": [
+    "This is a partial snapshot taken while the full DGX run was still running.",
+    "Stages listed in counts.stage have completed results in this handoff: crosswalk_adjudication and rule_synthesis.",
+    "accepted means schema/canonical constraints passed; it does not mean a human approved the proposal.",
+    "The deterministic package contains the current 799 rule proposals; AI rule_synthesis enriches a subset of them.",
+    "Crosswalk adjudication results remain hypothesis-only and are not shown as HUV↔SUT merge UI."
+  ],
+  "recommendedUiLabels": {
+    "accepted": "Teknik doğrulamayı geçti",
+    "blocked": "Güvenlik kontrolünde engellendi",
+    "insufficient_evidence": "Kanıt yetersiz",
+    "no_change": "Değişiklik önermiyor",
+    "pending": "Uzman kararı bekliyor",
+    "proposal": "AI kural hipotezi"
+  },
+  "schemaVersion": "outpatient_rule_engine_demo_summary.v1",
+  "snapshotCreatedAt": "2026-07-24T13:23:49.847027+00:00",
+  "sourceState": "running"
+}

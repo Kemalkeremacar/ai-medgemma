@@ -1,0 +1,108 @@
+DGX AGENT REVIEW REPORT - REVIEW REDUCTION SHADOW BUNDLE
+=======================================================
+generated_at: 2026-07-21T12:01:07Z
+language: tr
+
+1) BUNDLE PATH VE MANIFEST
+--------------------------
+bundle_path: /home/monassist1/GemmaApp/data/handoffs/urun-hikayesi
+zip_path: (yok; açılmış paket data/handoffs/urun-hikayesi/)
+zip_note: original transfer zip name was review_reduction_dgx_transfer_bundle_20260709.zip
+zip_sha256: 927ad2c4c9bb62146ea2b159644e680296c0a6e5e81cc9b5ca4f31c08a2d28fc
+manifest_schema_version: review_reduction_dgx_transfer_bundle.v1
+manifest_generated_at: 2026-07-20T12:28:17
+unpacked_file_count: 90
+required_files_missing: none
+
+2) rule_engine_results.csv
+--------------------------
+absent_from_bundle: True
+hits: none
+NOTE: Manifest explicitly excludes this case-level historical source.
+
+3) CASE_ID / CASE-LEVEL INDEXING RISK
+-------------------------------------
+case_id_csv_columns_found: none
+qdrant_preview_payload_bad_flags: none
+case_level_indexing_risk_found: False
+VERDICT: No case_id export columns and no case_id fields in Qdrant preview payloads.
+
+4) HEADLINE RESULT / 703790
+---------------------------
+recommended_shadow_pilot_code: 703790
+candidate_shadow_pass_occurrence_rows: 505
+row_level_full_release_rows: 32
+row_level_partial_resolution_rows: 473
+guardrail_hold_rows: 16
+
+corrected_703790_h40_only:
+  historical_review_rows: 212
+  historical_shadow_candidate_rows: 146
+  historical_full_release_counterfactual: 7
+  candidate_prefixes: ['H40']
+  apply_ready: false
+  runtime_decision_changed: false
+
+CRITICAL CORRECTION ACKNOWLEDGED:
+- Onceki genis AI prefix seti (199/16) counterfactual; onerilmez.
+- Onerilen cohort: H40-only shadow observation (146/212).
+- H52/H04/H18/H43 manual-review; H46/H47.5/H35.3 observation-only.
+- Runtime sonucu REVIEW_REQUIRED olarak kalir.
+
+5) DECISION REGISTER COUNTS (by decision_group)
+-----------------------------------------------
+rows: 20
+{
+  "recommended_shadow_pilot": 1,
+  "conditional_shadow_backlog": 2,
+  "guardrail_blocked_ai_approval": 2,
+  "not_selected_for_shadow_preview": 6,
+  "keep_manual_review": 8,
+  "mapping_backlog": 1
+}
+
+by recommended_disposition:
+{
+  "prepare_shadow_only_policy_proposal_for_governance_review": 1,
+  "keep_as_conditional_shadow_backlog_until_human_or_policy_governance_review": 2,
+  "do_not_shadow_stage_without_stronger_evidence_or_human_governance": 2,
+  "hold_for_human_or_policy_review": 6,
+  "keep_manual_review": 8,
+  "resolve_mapping_before_any_review_reduction_policy": 1
+}
+
+6) QDRANT RECOMMENDATION
+------------------------
+production_write_allowed: false
+payload_preview_only: true
+suggested_shadow_collection_if_later_approved: sut_policy_shadow_review_reduction_20260709
+preview_records: 20
+governance_statuses_in_preview: ['corrected_shadow_proposal_not_approved', 'not_approved']
+ACTION TAKEN: No Qdrant upsert performed.
+ACTION REQUIRED FOR INDEXING: Explicit human approval + dry-run; see DGX_SHADOW_QDRANT_INGESTION_PLAN.txt
+
+7) BLOCKERS / NOTES
+-------------------
+- Official scripts/validate_703790_shadow_bundle.py could not fully run: hard-coded Windows path to sut_diagnosis_runtime_lookup.json is absent on this host.
+- Independent integrity check: manifest SHA256 for 74 files, mismatches=0.
+- Monitoring plan mentions promotion gate text 'human_admin_approval_present=true from a real authorized reviewer' as a FUTURE gate string; actual safety.human_admin_approval_present remains false.
+- No approved shadow Qdrant ingestion pipeline was executed.
+
+8) SAFETY VERDICT
+-----------------
+human_admin_approval_present: false
+apply_ready: false
+auto_apply: false
+production_qdrant_write_allowed: false
+writes_to_qdrant: false
+writes_to_production_db: false
+live_runtime_override: false
+runtime_decision_changed: false
+exports_case_level_rows: false
+exports_case_ids: false
+
+OVERALL:
+Bundle is SAFE FOR DGX-SIDE SHADOW ANALYSIS.
+Bundle is NOT apply-ready and is NOT human/admin approval.
+Bundle is NOT safe for production apply or production Qdrant write.
+MedGemma/AI provisional outputs are advisory only.

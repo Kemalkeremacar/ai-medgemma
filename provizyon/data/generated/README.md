@@ -23,9 +23,14 @@ derlenmiş JSON/JSONL dosyalarini icerir.
 - `backfill_summary.json` -- Qdrant collection'a yukleme raporu
 
 ### `unified_catalog_final_medgemma/`
-- `unified_catalog.jsonl` -- Birlesik HUV+SUT katalog
-- `huv_sut_crosswalk.jsonl` -- HUV <-> SUT kod eslestirmeleri
+- `unified_catalog.jsonl` -- Birlesik HUV+SUT katalog (offline / geri acma icin)
+- `huv_sut_crosswalk.jsonl` -- HUV <-> SUT kod eslestirmeleri (dosya durur)
 - `huv_note_rules.jsonl` -- HUV notlarina dayali kurallar
+
+> **Runtime (2026-07):** Provizyon degerlendirmede HUV→SUT crosswalk
+> varsayilan **kapali** (`PROVIZYON_ENABLE_HUV_SUT_CROSSWALK=0`).
+> HUV tani ve dogrudan SUT kurallari ayri calisir; bu dosyalar silinmez.
+> Belgesiz akis: `docs/provizyon/BELGESIZ_AKIS.md`.
 
 ### Root dosyalar
 - `sut_rules_merged.json` -- 6,551 SUT islem kurali (frekans, es-fatura vb.)

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kural Önerileri</title>
+  <meta name="api-base" content="" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">KO</div>
+          <div>
+            <div class="brand-title">Kural Önerileri</div>
+            <div class="brand-sub">Uzman inceleme</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span id="raw-badge" class="pill muted-pill" hidden>Ham cevap açık</span>
+          <button type="button" id="btn-export" class="btn secondary">Kararları dışa aktar</button>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Ana menü">
+        <a href="#/dashboard" data-route="dashboard">Özet</a>
+        <a href="#/proposals" data-route="proposals">Öneriler</a>
+        <a href="#/decisions" data-route="decisions">Kararlarım</a>
+        <a href="#/oneri-ai" data-route="oneri-ai">Öneri AI</a>
+      </nav>
+    </header>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Özet</h1>
+          <p id="page-sub" class="muted"></p>
+        </div>
+      </header>
+
+      <section id="view-dashboard" class="view" hidden></section>
+      <section id="view-proposals" class="view" hidden></section>
+      <section id="view-proposal" class="view" hidden></section>
+      <section id="view-decisions" class="view" hidden></section>
+      <section id="view-oneri-ai" class="view" hidden></section>
+      <section id="view-error" class="view" hidden>
+        <div class="banner danger">Sayfa yüklenemedi.</div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

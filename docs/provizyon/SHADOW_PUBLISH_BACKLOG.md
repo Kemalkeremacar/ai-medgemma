@@ -14,9 +14,9 @@ Kaynak: yönetici mesajları + [`YONETICI_DURUM_VE_SONRAKI_ADIMLAR.md`](../YONET
 
 ## Tamamlanan (görünürlük / validate — A)
 
-- Bundle kökü: `data/handoffs/review_reduction_dgx_transfer_bundle_20260709/`
+- Bundle kökü: `data/handoffs/urun-hikayesi/`
 - Read-only API: `/shadow/review-reduction/{summary,decision-register,703790}`
-- Dashboard **Model & Hikâye**: karar defteri + düzeltilmiş H40 metrikleri
+- Dashboard **Ürün Hikâyesi**: karar defteri + düzeltilmiş H40 metrikleri
 - Portable CLI: `python provizyon/scripts/validate_shadow_handoff.py`
   (`--schema-check` ile `expert_decision` / `rule_draft` JSON Schema)
 - **SG-2 observer henüz yok** (canlı yanında gölge log üretilmez; overlay kapalı)
@@ -75,5 +75,5 @@ Sıra zorunlu:
 ## İlk pilot: 703790
 
 - Örnek uzman formu: [`expert_decision.703790.example.json`](../../provizyon/config/expert_decision.703790.example.json)
-- Proposal (bu kutu): `data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/`
+- Proposal (bu kutu): `data/handoffs/urun-hikayesi/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/`
 - Mevcut durum: overlay kapalı; canlı değişmedi; görünürlük/validate hazır; SG-2 observer yok

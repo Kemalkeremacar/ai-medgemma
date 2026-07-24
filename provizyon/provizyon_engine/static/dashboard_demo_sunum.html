@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo Sunum · Provizyon Akışı</title>
+<title>Diyagram · Provizyon Akışı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@ select.sel{font-family:var(--font-ui);border:1px solid var(--line);background:rg
 }
 .flow-wrap{position:relative;padding:12px 12px 8px}
 svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.85}
-.nodes{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;position:relative;z-index:1}
+.nodes{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px;position:relative;z-index:1}
 .node{
   border:1px solid var(--line); border-radius:10px; padding:9px 9px 8px;
   background:rgba(7,16,28,.78); min-height:0;
@@ -147,7 +147,7 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;o
 @media (max-width:1100px){
   body{overflow:auto}
   .stage{height:auto;max-height:none;overflow:visible;grid-template-rows:auto}
-  .nodes{grid-template-columns:repeat(4,1fr)}
+  .nodes{grid-template-columns:repeat(3,1fr)}
   .canvas{grid-template-rows:auto}
   .detail{grid-template-columns:1fr;max-height:none}
   .panel + .panel{border-left:0;border-top:1px solid var(--line)}
@@ -161,9 +161,9 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;o
 <div class="stage">
   <header class="top">
     <div>
-      <p class="brand-kicker">Provizyon.AI · Demo Sunum</p>
+      <p class="brand-kicker">Provizyon.AI · Diyagram</p>
       <h1>Bir provizyon <span>nasıl akar?</span></h1>
-      <p class="sub">Giriş → kuyruk → belge/kural → MedGemma → karar. Belgeli / belgesiz yollar ve canlı örnek.</p>
+      <p class="sub">Belgesiz / belgeli · HUV ve SUT kuralları ayrı · HUV→SUT eşleştirme kapalı · MedGemma tavsiye.</p>
       <div class="progress" id="pips"></div>
     </div>
     <div class="controls">
@@ -236,156 +236,160 @@ const STEPS = [
   {
     id: "intake",
     short: "1. Giriş",
-    blurb: "DB’den üstveri okunur.",
+    blurb: "Üstveri (ICD · HUV/SUT).",
     chip: "intake",
-    note: "Provizyon kimliği, yaş, cinsiyet, ICD tanıları ve HUV/SUT/TZH işlemleri gelir. Belgesiz CTA belge indirmez; belgeli akışta klasör/OCR yolu açılır.",
+    note: "Provizyon kimliği, yaş, cinsiyet, ICD tanıları ve HUV veya SUT işlem kodları gelir. Belgesiz CTA belge indirmez; belgeli akışta klasör/OCR yolu açılır. HUV ve SUT aynı işte ayrı aileler olarak işlenir.",
     tips: [
       {t: "Ortak girdi", d: "İki yol da aynı üstveriyle başlar"},
-      {t: "Limit", d: "Dashboard CTA en fazla 100 kayıt"}
+      {t: "Köprü yok", d: "HUV→SUT runtime eşleştirme kapalı"}
     ],
     pathDocless: "skip_documents=true · documents=[]",
     pathDocs: "Belge dosyaları indirilir / klasörden okunur",
     payloadStatic: (m) => `<span class="dim">// ProvizyonJob</span>
 {
-  <span class="hl">"provizyon_id"</span>: "…",
-  <span class="hl">"yas"</span>: …, <span class="hl">"cinsiyet"</span>: "…",
+  <span class="hl">"documents_mode"</span>: "${m==="docless"?"skipped_full_pipeline":"normal"}",
   <span class="hl">"diagnoses"</span>: ["ICD…"],
-  <span class="hl">"procedures"</span>: [{"code":"HUV/SUT","name":"…"}],
-  <span class="hl">"documents_mode"</span>: "${m==="docless"?"skipped_full_pipeline":"normal"}"
-}`
+  <span class="hl">"procedures"</span>: [{"code":"HUV veya SUT","name":"…"}]
+}
+<span class="dim">// enable_huv_sut_crosswalk = false</span>`
   },
   {
     id: "queue",
     short: "2. Kuyruk",
-    blurb: "Redis’e enqueue.",
+    blurb: "Redis → worker.",
     chip: "worker",
-    note: "API işi kuyruğa yazar. Worker sırayla alır. MedGemma 45–70 sn sürebildiği için kuyruk yükü dengeler; crash sonrası processing reclaim edilir.",
+    note: "API işi kuyruğa yazar. Worker Orchestrator’ı çalıştırır. MedGemma 45–70 sn sürebildiği için kuyruk yükü dengeler.",
     tips: [
       {t: "Durum", d: "queued → processing → done"},
-      {t: "Ölçek", d: "Worker sayısı paralel iş"}
+      {t: "Yeniler", d: "Restart sonrası yeni mantıkla akar"}
     ],
     pathDocless: "Aynı kuyruk; docs_mode bayrağı taşınır",
     pathDocs: "Aynı kuyruk; belge yolu job’da dolu",
     payloadStatic: () => `<span class="dim">POST /provizyon/intake-db | /enqueue</span>
-status: <span class="ok">queued</span>
-queue: pending↑ · processing=aktif worker`
+status: <span class="ok">queued</span>`
   },
   {
-    id: "belge_hasta",
-    short: "3. Belge–Hasta",
-    blurb: "Kimlik / hasta uyumu.",
-    chip: "belge_hasta",
-    note: "Belgedeki kimlik bilgisi provizyon hastasıyla karşılaştırılır. Uyuşmazlık tüm akışı geçersiz kılar (yanlis_hasta_belgesi).",
+    id: "belge_kapilari",
+    short: "3. Belge kapıları",
+    blurb: "Hasta + zorunlu evrak.",
+    chip: "belge",
+    note: "Belge–hasta ve zorunlu evrak. Belgesizde ikisi SKIPPED (hata değil). Belgeli modda FAIL erken keser. Zorunlu evrakta HUV→SUT çevirisi yapılmaz; yalnızca doğrudan SUT veya HUV override.",
     tips: [
-      {t: "Öncelik 1", d: "FAIL diğer her şeyi ezer"},
-      {t: "Belgesiz", d: "SKIPPED — hata sayılmaz"}
+      {t: "Belgesiz", d: "SKIPPED × 2"},
+      {t: "Crosswalk", d: "Evrak için HUV→SUT yok"}
     ],
-    pathDocless: "status=skipped · belge yokluğu hata değil",
-    pathDocs: "PASS / REVIEW / FAIL (TC, ad, sicil)",
+    pathDocless: "belge_hasta + zorunlu_evrak = skipped",
+    pathDocs: "PASS / FAIL (yanlis_hasta / evrak_eksik)",
     skipInDocless: true,
     payloadStatic: (m) => m==="docless"
-      ? `layer: belge_hasta
-status: <span class="dim">skipped</span>
-message: "Belgesiz değerlendirme; belge-hasta atlandı."`
-      : `layer: belge_hasta
-status: <span class="ok">pass</span> | <span class="warn">review</span> | <span class="bad">fail</span>
-<span class="dim">fail → nihai: yanlis_hasta_belgesi</span>`
+      ? `belge_hasta: <span class="dim">skipped</span>
+zorunlu_evrak: <span class="dim">skipped</span>
+<span class="dim">// evrak için HUV→SUT resolve yok</span>`
+      : `belge_hasta: pass|review|fail
+zorunlu_evrak: pass|fail
+<span class="dim">// doğrudan SUT + HUV override</span>`
   },
   {
-    id: "evrak",
-    short: "4. Zorunlu Evrak",
-    blurb: "Gerekli belge kapısı.",
-    chip: "zorunlu_evrak",
-    note: "İşlem tipine göre zorunlu evrak listesi kontrol edilir. Eksik evrak FAIL üretir (evrak_eksik).",
-    tips: [
-      {t: "Öncelik 2", d: "Tanıdan önce keser"},
-      {t: "Belgesiz", d: "SKIPPED"}
-    ],
-    pathDocless: "status=skipped",
-    pathDocs: "PASS veya FAIL (eksik evrak)",
-    skipInDocless: true,
-    payloadStatic: (m) => m==="docless"
-      ? `layer: zorunlu_evrak
-status: <span class="dim">skipped</span>`
-      : `layer: zorunlu_evrak
-status: <span class="ok">pass</span> / <span class="bad">fail</span>
-<span class="dim">fail → nihai: evrak_eksik</span>`
-  },
-  {
-    id: "rules",
-    short: "5. Tanı Kuralları",
-    blurb: "HUV / SUT policy.",
+    id: "huv_rules",
+    short: "4. HUV kuralı",
+    blurb: "HUV + ICD tanı.",
     chip: "tani_kurali",
-    note: "Deterministik motor: PASS, REVIEW veya FAIL. TZH meta kodları SKIPPED olabilir. Soft lab REVIEW’de diagnosis_required=false sık görülür — AI override’a açıktır. Strict unsupported_policy manuel kalır.",
+    note: "HUV provizyonlarında deterministik HUV tanı motoru (Qdrant huv_diagnosis_rules). SUT’a çevirmez. SUT-only işlerde bu katman SKIPPED.",
     tips: [
-      {t: "AI değildir", d: "Açıklanabilir kural"},
-      {t: "REVIEW ≠ red", d: "Soft ise devam"}
+      {t: "Kalır", d: "HUV tanı her zaman ayrı"},
+      {t: "FAIL", d: "tani_eksik / tani_uyumsuz"}
     ],
-    pathDocless: "Aynı kural motoru (üstveri ile)",
-    pathDocs: "Aynı kural + belge kanıtı sonra AI’da",
+    pathDocless: "Üstveri ile aynı motor",
+    pathDocs: "Aynı motor; belge sonra AI’da",
     payloadStatic: () => `layer: tani_kurali
 status: <span class="ok">pass</span> | <span class="warn">review</span> | <span class="bad">fail</span> | <span class="dim">skipped</span>
-<span class="dim">soft: diagnosis_required=false</span>
-<span class="dim">strict: unsupported_policy + diag_req</span>`
+<span class="dim">// HUV→SUT yok</span>`
+  },
+  {
+    id: "sut_rules",
+    short: "5. SUT kuralları",
+    blurb: "Tanı + işlem (doğrudan SUT).",
+    chip: "sut_*",
+    note: "Doğrudan SUT kodu varsa: SUT tanı (6b) + SUT işlem kuralı (7) çalışır. Yalnız HUV işte işlem kuralı SKIP (huv_sut_crosswalk_disabled) — bu SUT motorunun kapatılması değildir; eşlenecek SUT kodu yoktur.",
+    tips: [
+      {t: "Doğrudan SUT", d: "Tanı + işlem kuralları açık"},
+      {t: "Yalnız HUV", d: "sut_kurali SKIP · reason bilinir"}
+    ],
+    pathDocless: "Aynı; üstveri kodlarıyla",
+    pathDocs: "Aynı; doğrudan SUT kodu",
+    payloadStatic: () => `sut_tani_kurali: pass|fail|skipped
+sut_kurali:
+  doğrudan SUT → <span class="ok">evaluate</span>
+  yalnız HUV → <span class="dim">skipped</span>
+  reason: huv_sut_crosswalk_disabled`
   },
   {
     id: "medgemma",
     short: "6. MedGemma",
     blurb: "Klinik yerindelik AI.",
     chip: "vLLM",
-    note: "Modele üstveri + kural özeti (ve belgeliyse OCR/metin kanıtı) gider. JSON döner: çelişki, yaş/cinsiyet, guven, manuel bayrağı, gerekçe. Çıktı tavsiyedir; canlı kural yazmaz.",
+    note: "Üstveri + kural özeti (belgeliyse OCR/görsel). JSON tavsiye: çelişki, yaş/cinsiyet, guven, manuel. Canlı kural yazmaz. Tanı FAIL ise atlanır.",
     tips: [
       {t: "Belgesiz", d: "belge alanları null"},
       {t: "guven", d: "high | medium | low"}
     ],
     pathDocless: "DOCLESS prompt · ~45–70 sn",
-    pathDocs: "Belge kanıtı + vision/text paket",
-    payloadStatic: (m) => `<span class="dim">→ /v1/chat/completions</span>
-{
-  "klinik_celiski": false,
-  "manuel_inceleme_gerekli": false,
+    pathDocs: "Belge kanıtı + vision/text",
+    payloadStatic: (m) => `{
   "guven": "medium",
-  "islem_belge_destekli": ${m==="docless"?"null":"true"},
-  "gerekce": "…"
+  "manuel_inceleme_gerekli": false,
+  "islem_belge_destekli": ${m==="docless"?"null":"true"}
 }`
   },
   {
     id: "merge",
     short: "7. Birleştirme",
     blurb: "Öncelik + override.",
-    chip: "merge_decisions",
-    note: "FAIL katmanları erken keser. Soft/skip REVIEW’de belgesiz medium|high + çelişki yok + manuel=false → uygun. Belgeli override için high gerekir. Strict policy manuel kalır.",
+    chip: "merge",
+    note: "FAIL erken keser. Soft/skip REVIEW’de belgesiz medium|high + çelişki yok → uygun. SUT işlem SKIP (crosswalk) soft skip sayılır; HUV kuralı ve MedGemma devam eder.",
     tips: [
       {t: "Sıra", d: "hasta > evrak > tanı FAIL > AI"},
       {t: "Belgesiz", d: "medium yeterli (soft/skip)"}
     ],
-    pathDocless: "medium override açık (B+C)",
-    pathDocs: "high + belge desteği şart",
-    payloadStatic: () => `<span class="dim">Örnek yollar</span>
-pass + medium          → <span class="ok">uygun</span>
-review(soft)+medium    → <span class="ok">uygun</span>
-skipped(TZH)+medium    → <span class="ok">uygun</span>
-review+low             → <span class="warn">manuel</span>
-strict unsupported     → <span class="warn">manuel</span>
-tani FAIL              → <span class="bad">red</span>`
+    pathDocless: "medium override açık",
+    pathDocs: "high + belge desteği",
+    payloadStatic: () => `pass + medium → <span class="ok">uygun</span>
+review(soft)+medium → <span class="ok">uygun</span>
+sut SKIP(crosswalk) → devam
+tani FAIL → <span class="bad">red</span>`
   },
   {
     id: "result",
     short: "8. Sonuç",
-    blurb: "Karar + risk + gerekçe.",
+    blurb: "Karar + risk.",
     chip: "dashboard",
-    note: "Panelde durum, karar rozeti, risk rengi ve gerekçe görünür. Canlı örnek seçicide uygun / manuel / red karışımı var; red’ler demo fixture’larından gelir. İnceleme otomatik ödeme değildir.",
+    note: "Panelde karar, risk, katmanlar. Eski bitmiş kayıtlar eski değerlendirmeyi tutar; yeniler / yeniden enqueue bu akışı kullanır.",
     tips: [
-      {t: "Dikkat", d: "AI ≠ bağlayıcı karar"},
-      {t: "Sonraki", d: "Lab shadow + low kovası"}
+      {t: "AI ≠ karar", d: "Deterministik motor bağlar"},
+      {t: "Diyagram", d: "docs/provizyon/BELGESIZ_AKIS.md"}
     ],
-    pathDocless: "Son koşu: 74 / 26 / 0",
-    pathDocs: "Belge FAIL’leri burada görünür",
+    pathDocless: "Belgesiz sonuç rozeti",
+    pathDocs: "Belge FAIL’leri görünür",
     showBranches: true,
-    payloadStatic: () => `<span class="dim">GET /provizyon/{id}</span>
-nihai_karar · risk_level · gerekce
-layers: { belge_hasta, zorunlu_evrak,
-  tani_kurali, medgemma, … }`
+    payloadStatic: () => `nihai_karar · risk_level · gerekce
+layers: belge_hasta, zorunlu_evrak,
+  tani_kurali, sut_tani_kurali, sut_kurali, medgemma`
+  },
+  {
+    id: "persist",
+    short: "9. Kayıt",
+    blurb: "Redis · JSONL · Qdrant.",
+    chip: "persist",
+    note: "Sonuç Redis’e, audit JSONL’e, katmanlar patient_findings’e yazılır. Health’te catalog_stats.huv_sut_crosswalk_runtime_enabled=false görünür.",
+    tips: [
+      {t: "Health", d: "runtime eşleştirme kapalı"},
+      {t: "Geri aç", d: "ENV=1 + restart"}
+    ],
+    pathDocless: "Aynı persistence",
+    pathDocs: "Aynı + belge RAG uygunsa",
+    payloadStatic: () => `catalog_stats:
+  huv_sut_crosswalk_runtime_enabled: <span class="dim">false</span>
+  note: "runtime eşleştirme kapalı"`
   }
 ];
 
@@ -436,7 +440,7 @@ function renderNodes(){
     const title = String(s.short||"").replace(/^\d+\.\s*/,"");
     return `
     <article class="node${s.skipInDocless && mode==="docless"?" skip-mode":""}" data-i="${i}" id="node-${i}">
-      <div class="idx">${i+1}/8</div>
+      <div class="idx">${i+1}/${STEPS.length}</div>
       <h3>${title}</h3>
       <p>${s.blurb}</p>
       <span class="chip">${s.skipInDocless && mode==="docless"?"skipped":s.chip}</span>
@@ -480,21 +484,27 @@ tanı/işlem: gerekçe ve katmanlardan`;
     case "queue":
       return `status: <span class="ok">${esc(d.status||"done")}</span>
 elapsed_ms: ${esc(d.elapsed_ms??"—")}`;
-    case "belge_hasta": {
-      const x=L("belge_hasta");
-      return `belge_hasta: <span class="${x?.status==="fail"?"bad":x?.status==="skipped"?"dim":"ok"}">${esc(x?.status||"—")}</span>
-${esc((x?.message||"").slice(0,160))}`;
+    case "belge_kapilari": {
+      const bh=L("belge_hasta"), ze=L("zorunlu_evrak");
+      return `belge_hasta: <span class="${bh?.status==="fail"?"bad":bh?.status==="skipped"?"dim":"ok"}">${esc(bh?.status||"—")}</span>
+zorunlu_evrak: <span class="${ze?.status==="fail"?"bad":ze?.status==="skipped"?"dim":"ok"}">${esc(ze?.status||"—")}</span>`;
     }
-    case "evrak": {
-      const x=L("zorunlu_evrak");
-      return `zorunlu_evrak: <span class="${x?.status==="fail"?"bad":x?.status==="skipped"?"dim":"ok"}">${esc(x?.status||"—")}</span>
-${esc((x?.message||"").slice(0,160))}`;
-    }
-    case "rules": {
+    case "huv_rules": {
       const x=L("tani_kurali");
       return `tani_kurali: <span class="warn">${esc(x?.status||"—")}</span>
 ${esc((x?.message||"").slice(0,180))}`;
     }
+    case "sut_rules": {
+      const st=L("sut_tani_kurali"), sk=L("sut_kurali");
+      const reason=(sk?.detail&&sk.detail.skipped_reason)||"";
+      return `sut_tani: <span class="warn">${esc(st?.status||"—")}</span>
+sut_kurali: <span class="${sk?.status==="skipped"?"dim":"ok"}">${esc(sk?.status||"—")}</span>
+${reason?`reason: <span class="hl">${esc(reason)}</span>`:esc((sk?.message||"").slice(0,140))}`;
+    }
+    case "persist":
+      return `<span class="dim">persistence + health</span>
+crosswalk runtime: <span class="dim">kapalı</span>
+status: <span class="ok">${esc(d.status||"done")}</span>`;
     case "medgemma":
       return `guven: <span class="hl">${esc(mg.guven||"—")}</span>
 manuel: ${esc(String(mg.manuel_inceleme_gerekli))}

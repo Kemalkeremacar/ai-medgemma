@@ -15,8 +15,10 @@ tek yerde toplar.
 
 > İki ayrı yerindeliği net ayırıyoruz: MedGemma klinik yorum üretir; canlı
 > ödeme/mevzuat kararı deterministik kural motorundadır. Şimdiye kadar
-> SUT/HUV/ICD ve eşleştirmeleri aranabilir/kural haline getirdik, geçmiş
-> veriden adayları çıkardık, AI’yı canlı karar verici yapmadık. 703790
+> SUT/HUV/ICD listelerini aranabilir/kural haline getirdik, geçmiş
+> veriden adayları çıkardık, AI’yı canlı karar verici yapmadık. Canlı
+> değerlendirmede HUV→SUT kod köprüsü kapalıdır: HUV ve SUT kuralları ayrı
+> çalışır (katalog dosyası durur, runtime eşleştirme yok). 703790
 > örneğinde model geniş ICD önerirken tıbbi kod açıklamasında hata yaptı;
 > bu yüzden öneriyi reddedip yalnız H40 için kapalı shadow proposal
 > hazırladık — canlı REVIEW_REQUIRED değişmedi. Bundan sonraki adım daha
@@ -29,7 +31,7 @@ tek yerde toplar.
 
 | Sepet | İçerik |
 |---|---|
-| **1 — Kurumsal bilgi + policy** | Listeler, eşleştirme, Qdrant hafıza, deterministik motor, review_queue, 703790 kapalı shadow proposal |
+| **1 — Kurumsal bilgi + policy** | Listeler, Qdrant kural hafızası, deterministik HUV/SUT motorları (runtime HUV→SUT köprüsü kapalı), review_queue, 703790 kapalı shadow proposal |
 | **2 — Çalışma ortamı (GemmaApp)** | vLLM, gateway SLA, provizyon API/worker/watcher, Redis/Qdrant/TEI, mimari dokümanlar |
 
 ---
@@ -88,16 +90,13 @@ tek yerde toplar.
 Canonical DGX transfer bundle (açılmış):
 
 ```
-data/handoffs/review_reduction_dgx_transfer_bundle_20260709/
+data/handoffs/urun-hikayesi/
 ```
-
-Zip (repo kökü): `review_reduction_dgx_transfer_bundle_20260709.zip`  
-SHA256: `927ad2c4c9bb62146ea2b159644e680296c0a6e5e81cc9b5ca4f31c08a2d28fc`
 
 703790 düzeltilmiş proposal (bundle içi):
 
 ```
-data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/
+data/handoffs/urun-hikayesi/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/
 ```
 
 Portable validate (Windows SUT path gerekmez):
@@ -112,10 +111,10 @@ Read-only API (Provizyon :8020):
 - `GET /shadow/review-reduction/decision-register`
 - `GET /shadow/review-reduction/703790`
 
-Panel: Dashboard → **Model & Hikâye** (karar defteri + H40 özeti).  
+Panel: Dashboard → **Ürün Hikâyesi** (karar defteri + H40 özeti).  
 Override: `PROVIZYON_SHADOW_HANDOFF_ROOT`.
 
-SUT ortamındaki orijinal yollar (referans):
+SUT ortamındaki orijinal yollar (tarihsel referans; bu kutuda açılmış paket `data/handoffs/urun-hikayesi/`):
 
 ```
 SUT/generated/shadow_quality_gate/review_reduction_703790_shadow_policy_proposal_20260720/

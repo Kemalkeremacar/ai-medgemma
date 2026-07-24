@@ -51,7 +51,8 @@ tamamen farklıdır.
 ## A) Provizyon Değerlendirme Uygulaması
 
 Asıl iş mantığının olduğu yer. Bir provizyonu baştan sona değerlendirir:
-belge–hasta eşleşmesi, zorunlu evrak, HUV/SUT tanı-işlem kuralları ve MedGemma
+belge–hasta eşleşmesi, zorunlu evrak, ayrı HUV/SUT tanı-işlem kuralları
+(runtime HUV→SUT köprüsü kapalı) ve MedGemma
 klinik değerlendirmesi → **nihai karar** (uygun / manuel inceleme / red vb.).
 
 Bileşenleri:

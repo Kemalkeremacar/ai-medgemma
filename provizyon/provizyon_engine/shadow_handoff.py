@@ -1,6 +1,6 @@
 """Review-reduction DGX handoff bundle — read-only aggregate loader.
 
-Reads curated shadow artifacts under GemmaApp/data/handoffs/...
+Reads curated shadow artifacts under GemmaApp/data/handoffs/urun-hikayesi/...
 Does not write to Qdrant, DB, or live rule runtime.
 """
 
@@ -14,7 +14,7 @@ from typing import Any
 
 from . import settings
 
-DEFAULT_BUNDLE_NAME = "review_reduction_dgx_transfer_bundle_20260709"
+DEFAULT_BUNDLE_NAME = "urun-hikayesi"
 PROPOSAL_DIR_REL = (
     "artifacts/review_reduction_703790_shadow_policy_proposal_20260720"
 )
@@ -94,7 +94,7 @@ def ensure_bundle() -> Path:
     if not root.is_dir():
         raise ShadowHandoffError(
             f"Shadow handoff bundle yok: {root}. "
-            "Zip'i data/handoffs/ altına açın veya "
+            "data/handoffs/urun-hikayesi paketini yerleştirin veya "
             "PROVIZYON_SHADOW_HANDOFF_ROOT ayarlayın.",
             status_code=503,
         )

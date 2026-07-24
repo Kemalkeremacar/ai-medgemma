@@ -24,7 +24,7 @@ Tüm istekler JSON body ile POST/GET olarak yapılır.
 | patient_findings | ~8.158 | Provizyon karar katmanları (2000 provizyon, her biri ~4 layer) |
 | huv_diagnosis_rules | 8.050 | HUV işlem + ICD-10 tanı kuralları |
 | sut_diagnosis_rules | 7.058 | SUT EK-2B işlem + ICD-10 tanı kuralları |
-| huv_sut_unified_catalog | 8.038 | HUV↔SUT çapraz eşleşme kataloğu |
+| huv_sut_unified_catalog | 8.038 | HUV↔SUT katalog (dosya/Qdrant durur; **runtime eşleştirme varsayılan kapalı**) |
 | diagnosis_procedure_pilot | 10 | Kurum/tanı/işlem ödeme eğilimi sinyalleri |
 | sut_knowledge | 7.075 | SUT genel bilgi bankası |
 

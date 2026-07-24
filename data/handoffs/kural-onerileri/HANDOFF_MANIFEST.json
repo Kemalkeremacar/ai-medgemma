@@ -1,0 +1,106 @@
+{
+  "createdAt": "2026-07-23T14:51:17.670856+00:00",
+  "files": [
+    {
+      "bytes": 205184,
+      "path": "data/base/engine-proposals.coverage.csv",
+      "sha256": "06c2950bfb755fe93353bfa34cf9fe266f97e0720e6441f861a6ec4b99aed3e2"
+    },
+    {
+      "bytes": 11376883,
+      "path": "data/base/engine-proposals.json",
+      "sha256": "3580ac21f05b513c117794bc645520eb24477d641384015ac93750c07d5e4f33"
+    },
+    {
+      "bytes": 3981,
+      "path": "data/base/engine-proposals.manifest.json",
+      "sha256": "065f0185ce523fed1ef11c28f577aff850e6dbe94a40053e5b820d358e6480e8"
+    },
+    {
+      "bytes": 695042,
+      "path": "data/base/engine-proposals.review.csv",
+      "sha256": "25cbb4c581d53a99ae0e61e821404c966f446e0d0e5afb328d2d47d464c0df35"
+    },
+    {
+      "bytes": 473054,
+      "path": "data/base/engine-proposals.review.json",
+      "sha256": "fe9f133ac82f89bbb433469ffe7466fc9ff27fcb8705378dae75b63f0fa75706"
+    },
+    {
+      "bytes": 28170,
+      "path": "data/base/engine-proposals.schema.json",
+      "sha256": "f1ed893ed70f0b1602859f74130890686e7a25bc5d5cbcfda3fe670c3479e994"
+    },
+    {
+      "bytes": 68784,
+      "path": "data/snapshot/demo-sample.json",
+      "sha256": "ca0e602198d8abea0c64853769a5eb4fd9d94846c8277ec9c2c551f9366fb164"
+    },
+    {
+      "bytes": 1596,
+      "path": "data/snapshot/demo-summary.json",
+      "sha256": "56c570ba569eb57420cbca0b9e5c9a1878fb3b3edabd39231ddb927794eb40bb"
+    },
+    {
+      "bytes": 3704357,
+      "path": "data/snapshot/engine-proposals.ai-partial-results.json",
+      "sha256": "faf48bf1e9613433c235143642e5dcef7619e870a71ca84e373e971f2be8a83a"
+    },
+    {
+      "bytes": 1129,
+      "path": "data/snapshot/engine-proposals.ai-progress.snapshot.json",
+      "sha256": "994f384af6dc111ca72ddbf2ff2c59b3ec789b825a1e9b797b292957f8af2542"
+    },
+    {
+      "bytes": 14249115,
+      "path": "data/snapshot/engine-proposals.partial-enriched.json",
+      "sha256": "b4533a04b4fff2a2eb93b00939dd10d3a49327a988d2d09fe536fd4c1d4b6732"
+    },
+    {
+      "bytes": 977599,
+      "path": "restricted/engine-proposals.ai-raw-responses.json",
+      "sha256": "76182ed8affeaed9c994a46df067e098a6dde907d05c5875a99281eaf7aade44"
+    },
+    {
+      "bytes": 572,
+      "path": "restricted/README.md",
+      "sha256": "88c5306cbfe18d2640471f7019e6a0fbadf2270b5c7ba22bce57efa2855c3f41"
+    },
+    {
+      "bytes": 1399,
+      "path": "scripts/validate_handoff.py",
+      "sha256": "9f3edf7143d6bf7272d94c2c306e0d9f04e381c511b8a334d6c43ba397e1520f"
+    },
+    {
+      "bytes": 1622,
+      "path": "START_HERE.md",
+      "sha256": "f98bcbf8975db2495f6281fa1e5777ecea30482cde3bfb8a4b93544354fbdf44"
+    }
+  ],
+  "safety": {
+    "callsModel": false,
+    "containsApiCredentials": false,
+    "containsRawModelResponses": true,
+    "rawResponsesRestricted": true,
+    "redactionApplied": true,
+    "requiresHumanReview": true,
+    "writesToDatabase": false
+  },
+  "schemaVersion": "outpatient_rule_engine_dgx_handoff.v1",
+  "snapshot": {
+    "completedPackets": 1639,
+    "sourceState": "running",
+    "stage": {
+      "crosswalk_adjudication": 1416,
+      "rule_synthesis": 223
+    },
+    "status": {
+      "accepted": 843,
+      "blocked": 795,
+      "call_or_parse_error": 1
+    }
+  },
+  "sourceCheckpointSha256": "0451a8b560748ee7b9013cb1dc41f23e497e877ca52e6c87a677e20cbb609d5e",
+  "updatedAt": "2026-07-24T13:23:49.847027+00:00",
+  "updateNote": "Applied dgx-rule-proposal-dashboard-update-20260724-132349 delta (1342 packets). Full snapshot files were missing from update zip; rebuilt from delta."
+}

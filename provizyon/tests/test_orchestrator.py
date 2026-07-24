@@ -1130,7 +1130,7 @@ class DiagnosisRouteTests(unittest.TestCase):
         job = ProvizyonJob(provizyon_id="P2", sut_codes=["530140"], code_family="SUT")
         self.assertEqual(job.diagnosis_code_source(), "sut")
 
-    def test_first_procedure_wins(self):
+    def test_mixed_huv_and_sut_is_both(self):
         job = ProvizyonJob(
             provizyon_id="P3",
             procedures=[
@@ -1138,7 +1138,7 @@ class DiagnosisRouteTests(unittest.TestCase):
                 ProcedureInput(code="24.73601", code_type="HUV"),
             ],
         )
-        self.assertEqual(job.diagnosis_code_source(), "sut")
+        self.assertEqual(job.diagnosis_code_source(), "both")
 
     def test_huv_job_skips_sut_diagnosis_layer(self):
         with tempfile.TemporaryDirectory() as tmp:

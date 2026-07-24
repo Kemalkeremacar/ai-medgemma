@@ -23,9 +23,7 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROVIZYON_ROOT = SCRIPT_DIR.parent
 GEMMA_ROOT = PROVIZYON_ROOT.parent
-DEFAULT_BUNDLE = (
-    GEMMA_ROOT / "data" / "handoffs" / "review_reduction_dgx_transfer_bundle_20260709"
-)
+DEFAULT_BUNDLE = GEMMA_ROOT / "data" / "handoffs" / "urun-hikayesi"
 CONFIG_DIR = PROVIZYON_ROOT / "config"
 
 PROPOSAL_REL = (

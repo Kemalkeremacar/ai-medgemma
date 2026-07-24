@@ -402,17 +402,56 @@ def build_provisioner_gerekce(
     medgemma: MedGemmaClinicalOutput | None = None,
     fallback: str = "",
 ) -> str:
+    """Provizyoncu gerekçesi: klinik AI anlatımı önde, kural satırları destekleyici.
+
+    MedGemma gerekçesi yalnızca manuel incelemede değil; uygun/red dahil
+    üst düzey açıklamanın omurgasıdır.
+    """
+
     parts: list[str] = []
     seen: set[str] = set()
-    for reason in reasons:
-        if reason.message and reason.message not in seen:
-            seen.add(reason.message)
-            parts.append(reason.message)
 
-    if medgemma and medgemma.gerekce:
-        mg = medgemma.gerekce.strip()
-        if mg and mg not in seen and karar == KararDurumu.MANUEL_INCELEME:
-            parts.append(mg)
+    mg = (medgemma.gerekce or "").strip() if medgemma else ""
+    if mg or (medgemma and medgemma.klinik_skor is not None):
+        guven = (medgemma.guven or "").strip().lower() if medgemma else ""
+        guven_tr = {"high": "yüksek", "medium": "orta", "low": "düşük"}.get(guven, guven)
+        skor = medgemma.klinik_skor if medgemma else None
+        lead = "Klinik AI (MedGemma"
+        if skor is not None:
+            lead += f", skor={skor}/100"
+        if guven_tr:
+            lead += f", güven={guven_tr}"
+        lead += ")"
+        if mg:
+            lead += f": {mg}"
+            seen.add(mg)
+        dayanak = (medgemma.skor_dayanak or "").strip() if medgemma else ""
+        if dayanak and dayanak not in seen:
+            lead += f" | Skor dayanağı: {dayanak}"
+            seen.add(dayanak)
+        parts.append(lead)
+
+    policy_parts: list[str] = []
+    for reason in reasons:
+        msg = (reason.message or "").strip()
+        if not msg or msg in seen:
+            continue
+        # MedGemma metni zaten lead'de; tekrar ekleme.
+        if reason.layer == "medgemma" and mg and (mg in msg or msg in mg):
+            continue
+        seen.add(msg)
+        policy_parts.append(msg)
+
+    # Uygun kararlarda kural özeti kısa kalsın; red/manuel'de tam liste.
+    if karar == KararDurumu.UYGUN and policy_parts:
+        compact = policy_parts[:3]
+        more = len(policy_parts) - len(compact)
+        suffix = " | ".join(compact)
+        if more > 0:
+            suffix += f" | (+{more} kural satırı)"
+        parts.append(f"Policy özeti: {suffix}")
+    else:
+        parts.extend(policy_parts)
 
     if parts:
         return " | ".join(parts)

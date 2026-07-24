@@ -23,7 +23,22 @@ AI_REVIEW_STATUS_ID = 5
 
 _VIEW_SQL = "SELECT * FROM dbo.S_VW_PROVIZYON_AI WHERE ProvizyonId = ?"
 
-_PENDING_SQL = "SELECT * FROM dbo.S_VW_PROVIZYON_AI WHERE ProvizyonDurumId = ?"
+# Pending: deterministik (en yeni) veya rastgele örnek. Limit SQL TOP ile.
+_PENDING_SQL = (
+    "SELECT * FROM dbo.S_VW_PROVIZYON_AI "
+    "WHERE ProvizyonDurumId = ? "
+    "ORDER BY ProvizyonId DESC"
+)
+_PENDING_SQL_TOP = (
+    "SELECT TOP (?) * FROM dbo.S_VW_PROVIZYON_AI "
+    "WHERE ProvizyonDurumId = ? "
+    "ORDER BY ProvizyonId DESC"
+)
+_PENDING_SQL_RANDOM_TOP = (
+    "SELECT TOP (?) * FROM dbo.S_VW_PROVIZYON_AI "
+    "WHERE ProvizyonDurumId = ? "
+    "ORDER BY NEWID()"
+)
 
 _BELGE_TIP_MAP: dict[str, str] = {
     "rapor / epikriz": "epikriz",
@@ -81,8 +96,33 @@ def _parse_diagnoses(tani_bilgileri: str | None) -> list[str]:
     return codes
 
 
+def _infer_code_type(kod: str, liste_tip: str) -> str:
+    """Liste tipinden veya kod biçiminden HUV/SUT/other çıkar.
+
+    Boş liste_tip + branş kodu (örn. ``1700``) → ``other`` (HUV tanıya girmez).
+    TZH meta kodları liste tipi HUV olsa bile ``other`` kalır.
+    """
+
+    code = (kod or "").strip()
+    tip = (liste_tip or "").strip().upper()
+    if code.upper().startswith("TZH.") or tip in {"TZH", "META"}:
+        return "other"
+    if tip == "HUV":
+        return "HUV"
+    if "SUT" in tip:
+        return "SUT"
+
+    # 6 haneli SGK SUT
+    if len(code) == 6 and code.isdigit() and not code.startswith("0"):
+        return "SUT"
+    # Sayısal HUV (örn. 24.73601)
+    if ProvizyonJob._is_huv_code(code):
+        return "HUV"
+    return "other"
+
+
 def _parse_procedures(islem_bilgileri: str | None) -> tuple[list[ProcedureInput], str | None]:
-    """View'daki IslemBilgileri kolonunu parse eder: kod|ad<~>kod|ad ..."""
+    """View'daki IslemBilgileri kolonunu parse eder: kod|ad|listeTip<~>..."""
     if not islem_bilgileri:
         return [], None
     procedures: list[ProcedureInput] = []
@@ -96,7 +136,7 @@ def _parse_procedures(islem_bilgileri: str | None) -> tuple[list[ProcedureInput]
             continue
         kod, ad = parts[0], parts[1]
         liste_tip = parts[2] if len(parts) >= 3 else ""
-        code_type = "HUV" if liste_tip == "HUV" else "SUT" if "SUT" in (liste_tip or "") else "auto"
+        code_type = _infer_code_type(kod, liste_tip)
         procedures.append(ProcedureInput(code=kod, code_type=code_type, name=ad))
         if code_family is None and code_type in ("HUV", "SUT"):
             code_family = code_type
@@ -200,16 +240,36 @@ def _build_job_from_row(
     kurum = row_dict.get("KurumAdi")
     if kurum:
         notes.append(f"Kurum: {kurum}")
+    # KurumTipi sigorta/katkı grubudur; SUT "kurum basamağı" (facility_level) değildir.
+    # Yanlış basamak sinyalini önlemek için facility_level'a yazılmaz.
+    kurum_tipi = row_dict.get("KurumTipi")
+    if kurum_tipi:
+        notes.append(f"KurumTipi(sigorta grubu): {kurum_tipi}")
     brans = row_dict.get("Brans")
     if brans:
         notes.append(f"Branş: {brans}")
     doktor = row_dict.get("DoktorAdi")
     if doktor:
         notes.append(f"Doktor: {doktor}")
+    islem_tipi = row_dict.get("IslemTipi") or row_dict.get("ProvizyonTipi")
+    if islem_tipi:
+        notes.append(f"İşlemTipi: {islem_tipi}")
     tani_bilgileri = row_dict.get("TaniBilgileri")
     if tani_bilgileri:
         tani_strs = [e.replace("|", " - ") for e in tani_bilgileri.split("<~>") if e.strip()]
         notes.append(f"Tanılar: {', '.join(tani_strs)}")
+
+    hizmet_tarih = row_dict.get("HizmetTarih")
+    hizmet_tarih_str: str | None = None
+    if hizmet_tarih is not None:
+        try:
+            hizmet_tarih_str = hizmet_tarih.isoformat()[:10]  # date/datetime
+        except Exception:
+            hizmet_tarih_str = str(hizmet_tarih)[:10]
+    if hizmet_tarih_str:
+        for proc in procedures:
+            if not proc.date:
+                proc.date = hizmet_tarih_str
 
     if skip_documents:
         # Belgesiz mod: OPENROWSET ile dosya indirmeyi tamamen atla; belge katmanları
@@ -235,7 +295,7 @@ def _build_job_from_row(
         patient_name=patient_name,
         yas=yas,
         cinsiyet=_cinsiyet_from_db(row_dict.get("Cinsiyet")),
-        facility_level=row_dict.get("KurumTipi"),
+        facility_level=None,
         code_family=code_family,
         huv_codes=huv_codes,
         sut_codes=sut_codes,
@@ -243,7 +303,6 @@ def _build_job_from_row(
         diagnoses=diagnoses,
         documents=documents,
         notes=notes,
-        institution_name=kurum,
         documents_mode=documents_mode,
     )
 
@@ -266,28 +325,68 @@ def fetch_pending_provizyonlar(
     *,
     skip_documents: bool = False,
     limit: int | None = None,
+    sample: str = "newest",
+    exclude_ids: set[str] | list[str] | None = None,
 ) -> list[ProvizyonJob]:
     """Belirtilen durumdaki (varsayılan: AI incelemesi bekleyen) provizyonları döner.
 
-    ``limit`` verilirse en fazla o kadar kayıt döner (sunum hızı için).
+    ``limit`` verilirse en fazla o kadar kayıt döner.
+    ``sample``: ``newest`` (ProvizyonId DESC) veya ``random`` (NEWID).
+    ``exclude_ids``: bu ID'ler atlanır (önceki değerlendirmeleri korumak için).
     ``skip_documents`` ile belge indirme atlanır (belgesiz tam akış).
     """
 
+    exclude = {str(x).strip() for x in (exclude_ids or []) if str(x).strip()}
+    sample_mode = (sample or "newest").strip().lower()
+    if sample_mode not in {"newest", "random"}:
+        sample_mode = "newest"
+
+    # Hariç tutulanlar varsa fazla çekip Python'da süz (NOT IN listesi şişmesin).
+    fetch_n: int | None = None
+    if limit is not None and limit > 0:
+        fetch_n = int(limit)
+        if exclude:
+            fetch_n = min(2000, max(fetch_n * 4, fetch_n + len(exclude) + 50))
+
     jobs: list[ProvizyonJob] = []
+    parse_errors = 0
+    skipped_excluded = 0
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(_PENDING_SQL, durum_id)
+        if fetch_n is not None:
+            sql = (
+                _PENDING_SQL_RANDOM_TOP
+                if sample_mode == "random"
+                else _PENDING_SQL_TOP
+            )
+            cursor.execute(sql, fetch_n, durum_id)
+        else:
+            cursor.execute(_PENDING_SQL, durum_id)
         cols = [col[0] for col in cursor.description]
         row_dicts = [dict(zip(cols, row)) for row in cursor.fetchall()]
-        if limit is not None and limit > 0:
-            row_dicts = row_dicts[:limit]
         for row_dict in row_dicts:
+            pid = str(row_dict.get("ProvizyonId") or "").strip()
+            if pid and pid in exclude:
+                skipped_excluded += 1
+                continue
             try:
                 jobs.append(
                     _build_job_from_row(cursor, row_dict, skip_documents=skip_documents)
                 )
             except Exception as exc:
+                parse_errors += 1
                 log.warning("Provizyon %s okunamadı: %s", row_dict.get("ProvizyonId"), exc)
+            if limit is not None and limit > 0 and len(jobs) >= int(limit):
+                break
+    if parse_errors:
+        log.warning("Pending parse: %s satır atlandı (okunan=%s)", parse_errors, len(jobs))
+    if skipped_excluded:
+        log.info(
+            "Pending sample=%s: %s mevcut ID atlandı, %s yeni iş",
+            sample_mode,
+            skipped_excluded,
+            len(jobs),
+        )
     return jobs
 
 
@@ -296,6 +395,12 @@ def _main(argv: list[str] | None = None) -> int:
     ap.add_argument("provizyon_id", nargs="?", type=int, help="Provizyon ID.")
     ap.add_argument("--pending", action="store_true", help="AI incelemesi bekleyen tüm provizyonları çek.")
     ap.add_argument("--enqueue", action="store_true", help="Üretilen işleri Redis kuyruğuna ekle.")
+    ap.add_argument(
+        "--skip-documents",
+        action="store_true",
+        help="Belgesiz akış: belge indirme yok, documents_mode=skipped_full_pipeline.",
+    )
+    ap.add_argument("--limit", type=int, default=None, help="Pending için en fazla N kayıt.")
     ap.add_argument("--json", action="store_true", help="JSON olarak yazdır.")
     args = ap.parse_args(argv)
 
@@ -304,10 +409,12 @@ def _main(argv: list[str] | None = None) -> int:
 
     try:
         if args.pending:
-            jobs = fetch_pending_provizyonlar()
+            jobs = fetch_pending_provizyonlar(
+                skip_documents=args.skip_documents, limit=args.limit
+            )
             print(f"{len(jobs)} adet AI incelemesi bekleyen provizyon bulundu.")
         else:
-            jobs = [fetch_provizyon(args.provizyon_id)]
+            jobs = [fetch_provizyon(args.provizyon_id, skip_documents=args.skip_documents)]
     except Exception as exc:
         print(f"HATA: {exc}", file=sys.stderr)
         return 1
@@ -320,6 +427,7 @@ def _main(argv: list[str] | None = None) -> int:
             print(f"Hasta     : {job.patient_name} (tc={job.tc_kimlik}, yaş={job.yas}, cinsiyet={job.cinsiyet.value})")
             print(f"Kodlar    : {job.code_family} | {[p.code for p in job.procedures]}")
             print(f"Tanılar   : {job.diagnoses}")
+            print(f"Mod       : {job.documents_mode or 'normal'}")
             print(f"Notlar    : {job.notes}")
             print()
 

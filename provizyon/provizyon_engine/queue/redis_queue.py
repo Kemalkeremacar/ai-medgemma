@@ -135,7 +135,8 @@ class RedisQueue:
         try:
             self.client.lrem(self.recent_key, 0, job_id)
             self.client.lpush(self.recent_key, job_id)
-            self.client.ltrim(self.recent_key, 0, 199)
+            # Eski batch + yeni batch (ör. 100+100) sığsın.
+            self.client.ltrim(self.recent_key, 0, 299)
         except Exception:
             pass
 
@@ -214,12 +215,19 @@ class RedisQueue:
                     "risk_reasons_count": len(risk_reasons),
                     "risk_summary": risk_summary,
                     "code_family": meta.get("code_family"),
+                    "diagnosis_code_source": meta.get("diagnosis_code_source"),
                     "diagnoses": meta.get("diagnoses", []),
                     "huv_codes_count": len(meta.get("huv_codes") or []),
                     "sut_codes_count": len(meta.get("sut_codes") or []),
                     "warnings_count": len(result.get("warnings") or []),
                     "medgemma_guven": (result.get("medgemma") or {}).get("guven"),
+                    "klinik_skor": result.get("klinik_skor")
+                    if result.get("klinik_skor") is not None
+                    else (result.get("medgemma") or {}).get("klinik_skor"),
                     "document_count": documents.get("provided", 0),
+                    "documents_mode": raw.get("documents_mode")
+                    or (result.get("documents_mode") if isinstance(result.get("documents_mode"), str) else None)
+                    or "normal",
                     "partial_vision": partial,
                     "shadow_advice_status": shadow.get("status"),
                     "shadow_advice_label": shadow.get("label"),

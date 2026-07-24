@@ -23,6 +23,7 @@ yalnızca kısa yönlendirme bırakılır.
 
 | Belge | İçerik |
 |---|---|
+| [provizyon/BELGESIZ_AKIS.md](./provizyon/BELGESIZ_AKIS.md) | Belgesiz pipeline diyagramı · HUV/SUT ayrı · crosswalk kapalı |
 | [provizyon/SHADOW_PUBLISH_BACKLOG.md](./provizyon/SHADOW_PUBLISH_BACKLOG.md) | Shadow / validate / yayın backlog |
 | [provizyon/PROMPT_PATIENT_FINDINGS_ANALYSIS.md](./provizyon/PROMPT_PATIENT_FINDINGS_ANALYSIS.md) | Patient findings analiz notları |
 
@@ -32,5 +33,6 @@ yalnızca kısa yönlendirme bırakılır.
 - Gateway kodu: `medgemma_gateway/`
 - vLLM servisi: `services/vllm_medgemma/`
 - Servis yöneticisi: `./svc`
-- Review-reduction handoff: `data/handoffs/review_reduction_dgx_transfer_bundle_20260709/`
-- Validate: `python provizyon/scripts/validate_shadow_handoff.py`
+- Expert demolar: `data/handoffs/` (`kural-onerileri/`, `urun-hikayesi/`, `lab-not-required/`) — `data/handoffs/README.md`
+- Shadow validate: `python provizyon/scripts/validate_shadow_handoff.py`
+- Kural önerileri validate: `python data/handoffs/kural-onerileri/scripts/validate_handoff.py`

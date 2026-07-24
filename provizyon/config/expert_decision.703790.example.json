@@ -12,7 +12,7 @@
   "source_refs": [
     {
       "label": "Kurumsal shadow proposal 2026-07-20",
-      "url_or_doc_id": "data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/",
+      "url_or_doc_id": "data/handoffs/urun-hikayesi/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/",
       "list_version": ""
     }
   ],
@@ -29,5 +29,5 @@
   },
   "decided_at": "2026-07-20T00:00:00Z",
   "notes": "Canlı sistem hâlâ REVIEW_REQUIRED. Bu form doldurulmadan shadow overlay açılmamalı (enabled=false kalır).",
-  "related_proposal_path": "data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/"
+  "related_proposal_path": "data/handoffs/urun-hikayesi/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/"
 }

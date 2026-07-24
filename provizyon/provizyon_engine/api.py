@@ -13,12 +13,13 @@ Endpoint'ler:
   GET  /shadow/review-reduction/703790            -> düzeltilmiş H40 proposal detayı
   GET  /                       -> kontrol paneli UI
   GET  /dashboard              -> kontrol paneli UI
-  GET  /copilot                -> Co-Pilot UI
-  GET  /dashboard/yonetici     -> yönetici raporu UI
-  GET  /dashboard/demo         -> Anonim Önizleme (maskeli Provizyonlar + Analiz)
-  GET  /dashboard/demo-sunum   -> Demo Sunum (animasyonlu provizyon akışı)
+  GET  /copilot                -> Finansal Risk UI
+  GET  /dashboard/yonetici     -> Ne Yaptık? UI
+  GET  /dashboard/demo         -> Sistem (maskeli Provizyonlar + Kurum Analiz)
+  GET  /dashboard/demo-sunum   -> Diyagram (animasyonlu provizyon akışı)
   GET  /dashboard/kural-onerileri -> DGX kural önerileri demo (read-only handoff)
   GET  /rule-proposal-demo/...    -> demo static + JSON API köprüsü
+  POST /rule-proposal-demo/api/oneri-ai/chat -> uzman Öneri AI sohbeti
 
 Worker (kuyruğu tüketen süreç) ayrıdır: ``python -m provizyon_engine.worker``.
 """
@@ -61,6 +62,7 @@ from .rule_proposal_handoff import (
     read_static_file,
     render_index_html,
 )
+from .rule_proposal_oneri_ai import chat as oneri_ai_chat
 
 app = FastAPI(
     title="Provizyon Orkestratör API",
@@ -194,6 +196,10 @@ class IntakeDbRequest(BaseModel):
     skip_documents: bool = False
     # pending modda en fazla kaç kayıt çekileceği (varsayılan panel: 100, üst sınır 200).
     limit: int | None = None
+    # newest = ProvizyonId DESC; random = NEWID() örneklemesi.
+    sample: str = "newest"
+    # True ise recent/kuyrukta zaten olan ID'leri alma (eski değerlendirmeyi koru).
+    exclude_existing: bool = True
 
 
 @app.post("/provizyon/intake-db")
@@ -201,9 +207,10 @@ def intake_db(req: IntakeDbRequest) -> dict[str, Any]:
     """MSSQL veritabanından (dbo.S_VW_PROVIZYON_AI) provizyon çeker ve iş üretir.
 
     ``provizyon_id`` verilirse tek iş, ``pending=true`` ise vakıf değerlendirmesi
-    bekleyen (DurumId=5) tüm işler çekilir. ``enqueue=true`` ile kuyruğa eklenir.
+    bekleyen (DurumId=5) kayıtlar çekilir. ``enqueue=true`` ile kuyruğa eklenir.
     ``skip_documents=true`` ile belgesiz tam akış (belge katmanları SKIPPED),
-    ``limit`` ile pending kayıt sayısı sınırlanır (1–200).
+    ``limit`` ile kayıt sayısı sınırlanır (1–200).
+    ``sample=random`` rastgele örnekler; ``exclude_existing`` önceki sonuçları korur.
     """
 
     if not req.provizyon_id and not req.pending:
@@ -213,10 +220,33 @@ def intake_db(req: IntakeDbRequest) -> dict[str, Any]:
     if effective_limit is not None:
         effective_limit = max(1, min(200, int(effective_limit)))
 
+    sample = (req.sample or "newest").strip().lower()
+    if sample not in {"newest", "random"}:
+        raise HTTPException(400, "sample 'newest' veya 'random' olmalı.")
+
+    exclude_ids: set[str] = set()
+    queue = get_queue()
+    if req.pending and req.exclude_existing:
+        if queue.ping():
+            try:
+                # Recent listedeki tüm ID'ler (eski 100 vb.) yeniden çekilmesin / ezilmesin.
+                for item in queue.recent_results(limit=300):
+                    pid = str(item.get("provizyon_id") or "").strip()
+                    if pid:
+                        exclude_ids.add(pid)
+                # Aktif kuyruk/processing da hariç.
+                for jid in list(queue.client.lrange(queue.recent_key, 0, 299) or []):
+                    exclude_ids.add(str(jid))
+            except Exception:
+                pass
+
     try:
         if req.pending:
             jobs = fetch_pending_provizyonlar(
-                skip_documents=req.skip_documents, limit=effective_limit
+                skip_documents=req.skip_documents,
+                limit=effective_limit,
+                sample=sample,
+                exclude_ids=exclude_ids,
             )
         else:
             jobs = [fetch_provizyon(req.provizyon_id, skip_documents=req.skip_documents)]
@@ -226,21 +256,39 @@ def intake_db(req: IntakeDbRequest) -> dict[str, Any]:
         raise HTTPException(500, f"Veritabanı hatası: {exc}") from exc
 
     queued_ids: list[str] = []
+    already_queued: list[str] = []
+    skipped_existing: list[str] = []
     if req.enqueue:
-        queue = get_queue()
         if not queue.ping():
             raise HTTPException(503, f"Redis kuyruğuna erişilemiyor: {settings.REDIS_URL}")
         for job in jobs:
-            queue.enqueue(job.provizyon_id, job.model_dump(mode="json"))
-            queued_ids.append(job.provizyon_id)
+            # Tamamlanmış sonucu ezme: done/failed kayıt varsa atla.
+            existing = queue.get_result(job.provizyon_id) or {}
+            st = str(existing.get("status") or "")
+            if st in {"done", "failed"} and req.exclude_existing:
+                skipped_existing.append(job.provizyon_id)
+                continue
+            added = queue.enqueue(job.provizyon_id, job.model_dump(mode="json"))
+            if added:
+                queued_ids.append(job.provizyon_id)
+            else:
+                already_queued.append(job.provizyon_id)
 
     return {
         "status": "queued" if req.enqueue else "preview",
         "count": len(jobs),
+        "queued_count": len(queued_ids),
+        "already_queued_count": len(already_queued),
+        "skipped_existing_count": len(skipped_existing),
         "documents_mode": "skipped_full_pipeline" if req.skip_documents else "normal",
         "limit": effective_limit,
+        "sample": sample,
+        "exclude_existing": req.exclude_existing,
+        "excluded_seed_count": len(exclude_ids),
         "provizyon_ids": [j.provizyon_id for j in jobs],
         "queued_ids": queued_ids,
+        "already_queued_ids": already_queued,
+        "skipped_existing_ids": skipped_existing[:50],
         "jobs": [j.model_dump(mode="json") for j in jobs] if not req.enqueue else [],
     }
 
@@ -314,7 +362,7 @@ def recent(limit: int = 25) -> dict[str, Any]:
     queue = get_queue()
     if not queue.ping():
         raise HTTPException(503, f"Redis kuyruğuna erişilemiyor: {settings.REDIS_URL}")
-    limit = max(1, min(200, limit))
+    limit = max(1, min(300, limit))
     return {"items": queue.recent_results(limit=limit)}
 
 
@@ -544,66 +592,136 @@ _LOG_MAP: dict[str, str | tuple[str, ...]] = {
 
 
 def _probe_service(name: str, port: int, path: str) -> dict[str, Any]:
+    import time
+
+    url = f"http://127.0.0.1:{port}{path}"
+    t0 = time.perf_counter()
     try:
-        r = _HTTP.get(f"http://127.0.0.1:{port}{path}")
-        return {"name": name, "port": port, "status": "ok", "http": r.status_code}
+        r = _HTTP.get(url)
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        ok = 200 <= r.status_code < 400
+        return {
+            "name": name,
+            "port": port,
+            "path": path,
+            "status": "ok" if ok else "down",
+            "http": r.status_code,
+            "latency_ms": latency_ms,
+            "detail": f"HTTP {r.status_code}" if ok else f"HTTP {r.status_code} — yanıt beklenen aralıkta değil",
+            "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        }
     except Exception as exc:
-        return {"name": name, "port": port, "status": "down", "error": str(exc)[:120]}
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        return {
+            "name": name,
+            "port": port,
+            "path": path,
+            "status": "down",
+            "latency_ms": latency_ms,
+            "error": str(exc)[:160],
+            "detail": "Bağlantı kurulamadı",
+            "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        }
 
 
 def _probe_redis(host: str = "127.0.0.1", port: int = 6379) -> dict[str, Any]:
     import socket
+    import time
 
+    t0 = time.perf_counter()
     try:
         with socket.create_connection((host, port), timeout=2) as sock:
             sock.sendall(b"*1\r\n$4\r\nPING\r\n")
             resp = sock.recv(64)
+        latency_ms = int((time.perf_counter() - t0) * 1000)
         ok = b"PONG" in resp
         return {
             "name": "Redis",
             "port": port,
+            "path": "PING",
             "status": "ok" if ok else "down",
-            "detail": "PONG" if ok else "yanıt beklenmiyor",
+            "latency_ms": latency_ms,
+            "detail": "PONG alındı" if ok else "PING yanıtı beklenmiyor",
+            "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         }
     except Exception as exc:
-        return {"name": "Redis", "port": port, "status": "down", "error": str(exc)[:120]}
+        return {
+            "name": "Redis",
+            "port": port,
+            "path": "PING",
+            "status": "down",
+            "latency_ms": int((time.perf_counter() - t0) * 1000),
+            "error": str(exc)[:160],
+            "detail": "Bağlantı kurulamadı",
+            "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        }
 
 
 def _probe_prov_workers() -> dict[str, Any]:
+    import time
+
     running: list[dict[str, Any]] = []
     for pf in sorted(_LOG_DIR.glob("provizyon-worker-*.pid")):
         try:
             pid = int(pf.read_text(encoding="utf-8").strip())
             worker_id = pf.stem.removeprefix("provizyon-worker-")
             if psutil.pid_exists(pid):
-                running.append({"id": worker_id, "pid": pid})
+                try:
+                    proc = psutil.Process(pid)
+                    running.append({
+                        "id": worker_id,
+                        "pid": pid,
+                        "cpu_pct": proc.cpu_percent(interval=0.0),
+                        "status": proc.status(),
+                    })
+                except (psutil.Error, OSError):
+                    running.append({"id": worker_id, "pid": pid})
         except (ValueError, OSError):
             continue
     count = len(running)
     return {
         "name": "Provizyon Worker",
         "port": None,
+        "path": "pid",
         "status": "ok" if count else "down",
         "workers": count,
         "detail": f"{count} worker aktif" if count else "çalışan worker yok",
         "worker_pids": running,
+        "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
     }
 
 
 def _gpu_info() -> dict[str, Any]:
+    def _num(raw: str) -> int | None:
+        s = (raw or "").strip().replace("[", "").replace("]", "")
+        if not s or s.upper() == "N/A":
+            return None
+        try:
+            return int(float(s))
+        except ValueError:
+            return None
+
     try:
         out = subprocess.check_output(
-            ["nvidia-smi", "--query-gpu=memory.used,memory.total,memory.free,utilization.gpu,temperature.gpu",
+            ["nvidia-smi", "--query-gpu=name,memory.used,memory.total,memory.free,utilization.gpu,temperature.gpu",
              "--format=csv,noheader,nounits"],
             text=True, timeout=5,
         ).strip()
-        parts = [p.strip() for p in out.split(",")]
+        # Çoklu GPU varsa ilk satırı al.
+        line = out.splitlines()[0] if out else ""
+        parts = [p.strip() for p in line.split(",")]
+        if len(parts) < 6:
+            return {}
+        mem_used = _num(parts[1])
+        mem_total = _num(parts[2])
         return {
-            "mem_used_mb": int(parts[0]) if parts[0].isdigit() else None,
-            "mem_total_mb": int(parts[1]) if parts[1].isdigit() else None,
-            "mem_free_mb": int(parts[2]) if parts[2].isdigit() else None,
-            "utilization_pct": int(parts[3]) if parts[3].isdigit() else None,
-            "temp_c": int(parts[4]) if parts[4].isdigit() else None,
+            "name": parts[0] or None,
+            "mem_used_mb": mem_used,
+            "mem_total_mb": mem_total,
+            "mem_free_mb": _num(parts[3]),
+            "utilization_pct": _num(parts[4]),
+            "temp_c": _num(parts[5]),
+            "mem_unavailable": mem_total is None,
         }
     except Exception:
         return {}
@@ -847,13 +965,13 @@ def dashboard_page():
 
 @app.get("/dashboard/demo", include_in_schema=False)
 def dashboard_demo_page():
-    """Anonim Önizleme — Provizyonlar + Analiz, kimlik alanları maskeli."""
+    """Sistem — Provizyonlar + Kurum Analiz, kimlik alanları maskeli."""
     return _serve_static_html("dashboard_demo.html")
 
 
 @app.get("/dashboard/demo-sunum", include_in_schema=False)
 def dashboard_demo_sunum_page():
-    """Demo Sunum — animasyonlu belgesiz provizyon akış diyagramı."""
+    """Diyagram — animasyonlu belgesiz provizyon akış diyagramı."""
     return _serve_static_html("dashboard_demo_sunum.html")
 
 
@@ -903,6 +1021,7 @@ def rule_proposal_list(
     qualityFlag: str = "",
     completeness: str = "",
     listeTipi: str = "",
+    hasAi: str = "",
     page: int = Query(1, ge=1),
     pageSize: int = Query(25, ge=1, le=200),
 ):
@@ -914,6 +1033,7 @@ def rule_proposal_list(
             quality_flag=qualityFlag,
             completeness=completeness,
             liste_tipi=listeTipi,
+            has_ai=hasAi,
             page=page,
             page_size=pageSize,
         )
@@ -992,6 +1112,32 @@ def rule_proposal_raw(packet_id: str):
     return detail
 
 
+class OneriAiChatRequest(BaseModel):
+    message: str
+    proposalId: str | None = None
+    history: list[dict[str, str]] | None = None
+
+
+@app.post("/rule-proposal-demo/api/oneri-ai/chat")
+def rule_proposal_oneri_ai_chat(body: OneriAiChatRequest):
+    """Uzman ↔ Öneri AI sohbeti (kural önerisi / HUV-SUT / provizyon / MedGemma)."""
+    try:
+        return oneri_ai_chat(
+            body.message,
+            proposal_id=body.proposalId,
+            history=body.history,
+        )
+    except ValueError as exc:
+        code = str(exc)
+        if code == "message_required":
+            raise HTTPException(400, "message gerekli") from exc
+        if code == "message_too_long":
+            raise HTTPException(400, "message çok uzun (max 4000)") from exc
+        raise HTTPException(400, code) from exc
+    except RuleProposalHandoffError as exc:
+        raise HTTPException(exc.status_code, str(exc)) from exc
+
+
 @app.get("/rule-proposal-demo/{asset}", include_in_schema=False)
 def rule_proposal_demo_asset(asset: str):
     if asset.startswith("api"):
@@ -1014,14 +1160,14 @@ def rule_proposal_demo_asset(asset: str):
 @app.get("/copilot", include_in_schema=False)
 @app.get("/dashboard/copilot", include_in_schema=False)
 def copilot_page():
-    """Uzman karar destek paneli — Co-Pilot cockpit UI."""
+    """Finansal Risk paneli — uzman karar destek UI."""
     return _serve_static_html("copilot.html")
 
 
 @app.get("/yonetici", include_in_schema=False)
 @app.get("/dashboard/yonetici", include_in_schema=False)
 def yonetici_page():
-    """Yönetici raporu — kural motoru test sonuçları özeti."""
+    """Ne Yaptık? — kural motoru test sonuçları özeti."""
     return _serve_static_html("yonetici.html")
 
 

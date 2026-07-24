@@ -110,6 +110,9 @@ class ProvizyonJob(BaseModel):
     yas: int | None = None
     cinsiyet: Cinsiyet = Cinsiyet.BILINMIYOR
     facility_level: str | None = None
+    # Opsiyonel; asıl kaynak genelde notes içindeki "Kurum: …".
+    # Alanın tamamen kaldırılması AttributeError üretiyordu — None default ile duruyor.
+    institution_name: str | None = None
 
     huv_codes: list[str] = Field(default_factory=list)
     sut_codes: list[str] = Field(default_factory=list)
@@ -131,17 +134,39 @@ class ProvizyonJob(BaseModel):
 
     enqueued_at: str = Field(default_factory=_utcnow)
 
+    def institution_label(self) -> str | None:
+        """Kurum adı — belgesiz/belgeli ortak sözleşme.
+
+        Öncelik: ``institution_name`` alanı, yoksa ``notes`` içindeki ``Kurum: …``.
+        """
+
+        if isinstance(self.institution_name, str) and self.institution_name.strip():
+            return self.institution_name.strip()
+        for note in self.notes or []:
+            text = str(note).strip()
+            if text.lower().startswith("kurum:"):
+                value = text.split(":", 1)[1].strip()
+                if value:
+                    return value
+        return None
+
     def all_huv_codes(self) -> list[str]:
-        """huv_codes + procedures içindeki HUV kodlarını birleştirir."""
+        """huv_codes + procedures içindeki gerçek HUV kodlarını birleştirir.
+
+        Branş/muayene gibi belirsiz ``auto``/``other`` kodlar (örn. ``1700``)
+        HUV tanı motoruna sokulmaz.
+        """
 
         codes: list[str] = list(self.huv_codes)
         for proc in self.procedures:
             if not proc.code:
                 continue
-            if proc.code_type == "SUT" or self._is_sut_code(proc.code):
+            code = proc.code.strip()
+            ctype = (proc.code_type or "auto").strip().upper()
+            if ctype == "SUT" or self._is_sut_code(code):
                 continue
-            if proc.code_type in ("auto", "HUV"):
-                codes.append(proc.code)
+            if ctype == "HUV" or (ctype in {"AUTO", ""} and self._is_huv_code(code)):
+                codes.append(code)
         seen: set[str] = set()
         out: list[str] = []
         for code in codes:
@@ -155,6 +180,12 @@ class ProvizyonJob(BaseModel):
     def _is_sut_code(code: str) -> bool:
         code = code.strip()
         return bool(_SUT_CODE_RE.fullmatch(code)) and not code.startswith("0")
+
+    @staticmethod
+    def _is_huv_code(code: str) -> bool:
+        """Sayısal HUV biçimi (örn. 24.73601); TZH meta veya branş kodu değil."""
+
+        return bool(_HUV_CODE_RE.match(code.strip()))
 
     def all_sut_codes(self) -> list[str]:
         """sut_codes + procedures içindeki SUT kodlarını birleştirir."""
@@ -177,6 +208,17 @@ class ProvizyonJob(BaseModel):
     def diagnosis_code_source(self) -> DiagnosisCodeSource:
         """Provizyon HUV mu SUT mu kodlarla geldi — tanı motoru yönlendirmesi."""
 
+        # Önce gerçek kod içeriklerine bak; code_family yalnızca destekleyici.
+        # (Boş liste_tip / branş kodları family'yi yanıltmasın.)
+        huv = self.all_huv_codes()
+        sut = self.all_sut_codes()
+        if huv and sut:
+            return "both"
+        if huv and not sut:
+            return "huv"
+        if sut and not huv:
+            return "sut"
+
         explicit = (self.code_family or "").strip().upper()
         if explicit == "SUT":
             return "sut"
@@ -187,21 +229,14 @@ class ProvizyonJob(BaseModel):
             if not proc.code:
                 continue
             code = proc.code.strip()
-            if proc.code_type == "SUT" or self._is_sut_code(code):
+            ctype = (proc.code_type or "").strip().upper()
+            if ctype == "SUT" or self._is_sut_code(code):
                 return "sut"
-            if proc.code_type == "HUV" or _HUV_CODE_RE.match(code):
+            if ctype == "HUV" or self._is_huv_code(code):
                 return "huv"
-            if _TZH_CODE_RE.match(code):
+            if _TZH_CODE_RE.match(code) or ctype in {"OTHER", "TZH", "META"}:
                 continue
 
-        huv = self.all_huv_codes()
-        sut = self.all_sut_codes()
-        if sut and not huv:
-            return "sut"
-        if huv and not sut:
-            return "huv"
-        if huv and sut:
-            return "both"
         return "none"
 
 
@@ -231,6 +266,12 @@ class MedGemmaClinicalOutput(BaseModel):
     ozel_soru_cevaplari: list[OzelSoruCevap] = Field(default_factory=list)
     gerekce: str = ""
     guven: str = "medium"  # high | medium | low
+    # 0–100 klinik yerindelik skoru (MedGemma üretir; kural özeti + kanıta dayanır).
+    klinik_skor: int | None = None
+    skor_dayanak: str = Field(
+        default="",
+        description="Skorun kısa dayanağı (kural + klinik sinyaller).",
+    )
 
 
 # --------------------------------------------------------------------------
@@ -281,6 +322,9 @@ class JobResult(BaseModel):
     status: JobStatus = JobStatus.DONE
     nihai_karar: KararDurumu
     gerekce: str = ""
+    # MedGemma'nın 0–100 klinik skoru (nihai karar yanında gösterilir).
+    klinik_skor: int | None = None
+    skor_dayanak: str = ""
     decision_type: DecisionType | None = None
     risk_level: RiskLevel | None = None
     risk_reasons: list[RiskReason] = Field(default_factory=list)

@@ -114,7 +114,25 @@ def process_message(
         return
 
     t0 = time.monotonic()
-    log.info("İş başladı job=%s attempt=%s", job.provizyon_id, message.attempts)
+    log.info(
+        "İş başladı job=%s attempt=%s docs_mode=%s",
+        job.provizyon_id,
+        message.attempts,
+        job.documents_mode or "normal",
+    )
+    # Panel "queued"de takılı kalmasın; iş alınır alınmaz processing yaz.
+    try:
+        queue.store_result(
+            job.provizyon_id,
+            {
+                "provizyon_id": job.provizyon_id,
+                "status": "processing",
+                "hasta_id": job.hasta_id,
+                "raw": {"documents_mode": job.documents_mode or "normal"},
+            },
+        )
+    except Exception:
+        log.debug("processing status yazılamadı job=%s", job.provizyon_id, exc_info=True)
     result = orchestrator.run(job)
     store.save(result)
     wall_ms = int((time.monotonic() - t0) * 1000)

@@ -12,9 +12,13 @@
     --bg:#eef1f6; --panel:#ffffff; --sidebar:#0f1a2e; --sidebar-hover:#1a2942;
     --border:#e1e6ee; --text:#141c26; --text2:#54606f; --text3:#8b98a8;
     --accent:#1f5fd6; --accent-deep:#123a86; --teal:#0f8a8a;
-    --green:#15803d; --green-bg:#e6f6ec;
-    --red:#b91c1c; --red-bg:#fdeaea; --amber:#b45309; --amber-bg:#fbf1e0;
-    --gray-bg:#eaeef4; --radius:11px;
+    --green:#166534; --green-bg:#ecfdf3; --green-bd:#bbf7d0;
+    --red:#991b1b; --red-bg:#fef2f2; --red-bd:#fecaca;
+    --amber:#9a3412; --amber-bg:#fff7ed; --amber-bd:#fed7aa;
+    --yellow:#854d0e; --yellow-bg:#fefce8; --yellow-bd:#fde68a;
+    --orange:#c2410c; --orange-bg:#fff7ed; --orange-bd:#fdba74;
+    --blue-risk:#1e3a8a; --blue-risk-bg:#eff6ff; --blue-risk-bd:#bfdbfe;
+    --gray-bg:#f1f5f9; --radius:11px;
     --font-ui:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     --font-display:"Space Grotesk","IBM Plex Sans",sans-serif;
     --shadow:0 1px 2px rgba(16,29,54,.04),0 6px 20px -12px rgba(16,29,54,.18);
@@ -58,7 +62,7 @@
     display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:5;gap:16px}
   .topbar h2{font-size:17px;margin:0;font-weight:600;letter-spacing:-.2px}
   .topbar-right{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--text2)}
-  .content{padding:24px 26px;flex:1;max-width:1320px;width:100%}
+  .content{padding:24px 26px;flex:1;width:100%;max-width:none;box-sizing:border-box}
   .content.embed-mode{padding:0;max-width:none;display:flex;flex-direction:column;
     height:calc(100vh - 60px);min-height:calc(100vh - 60px)}
   .view-embed{display:none;flex:1;min-height:0;flex-direction:column}
@@ -89,6 +93,13 @@
   .kpi .lbl{font-size:12px;color:var(--text2);margin-top:5px;font-weight:500}
   .kpi .sub{font-size:11px;color:var(--text3);margin-top:2px;min-height:14px}
   .kpi.green .val{color:var(--green)} .kpi.red .val{color:var(--red)} .kpi.amber .val{color:var(--amber)}
+  .kpi.teal:before{background:var(--teal)} .kpi.teal .val{color:var(--teal)}
+  button.kpi{font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .12s}
+  button.kpi:hover{border-color:#c4cede;box-shadow:0 8px 22px -14px rgba(15,35,70,.35)}
+  button.kpi:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  button.kpi.on{border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,95,214,.16)}
+  button.kpi.on:before{opacity:1}
+  button.kpi .hint{font-size:10.5px;color:var(--text3);margin-top:6px}
 
   /* Cards / panels */
   .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow)}
@@ -97,25 +108,58 @@
   .card-body{padding:16px 18px}
   .muted{color:var(--text3);font-size:12px}
 
+  /* List filters */
+  .list-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--border);background:#fafbfc}
+  .filt{display:flex;gap:6px;flex-wrap:wrap}
+  .filt button{font-family:var(--font-ui);font-size:12px;font-weight:600;padding:6px 11px;border-radius:999px;
+    border:1px solid var(--border);background:#fff;color:var(--text2);cursor:pointer}
+  .filt button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .filt button .n{opacity:.75;font-weight:500;margin-left:4px}
+
+  /* Klinik skor pill */
+  .skor-pill{display:inline-flex;align-items:baseline;gap:3px;padding:4px 10px;border-radius:999px;
+    font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-.3px;line-height:1;border:1px solid transparent}
+  .skor-pill small{font-size:10px;font-weight:600;opacity:.7}
+  .skor-hi{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+  .skor-mid{background:#e2f4f4;color:var(--teal);border-color:#b6e0e0}
+  .skor-low{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-bd)}
+  .skor-bad{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+  .skor-none{background:var(--gray-bg);color:var(--text3);font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:4px}
+  .skor-meter{height:10px;border-radius:999px;background:#e8edf3;overflow:hidden;margin-top:8px;max-width:280px}
+  .skor-meter > i{display:block;height:100%;border-radius:999px}
+  .skor-hero{display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:14px;margin:0 0 16px;
+    background:linear-gradient(135deg,#0f8a8a 0%,#0c6e6e 55%,#123a86 130%);color:#e8fffe}
+  .skor-hero .num{font-family:var(--font-display);font-size:42px;font-weight:700;letter-spacing:-1px;line-height:1}
+  .skor-hero .num small{font-size:16px;font-weight:600;opacity:.7}
+  .skor-hero .meta{font-size:12.5px;opacity:.9;line-height:1.45;max-width:52ch}
+  .skor-hero .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.75;font-weight:600;margin-bottom:4px}
+
   /* Table */
   table{width:100%;border-collapse:collapse}
   th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);
-    font-weight:600;padding:9px 12px;border-bottom:1px solid var(--border);background:#fafbfc;position:sticky;top:0}
+    font-weight:600;padding:9px 12px;border-bottom:1px solid var(--border);background:#fafbfc;position:sticky;top:0;z-index:1}
   td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
   tr.clickable{cursor:pointer}
   tr.clickable:hover{background:#f7f9fb}
   tr.active-row{background:#eef4ff}
-  .tbl-wrap{max-height:460px;overflow:auto}
+  .tbl-wrap{max-height:min(720px,calc(100vh - 340px));overflow:auto}
 
-  /* Badges */
-  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-  .b-green{background:var(--green-bg);color:var(--green)}
-  .b-red{background:var(--red-bg);color:var(--red)}
-  .b-amber{background:var(--amber-bg);color:var(--amber)}
-  .b-gray{background:var(--gray-bg);color:var(--text2)}
-  .b-blue{background:#e8f0fe;color:var(--accent)}
-  .b-skip{background:#eef2f7;color:#64748b;border:1px dashed #c3cede}
-  .b-teal{background:#e2f4f4;color:var(--teal)}
+  /* Badges — sık, kurumsal */
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;
+    font-size:10.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;line-height:1.35;
+    border:1px solid transparent;vertical-align:middle}
+  .b-green{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+  .b-red{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+  .b-amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+  .b-yellow{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-bd)}
+  .b-orange{background:var(--orange-bg);color:var(--orange);border-color:var(--orange-bd)}
+  .b-gray{background:var(--gray-bg);color:#475569;border-color:#e2e8f0}
+  .b-blue{background:var(--blue-risk-bg);color:var(--blue-risk);border-color:var(--blue-risk-bd)}
+  .b-skip{background:#f8fafc;color:#64748b;border:1px dashed #cbd5e1}
+  .b-teal{background:#e2f4f4;color:var(--teal);border-color:#b6e0e0}
+  .risk-chip{min-width:4.6em;justify-content:center;text-transform:none;font-weight:700}
+  .risk-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85;flex:none}
+  .dt-chip{font-weight:600}
 
   /* Detail */
   .banner{display:flex;gap:14px;align-items:center;padding:16px 18px;border-radius:var(--radius);margin-bottom:16px}
@@ -149,30 +193,74 @@
   .sys-item .l{font-size:11px;color:var(--text2);margin-top:3px}
 
   /* settings */
-  .set-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+  .settings-stack{display:flex;flex-direction:column;gap:16px;max-width:980px}
+  .set-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid var(--border)}
   .set-row:last-child{border-bottom:none}
-  .set-row .desc{font-size:12px;color:var(--text3);margin-top:2px}
-  input[type=number]{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px}
-  .switch{position:relative;width:42px;height:24px}
+  .set-row .desc{font-size:12.5px;color:var(--text3);margin-top:3px;line-height:1.45;max-width:520px}
+  .set-row strong{font-size:13.5px}
+  input[type=number]{width:88px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600}
+  .switch{position:relative;width:42px;height:24px;flex:none}
   .switch input{opacity:0;width:0;height:0}
   .slider{position:absolute;inset:0;background:#cbd5e1;border-radius:24px;transition:.2s;cursor:pointer}
   .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
   .switch input:checked + .slider{background:var(--accent)}
   .switch input:checked + .slider:before{transform:translateX(18px)}
+  .svc-summary{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .svc-list{display:flex;flex-direction:column;gap:10px}
+  .svc-card{display:grid;grid-template-columns:auto 1fr auto;gap:12px 14px;align-items:start;
+    border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--panel)}
+  .svc-card.ok{border-color:#b9dfc8;background:linear-gradient(180deg,#f7fcf8,#fff)}
+  .svc-card.down{border-color:#efc0c6;background:linear-gradient(180deg,#fff7f8,#fff)}
+  .svc-dot{width:10px;height:10px;border-radius:50%;margin-top:5px}
+  .svc-dot.ok{background:var(--green)}
+  .svc-dot.down{background:var(--red)}
+  .svc-name{font-weight:700;font-size:14px}
+  .svc-meta{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.45}
+  .svc-meta code{font-size:11px;background:var(--gray-bg);padding:1px 5px;border-radius:4px}
+  .svc-status{text-align:right}
+  .svc-status .lbl{font-size:12px;font-weight:700}
+  .svc-status .lbl.ok{color:var(--green)}
+  .svc-status .lbl.down{color:var(--red)}
+  .svc-status .lat{font-size:11px;color:var(--text3);margin-top:3px}
+  .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+  .res-card{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--panel)}
+  .res-card .k{font-size:11.5px;color:var(--text2);font-weight:600}
+  .res-card .v{font-size:20px;font-weight:750;margin-top:6px;letter-spacing:-.02em}
+  .res-card .h{font-size:11.5px;color:var(--text3);margin-top:4px}
+  .res-card.warn .v{color:var(--amber)}
+  .res-card.bad .v{color:var(--red)}
+  .meter{height:6px;border-radius:999px;background:#e8eef5;overflow:hidden;margin-top:10px}
+  .meter > i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+  .meter.warn > i{background:var(--amber)}
+  .meter.bad > i{background:var(--red)}
+  .data-table{width:100%;border-collapse:collapse;font-size:13px}
+  .data-table th,.data-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+  .data-table th{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.03em}
+  .btn-ghost{border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .settings-note{font-size:12.5px;color:var(--text3);line-height:1.45;margin:0 0 14px;max-width:720px}
   .empty{text-align:center;color:var(--text3);padding:40px 0;font-size:13px}
   .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);
     border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
   @keyframes spin{to{transform:rotate(360deg)}}
 
   /* MedGemma / layer detail */
-  .mg-block{border:1px solid var(--border);border-radius:var(--radius);padding:15px 18px;margin:0 0 16px;
-    background:linear-gradient(180deg,#f6f9fe,#ffffff)}
-  .mg-block h4{margin:0 0 4px;font-size:13.5px;font-family:var(--font-display);display:flex;align-items:center;gap:8px}
+  .mg-block{border:1px solid #b8d4f0;border-radius:14px;padding:18px 20px;margin:0 0 16px;
+    background:linear-gradient(165deg,#eef6ff 0%,#ffffff 55%);box-shadow:0 1px 0 rgba(15,58,134,.06)}
+  .mg-block h4{margin:0 0 8px;font-size:15px;font-family:var(--font-display);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .mg-lead{font-size:14px;line-height:1.55;color:var(--text);margin:0 0 12px;white-space:pre-wrap}
   .mg-flags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0}
   .mg-flag{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--gray-bg);color:var(--text2);font-weight:500}
   .mg-flag.pos{background:var(--green-bg);color:var(--green)}
   .mg-flag.neg{background:var(--red-bg);color:var(--red)}
   .mg-flag.na{background:#eef2f7;color:#8b98a8}
+  .mg-qa{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+  .mg-qa th{text-align:left;font-size:11px;color:var(--text3);padding:6px 8px;border-bottom:1px solid var(--border)}
+  .mg-qa td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45}
+  .mg-qa td:first-child{font-weight:600;width:40%;color:var(--text)}
+  .mg-ex{margin-top:12px;border:1px dashed #c3cede;border-radius:10px;background:#f8fafc}
+  .mg-ex summary{cursor:pointer;padding:10px 12px;font-size:12.5px;font-weight:600;color:var(--accent)}
+  .mg-ex pre{margin:0;padding:0 12px 12px;font-size:11px;line-height:1.45;max-height:280px;overflow:auto;white-space:pre-wrap;color:var(--text2)}
   .docmode{display:flex;gap:11px;align-items:flex-start;padding:11px 15px;border-radius:var(--radius);
     background:#eef2f7;border:1px dashed #c3cede;color:var(--text2);font-size:12.5px;margin-bottom:14px}
   .docmode b{color:var(--text)}
@@ -248,34 +336,30 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Provizyonlar
       </div>
-      <div class="nav-item" data-view="analiz" data-title="Analiz">
+      <div class="nav-item" data-view="analiz" data-title="Kurum Analiz">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
-        Analiz
-      </div>
-      <div class="nav-item" data-view="sistem" data-title="Sistem Sağlığı">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
-        Sistem
+        Kurum Analiz
       </div>
       <div class="nav-lbl">Araçlar</div>
-      <div class="nav-item" data-view="copilot" data-title="Co-Pilot">
+      <div class="nav-item" data-view="copilot" data-title="Finansal Risk">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.2 4.5L19 8.3l-3.5 3.4.8 4.8L12 14.3 7.7 16.5l.8-4.8L5 8.3l4.8-.8z"/><circle cx="12" cy="12" r="9"/></svg>
-        Co-Pilot
+        Finansal Risk
       </div>
-      <div class="nav-item" data-view="yonetici" data-title="Yönetici Özeti">
+      <div class="nav-item" data-view="yonetici" data-title="Ne Yaptık?">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 16V9M12 16V7M16 16v-5"/></svg>
-        Yönetici
+        Ne Yaptık?
       </div>
-      <div class="nav-item" data-view="anonim" data-title="Anonim Önizleme">
+      <div class="nav-item" data-view="anonim" data-title="Sistem">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a7 7 0 0 1 7 7c0 4-3 6-7 11-4-5-7-7-7-11a7 7 0 0 1 7-7z"/><circle cx="12" cy="10" r="2.2"/></svg>
-        Anonim
+        Sistem
       </div>
       <div class="nav-item" data-view="hikaye" data-title="Ürün Hikâyesi">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
         Ürün Hikâyesi
       </div>
-      <div class="nav-item" data-view="demosunum" data-title="Demo Sunum">
+      <div class="nav-item" data-view="demosunum" data-title="Diyagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M8 20h8M10 10.5l5 2.5-5 2.5z"/></svg>
-        Demo Sunum
+        Diyagram
       </div>
       <div class="nav-item" data-view="kuralonerileri" data-title="Kural Önerileri">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5h11M9 12h11M9 19h11"/><path d="M4 5h.01M4 12h.01M4 19h.01"/></svg>
@@ -308,33 +392,62 @@
           <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
             <div>
               <div style="font-family:var(--font-display);font-weight:600;font-size:15px">Belgesiz DB Değerlendirmesi</div>
-              <div class="cta-note">Bekleyen kayıtlardan en fazla 100’ünü belge indirmeden değerlendirir (kurallar + klinik AI).</div>
+              <div class="cta-note">Pending’den <strong>rastgele 100 yeni</strong> çeker (belgesiz · kurallar + <strong>MedGemma klinik skor 0–100</strong>). Eski değerlendirmeler Redis’te kalır, ezilmez.</div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
               <span id="ctaMsg" class="cta-note" style="margin:0"></span>
               <button class="btn" id="ctaClearOld" type="button" title="Tamamlanan / eski sonuçları listeden sil">Eski kayıtları sil</button>
               <button class="btn btn-primary" id="ctaDocless">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                DB'den belgesiz değerlendir (100)
+                Yeni 100 rastgele değerlendir
               </button>
             </div>
           </div>
         </div>
-        <div class="kpi-row">
-          <div class="kpi"><div class="val" id="kpiTotal">—</div><div class="lbl">Toplam İş</div></div>
-          <div class="kpi green"><div class="val" id="kpiOk">—</div><div class="lbl">Uygun</div></div>
-          <div class="kpi red"><div class="val" id="kpiDenied">—</div><div class="lbl">Reddedilen</div></div>
-          <div class="kpi amber"><div class="val" id="kpiReview">—</div><div class="lbl">İnceleme</div></div>
-          <div class="kpi"><div class="val" id="kpiQueue">—</div><div class="lbl">Kuyruk</div><div class="sub" id="kpiQueueSub"></div></div>
+        <div class="kpi-row" id="kpiFilt" role="group" aria-label="Liste filtreleri">
+          <button type="button" class="kpi" data-f="all" title="Tüm işleri göster">
+            <div class="val" id="kpiTotal">—</div><div class="lbl">Toplam İş</div><div class="sub" id="kpiTotalSub"></div>
+            <div class="hint">Listeyi filtrele</div>
+          </button>
+          <button type="button" class="kpi teal" data-f="scored" title="Klinik skorlu kayıtlar">
+            <div class="val" id="kpiSkor">—</div><div class="lbl">Ort. Klinik Skor</div><div class="sub" id="kpiSkorSub"></div>
+            <div class="hint">Skorlu kayıtlar</div>
+          </button>
+          <button type="button" class="kpi green" data-f="ok" title="Yalnızca uygun kararlar">
+            <div class="val" id="kpiOk">—</div><div class="lbl">Uygun</div><div class="hint">Yalnızca uygun</div>
+          </button>
+          <button type="button" class="kpi red" data-f="denied" title="Yalnızca reddedilenler">
+            <div class="val" id="kpiDenied">—</div><div class="lbl">Reddedilen</div><div class="hint">Yalnızca red</div>
+          </button>
+          <button type="button" class="kpi amber" data-f="review" title="Yalnızca manuel inceleme">
+            <div class="val" id="kpiReview">—</div><div class="lbl">İnceleme</div><div class="hint">Manuel inceleme</div>
+          </button>
+          <button type="button" class="kpi" data-f="queue" title="Kuyruktaki işler">
+            <div class="val" id="kpiQueue">—</div><div class="lbl">Kuyruk</div><div class="sub" id="kpiQueueSub"></div>
+            <div class="hint">Bekleyen / işlenen</div>
+          </button>
         </div>
 
         <div class="card">
           <div class="card-head"><h3>Son İşler</h3><span class="muted" id="recentCount"></span>
             <button class="btn" id="btnClearRecent" type="button" style="margin-left:auto;font-size:12px;padding:6px 10px">Listeyi temizle</button>
           </div>
+          <div class="list-tools">
+            <div class="filt" id="listFilt">
+              <button type="button" data-f="done" class="on">Tamamlanan<span class="n" id="nDone"></span></button>
+              <button type="button" data-f="ok">Uygun<span class="n" id="nOk"></span></button>
+              <button type="button" data-f="denied">Reddedilen<span class="n" id="nDenied"></span></button>
+              <button type="button" data-f="review">İnceleme<span class="n" id="nReview"></span></button>
+              <button type="button" data-f="scored">Skorlu<span class="n" id="nScored"></span></button>
+              <button type="button" data-f="legacy">Eski<span class="n" id="nLegacy"></span></button>
+              <button type="button" data-f="queue">Kuyruk<span class="n" id="nQueue"></span></button>
+              <button type="button" data-f="all">Tümü<span class="n" id="nAll"></span></button>
+            </div>
+            <span class="muted" id="listHint">Üstteki istatistiklere tıklayarak da filtreleyebilirsiniz</span>
+          </div>
           <div class="tbl-wrap">
             <table>
-              <thead><tr><th>Provizyon</th><th>Hasta</th><th>Durum</th><th>Analiz</th><th>Karar</th><th>Risk</th><th>Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
+              <thead><tr><th>Provizyon</th><th>Hasta</th><th>Durum</th><th>Klinik Skor</th><th>Karar</th><th>Risk</th><th>Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
               <tbody id="recentTb"><tr><td colspan="9" class="empty">Yükleniyor…</td></tr></tbody>
             </table>
           </div>
@@ -348,7 +461,7 @@
 
       <!-- ============ ANALIZ ============ -->
       <section class="view" id="view-analiz">
-        <div id="anLoading" class="empty"><span class="spinner"></span> Analiz yükleniyor…</div>
+        <div id="anLoading" class="empty"><span class="spinner"></span> Kurum analiz yükleniyor…</div>
         <div id="anContent" style="display:none">
           <div class="kpi-row">
             <div class="kpi"><div class="val" id="anTotal">—</div><div class="lbl">Toplam Provizyon</div><div class="sub" id="anTotalSub"></div></div>
@@ -396,14 +509,6 @@
               </table>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- ============ SISTEM ============ -->
-      <section class="view" id="view-sistem">
-        <div class="card">
-          <div class="card-head"><h3>Servisler & Kaynaklar</h3><span class="muted" id="sysTs"></span></div>
-          <div class="card-body"><div class="sys-grid" id="sysGrid"><div class="empty"><span class="spinner"></span> Yükleniyor…</div></div></div>
         </div>
       </section>
 
@@ -485,7 +590,7 @@
             <div class="card-body">
               <div style="margin-bottom:12px">
                 <div style="font-weight:600;margin-bottom:3px">1 — Kurumsal bilgi + politika</div>
-                <div class="muted" style="font-size:12.5px">Listeler, eşleştirme, kural hafızası, deterministik motor, inceleme kuyruğu, 703790 kapalı gölge öneri.</div>
+                <div class="muted" style="font-size:12.5px">Listeler, Qdrant kural hafızası, deterministik HUV/SUT motorları (runtime HUV→SUT köprüsü kapalı), inceleme kuyruğu, 703790 kapalı gölge öneri.</div>
               </div>
               <div>
                 <div style="font-weight:600;margin-bottom:3px">2 — Çalışma ortamı (GemmaApp)</div>
@@ -611,16 +716,16 @@
 
       <!-- ============ EMBED: COPILOT / YONETICI / ANONIM ============ -->
       <section class="view view-embed" id="view-copilot">
-        <iframe title="Co-Pilot" data-src="/copilot" loading="lazy"></iframe>
+        <iframe title="Finansal Risk" data-src="/copilot" loading="lazy"></iframe>
       </section>
       <section class="view view-embed" id="view-yonetici">
-        <iframe title="Yönetici Raporu" data-src="/dashboard/yonetici" loading="lazy"></iframe>
+        <iframe title="Ne Yaptık?" data-src="/dashboard/yonetici" loading="lazy"></iframe>
       </section>
       <section class="view view-embed" id="view-anonim">
-        <iframe title="Anonim Önizleme" data-src="/dashboard/demo" loading="lazy"></iframe>
+        <iframe title="Sistem" data-src="/dashboard/demo" loading="lazy"></iframe>
       </section>
       <section class="view view-embed" id="view-demosunum">
-        <iframe title="Demo Sunum" data-src="/dashboard/demo-sunum" loading="lazy"></iframe>
+        <iframe title="Diyagram" data-src="/dashboard/demo-sunum" loading="lazy"></iframe>
       </section>
       <section class="view view-embed" id="view-kuralonerileri">
         <iframe title="Kural Önerileri Demo" data-src="/dashboard/kural-onerileri" loading="lazy"></iframe>
@@ -628,24 +733,62 @@
 
       <!-- ============ AYARLAR ============ -->
       <section class="view" id="view-ayarlar">
-        <div class="card" style="max-width:640px">
-          <div class="card-head"><h3>Görünüm & Yenileme</h3></div>
-          <div class="card-body">
-            <div class="set-row">
-              <div><strong>Otomatik yenileme</strong><div class="desc">Son işler listesini periyodik güncelle</div></div>
-              <label class="switch"><input type="checkbox" id="setAuto" checked><span class="slider"></span></label>
+        <div class="settings-stack">
+          <div class="card">
+            <div class="card-head"><h3>Panel ayarları</h3></div>
+            <div class="card-body">
+              <div class="set-row">
+                <div>
+                  <strong>Listeyi otomatik güncelle</strong>
+                  <div class="desc">Provizyonlar sekmesindeki son işler listesini arka planda yeniler. Kapalıysa yalnızca sayfa açıldığında veya elle yenilenince güncellenir.</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="setAuto" checked><span class="slider"></span></label>
+              </div>
+              <div class="set-row">
+                <div>
+                  <strong>Güncelleme sıklığı</strong>
+                  <div class="desc">Otomatik güncelleme açıksa listenin kaç saniyede bir yenileneceği (2–120).</div>
+                </div>
+                <input type="number" id="setInterval" min="2" max="120" value="6" aria-label="Güncelleme sıklığı (saniye)">
+              </div>
+              <div class="set-row">
+                <div>
+                  <strong>Hasta kimliğini gizle</strong>
+                  <div class="desc">Provizyonlar listesinde ad, TC ve sicil kısaltılır. Sunum veya ortak ekran için kullanın.</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="setAnon"><span class="slider"></span></label>
+              </div>
             </div>
-            <div class="set-row">
-              <div><strong>Yenileme aralığı</strong><div class="desc">Saniye cinsinden</div></div>
-              <input type="number" id="setInterval" min="2" max="120" value="6">
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Servis durumu</h3>
+              <div class="svc-summary">
+                <span id="sysSummary" class="badge b-gray">Kontrol ediliyor</span>
+                <button type="button" class="btn-ghost" id="btnRefreshHealth">Yenile</button>
+                <span class="muted" id="sysTs"></span>
+              </div>
             </div>
-            <div class="set-row">
-              <div><strong>Listede kimlik maskele</strong><div class="desc">Provizyonlar listesinde ad/TC/sicil kısaltılır. Tam anonim panel için: Anonim sekmesi.</div></div>
-              <label class="switch"><input type="checkbox" id="setAnon"><span class="slider"></span></label>
+            <div class="card-body">
+              <p class="settings-note">Her satır canlı kontrol sonucudur: HTTP servislerinde 2xx/3xx yanıt = çalışıyor; Redis’te PONG; worker’da aktif PID. Gecikme ve hata metni gerçek bağlantıdan gelir.</p>
+              <div class="svc-list" id="svcList"><div class="empty"><span class="spinner"></span> Servisler kontrol ediliyor…</div></div>
             </div>
-            <div class="set-row">
-              <div><strong>API</strong><div class="desc">Bu panelin bağlı olduğu kök adres</div></div>
-              <span class="v" id="setApiBase" style="font-weight:600;font-size:13px">aynı köken</span>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Sunucu kaynakları</h3></div>
+            <div class="card-body">
+              <p class="settings-note">Bu makinenin anlık CPU, bellek, disk ve GPU yükü. Eşik aşımında değer turuncu / kırmızıya döner.</p>
+              <div class="res-grid" id="resGrid"><div class="empty">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Veri katmanı</h3><span class="muted" id="dataTs"></span></div>
+            <div class="card-body">
+              <p class="settings-note">Qdrant’taki kural ve katalog sayıları. Otomatik / inceleme ayrımı canlı filtreyle okunur.</p>
+              <div id="dataPanel"><div class="empty">—</div></div>
             </div>
           </div>
         </div>
@@ -662,8 +805,37 @@ const KARAR_BADGE={uygun:'b-green',manuel_inceleme:'b-amber',tani_uyumsuz:'b-red
 const DENIED=['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz'];
 const JOB_STATUS_LABEL={done:'Tamam',failed:'Hata',queued:'Kuyrukta',processing:'İşleniyor',pending:'Bekliyor'};
 const PIPELINE_LABEL={full:'Tam',vision:'Görsel',text:'Metin',ocr:'OCR'};
-const RISK_LABEL={low:'Düşük',medium:'Orta',high:'Yüksek',critical:'Kritik'};
-const RISK_BADGE={low:'b-green',medium:'b-amber',high:'b-red',critical:'b-red'};
+const RISK_LABEL={
+  green:'Düşük',blue:'İzle',yellow:'Dikkat',orange:'İnceleme',red:'Yüksek',gray:'Belirsiz',
+  // eski anahtarlar (geri uyumluluk)
+  low:'Düşük',medium:'Orta',high:'Yüksek',critical:'Kritik'
+};
+const RISK_BADGE={
+  green:'b-green',blue:'b-blue',yellow:'b-yellow',orange:'b-orange',red:'b-red',gray:'b-gray',
+  low:'b-green',medium:'b-yellow',high:'b-red',critical:'b-red'
+};
+const DECISION_TYPE_LABEL={
+  automatic_defensible:'Otomatik savunulabilir',
+  manual_review:'Manuel inceleme',
+  low_risk:'Düşük risk'
+};
+const DECISION_TYPE_BADGE={
+  automatic_defensible:'b-red',
+  manual_review:'b-orange',
+  low_risk:'b-green'
+};
+function riskBadge(rl){
+  if(!rl)return '';
+  const cls=RISK_BADGE[rl]||'b-gray';
+  const lbl=RISK_LABEL[rl]||rl;
+  return `<span class="badge risk-chip ${cls}" title="Risk: ${esc(lbl)} (${esc(rl)})">${esc(lbl)}</span>`;
+}
+function decisionTypeBadge(dt){
+  if(!dt)return '—';
+  const cls=DECISION_TYPE_BADGE[dt]||'b-gray';
+  const lbl=DECISION_TYPE_LABEL[dt]||String(dt).replace(/_/g,' ');
+  return `<span class="badge dt-chip ${cls}">${esc(lbl)}</span>`;
+}
 
 // ---- ayarlar (localStorage) ----
 const SET=Object.assign({auto:true,interval:6,anon:false},JSON.parse(localStorage.getItem('provdash')||'{}'));
@@ -688,8 +860,8 @@ function activateEmbed(viewId){
   const iframe=document.querySelector('#view-'+viewId+' iframe');
   if(!iframe)return;
   const base=iframe.getAttribute('data-src')||'';
-  // Anonim: ana listeyle senkron kalsın — her açılışta taze yükle (recent/done).
-  // Demo Sunum: animasyonu baştan almak için her açılışta taze yükle.
+  // Sistem: ana listeyle senkron kalsın — her açılışta taze yükle (recent/done).
+  // Diyagram: animasyonu baştan almak için her açılışta taze yükle.
   if((viewId==='anonim' || viewId==='demosunum') && base){
     iframe.setAttribute('src', base + (base.includes('?')?'&':'?') + '_=' + Date.now());
     return;
@@ -708,7 +880,7 @@ document.querySelectorAll('.nav-item').forEach(el=>{
     document.getElementById('viewTitle').textContent=el.dataset.title||el.textContent.trim();
     activateEmbed(v);
     if(v==='analiz')loadAnalytics();
-    if(v==='sistem')loadHealth();
+    if(v==='ayarlar')loadHealth();
     if(v==='hikaye')loadShadowHandoff();
   };
 });
@@ -903,12 +1075,46 @@ function renderShadowPrefixes(d790){
 }
 
 // ════════ PROVIZYONLAR ════════
+let _listFilt='done';
+function skorCls(n){
+  if(n==null||n==='')return 'skor-none';
+  const v=Number(n);
+  if(v>=85)return 'skor-hi';
+  if(v>=70)return 'skor-mid';
+  if(v>=50)return 'skor-low';
+  return 'skor-bad';
+}
+function skorPill(n){
+  if(n==null||n==='')return '<span class="skor-pill skor-none" title="Önceki pipeline — klinik skor yok">—</span>';
+  return `<span class="skor-pill ${skorCls(n)}" title="MedGemma klinik yerindelik skoru">${esc(n)}<small>/100</small></span>`;
+}
+function filterItems(items,f){
+  if(f==='all')return items;
+  if(f==='done')return items.filter(x=>x.status==='done'||x.status==='failed');
+  if(f==='scored')return items.filter(x=>x.status==='done'&&x.klinik_skor!=null);
+  if(f==='legacy')return items.filter(x=>x.status==='done'&&x.klinik_skor==null);
+  if(f==='queue')return items.filter(x=>x.status==='queued'||x.status==='processing');
+  if(f==='ok')return items.filter(x=>x.status==='done'&&x.nihai_karar==='uygun');
+  if(f==='denied')return items.filter(x=>x.status==='done'&&DENIED.includes(x.nihai_karar));
+  if(f==='review')return items.filter(x=>x.status==='done'&&x.nihai_karar==='manuel_inceleme');
+  return items;
+}
+function syncListFilterUI(){
+  document.querySelectorAll('#listFilt button[data-f]').forEach(x=>x.classList.toggle('on',x.dataset.f===_listFilt));
+  document.querySelectorAll('#kpiFilt button[data-f]').forEach(x=>x.classList.toggle('on',x.dataset.f===_listFilt));
+}
+function setListFilter(f){
+  if(!f)return;
+  _listFilt=f;
+  syncListFilterUI();
+  renderRecent(_items);
+}
 async function loadRecent(){
   const dot=document.getElementById('liveDot'),txt=document.getElementById('liveText');
   try{
     const[qd,rd]=await Promise.all([
       fetch(API+'/queue/stats').then(r=>r.json()).catch(()=>null),
-      fetch(API+'/queue/recent?limit=100').then(r=>r.json()).catch(()=>({items:[]}))
+      fetch(API+'/queue/recent?limit=250').then(r=>r.json()).catch(()=>({items:[]}))
     ]);
     _items=rd.items||[];
     renderKpis(qd,_items);renderRecent(_items);
@@ -917,41 +1123,89 @@ async function loadRecent(){
 }
 function renderKpis(q,items){
   const done=items.filter(x=>x.status==='done');
+  const scored=done.filter(x=>x.klinik_skor!=null);
+  const legacy=done.filter(x=>x.klinik_skor==null);
   const ok=done.filter(x=>x.nihai_karar==='uygun').length;
   const denied=done.filter(x=>DENIED.includes(x.nihai_karar)).length;
   const rev=done.filter(x=>x.nihai_karar==='manuel_inceleme').length;
-  set('kpiTotal',items.length);set('kpiOk',ok);set('kpiDenied',denied);set('kpiReview',rev);
+  set('kpiTotal',items.length);
+  set('kpiTotalSub',`${done.length} tamam · ${legacy.length} eski skorsuz`);
+  set('kpiOk',ok);set('kpiDenied',denied);set('kpiReview',rev);
+  if(scored.length){
+    const avg=Math.round(scored.reduce((a,x)=>a+Number(x.klinik_skor),0)/scored.length);
+    set('kpiSkor',avg);
+    set('kpiSkorSub',`${scored.length} skorlu kayıt · MedGemma`);
+  }else{
+    set('kpiSkor','—');set('kpiSkorSub','Henüz yeni skor yok');
+  }
   if(q&&q.depth){const p=(q.depth.pending||0)+(q.depth.processing||0);
     set('kpiQueue',p);set('kpiQueueSub',p>0?`${q.depth.pending||0} bekleyen · ${q.depth.processing||0} işleniyor`:'Boş');
   }else{set('kpiQueue','—')}
-  document.getElementById('recentCount').textContent=items.length+' kayıt';
+  const setN=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v?' '+v:''};
+  setN('nDone',done.length+(items.filter(x=>x.status==='failed').length));
+  setN('nOk',ok);setN('nDenied',denied);setN('nReview',rev);
+  setN('nScored',scored.length);setN('nLegacy',legacy.length);
+  setN('nQueue',items.filter(x=>x.status==='queued'||x.status==='processing').length);
+  setN('nAll',items.length);
+  const rc=document.getElementById('recentCount');
+  if(rc) rc.textContent=items.length+' kayıt (Redis)';
+  syncListFilterUI();
 }
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=(typeof v==='number')?fmtN(v):v}
 
-function renderRecent(items){
+function renderRecent(all){
+  const items=filterItems(all,_listFilt);
   const tb=document.getElementById('recentTb');
-  if(!items.length){tb.innerHTML='<tr><td colspan="9" class="empty">Henüz iş yok</td></tr>';return}
+  const hint=document.getElementById('listHint');
+  if(hint){
+    const hints={
+      done:'Tamamlananlar: eski (skorsuz) + yeni (skorlu). Kuyruk gizlendi.',
+      scored:'Sadece MedGemma klinik skorlu yeni değerlendirmeler.',
+      legacy:'Eski batch — Redis’te kayıtlı, skor alanı yok (önceki pipeline).',
+      queue:'Bekleyen / işlenen işler.',
+      all:'Tüm kayıtlar listeleniyor.',
+      ok:'Yalnızca nihai karar = Uygun.',
+      denied:'Yalnızca reddedilen kararlar.',
+      review:'Yalnızca manuel inceleme.',
+    };
+    hint.textContent=`${hints[_listFilt]||''} · ${items.length} kayıt`;
+  }
+  syncListFilterUI();
+  if(!items.length){tb.innerHTML='<tr><td colspan="9" class="empty">Bu filtrede kayıt yok</td></tr>';return}
   tb.innerHTML=items.map(it=>{
     const kb=KARAR_BADGE[it.nihai_karar]||'b-blue';
     const kl=KARAR_LABEL[it.nihai_karar]||(it.nihai_karar||'—').replace(/_/g,' ');
-    const pl=it.pipeline||'?';
     const rl=it.risk_level;
     const st=it.status;
     const stCls=st==='done'?'b-green':st==='failed'?'b-red':'b-blue';
     const active=_activeId===it.provizyon_id?' active-row':'';
     const hasta=SET.anon?anon(it.patient_name||it.hasta_id,2):(it.patient_name||it.hasta_id||'—');
+    const docMode=(it.documents_mode||'')==='skipped_full_pipeline'
+      ?' <span class="badge b-skip" title="Belgesiz DB intake">Belgesiz</span>'
+      :'';
+    const fam=it.code_family||it.diagnosis_code_source||'';
+    const famBadge=fam?` <span class="badge b-gray" title="Kod ailesi">${esc(String(fam).toUpperCase())}</span>`:'';
+    const shadow=it.shadow_advice_status==='matched_candidate'?` <span class="badge b-amber" title="${esc(it.shadow_advice_label||'Gölge aday')}">Gölge</span>`:'';
     return `<tr class="clickable${active}" data-id="${esc(it.provizyon_id||'')}">
-      <td style="font-weight:600">${esc(it.provizyon_id||'—')}</td>
+      <td style="font-weight:600">${esc(it.provizyon_id||'—')}${docMode}${famBadge}</td>
       <td style="color:var(--text2)">${esc(hasta||'—')}</td>
       <td><span class="badge ${stCls}">${esc(JOB_STATUS_LABEL[st]||st||'—')}</span></td>
-      <td><span class="badge b-gray">${esc(PIPELINE_LABEL[pl]||pl)}${it.vision_images!=null?' '+it.vision_images:''}</span></td>
-      <td><span class="badge ${kb}">${esc(kl)}</span>${it.shadow_advice_status==='matched_candidate'?` <span class="badge b-amber" title="${esc(it.shadow_advice_label||'Gölge aday')}">Gölge</span>`:''}</td>
-      <td>${rl?`<span class="badge ${RISK_BADGE[rl]||'b-gray'}">${esc(RISK_LABEL[rl]||rl)}</span>`:''}</td>
+      <td>${skorPill(it.klinik_skor)}</td>
+      <td><span class="badge ${kb}">${esc(kl)}</span>${shadow}</td>
+      <td>${riskBadge(rl)}</td>
       <td style="font-size:12px;color:var(--text2);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(it.risk_summary||it.gerekce||'')}">${esc((it.risk_summary||it.gerekce||'').slice(0,120))}</td>
       <td style="font-size:12px;color:var(--text3)">${esc(it.elapsed||'')}</td>
       <td style="font-size:12px;color:var(--text3)">${timeAgo(it.finished_at)}</td>
     </tr>`}).join('');
 }
+document.getElementById('listFilt')?.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]');if(!b)return;
+  setListFilter(b.dataset.f);
+});
+document.getElementById('kpiFilt')?.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]');if(!b)return;
+  setListFilter(b.dataset.f);
+});
 document.getElementById('recentTb').onclick=e=>{const row=e.target.closest('tr[data-id]');if(row)selectJob(row.dataset.id)};
 
 async function selectJob(id){
@@ -975,13 +1229,35 @@ function renderDetail(d){
   const ico=cls==='allowed'?'✓':cls==='denied'?'✗':'!';
   const label=KARAR_LABEL[karar]||karar.replace(/_/g,' ');
   let h='';
-  h+=`<div class="banner ${cls}"><div class="ico">${ico}</div><div>
-      <h3>${esc(label)}</h3>
-      <div style="font-size:12.5px;color:var(--text2)">${esc(d.gerekce||d.risk_summary||'')}</div></div></div>`;
+  const skor=d.klinik_skor!=null?d.klinik_skor:((d.medgemma||{}).klinik_skor);
+  const skorDayanak=d.skor_dayanak||((d.medgemma||{}).skor_dayanak)||'';
+  h+=`<div class="banner ${cls}"><div class="ico">${ico}</div><div style="flex:1;min-width:0">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px">
+        <h3 style="margin:0">${esc(label)}</h3>
+        ${riskBadge(d.risk_level)}
+        ${decisionTypeBadge(d.decision_type)}
+      </div>
+      <div style="font-size:12.5px;color:var(--text2)">${esc(d.gerekce||d.risk_summary||'')}</div>
+      </div></div>`;
+
+  if(skor!=null){
+    const barCls=skor>=85?'var(--green)':skor>=70?'var(--teal)':skor>=50?'var(--amber)':'var(--red)';
+    h+=`<div class="skor-hero">
+      <div><div class="lbl">MedGemma Klinik Skor</div><div class="num">${esc(skor)}<small>/100</small></div>
+        <div class="skor-meter"><i style="width:${Math.max(0,Math.min(100,Number(skor)))}%;background:${barCls}"></i></div>
+      </div>
+      <div class="meta">${skorDayanak?esc(skorDayanak):'Klinik yerindelik skoru — tanı/işlem uyumu, yaş-cinsiyet ve belge bağlamına göre 0–100.'}</div>
+    </div>`;
+  }else{
+    h+=`<div class="docmode"><div><b>Klinik skor yok.</b> Bu kayıt önceki pipeline ile değerlendirilmiş; skor alanı sonradan eklendi. Yeniden çalıştırılmadıkça skor üretilmez (eski kayıt korunur).</div></div>`;
+  }
 
   if((raw.documents_mode||'')==='skipped_full_pipeline'){
-    h+=`<div class="docmode"><div><b>Belgesiz değerlendirme.</b> Belge–hasta ve zorunlu evrak atlandı (SKIPPED). Klinik AI üstveri + kural özetiyle çalıştı.</div></div>`;
+    h+=`<div class="docmode"><div><b>Belgesiz değerlendirme.</b> Belge–hasta ve zorunlu evrak SKIPPED. HUV / SUT kuralları ayrı çalışır (HUV→SUT eşleştirme kapalı). Klinik AI üstveri + kural özetiyle çalıştı.</div></div>`;
   }
+
+  // MedGemma — üst düzey klinik anlatım (policy'den önce)
+  h+=renderMedgemmaHero(d);
 
   const sa=raw.shadow_advice||d.shadow_advice;
   if(sa&&sa.status&&sa.status!=='not_applicable'){
@@ -1002,7 +1278,8 @@ function renderDetail(d){
   h+=`<div style="margin-bottom:16px"><div class="info-grid">
     ${cell('Provizyon ID',d.provizyon_id)}${cell('Hasta Adı',name)}${cell('Hasta ID',sicil)}
     ${cell('TC Kimlik',tc)}${cell('Yaş',meta.yas)}${cell('Cinsiyet',meta.cinsiyet&&meta.cinsiyet!=='bilinmiyor'?meta.cinsiyet:'')}
-    ${cell('Karar Tipi',d.decision_type)}${cell('Risk',d.risk_level?(RISK_LABEL[d.risk_level]||d.risk_level):'')}</div></div>`;
+    ${cellHtml('Karar Tipi',decisionTypeBadge(d.decision_type))}
+    ${cellHtml('Risk',d.risk_level?riskBadge(d.risk_level):'—')}</div></div>`;
 
   // katman özetleri (deterministik policy zinciri)
   const LST_LBL={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',
@@ -1023,35 +1300,69 @@ function renderDetail(d){
   if(rows)h+=`<div class="card" style="margin:0 0 16px"><div class="card-head"><h3>Deterministik Policy Katmanları</h3><span class="badge b-blue">bağlayıcı</span></div>
     <table><thead><tr><th>Katman</th><th>Durum</th><th>Açıklama</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 
-  // MedGemma klinik (olasılıksal tavsiye) — ayrı, öne çıkan blok
-  const mg=d.medgemma||raw.medgemma, mgL=raw.medgemma_layer;
-  if(mg||mgL){
-    const guven=(mg&&mg.guven)||'';
-    const gvBadge=guven==='high'?'b-green':guven==='low'?'b-red':'b-amber';
-    const gvLbl={high:'Yüksek',medium:'Orta',low:'Düşük'}[guven]||guven;
-    const gerekce=(mg&&mg.gerekce)||(mgL&&(mgL.message||mgL.gerekce))||'—';
-    const flag=(lbl,v)=>{const cls=v===true?'pos':v===false?'neg':'na';const t=v===true?'Evet':v===false?'Hayır':'—';
-      return `<span class="mg-flag ${cls}">${esc(lbl)}: ${t}</span>`};
-    let flags='';
-    if(mg){
-      flags+=flag('İşlem belge-destekli',mg.islem_belge_destekli);
-      flags+=flag('Tanı belge-destekli',mg.tani_belge_destekli);
-      flags+=flag('Yaş/cinsiyet uygun',mg.yas_cinsiyet_uygun);
-      flags+=flag('Klinik çelişki',mg.klinik_celiski);
-      flags+=flag('Eksik evrak',mg.eksik_evrak);
-      flags+=`<span class="mg-flag ${mg.manuel_inceleme_gerekli?'neg':'pos'}">Manuel inceleme: ${mg.manuel_inceleme_gerekli?'Gerekli':'Gerekmez'}</span>`;
-    }
-    h+=`<div class="mg-block">
-      <h4>MedGemma Klinik Yerindelik <span class="badge b-teal">tavsiye</span>${guven?` <span class="badge ${gvBadge}">Güven: ${esc(gvLbl)}</span>`:''}</h4>
-      <div style="font-size:12.8px;color:var(--text)">${esc(String(gerekce).slice(0,600))}</div>
-      ${flags?`<div class="mg-flags">${flags}</div>`:''}
-    </div>`;
-  }
-
   h+=`<details class="raw-wrap"><summary>Ham veri (JSON)</summary><pre class="raw">${esc(JSON.stringify(d,null,2))}</pre></details>`;
   document.getElementById('jobDetail').innerHTML=h;
 }
 function cell(k,v){return `<div><span class="k">${esc(k)}</span><span class="v">${v!=null&&v!==''?esc(v):'—'}</span></div>`}
+function cellHtml(k,html){return `<div><span class="k">${esc(k)}</span><span class="v">${html||'—'}</span></div>`}
+
+function renderMedgemmaHero(d){
+  const raw=d.raw||{};
+  const mg=d.medgemma||raw.medgemma;
+  const mgL=raw.medgemma_layer||{};
+  const ex=raw.medgemma_exchange||(mgL.detail&&mgL.detail.exchange)||{};
+  if(!mg&&!mgL){
+    return `<div class="mg-block"><h4>MedGemma Klinik Yerindelik <span class="badge b-gray">çalışmadı</span></h4>
+      <p class="mg-lead" style="color:var(--text3)">Bu işte klinik AI değerlendirmesi yok (tanı FAIL veya atlandı).</p></div>`;
+  }
+  const guven=(mg&&mg.guven)||'';
+  const gvBadge=guven==='high'?'b-green':guven==='low'?'b-red':'b-amber';
+  const gvLbl={high:'Yüksek',medium:'Orta',low:'Düşük'}[guven]||guven;
+  const gerekce=(mg&&mg.gerekce)||(mgL.message)||'—';
+  const flag=(lbl,v)=>{const cls=v===true?'pos':v===false?'neg':'na';const t=v===true?'Evet':v===false?'Hayır':'—';
+    return `<span class="mg-flag ${cls}">${esc(lbl)}: ${t}</span>`};
+  let flags='';
+  if(mg){
+    flags+=flag('Yaş/cinsiyet uygun',mg.yas_cinsiyet_uygun);
+    flags+=flag('Klinik çelişki',mg.klinik_celiski);
+    flags+=flag('İşlem belge-destekli',mg.islem_belge_destekli);
+    flags+=flag('Tanı belge-destekli',mg.tani_belge_destekli);
+    flags+=flag('Eksik evrak',mg.eksik_evrak);
+    flags+=`<span class="mg-flag ${mg.manuel_inceleme_gerekli?'neg':'pos'}">Manuel inceleme: ${mg.manuel_inceleme_gerekli?'Gerekli':'Gerekmez'}</span>`;
+  }
+  const qa=asList((mg&&mg.ozel_soru_cevaplari)||(ex.parsed&&ex.parsed.ozel_soru_cevaplari)||(mgL.detail&&mgL.detail.ozel_soru_cevaplari));
+  let qaHtml='';
+  if(qa.length){
+    qaHtml=`<table class="mg-qa"><thead><tr><th>Klinik soru</th><th>MedGemma cevabı</th></tr></thead><tbody>`;
+    qa.forEach(x=>{qaHtml+=`<tr><td>${esc(x.soru||'')}</td><td>${esc(x.cevap||'—')}</td></tr>`});
+    qaHtml+='</tbody></table>';
+  }
+  const mode=(ex.mode==='docless')?'Belgesiz üstveri':'Belge + üstveri';
+  let exHtml='';
+  if(ex.user_prompt||ex.raw_response){
+    exHtml=`<details class="mg-ex"><summary>Modele giden paket (${esc(mode)} · ${(ex.user_prompt_chars||0)} karakter)</summary>
+      <pre>${esc(ex.user_prompt||'')}</pre></details>
+      <details class="mg-ex"><summary>Modelden gelen ham yanıt (${(ex.raw_response_chars||0)} karakter)</summary>
+      <pre>${esc(ex.raw_response||'')}</pre></details>`;
+  }
+  const skor=(mg&&mg.klinik_skor!=null)?mg.klinik_skor:(ex.parsed&&ex.parsed.klinik_skor);
+  const skorDayanak=(mg&&mg.skor_dayanak)||(ex.parsed&&ex.parsed.skor_dayanak)||'';
+  const skorBadge=skor!=null?`<span class="badge ${skor>=85?'b-green':skor>=70?'b-teal':skor>=50?'b-amber':'b-red'}">Skor ${esc(skor)}/100</span>`:'<span class="badge b-gray">Skor yok</span>';
+  return `<div class="mg-block">
+    <h4>MedGemma Klinik Yerindelik
+      <span class="badge b-teal">ana klinik açıklama</span>
+      ${skorBadge}
+      ${guven?`<span class="badge ${gvBadge}">Güven: ${esc(gvLbl)}</span>`:''}
+      <span class="badge b-gray">${esc(mode)}</span>
+    </h4>
+    <p class="mg-lead">${esc(String(gerekce))}</p>
+    ${skorDayanak?`<p style="font-size:12.5px;color:var(--text2);margin:0 0 10px"><strong>Skor dayanağı:</strong> ${esc(skorDayanak)}</p>`:''}
+    ${flags?`<div class="mg-flags">${flags}</div>`:''}
+    ${qaHtml}
+    ${exHtml}
+  </div>`;
+}
+function asList(v){return Array.isArray(v)?v:(v?[v]:[])}
 
 // ════════ ANALIZ ════════
 let _anLoaded=false;
@@ -1068,7 +1379,7 @@ async function loadAnalytics(force){
     document.getElementById('anLoading').style.display='none';
     document.getElementById('anContent').style.display='block';
     renderAnalytics(d);
-  }catch(e){document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Analiz yüklenemedi</span>'}
+  }catch(e){document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Kurum analiz yüklenemedi</span>'}
 }
 function renderAnalytics(d){
   const total=d.toplam_provizyon||0;
@@ -1162,46 +1473,178 @@ function renderFailTable(fails){
   }).join('');
 }
 
-// ════════ SISTEM ════════
+// ════════ AYARLAR / SAĞLIK ════════
 async function loadHealth(){
+  const list=document.getElementById('svcList');
+  const summary=document.getElementById('sysSummary');
   try{
     const d=await(await fetch(API+'/system/health')).json();
     renderHealth(d);
     updateBadge(d.services);
-    document.getElementById('lastUpdate').textContent=new Date().toLocaleTimeString('tr-TR');
-  }catch(e){document.getElementById('sysGrid').innerHTML='<div class="empty" style="color:var(--red)">Sağlık verisi alınamadı</div>'}
+    const lu=document.getElementById('lastUpdate');
+    if(lu) lu.textContent=new Date().toLocaleTimeString('tr-TR');
+  }catch(e){
+    if(summary){summary.className='badge b-red';summary.textContent='Sağlık verisi alınamadı'}
+    if(list) list.innerHTML=`<div class="empty" style="color:var(--red)">Bağlantı hatası: ${esc(e.message||e)}</div>`;
+  }
 }
 function updateBadge(svcs){
   const b=document.getElementById('sysBadge');if(!b)return;
-  if(!svcs||!svcs.length){b.className='badge b-gray';b.textContent='Sistem: —';return}
+  if(!svcs||!svcs.length){b.className='badge b-gray';b.textContent='Servis: —';return}
   const down=svcs.filter(s=>s.status!=='ok').length;
-  if(down>0){b.className='badge b-red';b.textContent=`Sistem: ${down} servis kapalı`}
-  else{b.className='badge b-green';b.textContent='Sistem: çalışıyor'}
+  if(down>0){b.className='badge b-red';b.textContent=`Servis: ${down} kapalı`}
+  else{b.className='badge b-green';b.textContent='Servis: çalışıyor'}
+}
+function _pctTone(pct, warnAt, badAt){
+  if(pct==null) return '';
+  if(pct>=badAt) return 'bad';
+  if(pct>=warnAt) return 'warn';
+  return '';
+}
+function _meter(pct, warnAt, badAt){
+  if(pct==null) return '';
+  const tone=_pctTone(pct, warnAt, badAt);
+  const w=Math.max(0, Math.min(100, Number(pct)||0));
+  return `<div class="meter ${tone}"><i style="width:${w}%"></i></div>`;
 }
 function renderHealth(d){
-  document.getElementById('sysTs').textContent=new Date().toLocaleTimeString('tr-TR');
-  const svcs=d.services||[],sys=d.system||{},diag=d.diagnosis_stats||{},gpu=d.gpu||{},qd=d.qdrant_collections||[];
-  const items=[];
+  const now=new Date().toLocaleTimeString('tr-TR');
+  const ts=document.getElementById('sysTs'); if(ts) ts.textContent='Son kontrol: '+now;
+  const dataTs=document.getElementById('dataTs'); if(dataTs) dataTs.textContent=now;
+  const svcs=d.services||[];
+  const sys=d.system||{};
+  const gpu=d.gpu||{};
+  const diag=d.diagnosis_stats||{};
+  const cat=d.catalog_stats||{};
+  const qd=d.qdrant_collections||[];
   const ok=svcs.filter(s=>s.status==='ok').length;
-  items.push({v:`${ok}/${svcs.length}`,l:'Servis çalışıyor',w:ok!==svcs.length});
-  svcs.forEach(s=>items.push({v:s.status==='ok'?'✓':'✗',l:s.name||'?',w:s.status!=='ok'}));
-  if(diag.huv_auto_rules!=null){items.push({v:fmtN(diag.huv_auto_rules),l:'HUV kural (auto)'});items.push({v:fmtN(diag.huv_review_rules||0),l:'HUV kural (review)'})}
-  if(diag.sut_auto_rules!=null){items.push({v:fmtN(diag.sut_auto_rules),l:'SUT kural (auto)'});items.push({v:fmtN(diag.sut_review_rules||0),l:'SUT kural (review)'})}
-  qd.forEach(c=>items.push({v:fmtN(c.points||0),l:'Qdrant: '+(c.name||'?')}));
-  if(sys.cpu_pct!=null)items.push({v:sys.cpu_pct+'%',l:'CPU',w:sys.cpu_pct>80});
-  if(sys.ram_pct!=null)items.push({v:sys.ram_pct+'%',l:'RAM',w:sys.ram_pct>85});
-  if(gpu.mem_used_mb!=null)items.push({v:`${gpu.mem_used_mb}/${gpu.mem_total_mb||'?'} MB`,l:gpu.utilization_pct!=null?`GPU (${gpu.utilization_pct}%)`:'GPU'});
-  document.getElementById('sysGrid').innerHTML=items.map(i=>`<div class="sys-item"><div class="v${i.w?' warn':''}">${esc(String(i.v))}</div><div class="l">${esc(i.l)}</div></div>`).join('');
+  const down=svcs.length-ok;
+  const summary=document.getElementById('sysSummary');
+  if(summary){
+    if(!svcs.length){summary.className='badge b-gray';summary.textContent='Veri yok'}
+    else if(down>0){summary.className='badge b-red';summary.textContent=`${ok}/${svcs.length} çalışıyor · ${down} kapalı`}
+    else{summary.className='badge b-green';summary.textContent=`${ok}/${svcs.length} çalışıyor`}
+  }
+  const SVC_ROLE={
+    'Provizyon API':'Ana karar motoru ve panel API’si',
+    'MedGemma':'Klinik görsel / metin modeli',
+    'Qdrant':'Kural ve katalog vektör veritabanı',
+    'TEI':'Gömme (embedding) servisi',
+    'Open WebUI':'Model sohbet arayüzü',
+    'Redis':'Kuyruk ve iş durumu',
+    'Provizyon Worker':'Arka plan provizyon işçileri',
+  };
+  const list=document.getElementById('svcList');
+  if(list){
+    list.innerHTML=svcs.map(s=>{
+      const isOk=s.status==='ok';
+      const role=SVC_ROLE[s.name]||'';
+      const endpoint=s.port!=null
+        ? `http://127.0.0.1:${s.port}${s.path||''}`
+        : (s.path==='pid'?'Yerel süreç (PID dosyası)':(s.path||'Yerel kontrol'));
+      const lat=s.latency_ms!=null?`${s.latency_ms} ms`:'';
+      const httpBit=s.http!=null?`HTTP ${s.http}`:'';
+      const rightBits=[lat,httpBit].filter(Boolean).join(' · ')||(isOk?'Yanıt alındı':'Yanıt yok');
+      let workers='';
+      if(Array.isArray(s.worker_pids)&&s.worker_pids.length){
+        workers=`<div class="svc-meta">İşçiler: ${s.worker_pids.map(w=>{
+          if(typeof w!=='object'||!w) return esc(String(w));
+          const bits=[`#${esc(String(w.id||'?'))}`,`PID ${esc(String(w.pid||'?'))}`];
+          if(w.status) bits.push(esc(String(w.status)));
+          return bits.join(' · ');
+        }).join(' · ')}</div>`;
+      }else if(s.workers!=null){
+        workers=`<div class="svc-meta">${esc(String(s.workers))} worker</div>`;
+      }
+      const err=s.error?`<div class="svc-meta" style="color:var(--red)">${esc(s.error)}</div>`:'';
+      const detail=s.detail?`<div class="svc-meta">${esc(s.detail)}</div>`:'';
+      return `<article class="svc-card ${isOk?'ok':'down'}">
+        <span class="svc-dot ${isOk?'ok':'down'}" aria-hidden="true"></span>
+        <div>
+          <div class="svc-name">${esc(s.name||'Servis')}</div>
+          ${role?`<div class="svc-meta">${esc(role)}</div>`:''}
+          <div class="svc-meta">Kontrol: <code>${esc(endpoint)}</code></div>
+          ${detail}${workers}${err}
+        </div>
+        <div class="svc-status">
+          <div class="lbl ${isOk?'ok':'down'}">${isOk?'Çalışıyor':'Kapalı'}</div>
+          <div class="lat">${esc(rightBits)}</div>
+        </div>
+      </article>`;
+    }).join('') || '<div class="empty">Servis kaydı yok</div>';
+  }
+  const res=document.getElementById('resGrid');
+  if(res){
+    const cards=[];
+    if(sys.cpu_pct!=null){
+      const tone=_pctTone(sys.cpu_pct,70,90);
+      cards.push(`<div class="res-card ${tone}"><div class="k">CPU</div><div class="v">${esc(sys.cpu_pct)}%</div><div class="h">İşlemci kullanımı</div>${_meter(sys.cpu_pct,70,90)}</div>`);
+    }
+    if(sys.ram_pct!=null){
+      const tone=_pctTone(sys.ram_pct,80,92);
+      cards.push(`<div class="res-card ${tone}"><div class="k">Bellek (RAM)</div><div class="v">${esc(sys.ram_pct)}%</div><div class="h">${esc(sys.ram_used_gb||'?')} / ${esc(sys.ram_total_gb||'?')} GB</div>${_meter(sys.ram_pct,80,92)}</div>`);
+    }
+    if(sys.disk_pct!=null){
+      const tone=_pctTone(sys.disk_pct,80,92);
+      cards.push(`<div class="res-card ${tone}"><div class="k">Disk</div><div class="v">${esc(sys.disk_pct)}%</div><div class="h">${esc(sys.disk_used_gb||'?')} / ${esc(sys.disk_total_gb||'?')} GB</div>${_meter(sys.disk_pct,80,92)}</div>`);
+    }
+    if(sys.swap_total_gb!=null && Number(sys.swap_total_gb)>0){
+      const swapPct=sys.swap_total_gb?Math.round((Number(sys.swap_used_gb)||0)*100/Number(sys.swap_total_gb)):null;
+      const tone=_pctTone(swapPct,60,85);
+      cards.push(`<div class="res-card ${tone}"><div class="k">Takas (swap)</div><div class="v">${swapPct!=null?swapPct+'%':'—'}</div><div class="h">${esc(sys.swap_used_gb||0)} / ${esc(sys.swap_total_gb)} GB</div>${swapPct!=null?_meter(swapPct,60,85):''}</div>`);
+    }
+    if(gpu && (gpu.utilization_pct!=null || gpu.mem_total_mb!=null || gpu.temp_c!=null || gpu.name)){
+      const pct=gpu.mem_total_mb?Math.round((gpu.mem_used_mb||0)*100/gpu.mem_total_mb):null;
+      const util=gpu.utilization_pct;
+      const tone=_pctTone(util!=null?util:pct,70,90);
+      const title=gpu.name?`GPU · ${gpu.name}`:'GPU';
+      const main=util!=null?`${util}%`:(pct!=null?`${pct}%`:'—');
+      const bits=[];
+      if(util!=null) bits.push('kullanım');
+      if(pct!=null) bits.push(`${gpu.mem_used_mb||0} / ${gpu.mem_total_mb} MB`);
+      else if(gpu.mem_unavailable) bits.push('bellek N/A (sürücü)');
+      if(gpu.temp_c!=null) bits.push(`${gpu.temp_c}°C`);
+      cards.push(`<div class="res-card ${tone}"><div class="k">${esc(title)}</div><div class="v">${esc(main)}</div><div class="h">${esc(bits.join(' · ')||'nvidia-smi')}</div>${util!=null?_meter(util,70,90):(pct!=null?_meter(pct,75,90):'')}</div>`);
+    }else{
+      cards.push(`<div class="res-card"><div class="k">GPU</div><div class="v">—</div><div class="h">nvidia-smi okunamadı</div></div>`);
+    }
+    res.innerHTML=cards.join('')||'<div class="empty">Kaynak verisi yok</div>';
+  }
+  const dataPanel=document.getElementById('dataPanel');
+  if(dataPanel){
+    const rows=[];
+    if(diag.huv_collection) rows.push(['HUV koleksiyon', `<code>${esc(diag.huv_collection)}</code>`]);
+    rows.push(['HUV kuralları', diag.huv_total_rules!=null?`${fmtN(diag.huv_total_rules)} (otomatik ${fmtN(diag.huv_auto_rules||0)} · inceleme ${fmtN(diag.huv_review_rules||0)})`:'—']);
+    if(diag.sut_collection) rows.push(['SUT koleksiyon', `<code>${esc(diag.sut_collection)}</code>`]);
+    rows.push(['SUT kuralları', diag.sut_total_rules!=null?`${fmtN(diag.sut_total_rules)} (otomatik ${fmtN(diag.sut_auto_rules||0)} · inceleme ${fmtN(diag.sut_review_rules||0)})`:'—']);
+    rows.push(['İstatistik kaynağı', diag.stats_source==='qdrant_live'?'Canlı Qdrant':(diag.stats_source==='summary_fallback'?'Özet dosyası (yedek)':(diag.stats_source||'—'))]);
+    if(cat.qdrant_collection){
+      rows.push(['Birleşik katalog', `<code>${esc(cat.qdrant_collection)}</code> · ${fmtN(cat.qdrant_points||0)} nokta`]);
+      if(cat.crosswalk_rows!=null) rows.push(['Crosswalk satır', fmtN(cat.crosswalk_rows)]);
+      if(cat.qdrant_in_sync!=null) rows.push(['Katalog senkron', cat.qdrant_in_sync?'Eşleşiyor':'Fark var']);
+      rows.push(['HUV↔SUT runtime', cat.huv_sut_crosswalk_runtime_enabled?'Açık':'Kapalı']);
+      if(cat.huv_sut_crosswalk_note) rows.push(['Not', esc(cat.huv_sut_crosswalk_note)]);
+    }
+    const qdRows=(qd||[]).map(c=>`<tr><td><code>${esc(c.name||'')}</code></td><td>${fmtN(c.points||0)}</td><td>${esc(c.status||'—')}</td></tr>`).join('');
+    dataPanel.innerHTML=`
+      <table class="data-table">
+        <thead><tr><th>Alan</th><th>Değer</th></tr></thead>
+        <tbody>${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join('')}</tbody>
+      </table>
+      ${qd.length?`<h4 style="margin:18px 0 8px;font-size:13px">Qdrant koleksiyonları</h4>
+      <table class="data-table"><thead><tr><th>Koleksiyon</th><th>Nokta</th><th>Durum</th></tr></thead><tbody>${qdRows}</tbody></table>`:'<div class="empty" style="padding:16px 0">Qdrant koleksiyonları okunamadı</div>'}`;
+  }
 }
 
-// ════════ AYARLAR ════════
 function initSettings(){
   const a=document.getElementById('setAuto'),i=document.getElementById('setInterval'),an=document.getElementById('setAnon');
+  if(!a||!i||!an) return;
   a.checked=SET.auto;i.value=SET.interval;an.checked=SET.anon;
-  document.getElementById('setApiBase').textContent=location.origin;
   a.onchange=()=>{SET.auto=a.checked;saveSet();restartTimer()};
   i.onchange=()=>{SET.interval=Math.max(2,Math.min(120,+i.value||6));i.value=SET.interval;saveSet();restartTimer()};
   an.onchange=()=>{SET.anon=an.checked;saveSet();renderRecent(_items);if(_activeId)selectJob(_activeId)};
+  const btn=document.getElementById('btnRefreshHealth');
+  if(btn) btn.onclick=()=>loadHealth();
 }
 
 // ════════ CTA: belgesiz DB değerlendirme / temizle ════════
@@ -1224,15 +1667,26 @@ async function runDocless(){
   const btn=document.getElementById('ctaDocless'),msg=document.getElementById('ctaMsg');
   if(!btn)return;
   btn.disabled=true;const orig=btn.innerHTML;
-  btn.innerHTML='<span class="spinner"></span> Kuyruğa alınıyor…';msg.textContent='';
+  btn.innerHTML='<span class="spinner"></span> Rastgele 100 çekiliyor…';msg.textContent='';
   try{
     const r=await fetch(API+'/provizyon/intake-db',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({pending:true,enqueue:true,skip_documents:true,limit:100})});
+      body:JSON.stringify({
+        pending:true,enqueue:true,skip_documents:true,limit:100,
+        sample:'random',exclude_existing:true
+      })});
     const d=await r.json();
     if(!r.ok){throw new Error(d.detail||('HTTP '+r.status))}
-    const n=(d.queued_ids||[]).length||d.count||0;
-    msg.innerHTML=`<span style="color:var(--green)">${n} provizyon belgesiz akışa alındı.</span> Worker işledikçe listelenir.`;
-    setTimeout(loadRecent,1200);setTimeout(loadRecent,4000);
+    const n=(d.queued_ids||[]).length;
+    const skip=(d.already_queued_ids||[]).length;
+    const kept=d.skipped_existing_count||0;
+    const seed=d.excluded_seed_count||0;
+    let line=`<span style="color:var(--green)">${n} yeni rastgele provizyon kuyruğa eklendi</span> <span style="color:var(--text3)">(sample=random)</span>.`;
+    if(seed) line+=` <span style="color:var(--text2)">Önceki ${seed} kayıt korundu.</span>`;
+    if(kept) line+=` <span style="color:var(--text2)">${kept} mevcut sonuç atlandı.</span>`;
+    if(skip) line+=` <span style="color:var(--text2)">${skip} aktif/kuyrukta.</span>`;
+    if(!n) line=`<span style="color:var(--text2)">Yeni eklenecek iş yok (çekilen=${d.count||0}, korunan=${seed}).</span>`;
+    msg.innerHTML=line+' Worker işledikçe listelenir.';
+    setTimeout(loadRecent,1200);setTimeout(loadRecent,4000);setTimeout(loadRecent,12000);
   }catch(e){
     msg.innerHTML=`<span style="color:var(--red)">Hata: ${esc(e.message)}</span>`;
   }finally{
@@ -1245,7 +1699,7 @@ let _timer=null,_healthTimer=null;
 function restartTimer(){if(_timer)clearInterval(_timer);if(SET.auto)_timer=setInterval(loadRecent,SET.interval*1000)}
 function init(){
   initSettings();loadRecent();loadHealth();restartTimer();
-  _healthTimer=setInterval(loadHealth,30000);
+  _healthTimer=setInterval(loadHealth,15000);
   const cta=document.getElementById('ctaDocless');if(cta)cta.onclick=runDocless;
   const clr=document.getElementById('ctaClearOld');if(clr)clr.onclick=clearOldResults;
   const clr2=document.getElementById('btnClearRecent');if(clr2)clr2.onclick=clearOldResults;
