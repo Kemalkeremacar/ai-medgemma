@@ -1,0 +1,601 @@
+{
+  "schema_version": "review_reduction_dgx_transfer_bundle.v1",
+  "generated_at": "2026-07-20T12:28:17",
+  "bundle_root": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\review_reduction_dgx_transfer_bundle_20260709",
+  "suggested_zip_path": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\review_reduction_dgx_transfer_bundle_20260709.zip",
+  "purpose": "Curated DGX handoff bundle for review-reduction shadow work.",
+  "headline_result": {
+    "recommended_shadow_pilot_code": "703790",
+    "candidate_shadow_pass_occurrence_rows": 505,
+    "row_level_full_release_rows": 32,
+    "row_level_partial_resolution_rows": 473,
+    "guardrail_hold_rows": 16
+  },
+  "included": {
+    "artifact_dirs": [
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709",
+      "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709"
+    ],
+    "artifact_files_copied": 71,
+    "script_files_copied": 12,
+    "structure_document_copied": true,
+    "qdrant_shadow_preview_records": 20
+  },
+  "corrected_703790_shadow_proposal": {
+    "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_POLICY_PROPOSAL.json",
+    "proposal_present": true,
+    "candidate_prefixes": [
+      "H40"
+    ],
+    "historical_review_rows": 212,
+    "historical_shadow_candidate_rows": 146,
+    "historical_full_release_counterfactual": 7,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  },
+  "excluded_sources": [
+    {
+      "path": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\rule_engine_results.csv",
+      "reason": "case-level historical source; too broad for curated DGX transfer bundle and must not be indexed into Qdrant"
+    }
+  ],
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_rule_candidate": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "shadow_only": true,
+    "production_qdrant_write_allowed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false
+  },
+  "qdrant": {
+    "production_write_allowed": false,
+    "suggested_shadow_collection": "sut_policy_shadow_review_reduction_20260709",
+    "payload_preview_only": true,
+    "files": [
+      {
+        "bundle_path": "qdrant_shadow/QDRANT_SHADOW_PAYLOAD_PREVIEW.jsonl",
+        "size_bytes": 33230,
+        "sha256": "c445bbe2b6a7d09c9b8026a87f658dbce50da5bee11da00522993943f4651dc9"
+      },
+      {
+        "bundle_path": "qdrant_shadow/QDRANT_SHADOW_COLLECTION_CONTRACT.json",
+        "size_bytes": 1348,
+        "sha256": "b29d8701badf7f6511fd09d87ee54861e16741264615f4e7b16edba8ba3b0666"
+      },
+      {
+        "bundle_path": "qdrant_shadow/DO_NOT_WRITE_TO_PRODUCTION_QDRANT.txt",
+        "size_bytes": 513,
+        "sha256": "ca6198a2d00ec5d1b8fd43b86e91d1f637a3c25c87254636965919faa32f6f0b"
+      }
+    ]
+  },
+  "copied_artifacts": [
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_GOVERNANCE_REVIEW.txt",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_GOVERNANCE_REVIEW.txt",
+      "size_bytes": 1365,
+      "sha256": "dc3c6e515f9f0bcae00e4d4d58bd01d610cbe762f2f62bc3631e22974d2fc2fc"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_prefix_decision_register.csv",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_prefix_decision_register.csv",
+      "size_bytes": 929,
+      "sha256": "827ec1afd0c8b41dd9383098ede8c8944f8a8f2b362d4442151549b3a33679aa"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_prefix_decision_register.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_prefix_decision_register.json",
+      "size_bytes": 2232,
+      "sha256": "6a0c4fb8486df74d102c4d89467c38decc70182cd02d08918da51a9a052b89fc"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_MONITORING_PLAN.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_SHADOW_MONITORING_PLAN.json",
+      "size_bytes": 2225,
+      "sha256": "9c2c21166688bb49e0b642766eba67e03782cd3c3a772ff56a0b5808ba33a397"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_shadow_policy_dashboard.html",
+      "size_bytes": 1705,
+      "sha256": "3c916d4e2fb22f50233da0657f809621dbac353d4ed9a276931075afc35bb1c1"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_POLICY_PROPOSAL.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_SHADOW_POLICY_PROPOSAL.json",
+      "size_bytes": 2732,
+      "sha256": "c91a62c00321420b9597e9182edbf9469f63983591f8dffc4c5f2461c4b20d7d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_scenarios.csv",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_shadow_policy_scenarios.csv",
+      "size_bytes": 1150,
+      "sha256": "6a516b319d45c8a2a41a536d8fb19485b94ac6879432f1574c3c4ebde12da4bc"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_scenarios.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_shadow_policy_scenarios.json",
+      "size_bytes": 2191,
+      "sha256": "da033bcd539e8c76659ab40fba13a743c8567d0145ac52681938f913accbb29a"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_ROLLBACK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/703790_SHADOW_ROLLBACK_MANIFEST.json",
+      "size_bytes": 1621,
+      "sha256": "ffdb817ff2d72533d6c13f5931b9256ce3d26290b93041b95c58fbf8882cff23"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_703790_shadow_policy_proposal_20260720/TASK_MANIFEST.json",
+      "size_bytes": 3339,
+      "sha256": "cb91a3bc15783c1cb83e33d04eab21dc55acc6232e38a89b3426af02a6e2971a"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_artifact_index.csv",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/final_artifact_index.csv",
+      "size_bytes": 2273,
+      "sha256": "f1fc8a8fdf7c52488ac0cf27e2df628656cd3fe54fe0e5fcc680a42fd2976903"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_artifact_index.json",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/final_artifact_index.json",
+      "size_bytes": 3445,
+      "sha256": "0da265804e367c58b6c1020d6f023f9d71e89b8f429b03aaa66aaf14ad2ee099"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_decision_register.csv",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/final_decision_register.csv",
+      "size_bytes": 5163,
+      "sha256": "b43e401f6df8f7629e57217b5417fcfb9776260d55cd9dc426ceaf2c0446d0bd"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_decision_register.json",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/final_decision_register.json",
+      "size_bytes": 13716,
+      "sha256": "b1814a405520dedffcd9585982ee33971491c96b70a3f92fa390600ce6c95505"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\FINAL_EXECUTIVE_SUMMARY.txt",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/FINAL_EXECUTIVE_SUMMARY.txt",
+      "size_bytes": 2046,
+      "sha256": "82173bc8b0cd1259411369bbb37982020ddfca56865c5b9f3b3c3f287f526b86"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_handoff_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/final_handoff_dashboard.html",
+      "size_bytes": 5562,
+      "sha256": "5f459e5141b1522b6b4118a6fe967d969c670839be02ad290123d0318c059555"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\NEXT_STEPS.txt",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/NEXT_STEPS.txt",
+      "size_bytes": 757,
+      "sha256": "916060225f851aeec27874decf5fec98710bc50448a93516cf6c8c2c56bdeed2"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_final_handoff_20260709/TASK_MANIFEST.json",
+      "size_bytes": 2768,
+      "sha256": "6dcacd966935fcdc2cb549ac40c8cc518662efa5ab3f32c0c6d8000e49e905b6"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_by_prefix.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_by_prefix.csv",
+      "size_bytes": 1651,
+      "sha256": "bc81abe2eaeea409e770939c214e99c03833d3b52b9402d7fedba8f8a161599d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_by_prefix.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_by_prefix.json",
+      "size_bytes": 6190,
+      "sha256": "bbdd8ad3af178b52ac891f15c1d28f8d23b71adadba1c6e2dc1d955582f39ca6"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_dashboard.html",
+      "size_bytes": 1334,
+      "sha256": "cf47c7dcfe3e28954e00771cb2894762ff4d2c0b0c7b9dad9417ed4e85fcdce8"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_guardrail_holds.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_guardrail_holds.csv",
+      "size_bytes": 2915,
+      "sha256": "8aa9b8dc336525dab8f275d48a2b0af48f80cd2c0a68aaf6cbf1aa112618238e"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_guardrail_holds.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_guardrail_holds.json",
+      "size_bytes": 7324,
+      "sha256": "68f2f862b63de165ea525003e8c495cf1458667d181e0bb41a7ac2d16c165294"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_summary.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_summary.csv",
+      "size_bytes": 1002,
+      "sha256": "ebf97259e99e81a58c91c2f27102c829e35f98838ccdb0bcc7a4cb3f174ac8bb"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_summary.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/ai_provisional_shadow_preview_summary.json",
+      "size_bytes": 2900,
+      "sha256": "b59fbdf7de805818b0d34eae9e91b51ee1d0fc659c72c24880a9a206b44ffdca"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_shadow_preview_20260709/TASK_MANIFEST.json",
+      "size_bytes": 3834,
+      "sha256": "e90a1a7184db10e61ced652f8c41c1bee6c5f4febb1797152b7db3490c98e043"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_decisions_all19.csv",
+      "size_bytes": 34064,
+      "sha256": "8756d40c2b0be67073cf0ab453dfcf4a7347c2ad27f50b6771d51d5691696f24"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_decisions_all19.json",
+      "size_bytes": 50782,
+      "sha256": "05f1f7b0cc03f3c7998ca72a4deb71c10b28c1ee55fc36c99f90faa99c54485a"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_dashboard.html",
+      "size_bytes": 4587,
+      "sha256": "fbf6f6ecf0e797ebc408738fe4daac816ca10eb86d253c3299be6b72465df2d3"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_raw_responses.jsonl",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_raw_responses.jsonl",
+      "size_bytes": 64684,
+      "sha256": "163b4233ef3b00ae990b841f6a95e6fe0faddee1d6e2a2f460ec2dd4bc04f47a"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_requests.csv",
+      "size_bytes": 2894,
+      "sha256": "5b3e55aea1e15244d80bf84be58b35e96245f6b871ba7d7190faa55573c67614"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_requests.json",
+      "size_bytes": 225203,
+      "sha256": "09a68fc1edf9aa5aac1107da44b0fe9ea9c1ba50de23b4cad429c7b0f90a91dd"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.jsonl",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_requests.jsonl",
+      "size_bytes": 214979,
+      "sha256": "01aafc915e1a853261163f0f6a5299f8512495e338060b95aea449b18b359c7b"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_responses.jsonl",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_responses.jsonl",
+      "size_bytes": 46610,
+      "sha256": "bfb3fd6a1f72cc6a30938f736299f00ce67b16861b7222c53b754d77115f9ee3"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_validation_rows.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_validation_rows.csv",
+      "size_bytes": 1061,
+      "sha256": "8b844fa0ea16367fda7d66e84d7087f76f9aae2d9152e26c694d7e491a7240a2"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_validation_rows.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_expert_review_validation_rows.json",
+      "size_bytes": 285689,
+      "sha256": "6f222f7aa41d0a7b2630b9b5289be91c01c45096475d69068f18b8142a4b3c39"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.csv",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_shadow_staging_candidates.csv",
+      "size_bytes": 5578,
+      "sha256": "6abf7630eed196c7946ee1c5d8b8bde25b5ddf082de75eb55258b9edf12417b3"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/ai_provisional_shadow_staging_candidates.json",
+      "size_bytes": 7878,
+      "sha256": "8741e83bd40fa885f8e249ba6259594091658a6ebee0c8bf296bcdaa8885f0c0"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_ai_provisional_expert_review_20260709/TASK_MANIFEST.json",
+      "size_bytes": 3818,
+      "sha256": "284bc6194cf7d6e3842b9c41963ce36cd181b31c061d26a83d04330c6e4e425f"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\RUN_NEXT_STEPS.txt",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/RUN_NEXT_STEPS.txt",
+      "size_bytes": 351,
+      "sha256": "72519689870786146853080a19dbb56edb13071b9d746ca77b7aa35ba1beaa35"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/TASK_MANIFEST.json",
+      "size_bytes": 5495,
+      "sha256": "a4191936b7e30353acf8aed70b0ed5bfa0a344ba890ce288035b90a55dbd3e84"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\DOMAIN_EXPERT_FAST_TRACK_REVIEW_PROMPT_COPY_PASTE.txt",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/DOMAIN_EXPERT_FAST_TRACK_REVIEW_PROMPT_COPY_PASTE.txt",
+      "size_bytes": 2891,
+      "sha256": "3cc5d8dfe47ae47c4829ecf09c911f1131ea7d3db1addbb2f6398bef33069589"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\EXPERT_DECISION_TEMPLATE.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/EXPERT_DECISION_TEMPLATE.csv",
+      "size_bytes": 43446,
+      "sha256": "0ddd5c22ee2d2ce3a560a3f10680171607e920150b4c6ccd7a172fe505fb2f64"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/expert_fast_track_candidates_all19.csv",
+      "size_bytes": 43446,
+      "sha256": "0ddd5c22ee2d2ce3a560a3f10680171607e920150b4c6ccd7a172fe505fb2f64"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/expert_fast_track_candidates_all19.json",
+      "size_bytes": 363531,
+      "sha256": "8821c00bc9d1084b9cff2c1a7fdf8c89ac6406e30be74bad8337bb056f223c57"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_priority10.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/expert_fast_track_candidates_priority10.csv",
+      "size_bytes": 23430,
+      "sha256": "02742fc462c723e370219213a627d5f523ce058e0fe6073c5976df0f82bc378c"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_priority10.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/expert_fast_track_candidates_priority10.json",
+      "size_bytes": 192455,
+      "sha256": "a0ab71aa36824e607429e815ac03ea1e545361b91b626a15d63679f9e2d56d63"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/expert_fast_track_review_pack/expert_fast_track_dashboard.html",
+      "size_bytes": 4151,
+      "sha256": "8ac07558f6de66ef6888c8f924bd164a45d27b1f9b4589d958a02b551a6ed427"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_candidates.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/manual_review_hold_pack/manual_review_hold_candidates.csv",
+      "size_bytes": 13856,
+      "sha256": "02c45c76d8117c66890edb5571a6887266823cd0d270e50626838ab475d54e2d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_candidates.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/manual_review_hold_pack/manual_review_hold_candidates.json",
+      "size_bytes": 252741,
+      "sha256": "5cb9a1acc831ddcbf955a84a5e197b4e9e1d22ca8c134e0dc7cbc0cf7ce53bab"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/manual_review_hold_pack/manual_review_hold_dashboard.html",
+      "size_bytes": 3652,
+      "sha256": "202bc133b0d8d3a89af722a7eb6a9107e9f6063fe42e8fd0184115494e3b88bc"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_AGENT_PROMPT_COPY_PASTE.txt",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/MAPPING_AGENT_PROMPT_COPY_PASTE.txt",
+      "size_bytes": 2551,
+      "sha256": "b5f0ff642141d7131c1eaae4ca0a6fe963cce4b56fb2c655200297b5c019e540"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_candidates_all16.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/mapping_backlog_candidates_all16.csv",
+      "size_bytes": 16520,
+      "sha256": "a86f9df1c507b0e3ff5c714e09e8571ebcfe5138d408db542f88cc3cb5f72ac2"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_candidates_all16.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/mapping_backlog_candidates_all16.json",
+      "size_bytes": 280732,
+      "sha256": "064af0abf8d4fbbe8cd1db1401f19c735e9bee9ef57fcdf88be6f09e87d6b126"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/mapping_backlog_dashboard.html",
+      "size_bytes": 3005,
+      "sha256": "5dfeeeaedfcc946a790e816ae71df939f98e8886afbc6071f67c3e91e1b208f1"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_priority10.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/mapping_backlog_priority10.csv",
+      "size_bytes": 10253,
+      "sha256": "23c3f9e8c68dfd37ca049ad878974052e5caf6cbb4cff6d837fb186aa1d0c4d7"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_priority10.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/mapping_backlog_priority10.json",
+      "size_bytes": 176201,
+      "sha256": "ca571447bb59db0b3c9e86b39217ab5a0dbfccb0cc98503d55b4bd3230e7091b"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_OUTPUT_CONTRACT.json",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/MAPPING_OUTPUT_CONTRACT.json",
+      "size_bytes": 632,
+      "sha256": "9bc889475a9111d5a480dda825f410f481f8830b54a408c64ab7c61ff8e9457c"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_RESEARCH_TEMPLATE.csv",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/MAPPING_RESEARCH_TEMPLATE.csv",
+      "size_bytes": 16520,
+      "sha256": "a86f9df1c507b0e3ff5c714e09e8571ebcfe5138d408db542f88cc3cb5f72ac2"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\READ_ONLY_MAPPING_SQL_TEMPLATE.sql",
+      "bundle_path": "artifacts/review_reduction_operational_packs_20260709/mapping_backlog_pack/READ_ONLY_MAPPING_SQL_TEMPLATE.sql",
+      "size_bytes": 1111,
+      "sha256": "1896f354ac9039fc0eed50fb167f33243f171acaece7b813ab0a3af7a366459d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.csv",
+      "bundle_path": "artifacts/review_reduction_medgemma_shadow_merge_top50_combined_20260709/medgemma_review_reduction_shadow_triage_top50_combined.csv",
+      "size_bytes": 85849,
+      "sha256": "6456ea9a318f349d129a5b90beebcc50e291e2749f60a8440f56fa5805fdec77"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.json",
+      "bundle_path": "artifacts/review_reduction_medgemma_shadow_merge_top50_combined_20260709/medgemma_review_reduction_shadow_triage_top50_combined.json",
+      "size_bytes": 129263,
+      "sha256": "97dea7d87abb3caab65ca4699eee025ae9163928ec895b50d328341b6c121b26"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_medgemma_shadow_merge_top50_combined_20260709/TASK_MANIFEST.json",
+      "size_bytes": 2111,
+      "sha256": "4f7d0b54b185c375b082d9987bd19a8cbe7492a343560bb983d5532b31b9ea9c"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\DOMAIN_EXPERT_REVIEW_PROMPT_COPY_PASTE.txt",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/DOMAIN_EXPERT_REVIEW_PROMPT_COPY_PASTE.txt",
+      "size_bytes": 4925,
+      "sha256": "291cefd95eb1a33d59c2445ee97d0dfaa89e0a6b10c83823cc140da8341b2ba4"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top20_for_admin.csv",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/review_reduction_policy_candidates_top20_for_admin.csv",
+      "size_bytes": 23083,
+      "sha256": "37ab5de0e4ec0aa536245df9cfdf672cc723561c63b00968b909c31d986e407b"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top20_for_admin.json",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/review_reduction_policy_candidates_top20_for_admin.json",
+      "size_bytes": 241316,
+      "sha256": "cc86ce5bc20ed6ff58beb90bad082aebf04d24009c64e49188810bfc8142733d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top50.csv",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/review_reduction_policy_candidates_top50.csv",
+      "size_bytes": 56888,
+      "sha256": "32805a934aea6e5179534bdf261acc4608840b8a136f774b1359f3f95586fac9"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top50.json",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/review_reduction_policy_candidates_top50.json",
+      "size_bytes": 613564,
+      "sha256": "9828a2b76a77d516ada6d01e40d48f785c05fb87ac3b99fe197e1dafaf51c00d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_dashboard.html",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/review_reduction_policy_dashboard.html",
+      "size_bytes": 12269,
+      "sha256": "d0070478ceff5ae13cc330a86001705fa251286733edaee7745b0aa751412e7d"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\RUN_NEXT_STEPS.txt",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/RUN_NEXT_STEPS.txt",
+      "size_bytes": 409,
+      "sha256": "2f286895ab0e5ac39c4bef7d4335026579bfc1f4a1dff58ded669e7b5ba1d62c"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\TASK_MANIFEST.json",
+      "bundle_path": "artifacts/review_reduction_policy_pack_20260709/TASK_MANIFEST.json",
+      "size_bytes": 1867,
+      "sha256": "d5fa0e682f867e785f965b84f863ee4beff406eff928b41a64571fbc1fe9e5de"
+    }
+  ],
+  "copied_scripts": [
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_703790_shadow_policy_proposal.py",
+      "bundle_path": "scripts/build_703790_shadow_policy_proposal.py",
+      "size_bytes": 24237,
+      "sha256": "e8fc5df5df45e1e459d7753da955e81f39c528d2fade2783a2950d6cbcebdaa1"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\validate_703790_shadow_bundle.py",
+      "bundle_path": "scripts/validate_703790_shadow_bundle.py",
+      "size_bytes": 9296,
+      "sha256": "44bdf422a9c3ea0765fd082a4efdd861d4e884885e6c23bc2c7932fc584cffd3"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\analyze_full_historical_empirical_rule_intelligence.py",
+      "bundle_path": "scripts/analyze_full_historical_empirical_rule_intelligence.py",
+      "size_bytes": 31222,
+      "sha256": "aff49e55fd09c483c3354add8bffe19fb4235dfa83ee9bb5bd7c2362695c7983"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_review_reduction_policy_pack.py",
+      "bundle_path": "scripts/build_review_reduction_policy_pack.py",
+      "size_bytes": 20721,
+      "sha256": "8174a12c3ee0e5b99bda2e6db15d0b5557dbd2f425d47a8b10c50e0a76bfda8e"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_review_reduction_medgemma_shadow_handoff.py",
+      "bundle_path": "scripts/build_review_reduction_medgemma_shadow_handoff.py",
+      "size_bytes": 24051,
+      "sha256": "48252d46b99cab2d8b425a0522817dfbfba2652e16f623e4d37002a702b2eb24"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\run_review_reduction_medgemma_shadow_inference.py",
+      "bundle_path": "scripts/run_review_reduction_medgemma_shadow_inference.py",
+      "size_bytes": 14932,
+      "sha256": "d22206374a7b633ca47c8a1c9824dafa9e45d49ab8a84f5024c29ecdccde5b18"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\merge_review_reduction_medgemma_shadow_responses.py",
+      "bundle_path": "scripts/merge_review_reduction_medgemma_shadow_responses.py",
+      "size_bytes": 21913,
+      "sha256": "fb182327e78f05a14fc5993adc9c9c883529a306f6b55187d65b80b75c20dbc9"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_review_reduction_operational_packs.py",
+      "bundle_path": "scripts/build_review_reduction_operational_packs.py",
+      "size_bytes": 27937,
+      "sha256": "a62387857dd9b7bf510a4e00703d2b748084f5c17ae9923c6e92c14040ecbfb0"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\run_review_reduction_medgemma_ai_provisional_expert_review.py",
+      "bundle_path": "scripts/run_review_reduction_medgemma_ai_provisional_expert_review.py",
+      "size_bytes": 37260,
+      "sha256": "d2a961a8a7a02f1311cb17335bb2d4860bd4ee12c884ba2bdff68c2cdc25f06c"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_ai_provisional_review_reduction_shadow_preview.py",
+      "bundle_path": "scripts/build_ai_provisional_review_reduction_shadow_preview.py",
+      "size_bytes": 20877,
+      "sha256": "68a9b09d6d00b48edfb2d47002ff202b8cdec2574c23e5ca2c259fc7f0f9f9e9"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_review_reduction_final_handoff.py",
+      "bundle_path": "scripts/build_review_reduction_final_handoff.py",
+      "size_bytes": 23579,
+      "sha256": "b5cfdc133b10e8b1b7b10fbf09a576b8fa21144c4cdfd45b93d7adddcc4f66d3"
+    },
+    {
+      "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\build_review_reduction_dgx_transfer_bundle.py",
+      "bundle_path": "scripts/build_review_reduction_dgx_transfer_bundle.py",
+      "size_bytes": 32033,
+      "sha256": "549b72bd271a59535679409ade0dd300cfd0a22b070f26a823623719166fba7a"
+    }
+  ],
+  "structure_document": {
+    "source": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\REVIEW_REDUCTION_DGX_BUNDLE_STRUCTURE.md",
+    "bundle_path": "BUNDLE_STRUCTURE.md",
+    "size_bytes": 3450,
+    "sha256": "4c5d298cc5365580fe6b2546e794dfd3ab87aac8c4f671a16f12450631036b6b"
+  },
+  "readme": {
+    "bundle_path": "DGX_TRANSFER_README.txt",
+    "size_bytes": 3069,
+    "sha256": "d4b141e12cc48ee103cac9bb9a33850b597026b1681753e8f16fdc18a0bd529a"
+  },
+  "dgx_agent_prompt": {
+    "bundle_path": "DGX_AGENT_PROMPT_COPY_PASTE.txt",
+    "size_bytes": 6988,
+    "sha256": "2f183f40706e4dc62ee63df8952f323b673477420b8dbd7f07d784049484e046"
+  }
+}

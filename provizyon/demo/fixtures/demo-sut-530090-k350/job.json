@@ -1,0 +1,12 @@
+{
+  "provizyon_id": "demo-sut-530090-k350",
+  "hasta_id": "DEMO003",
+  "patient_name": "Demo Hasta SUT Uyumsuz",
+  "yas": 32,
+  "cinsiyet": "kadin",
+  "code_family": "SUT",
+  "sut_codes": ["530090"],
+  "diagnoses": ["K35.0"],
+  "documents": [],
+  "notes": ["Demo: 530090 + K35.0 → tanı uyumsuz / savunulabilir risk"]
+}

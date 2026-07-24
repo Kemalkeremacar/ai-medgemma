@@ -1,0 +1,60 @@
+{
+  "schema_version": "review_reduction_703790_shadow_policy_proposal.v1",
+  "generated_at": "2026-07-20T12:08:44",
+  "mode": "703790_shadow_only_policy_proposal",
+  "inputs": {
+    "rule_engine_results": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\rule_engine_results.csv",
+    "runtime_lookup": "C:\\Projects\\ADDQ\\SUT\\generated\\sut_diagnosis_rules\\ek2b\\runtime\\sut_diagnosis_runtime_lookup.json",
+    "ai_candidate": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.json"
+  },
+  "counts": {
+    "historical_rows_scanned": 2358495,
+    "historical_703790_status_counts": {
+      "REVIEW": 212
+    },
+    "scenario_count": 3,
+    "prefix_register_rows": 8,
+    "recommended_h40_matched_rows": 146,
+    "recommended_h40_full_release_counterfactual": 7,
+    "recommended_h40_partial_resolution_counterfactual": 139
+  },
+  "critical_correction": {
+    "issue": "Prior MedGemma reasoning incorrectly characterized H52/H40/H04/H43 as ear/hearing diagnoses.",
+    "action": "Do not promote the broad AI prefix set; use H40 only for the proposed shadow cohort.",
+    "prefixes_observation_only": [
+      "H46",
+      "H47.5",
+      "H35.3"
+    ],
+    "prefixes_keep_manual_review": [
+      "H52",
+      "H04",
+      "H18",
+      "H43"
+    ]
+  },
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  },
+  "generated_files": [
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_POLICY_PROPOSAL.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_scenarios.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_scenarios.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_prefix_decision_register.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_prefix_decision_register.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_MONITORING_PLAN.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_SHADOW_ROLLBACK_MANIFEST.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_GOVERNANCE_REVIEW.txt",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\703790_shadow_policy_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_703790_shadow_policy_proposal_20260720\\TASK_MANIFEST.json"
+  ]
+}

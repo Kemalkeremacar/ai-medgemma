@@ -1,0 +1,14 @@
+[Unit]
+Description=MedGemma Gateway (OpenAI uyumlu API, vLLM önünde) :8080
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/monassist1/GemmaApp/medgemma_gateway
+ExecStart=/home/monassist1/GemmaApp/medgemma_gateway/serve.sh
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,19 @@
+{
+  "provizyon_id": "demo-red-tani-uyumsuz",
+  "hasta_id": "RED002",
+  "patient_name": "Demo Red Tanı Uyumsuz",
+  "yas": 30,
+  "cinsiyet": "kadin",
+  "code_family": "HUV",
+  "huv_codes": [
+    "02.25841"
+  ],
+  "diagnoses": [
+    "J06.9"
+  ],
+  "documents_mode": "skipped_full_pipeline",
+  "documents": [],
+  "notes": [
+    "Demo RED: doğum + üst solunum yolu tanısı → tani_uyumsuz"
+  ]
+}

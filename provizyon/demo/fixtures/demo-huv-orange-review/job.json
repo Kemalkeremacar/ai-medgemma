@@ -1,0 +1,12 @@
+{
+  "provizyon_id": "demo-huv-orange-review",
+  "hasta_id": "DEMO006",
+  "patient_name": "Demo Hasta Manuel İnceleme",
+  "yas": 52,
+  "cinsiyet": "erkek",
+  "code_family": "HUV",
+  "huv_codes": ["34.01511"],
+  "diagnoses": ["J39"],
+  "documents": [],
+  "notes": ["Demo: 34.01511 ALT + J39 → unsupported_policy → manual_review / orange"]
+}

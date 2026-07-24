@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemmaapp.local/schemas/rule_draft.schema.json",
+  "title": "MachineReadableRuleDraft",
+  "description": "Uzman kararından üretilen aday kural paketi. Canlı runtime'a yazılmadan önce validate + shadow + yönetim onayı gerekir.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_id",
+    "status",
+    "procedure_code",
+    "procedure_code_system",
+    "match",
+    "outcomes",
+    "governance",
+    "monitoring",
+    "rollback",
+    "source_expert_decision_id",
+    "created_at"
+  ],
+  "properties": {
+    "draft_id": { "type": "string" },
+    "version": {
+      "type": "string",
+      "description": "Semver veya tarih etiketli sürüm (ör. 0.1.0-shadow)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "validated",
+        "shadow",
+        "pending_admin_approval",
+        "approved_for_live",
+        "rejected",
+        "rolled_back"
+      ]
+    },
+    "procedure_code": { "type": "string" },
+    "procedure_code_system": {
+      "type": "string",
+      "enum": ["SUT", "HUV", "OTHER"]
+    },
+    "match": {
+      "type": "object",
+      "required": ["include_icd_prefixes"],
+      "properties": {
+        "include_icd_prefixes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "exclude_icd_prefixes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "exceptions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      }
+    },
+    "outcomes": {
+      "type": "object",
+      "required": ["on_match", "on_missing_diagnosis", "fallback"],
+      "properties": {
+        "on_match": {
+          "type": "string",
+          "enum": ["PASS", "REVIEW_REQUIRED", "SHADOW_CANDIDATE", "FAIL"],
+          "description": "Shadow aşamasında genelde SHADOW_CANDIDATE; canlıda PASS yalnızca onay sonrası."
+        },
+        "on_missing_diagnosis": {
+          "type": "string",
+          "enum": ["REVIEW_REQUIRED", "FAIL", "PASS", "SKIP"]
+        },
+        "fallback": {
+          "type": "string",
+          "enum": ["REVIEW_REQUIRED", "FAIL", "PASS"],
+          "description": "Eşleşmeme veya belirsizlikte davranış."
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "apply_ready",
+        "auto_apply",
+        "human_admin_approval_present"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Shadow gözlemci açık mı?"
+        },
+        "apply_ready": {
+          "type": "boolean",
+          "description": "Canlı uygulamaya teknik olarak hazır mı?"
+        },
+        "auto_apply": {
+          "type": "boolean",
+          "const": false,
+          "description": "Her zaman false; otomatik canlı yazım yasak."
+        },
+        "human_admin_approval_present": {
+          "type": "boolean"
+        },
+        "approved_by": { "type": "string" },
+        "approved_at": { "type": ["string", "null"], "format": "date-time" },
+        "list_version": { "type": "string" },
+        "rationale": { "type": "string" },
+        "source_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "monitoring": {
+      "type": "object",
+      "required": ["min_observation_days", "max_human_disagreement_rate"],
+      "properties": {
+        "min_observation_days": { "type": "integer", "minimum": 1 },
+        "min_procedure_review_cases": { "type": "integer", "minimum": 0 },
+        "min_include_diagnosis_matches": { "type": "integer", "minimum": 0 },
+        "max_human_disagreement_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Örn. 0.02 = %2."
+        },
+        "max_deterministic_fail_on_candidates": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "stop_conditions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "required": ["steps"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Örn. overlay kapat; shadow yazmayı durdur; canlı REVIEW_REQUIRED doğrula."
+        }
+      }
+    },
+    "historical_impact": {
+      "type": "object",
+      "description": "Counterfactual özet (canlı onay sayısı değildir).",
+      "properties": {
+        "cohort_size": { "type": "integer" },
+        "matched": { "type": "integer" },
+        "full_resolution_counterfactual": { "type": "integer" },
+        "partial_resolution_counterfactual": { "type": "integer" },
+        "notes": { "type": "string" }
+      }
+    },
+    "test_scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "expected_outcome"],
+        "properties": {
+          "name": { "type": "string" },
+          "diagnoses": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "expected_outcome": { "type": "string" }
+        }
+      }
+    },
+    "source_expert_decision_id": {
+      "type": "string",
+      "description": "expert_decision.decision_id referansı."
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "created_by": {
+      "type": "string",
+      "description": "Üreten sistem veya kişi (ör. medgemma_draft_v1)."
+    }
+  }
+}

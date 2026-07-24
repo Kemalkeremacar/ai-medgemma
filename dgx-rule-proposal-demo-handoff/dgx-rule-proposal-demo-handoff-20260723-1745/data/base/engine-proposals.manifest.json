@@ -1,0 +1,122 @@
+{
+  "artifacts": [
+    {
+      "artifactKind": "canonical_catalog",
+      "fileName": "canonical-reference-catalog.json",
+      "modelInputAllowed": true,
+      "officialSource": false,
+      "sha256": "3c4066eb1a297b87a163bf54e70ed9b4b61895b32eba34ca9681f23a26990070"
+    },
+    {
+      "artifactKind": "official_huv",
+      "fileName": "HUV_06052025.xlsx",
+      "modelInputAllowed": false,
+      "officialSource": true,
+      "sha256": "ef4e92086025170857d8b9d33ef58abc452a3f3dbdeadd8b9c2ae78b8a46e920"
+    },
+    {
+      "artifactKind": "huv_note_rules",
+      "fileName": "huv_note_rules.jsonl",
+      "modelInputAllowed": true,
+      "officialSource": false,
+      "sha256": "92b8b9b0565595cf19b4b020c0de7009b043794e87af39cd2b043cf5ccda7156"
+    },
+    {
+      "artifactKind": "huv_sut_crosswalk",
+      "fileName": "huv_sut_crosswalk.jsonl",
+      "modelInputAllowed": true,
+      "officialSource": false,
+      "sha256": "db7f2133d1be990498d9079572c3035e876fd67f3881e2d2d6b3e8709e078290"
+    },
+    {
+      "artifactKind": "sut_rules",
+      "fileName": "sut_rules_merged.json",
+      "modelInputAllowed": true,
+      "officialSource": false,
+      "sha256": "3c6a554a3a266fa401817bc2f81ebdeedf2acabd7ff58bcb785a4856dcce5d35"
+    },
+    {
+      "artifactKind": "huv_diagnosis_runtime",
+      "fileName": "huv_diagnosis_runtime_rules.jsonl",
+      "modelInputAllowed": true,
+      "officialSource": false,
+      "sha256": "64149e9346c6bc1c8541a58935b53c4cfd48a93def3f63672261ea02ed0c9500"
+    },
+    {
+      "artifactKind": "existing_rule_target_maps",
+      "fileName": "maps.json",
+      "modelInputAllowed": false,
+      "officialSource": false,
+      "sha256": "bffb9b421b093f00be8b565757b77dbb462d9b41524474c0aa3f68d469330906"
+    },
+    {
+      "artifactKind": "existing_rule_snapshot_manifest",
+      "fileName": "delivery-manifest.json",
+      "modelInputAllowed": false,
+      "officialSource": false,
+      "sha256": "a1db7da54c852e475283dc49d1454945f6630ad8de593947479b4900941070f6"
+    }
+  ],
+  "catalogRunId": "dev-reference-a1db7da54c852e47",
+  "catalogSha256": "3c4066eb1a297b87a163bf54e70ed9b4b61895b32eba34ca9681f23a26990070",
+  "counts": {
+    "aiPackets": 799,
+    "coverageStatus": {
+      "diagnosis_context_only": 1265,
+      "proposed": 577,
+      "signals_only": 218
+    },
+    "engineSignals": 2322,
+    "existingRuleContexts": 7,
+    "malformedExistingRuleContexts": 6,
+    "mappingStatus": {
+      "direct": 28,
+      "review_only": 809,
+      "unsupported": 1485
+    },
+    "officialEvidence": 1391,
+    "outpatientHuvProcedures": 2060,
+    "proposalPriority": {
+      "A": 28,
+      "B": 731,
+      "C": 40
+    },
+    "proposals": 799,
+    "validExistingRuleContexts": 1
+  },
+  "files": [
+    {
+      "path": "engine-proposals.json",
+      "sha256": "3580ac21f05b513c117794bc645520eb24477d641384015ac93750c07d5e4f33"
+    },
+    {
+      "path": "engine-proposals.schema.json",
+      "sha256": "f1ed893ed70f0b1602859f74130890686e7a25bc5d5cbcfda3fe670c3479e994"
+    },
+    {
+      "path": "engine-proposals.review.json",
+      "sha256": "fe9f133ac82f89bbb433469ffe7466fc9ff27fcb8705378dae75b63f0fa75706"
+    },
+    {
+      "path": "engine-proposals.review.csv",
+      "sha256": "25cbb4c581d53a99ae0e61e821404c966f446e0d0e5afb328d2d47d464c0df35"
+    },
+    {
+      "path": "engine-proposals.coverage.csv",
+      "sha256": "06c2950bfb755fe93353bfa34cf9fe266f97e0720e6441f861a6ec4b99aed3e2"
+    },
+    {
+      "path": "engine-proposals.ai-packets.json",
+      "sha256": "7b7e2aeee3885a5aa45f1e3901870ea53ece0aa4e34a9947a32927a74d3fecec"
+    }
+  ],
+  "generatedAt": "2026-07-22T13:35:43.416436Z",
+  "safety": {
+    "autoApproved": false,
+    "callsModel": false,
+    "containsInternalIds": false,
+    "requiresHumanReview": true,
+    "writesToDatabase": false
+  },
+  "schemaVersion": "outpatient_rule_engine_proposal_manifest.v1"
+}

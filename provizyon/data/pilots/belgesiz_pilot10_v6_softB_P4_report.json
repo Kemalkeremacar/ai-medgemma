@@ -1,0 +1,97 @@
+{
+  "pilot_id": "belgesiz_pilot10_v1",
+  "n": 10,
+  "karar": {
+    "uygun": 10
+  },
+  "tani_kurali": {
+    "pass": 9,
+    "skipped": 1
+  },
+  "medgemma": {
+    "medium": 9,
+    "high": 1
+  },
+  "cases": [
+    {
+      "provizyon_id": "2476721",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 80676
+    },
+    {
+      "provizyon_id": "2569510",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 83307
+    },
+    {
+      "provizyon_id": "2562697",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "skipped",
+      "medgemma": "medium",
+      "elapsed_ms": 92745
+    },
+    {
+      "provizyon_id": "2568731",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 81794
+    },
+    {
+      "provizyon_id": "106844",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 79818
+    },
+    {
+      "provizyon_id": "107497",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 66597
+    },
+    {
+      "provizyon_id": "2566009",
+      "nihai_karar": "uygun",
+      "tani_kurali": "skipped",
+      "sut_kurali": "skipped",
+      "medgemma": "medium",
+      "elapsed_ms": 54610
+    },
+    {
+      "provizyon_id": "2580856",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "high",
+      "elapsed_ms": 126080
+    },
+    {
+      "provizyon_id": "2581695",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 104527
+    },
+    {
+      "provizyon_id": "2582118",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 137864
+    }
+  ]
+}

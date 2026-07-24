@@ -1,0 +1,1151 @@
+{
+  "$defs": {
+    "AISynthesis": {
+      "additionalProperties": false,
+      "properties": {
+        "callMetadata": {
+          "additionalProperties": true,
+          "title": "Callmetadata",
+          "type": "object"
+        },
+        "citedExistingContextIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Citedexistingcontextids",
+          "type": "array"
+        },
+        "diagnosisCodes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diagnosiscodes",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "evidenceGaps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidencegaps",
+          "type": "array"
+        },
+        "existingRuleRelation": {
+          "anyOf": [
+            {
+              "enum": [
+                "already_existing",
+                "similar",
+                "conflicting",
+                "new",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Existingrulerelation"
+        },
+        "expertQuestions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expertquestions",
+          "type": "array"
+        },
+        "hypothesisOnly": {
+          "const": true,
+          "default": true,
+          "title": "Hypothesisonly",
+          "type": "boolean"
+        },
+        "modelId": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Modelid",
+          "type": "string"
+        },
+        "officialEvidenceIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Officialevidenceids",
+          "type": "array"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "proposal",
+                "no_change",
+                "insufficient_evidence"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Outcome"
+        },
+        "packetId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Packetid",
+          "type": "string"
+        },
+        "procedureRefs": {
+          "items": {
+            "$ref": "#/$defs/ProcedureRef"
+          },
+          "title": "Procedurerefs",
+          "type": "array"
+        },
+        "proposedFields": {
+          "additionalProperties": true,
+          "title": "Proposedfields",
+          "type": "object"
+        },
+        "rationale": {
+          "anyOf": [
+            {
+              "maxLength": 12000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rationale"
+        },
+        "selectedCrosswalkId": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selectedcrosswalkid"
+        },
+        "stage": {
+          "enum": [
+            "crosswalk_adjudication",
+            "rule_synthesis",
+            "existing_rule_conflict",
+            "proposal_rescue"
+          ],
+          "title": "Stage",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "not_called",
+            "accepted",
+            "blocked",
+            "call_or_parse_error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "targetRuleType": {
+          "anyOf": [
+            {
+              "enum": [
+                "yas",
+                "sure",
+                "muayene",
+                "birlikteOdenmez",
+                "capraz"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Targetruletype"
+        }
+      },
+      "required": [
+        "stage",
+        "status",
+        "modelId",
+        "packetId"
+      ],
+      "title": "AISynthesis",
+      "type": "object"
+    },
+    "ArtifactFingerprint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifactKind": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Artifactkind",
+          "type": "string"
+        },
+        "fileName": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "modelInputAllowed": {
+          "title": "Modelinputallowed",
+          "type": "boolean"
+        },
+        "officialSource": {
+          "title": "Officialsource",
+          "type": "boolean"
+        },
+        "sha256": {
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifactKind",
+        "fileName",
+        "sha256",
+        "officialSource",
+        "modelInputAllowed"
+      ],
+      "title": "ArtifactFingerprint",
+      "type": "object"
+    },
+    "CrosswalkHypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "alternatives": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "artifactSha256": {
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "title": "Artifactsha256",
+          "type": "string"
+        },
+        "confidence": {
+          "maxLength": 50,
+          "minLength": 1,
+          "title": "Confidence",
+          "type": "string"
+        },
+        "confidenceScore": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidencescore",
+          "type": "number"
+        },
+        "crosswalkId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Crosswalkid",
+          "type": "string"
+        },
+        "decisionSource": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Decisionsource",
+          "type": "string"
+        },
+        "huvCode": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Huvcode",
+          "type": "string"
+        },
+        "hypothesisOnly": {
+          "const": true,
+          "default": true,
+          "title": "Hypothesisonly",
+          "type": "boolean"
+        },
+        "officialDirectReference": {
+          "title": "Officialdirectreference",
+          "type": "boolean"
+        },
+        "officialEvidenceId": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Officialevidenceid"
+        },
+        "reason": {
+          "maxLength": 12000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "relationType": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Relationtype",
+          "type": "string"
+        },
+        "reviewRecommended": {
+          "title": "Reviewrecommended",
+          "type": "boolean"
+        },
+        "sutCode": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sutcode"
+        },
+        "sutName": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sutname"
+        }
+      },
+      "required": [
+        "crosswalkId",
+        "artifactSha256",
+        "huvCode",
+        "relationType",
+        "confidence",
+        "confidenceScore",
+        "decisionSource",
+        "reason",
+        "reviewRecommended",
+        "officialDirectReference"
+      ],
+      "title": "CrosswalkHypothesis",
+      "type": "object"
+    },
+    "DiagnosisHypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "artifactSha256": {
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "title": "Artifactsha256",
+          "type": "string"
+        },
+        "confidence": {
+          "maxLength": 50,
+          "minLength": 1,
+          "title": "Confidence",
+          "type": "string"
+        },
+        "diagnosisPolicy": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Diagnosispolicy",
+          "type": "string"
+        },
+        "engineSourceEvidence": {
+          "anyOf": [
+            {
+              "maxLength": 12000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enginesourceevidence"
+        },
+        "excludedPatterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Excludedpatterns",
+          "type": "array"
+        },
+        "expandedDiagnosisCodes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expandeddiagnosiscodes",
+          "type": "array"
+        },
+        "expansionFlags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expansionflags",
+          "type": "array"
+        },
+        "hypothesisOnly": {
+          "const": true,
+          "default": true,
+          "title": "Hypothesisonly",
+          "type": "boolean"
+        },
+        "qualityFlags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualityflags",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 12000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "requiredDiagnosisGroups": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Requireddiagnosisgroups",
+          "type": "array"
+        },
+        "requiredPatterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Requiredpatterns",
+          "type": "array"
+        },
+        "reviewRequired": {
+          "title": "Reviewrequired",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "artifactSha256",
+        "diagnosisPolicy",
+        "reviewRequired",
+        "confidence",
+        "reason"
+      ],
+      "title": "DiagnosisHypothesis",
+      "type": "object"
+    },
+    "EngineSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "crosswalkIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Crosswalkids",
+          "type": "array"
+        },
+        "engineRuleType": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Engineruletype",
+          "type": "string"
+        },
+        "fields": {
+          "additionalProperties": true,
+          "title": "Fields",
+          "type": "object"
+        },
+        "hypothesisOnly": {
+          "const": true,
+          "default": true,
+          "title": "Hypothesisonly",
+          "type": "boolean"
+        },
+        "mappingStatus": {
+          "enum": [
+            "direct",
+            "review_only",
+            "unsupported"
+          ],
+          "title": "Mappingstatus",
+          "type": "string"
+        },
+        "officialEvidenceIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Officialevidenceids",
+          "type": "array"
+        },
+        "origin": {
+          "enum": [
+            "HUV_NOTE",
+            "SUT_RULE"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "procedure": {
+          "$ref": "#/$defs/ProcedureRef"
+        },
+        "qualityFlags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualityflags",
+          "type": "array"
+        },
+        "signalId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Signalid",
+          "type": "string"
+        },
+        "targetRuleType": {
+          "anyOf": [
+            {
+              "enum": [
+                "yas",
+                "sure",
+                "muayene",
+                "birlikteOdenmez",
+                "capraz"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Targetruletype"
+        }
+      },
+      "required": [
+        "signalId",
+        "procedure",
+        "origin",
+        "engineRuleType",
+        "mappingStatus"
+      ],
+      "title": "EngineSignal",
+      "type": "object"
+    },
+    "ExistingRuleComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "contextIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Contextids",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "relation": {
+          "enum": [
+            "already_existing",
+            "similar",
+            "conflicting",
+            "new",
+            "unknown"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation"
+      ],
+      "title": "ExistingRuleComparison",
+      "type": "object"
+    },
+    "ExistingRuleContext": {
+      "additionalProperties": false,
+      "properties": {
+        "businessFields": {
+          "additionalProperties": true,
+          "title": "Businessfields",
+          "type": "object"
+        },
+        "contextId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Contextid",
+          "type": "string"
+        },
+        "procedureRefs": {
+          "items": {
+            "$ref": "#/$defs/ProcedureRef"
+          },
+          "title": "Procedurerefs",
+          "type": "array"
+        },
+        "qualityFlags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualityflags",
+          "type": "array"
+        },
+        "qualityStatus": {
+          "enum": [
+            "valid",
+            "malformed_historical_context"
+          ],
+          "title": "Qualitystatus",
+          "type": "string"
+        },
+        "ruleType": {
+          "enum": [
+            "yas",
+            "sure",
+            "muayene",
+            "birlikteOdenmez",
+            "capraz"
+          ],
+          "title": "Ruletype",
+          "type": "string"
+        },
+        "sourceSnapshotSha256": {
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "title": "Sourcesnapshotsha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contextId",
+        "ruleType",
+        "qualityStatus",
+        "sourceSnapshotSha256"
+      ],
+      "title": "ExistingRuleContext",
+      "type": "object"
+    },
+    "OfficialEvidenceProposal": {
+      "additionalProperties": false,
+      "properties": {
+        "evidenceId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Evidenceid",
+          "type": "string"
+        },
+        "fileName": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "locator": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Locator",
+          "type": "string"
+        },
+        "procedureRefs": {
+          "items": {
+            "$ref": "#/$defs/ProcedureRef"
+          },
+          "minItems": 1,
+          "title": "Procedurerefs",
+          "type": "array"
+        },
+        "quote": {
+          "maxLength": 12000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "quoteVerified": {
+          "const": true,
+          "default": true,
+          "title": "Quoteverified",
+          "type": "boolean"
+        },
+        "ruleTypes": {
+          "items": {
+            "enum": [
+              "yas",
+              "sure",
+              "muayene",
+              "birlikteOdenmez",
+              "capraz"
+            ],
+            "type": "string"
+          },
+          "title": "Ruletypes",
+          "type": "array"
+        },
+        "sha256": {
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "sheetName": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Sheetname",
+          "type": "string"
+        },
+        "sourceId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Sourceid",
+          "type": "string"
+        },
+        "sourceKind": {
+          "enum": [
+            "HUV",
+            "SUT"
+          ],
+          "title": "Sourcekind",
+          "type": "string"
+        },
+        "sourceRow": {
+          "minimum": 1,
+          "title": "Sourcerow",
+          "type": "integer"
+        },
+        "verificationMethod": {
+          "const": "xlsx_row_exact_cell",
+          "title": "Verificationmethod",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidenceId",
+        "sourceId",
+        "sourceKind",
+        "version",
+        "fileName",
+        "sha256",
+        "sheetName",
+        "sourceRow",
+        "locator",
+        "quote",
+        "verificationMethod",
+        "procedureRefs"
+      ],
+      "title": "OfficialEvidenceProposal",
+      "type": "object"
+    },
+    "ProcedureCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "aiRescueEligible": {
+          "title": "Airescueeligible",
+          "type": "boolean"
+        },
+        "aiSyntheses": {
+          "items": {
+            "$ref": "#/$defs/AISynthesis"
+          },
+          "title": "Aisyntheses",
+          "type": "array"
+        },
+        "coverageStatus": {
+          "enum": [
+            "proposed",
+            "signals_only",
+            "diagnosis_context_only",
+            "no_signal"
+          ],
+          "title": "Coveragestatus",
+          "type": "string"
+        },
+        "crosswalks": {
+          "items": {
+            "$ref": "#/$defs/CrosswalkHypothesis"
+          },
+          "title": "Crosswalks",
+          "type": "array"
+        },
+        "diagnosisHypothesis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DiagnosisHypothesis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "existingRuleContextIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Existingrulecontextids",
+          "type": "array"
+        },
+        "procedure": {
+          "$ref": "#/$defs/ProcedureRef"
+        },
+        "proposalIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Proposalids",
+          "type": "array"
+        },
+        "signalIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Signalids",
+          "type": "array"
+        },
+        "unsupportedSignalIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unsupportedsignalids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "procedure",
+        "coverageStatus",
+        "aiRescueEligible"
+      ],
+      "title": "ProcedureCoverage",
+      "type": "object"
+    },
+    "ProcedureRef": {
+      "additionalProperties": false,
+      "properties": {
+        "ad": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ad"
+        },
+        "kod": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Kod",
+          "type": "string"
+        },
+        "listeTipi": {
+          "enum": [
+            "HUV",
+            "SUT",
+            "TTB",
+            "TL",
+            "EK2A"
+          ],
+          "title": "Listetipi",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kod",
+        "listeTipi"
+      ],
+      "title": "ProcedureRef",
+      "type": "object"
+    },
+    "RuleProposal": {
+      "additionalProperties": false,
+      "properties": {
+        "aiSyntheses": {
+          "items": {
+            "$ref": "#/$defs/AISynthesis"
+          },
+          "title": "Aisyntheses",
+          "type": "array"
+        },
+        "autoApproved": {
+          "const": false,
+          "default": false,
+          "title": "Autoapproved",
+          "type": "boolean"
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "partial"
+          ],
+          "title": "Completeness",
+          "type": "string"
+        },
+        "crosswalkIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Crosswalkids",
+          "type": "array"
+        },
+        "diagnosisCodes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Diagnosiscodes",
+          "type": "array"
+        },
+        "engineSignalIds": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Enginesignalids",
+          "type": "array"
+        },
+        "existingRuleComparison": {
+          "$ref": "#/$defs/ExistingRuleComparison"
+        },
+        "expertDecision": {
+          "const": "pending",
+          "default": "pending",
+          "title": "Expertdecision",
+          "type": "string"
+        },
+        "humanReviewRequired": {
+          "const": true,
+          "default": true,
+          "title": "Humanreviewrequired",
+          "type": "boolean"
+        },
+        "officialEvidenceIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Officialevidenceids",
+          "type": "array"
+        },
+        "primaryProcedure": {
+          "$ref": "#/$defs/ProcedureRef"
+        },
+        "priority": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "procedureRefs": {
+          "items": {
+            "$ref": "#/$defs/ProcedureRef"
+          },
+          "minItems": 1,
+          "title": "Procedurerefs",
+          "type": "array"
+        },
+        "proposalId": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Proposalid",
+          "type": "string"
+        },
+        "proposedFields": {
+          "additionalProperties": true,
+          "title": "Proposedfields",
+          "type": "object"
+        },
+        "qualityFlags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualityflags",
+          "type": "array"
+        },
+        "targetRuleType": {
+          "enum": [
+            "yas",
+            "sure",
+            "muayene",
+            "birlikteOdenmez",
+            "capraz"
+          ],
+          "title": "Targetruletype",
+          "type": "string"
+        }
+      },
+      "required": [
+        "proposalId",
+        "primaryProcedure",
+        "procedureRefs",
+        "targetRuleType",
+        "engineSignalIds",
+        "priority",
+        "completeness",
+        "existingRuleComparison"
+      ],
+      "title": "RuleProposal",
+      "type": "object"
+    },
+    "SafetyBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "autoApply": {
+          "const": false,
+          "default": false,
+          "title": "Autoapply",
+          "type": "boolean"
+        },
+        "onlyWarningRules": {
+          "const": true,
+          "default": true,
+          "title": "Onlywarningrules",
+          "type": "boolean"
+        },
+        "writesToDatabase": {
+          "const": false,
+          "default": false,
+          "title": "Writestodatabase",
+          "type": "boolean"
+        },
+        "writesToQdrant": {
+          "const": false,
+          "default": false,
+          "title": "Writestoqdrant",
+          "type": "boolean"
+        }
+      },
+      "title": "SafetyBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactFingerprint"
+      },
+      "minItems": 1,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "catalogRunId": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Catalogrunid",
+      "type": "string"
+    },
+    "catalogSha256": {
+      "pattern": "^[a-fA-F0-9]{64}$",
+      "title": "Catalogsha256",
+      "type": "string"
+    },
+    "coverage": {
+      "items": {
+        "$ref": "#/$defs/ProcedureCoverage"
+      },
+      "minItems": 1,
+      "title": "Coverage",
+      "type": "array"
+    },
+    "engineSignals": {
+      "items": {
+        "$ref": "#/$defs/EngineSignal"
+      },
+      "title": "Enginesignals",
+      "type": "array"
+    },
+    "existingRuleContexts": {
+      "items": {
+        "$ref": "#/$defs/ExistingRuleContext"
+      },
+      "title": "Existingrulecontexts",
+      "type": "array"
+    },
+    "generatedAt": {
+      "format": "date-time",
+      "title": "Generatedat",
+      "type": "string"
+    },
+    "officialEvidence": {
+      "items": {
+        "$ref": "#/$defs/OfficialEvidenceProposal"
+      },
+      "title": "Officialevidence",
+      "type": "array"
+    },
+    "proposals": {
+      "items": {
+        "$ref": "#/$defs/RuleProposal"
+      },
+      "title": "Proposals",
+      "type": "array"
+    },
+    "safety": {
+      "$ref": "#/$defs/SafetyBlock"
+    },
+    "schemaVersion": {
+      "const": "outpatient_rule_engine_proposal.v1",
+      "title": "Schemaversion",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "catalogRunId",
+    "catalogSha256",
+    "artifacts",
+    "coverage"
+  ],
+  "title": "EngineProposalPackage",
+  "type": "object"
+}

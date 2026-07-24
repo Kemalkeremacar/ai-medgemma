@@ -1,0 +1,32 @@
+{
+  "schema_version": "review_reduction_lab_not_required_shadow_proposal.v1",
+  "generated_at": "2026-07-21T15:13:39Z",
+  "proposal_id": "shadow_huv_routine_lab_not_required_v1",
+  "min_observation_days": 30,
+  "min_procedure_review_cases_per_code": 20,
+  "max_human_disagreement_rate": 0.02,
+  "max_deterministic_fail_on_candidates": 0,
+  "suggested_metrics": [
+    "phase_1 kodlarında REVIEW → soft-pass shadow aday oranı",
+    "insan uzmanı ile uyuşmazlık (yanlış yeşil)",
+    "aynı vakada kalan non-lab REVIEW oranı",
+    "not_required sonrası deterministik FAIL = 0 doğrulaması"
+  ],
+  "stop_conditions": [
+    "insan uyuşmazlığı > %2",
+    "aday kohortta deterministik FAIL > 0",
+    "yönetim veya uzman iptali"
+  ],
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemmaapp.local/schemas/expert_decision.schema.json",
+  "title": "ExpertMedicalPolicyDecision",
+  "description": "Medikal-policy uzmanının yapılandırılmış karar kaydı. Canlı kural değildir; kural taslağı üretiminin girdisidir.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "procedure_code",
+    "procedure_code_system",
+    "verdict",
+    "include_diagnoses",
+    "exclude_diagnoses",
+    "decision_if_missing_diagnosis",
+    "rationale",
+    "confidence",
+    "shadow_pilot_approved",
+    "decided_by",
+    "decided_at"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "description": "Benzersiz karar kimliği (UUID veya kurumsal id)."
+    },
+    "procedure_code": {
+      "type": "string",
+      "description": "İşlem kodu (ör. 703790)."
+    },
+    "procedure_code_system": {
+      "type": "string",
+      "enum": ["SUT", "HUV", "OTHER"]
+    },
+    "procedure_name": {
+      "type": "string",
+      "description": "İşlem adı (ör. Nerve Fiber Analyzer)."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "approve_shadow_scope",
+        "approve_live_scope",
+        "narrow_scope",
+        "reject",
+        "needs_more_evidence"
+      ],
+      "description": "Uzman nihai hükmü. approve_live_scope yalnızca yönetim onayı sonrası yayın sürecine girer."
+    },
+    "include_diagnoses": {
+      "type": "array",
+      "description": "Dahil ICD-10 önek veya tam kodlar (ör. H40, H40.1).",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "exclude_diagnoses": {
+      "type": "array",
+      "description": "Hariç tutulacak ICD kodları / önekler.",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "exceptions": {
+      "type": "array",
+      "description": "Serbest metin istisnalar (yaş, branş, eşlik eden işlem vb.).",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "decision_if_missing_diagnosis": {
+      "type": "string",
+      "enum": ["REVIEW_REQUIRED", "FAIL", "PASS", "SKIP"],
+      "description": "Tanı yoksa veya eşleşmezse motor davranışı."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Klinik / policy gerekçe."
+    },
+    "source_refs": {
+      "type": "array",
+      "description": "Resmî veya kurumsal dayanak referansları.",
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string" },
+          "url_or_doc_id": { "type": "string" },
+          "list_version": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "valid_from": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Geçerlilik başlangıcı (ISO date)."
+    },
+    "valid_to": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Geçerlilik bitişi; null = süresiz."
+    },
+    "shadow_pilot_approved": {
+      "type": "boolean",
+      "description": "Shadow gözleme izin var mı? Canlı apply değildir."
+    },
+    "live_apply_approved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Varsayılan false. Yalnız yönetim + uzman zinciri true yapabilir."
+    },
+    "decided_by": {
+      "type": "object",
+      "required": ["name", "role"],
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "organization": { "type": "string" },
+        "authority_id": { "type": "string" }
+      }
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string",
+      "default": ""
+    },
+    "related_proposal_path": {
+      "type": "string",
+      "description": "Shadow proposal paket yolu (varsa)."
+    }
+  }
+}

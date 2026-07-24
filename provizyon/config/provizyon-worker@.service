@@ -1,0 +1,19 @@
+[Unit]
+# Templated çoklu worker birimi: provizyon-worker@1, provizyon-worker@2, ...
+# Etkinleştir/başlat:  sudo systemctl enable --now provizyon-worker@{1..3}
+Description=Provizyon Orkestrator Worker (instance %i)
+After=network-online.target redis.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=monassist1
+WorkingDirectory=/home/monassist1/GemmaApp/provizyon
+EnvironmentFile=/home/monassist1/GemmaApp/provizyon/config/provizyon.env
+Environment=PROVIZYON_WORKER_ID=%i
+ExecStart=/home/monassist1/GemmaApp/provizyon/run_worker.sh start-foreground %i
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

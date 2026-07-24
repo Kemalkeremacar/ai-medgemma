@@ -1,0 +1,76 @@
+{
+  "schema_version": "review_reduction_703790_shadow_policy_proposal.v1",
+  "generated_at": "2026-07-20T12:08:44",
+  "proposal_id": "shadow_703790_h40_v1",
+  "sut_code": "703790",
+  "procedure_name": "Nerve Fiber Analyzer (NFA)",
+  "proposal_mode": "shadow_observation_only",
+  "current_runtime_rule": {
+    "procedure_key": "SUT::EK-2B::703790::3358",
+    "diagnosis_policy": "review_required",
+    "decision_if_missing": "REVIEW_REQUIRED",
+    "review_required": true,
+    "runtime_decision_mode": "manual_review",
+    "confidence": "medium",
+    "source_evidence": "EK-2B listesinde 'Nerve Fiber Analyzer (NFA)' işlemi için tanı gerekliliği belirtilmemiştir."
+  },
+  "shadow_overlay_preview": {
+    "enabled": false,
+    "candidate_diagnosis_prefixes": [
+      "H40"
+    ],
+    "shadow_event_on_match": "AI_PROVISIONAL_SHADOW_PASS_CANDIDATE",
+    "actual_runtime_decision_on_match": "UNCHANGED",
+    "fallback_actual_runtime_decision": "REVIEW_REQUIRED",
+    "human_admin_approval_present": false,
+    "apply_ready": false
+  },
+  "clinical_quality_correction": {
+    "issue": "Prior MedGemma reasoning incorrectly characterized H52/H40/H04/H43 as ear/hearing diagnoses.",
+    "action": "Do not promote the broad AI prefix set; use H40 only for the proposed shadow cohort.",
+    "prefixes_observation_only": [
+      "H46",
+      "H47.5",
+      "H35.3"
+    ],
+    "prefixes_keep_manual_review": [
+      "H52",
+      "H04",
+      "H18",
+      "H43"
+    ]
+  },
+  "historical_core_scenario": {
+    "scenario_id": "clinical_core_h40_only",
+    "description": "Conservative glaucoma-only cohort for shadow observation.",
+    "prefixes": [
+      "H40"
+    ],
+    "recommended": true,
+    "reason": "Nerve Fiber Analyzer is directly coherent with glaucoma evaluation. This avoids promoting the prior AI review's incorrect interpretation of eye ICD codes.",
+    "historical_703790_review_rows": 212,
+    "matched_candidate_rows": 146,
+    "row_level_full_release_counterfactual": 7,
+    "row_level_partial_resolution_counterfactual": 139,
+    "unmatched_rows": 66,
+    "matched_share": 0.68867925,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  },
+  "historical_code_status_counts": {
+    "REVIEW": 212
+  },
+  "required_next_gate": "real human medical-policy and admin governance review",
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

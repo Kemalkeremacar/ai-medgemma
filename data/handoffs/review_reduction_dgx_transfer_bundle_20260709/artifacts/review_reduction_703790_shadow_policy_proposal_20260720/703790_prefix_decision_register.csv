@@ -1,0 +1,9 @@
+﻿diagnosis_prefix,historical_703790_review_rows_with_prefix,share_of_703790_review_rows,proposal_class,proposal_reason
+H40,146,0.68867925,shadow_candidate_core,Glaucoma is the conservative NFA-coherent shadow cohort.
+H46,4,0.01886792,observation_only,"Optic neuritis may be relevant, but requires human medical validation."
+H47.5,22,0.10377358,observation_only,Observed visual-pathway code; retain for analysis only.
+H35.3,16,0.0754717,observation_only,Retinal disease code; clinical NFA specificity is not established here.
+H43,55,0.25943396,manual_review,Vitreous disorders are not sufficiently specific for NFA shadow pass.
+H52,171,0.80660377,manual_review,Refraction/accommodation disorders are common but not specific NFA indications.
+H04,61,0.28773585,manual_review,Lacrimal-system disorders are not a specific NFA indication.
+H18,28,0.13207547,manual_review,Corneal disorders are not a specific NFA indication.

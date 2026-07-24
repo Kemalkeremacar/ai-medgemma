@@ -1,0 +1,12 @@
+{
+  "provizyon_id": "demo-sut-530090-e11",
+  "hasta_id": "DEMO002",
+  "patient_name": "Demo Hasta SUT E11",
+  "yas": 58,
+  "cinsiyet": "erkek",
+  "code_family": "SUT",
+  "sut_codes": ["530090"],
+  "diagnoses": ["E11"],
+  "documents": [{"path": "rapor.txt", "doc_type": "rapor", "title": "Diyabet eğitim raporu"}],
+  "notes": ["Demo: 530090 + E11 → düşük risk (review_required + belge destekli)"]
+}

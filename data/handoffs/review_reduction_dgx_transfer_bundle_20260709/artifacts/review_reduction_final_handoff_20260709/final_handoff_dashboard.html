@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Review Reduction Final Handoff</title><style>body{font-family:Arial,sans-serif;margin:24px;line-height:1.35}pre{white-space:pre-wrap;background:#f7f7f7;padding:12px;border:1px solid #ddd}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:4px 8px;font-size:12px}th{background:#f3f3f3}.warn{color:#8a4b00;font-weight:bold}</style></head><body><h1>Review Reduction Final Handoff</h1><p class='warn'>Not apply-ready. No human/admin approval is claimed.</p><pre>YONETIM OZETI
+=============
+Calisma, 2.36M historical provision rule-engine sonucundan review-reduction firsatlarini bulmak icin yapildi.
+Canli karar katmani degistirilmedi; deterministik rule engine halen tek karar katmani olarak kalmali.
+MedGemma sadece shadow reviewer, triage assistant ve AI-only provisional medical-policy reviewer olarak kullanildi.
+AI ciktilari insan/admin/expert onayi degildir; final paket apply-ready degildir.
+
+ANA SAYILAR
+===========
+Historical rows: 2358495
+Baseline REVIEW rows: 239281
+Initial top50 policy candidates: 50
+MedGemma top50 fast-track to expert: 19
+Mapping backlog before policy: 16
+Manual-review/invalid hold: 15
+Operational expert fast-track rows: 19
+AI provisional expert responses: 19 responses, 17 valid
+AI-only shadow candidates after guardrails: 3
+Shadow preview candidate-code occurrences: 505
+Shadow preview full REVIEW-row release candidates: 32
+Shadow preview partial-resolution rows still REVIEW: 473
+
+EN NET ADAY
+===========
+703790, eye_ear temasi icinde en guclu AI-only shadow pilot adayidir.
+Confidence score: 0.9
+Historical review-code rows: 212
+AI provisional shadow-pass occurrence rows: 199
+Full row-level release candidates: 16
+Bu aday bile apply-ready degildir; sadece human/admin governance review icin hazir shadow-only pilot onerisi sayilmalidir.
+
+SON KARAR
+=========
+Canli kurala alinacak bir sonuc yok.
+703790 icin shadow-only policy proposal hazirlanabilir ve insan/admin governance onayina sunulabilir.
+907440 ve 906510 conditional shadow backlog olarak tutulmali.
+908115 ve 704530, MedGemma approve demesine ragmen confidence guardrail nedeniyle bloklandi.
+Mapping backlog cozulmeden lokal/HUV dotted code adaylari icin policy refinement yapilmamali.
+
+GUVENLIK SINIRLARI
+==================
+human_admin_approval_present=false
+apply_ready=false
+auto_apply=false
+writes_to_production_db=false
+writes_to_qdrant=false
+live_runtime_override=false
+exports_case_level_rows=false
+MedGemma output is not human/admin/expert approval.
+</pre><h2>Decision Register</h2><table><thead><tr><th>decision_group</th><th>code</th><th>recommended_disposition</th><th>confidence_score</th><th>candidate_shadow_pass_occurrence_rows</th><th>row_level_full_release_rows</th></tr></thead><tbody><tr><td>recommended_shadow_pilot</td><td>703790</td><td>prepare_shadow_only_policy_proposal_for_governance_review</td><td>0.9</td><td>199</td><td>16</td></tr><tr><td>conditional_shadow_backlog</td><td>907440</td><td>keep_as_conditional_shadow_backlog_until_human_or_policy_governance_review</td><td>0.75</td><td>160</td><td>3</td></tr><tr><td>conditional_shadow_backlog</td><td>906510</td><td>keep_as_conditional_shadow_backlog_until_human_or_policy_governance_review</td><td>0.75</td><td>146</td><td>13</td></tr><tr><td>guardrail_blocked_ai_approval</td><td>908115</td><td>do_not_shadow_stage_without_stronger_evidence_or_human_governance</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>906620</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>907450</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>906880</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>801720</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>803570</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>530100</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>905670</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>906640</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>906780</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>700530</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>701230</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>907222</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>guardrail_blocked_ai_approval</td><td>704530</td><td>do_not_shadow_stage_without_stronger_evidence_or_human_governance</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>keep_manual_review</td><td>803710</td><td>keep_manual_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>not_selected_for_shadow_preview</td><td>906610</td><td>hold_for_human_or_policy_review</td><td>0.75</td><td>0</td><td>0</td></tr><tr><td>mapping_backlog</td><td>16_mapping_candidates</td><td>resolve_mapping_before_any_review_reduction_policy</td><td></td><td>0</td><td>0</td></tr></tbody></table></body></html>

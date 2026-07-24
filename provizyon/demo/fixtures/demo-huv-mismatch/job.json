@@ -1,0 +1,19 @@
+{
+  "provizyon_id": "demo-huv-mismatch",
+  "hasta_id": "DEMO006",
+  "patient_name": "Demo Hasta HUV Uyumsuz Tanı",
+  "yas": 50,
+  "cinsiyet": "kadin",
+  "code_family": "HUV",
+  "huv_codes": [
+    "02.25841"
+  ],
+  "diagnoses": [
+    "Z00.0"
+  ],
+  "documents_mode": "skipped_full_pipeline",
+  "documents": [],
+  "notes": [
+    "Demo RED: spontan vajinal doğum + Z00.0 → tani_uyumsuz (belgesiz)"
+  ]
+}

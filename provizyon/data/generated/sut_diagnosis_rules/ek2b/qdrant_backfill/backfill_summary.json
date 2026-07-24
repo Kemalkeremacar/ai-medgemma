@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-06-23T14:07:29",
+  "total_rules": 7058,
+  "policy_counts": {
+    "not_required": 16,
+    "review_required": 6522,
+    "conditional": 376,
+    "required_any": 144
+  },
+  "runtime_decision_mode_counts": {
+    "automatic": 15,
+    "manual_review": 7043
+  },
+  "dry_run": true,
+  "collection": "sut_diagnosis_rules",
+  "qdrant_url": "http://127.0.0.1:6333",
+  "tei_url": "http://127.0.0.1:8002",
+  "rules_jsonl": "/home/monassist1/GemmaApp/provizyon/data/generated/sut_diagnosis_rules/ek2b/runtime/sut_diagnosis_runtime_rules.jsonl",
+  "offset": 0,
+  "limit": null
+}

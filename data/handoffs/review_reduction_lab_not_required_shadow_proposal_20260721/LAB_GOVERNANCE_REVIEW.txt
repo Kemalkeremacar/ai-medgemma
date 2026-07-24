@@ -1,0 +1,63 @@
+HUV RUTİN LAB — SHADOW-ONLY POLICY PROPOSAL
+==========================================
+
+Proposal ID: shadow_huv_routine_lab_not_required_v1
+Generated: 2026-07-21T15:13:39Z
+
+BATCH EVIDENCE (belgesiz 100, 2026-07-21)
+-----------------------------------------
+uygun: 33
+manuel_inceleme: 67
+tani_kurali=review: 53
+tani_review içinde ≥1 adet 34.x: 26
+blocking items: 282
+soft (diagnosis_required=False + unsupported_policy): 281
+
+PROPOSAL
+--------
+Phase-1: Aşağıdaki 12 HUV lab kodu için diagnosis_policy = not_required
+shadow gözlemi (canlı karar DEĞİŞMEZ).
+
+   1. 34.53153  Kan sayımı (Tam kan sayımı / Hemogram / CBC)  (18/53 vaka)
+   2. 34.01511  Alanin aminotransferaz (ALT, SGPT)  (13/53 vaka)
+   3. 34.16460  Aspartat aminotransferaz (AST, SGOT)  (12/53 vaka)
+   4. 34.94074  Üre nitrojeni, kan (BUN)  (12/53 vaka)
+   5. 34.58287  Kreatinin  (11/53 vaka)
+   6. 34.39563  Glukoz (kan şekeri/akş), laboratuvar/hasta başı  (11/53 vaka)
+   7. 34.22047  C reaktif protein (CRP), kantitatif  (11/53 vaka)
+   8. 34.85618  Sodyum (Na)  (10/53 vaka)
+   9. 34.76860  Potasyum (K)  (10/53 vaka)
+  10. 34.35788  Ferritin  (7/53 vaka)
+  11. 34.96490  Vitamin B12  (7/53 vaka)
+  12. 34.94376  Ürik asit  (7/53 vaka)
+
+Phase-2: Aynı soft kalıptaki diğer 34.x kodları.
+Out of scope: 03.10886 (ayrı), 24.x, diagnosis_required=True kurallar.
+
+COUNTERFACTUAL (canlı onay değil)
+---------------------------------
+Top-12 dokunan vaka: 19/53 (kısmi; tam çözüm 0 — paket etkisi)
+Tüm 34.x not_required: 16/53 tam çözüm
+Tüm soft item not_required: 52/53 tam çözüm
+
+WHY
+---
+Qdrant/runtime kuralları lab için sıklıkla 'tanı gerektirmez' gerekçesi yazıyor
+ama policy review_required / unsupported_policy kaldığı için motor REVIEW üretiyor.
+Doğru düzeltme AI eşiği değil; medikal-policy'nin not_required yayın kapısıdır.
+
+GOVERNANCE
+----------
+human_admin_approval_present=false
+apply_ready=false
+auto_apply=false
+runtime_decision_changed=false
+shadow_only=true
+exports_case_ids=false
+
+NEXT
+----
+1) expert_decision.huv_routine_lab_phase1.example.json (veya kod bazlı formlar) doldur
+2) validate: python provizyon/scripts/validate_shadow_handoff.py --schema-check --expert-decision <form>
+3) SG-2 shadow observer yokken bile paket brifing / uzman kuyruğu için hazır
+4) Onay sonrası ayrı yayın kapısı; bu paket canlı yazmaz

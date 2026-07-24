@@ -1,0 +1,41 @@
+REVIEW REDUCTION — DOMAIN EXPERT FAST-TRACK REVIEW
+
+Purpose:
+Evaluate MedGemma-shadow-triaged aggregate historical candidates for possible narrow deterministic review-policy refinement.
+
+Important constraints:
+- This is not payment approval.
+- This is not a live runtime change.
+- MedGemma output is shadow metadata only and is not human/admin/expert approval.
+- Any candidate accepted by an expert may only move to shadow staging, deterministic batch preview, decision-drift/business-impact gates, and rollback planning.
+- No live apply, Qdrant write, runtime override, or automatic review reduction is authorized by this package.
+
+Priority candidates:
+- #1 rank=1 code=908115 review_rows=4278 theme=covid_or_viral_infection tier=tier_1_policy_candidate prefixes=B34,U07,R50,J06,R05
+- #2 rank=2 code=906620 review_rows=3352 theme=obstetric_pregnancy tier=tier_1_policy_candidate prefixes=R53,R68,Z00,E55,Z33
+- #3 rank=5 code=907450 review_rows=3544 theme=obstetric_pregnancy tier=tier_1_policy_candidate prefixes=R53,R68,Z33,Z00,E55
+- #4 rank=6 code=906880 review_rows=2522 theme=non_specific_symptom_dominant tier=tier_1_policy_candidate prefixes=R68,R53,Z00,E55,D50
+- #5 rank=42 code=801720 review_rows=4169 theme=non_specific_symptom_dominant tier=tier_2_high_volume_conditional prefixes=J,R,E,K,M,D50-D89,I,N
+- #6 rank=44 code=803570 review_rows=2612 theme=non_specific_symptom_dominant tier=tier_2_high_volume_conditional prefixes=R10,E55,R11,N39,R53,K21,R50,J06,K30,A09
+- #7 rank=45 code=530100 review_rows=2428 theme=non_specific_symptom_dominant tier=tier_2_high_volume_conditional prefixes=R07,I10,R00,R11,E55,R06,R10,R53,M79
+- #8 rank=47 code=905670 review_rows=1733 theme=non_specific_symptom_dominant tier=tier_2_high_volume_conditional prefixes=J06,J39,J03,E55,J00,J11,R50,R05,J30,R68
+- #9 rank=8 code=906640 review_rows=1151 theme=obstetric_pregnancy tier=tier_2_high_volume_observation_to_expert prefixes=R53,R68,Z33,E55,Z00,R10,N76,N92,Z01
+- #10 rank=9 code=906780 review_rows=905 theme=non_specific_symptom_dominant tier=tier_3_conditional_or_safety_review prefixes=R68,R53,E55.9,M25.5,Z00.0,M35.9,M79.1,M06.9,M35.0,M45.9
+- #11 rank=13 code=700530 review_rows=373 theme=cardiology_symptom_or_monitoring tier=tier_3_conditional_or_safety_review prefixes=R07,I10,R06,R00,I25,E55,I49,R10,I20
+- #12 rank=24 code=701230 review_rows=197 theme=non_specific_symptom_dominant tier=tier_3_conditional_or_safety_review prefixes=R05,R06,J30,E55,R53,J01,R07,J45,J18
+
+Expert decision options per row:
+1. keep_manual_review
+2. approve_shadow_staging_for_specific_prefixes
+3. conditional_review_refinement_only
+4. reject_review_reduction_due_to_risk
+5. request_more_evidence
+
+Required fields:
+- code
+- expert_decision
+- approved_prefixes_if_any
+- rejected_prefixes_if_any
+- official_source_or_committee_reference
+- expert_reviewer
+- expert_notes

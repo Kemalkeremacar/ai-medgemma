@@ -1,0 +1,62 @@
+[
+  {
+    "scenario_id": "clinical_core_h40_only",
+    "description": "Conservative glaucoma-only cohort for shadow observation.",
+    "prefixes": [
+      "H40"
+    ],
+    "recommended": true,
+    "reason": "Nerve Fiber Analyzer is directly coherent with glaucoma evaluation. This avoids promoting the prior AI review's incorrect interpretation of eye ICD codes.",
+    "historical_703790_review_rows": 212,
+    "matched_candidate_rows": 146,
+    "row_level_full_release_counterfactual": 7,
+    "row_level_partial_resolution_counterfactual": 139,
+    "unmatched_rows": 66,
+    "matched_share": 0.68867925,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  },
+  {
+    "scenario_id": "structural_eye_observation",
+    "description": "Glaucoma plus observed optic-nerve/retina codes; observation only.",
+    "prefixes": [
+      "H40",
+      "H46",
+      "H47.5",
+      "H35.3"
+    ],
+    "recommended": false,
+    "reason": "Potentially coherent with retinal nerve-fiber assessment, but requires human medical-policy validation.",
+    "historical_703790_review_rows": 212,
+    "matched_candidate_rows": 157,
+    "row_level_full_release_counterfactual": 8,
+    "row_level_partial_resolution_counterfactual": 149,
+    "unmatched_rows": 55,
+    "matched_share": 0.74056604,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  },
+  {
+    "scenario_id": "original_ai_broad_counterfactual",
+    "description": "Original AI broad prefix set retained only as a counterfactual benchmark.",
+    "prefixes": [
+      "H52",
+      "H40",
+      "H04",
+      "H43",
+      "H47.5",
+      "H35.3",
+      "H18.3"
+    ],
+    "recommended": false,
+    "reason": "Not recommended: the MedGemma rationale misclassified eye ICD codes as ear/hearing disorders, and several prefixes are not specific NFA indications.",
+    "historical_703790_review_rows": 212,
+    "matched_candidate_rows": 199,
+    "row_level_full_release_counterfactual": 16,
+    "row_level_partial_resolution_counterfactual": 183,
+    "unmatched_rows": 13,
+    "matched_share": 0.93867925,
+    "runtime_decision_changed": false,
+    "apply_ready": false
+  }
+]

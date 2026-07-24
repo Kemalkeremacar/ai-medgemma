@@ -1,0 +1,41 @@
+{
+  "schema_version": "review_reduction_final_handoff.v1",
+  "generated_at": "2026-07-09T19:51:36",
+  "mode": "final_handoff_no_live_apply",
+  "out_dir": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709",
+  "inputs": {
+    "policy_manifest": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\TASK_MANIFEST.json",
+    "operational_manifest": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\TASK_MANIFEST.json",
+    "top50_medgemma_manifest": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\TASK_MANIFEST.json",
+    "ai_provisional_expert_manifest": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\TASK_MANIFEST.json",
+    "ai_provisional_shadow_preview_manifest": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\TASK_MANIFEST.json"
+  },
+  "headline_result": {
+    "recommended_shadow_pilot_code": "703790",
+    "candidate_shadow_pass_occurrence_rows": 505,
+    "row_level_full_release_rows": 32,
+    "row_level_partial_resolution_rows": 473,
+    "guardrail_hold_rows": 16
+  },
+  "safety": {
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "live_runtime_override": false,
+    "auto_apply": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "claims_human_admin_approval": false,
+    "human_admin_approval_present": false,
+    "apply_ready": false
+  },
+  "generated_files": [
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\FINAL_EXECUTIVE_SUMMARY.txt",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\NEXT_STEPS.txt",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_decision_register.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_decision_register.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_artifact_index.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_artifact_index.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\final_handoff_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709\\TASK_MANIFEST.json"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "huv_diagnosis_runtime.v1",
+  "generated_at": "2026-06-11T13:13:06",
+  "source_candidates_jsonl": "C:\\Projects\\ADDS\\SUT\\generated\\diagnosis_rules\\huv_diagnosis_rule_candidates_full.jsonl",
+  "source_errors_jsonl": "C:\\Projects\\ADDS\\SUT\\generated\\diagnosis_rules\\huv_diagnosis_rule_candidate_errors_full.jsonl",
+  "total_rules": 8050,
+  "unique_huv_codes": 8050,
+  "duplicate_procedure_keys": 0,
+  "auto_usable_rules": 5466,
+  "review_queue_rules": 2584,
+  "historical_error_rows": 1,
+  "unresolved_error_rows": 0,
+  "policy_counts": {
+    "not_required": 5201,
+    "review_required": 980,
+    "required_any": 1869
+  },
+  "review_required_counts": {
+    "False": 5466,
+    "True": 2584
+  },
+  "confidence_counts": {
+    "high": 5515,
+    "medium": 2381,
+    "low": 154
+  },
+  "parse_mode_counts": {
+    "direct": 7890,
+    "fallback": 154,
+    "repaired": 6
+  },
+  "runtime_decision_mode_counts": {
+    "automatic": 5466,
+    "manual_review": 2584
+  },
+  "quality_flags_top": {
+    "clinical_anchor_but_not_required": 755,
+    "broad_icd10_pattern:S00-T98": 602,
+    "broad_icd10_pattern:C00-D48": 543,
+    "broad_icd10_pattern:M00-M99": 428,
+    "broad_icd10_pattern:L00-L99": 196,
+    "broad_icd10_pattern:I00-I99": 155,
+    "json_parse_fallback": 154,
+    "broad_icd10_pattern:N00-N99": 134,
+    "broad_icd10_pattern:O00-O99": 51,
+    "invalid_icd10_pattern:I75": 36,
+    "invalid_icd10_pattern:I76": 36,
+    "invalid_icd10_pattern:I90": 35,
+    "invalid_icd10_pattern:I91": 35,
+    "invalid_icd10_pattern:I92": 35,
+    "invalid_icd10_pattern:I93": 35,
+    "invalid_icd10_pattern:I94": 35,
+    "invalid_icd10_pattern:I96": 35,
+    "invalid_icd10_pattern:I90.*": 33,
+    "invalid_icd10_pattern:I75.*": 32,
+    "invalid_icd10_pattern:I76.*": 32,
+    "invalid_icd10_pattern:I91.*": 32,
+    "invalid_icd10_pattern:I92.*": 32,
+    "invalid_icd10_pattern:I93.*": 32,
+    "invalid_icd10_pattern:I94.*": 32,
+    "invalid_icd10_pattern:I96.*": 32,
+    "invalid_icd10_pattern:S00-S99": 28,
+    "broad_icd10_pattern:J00-J99": 25,
+    "invalid_icd10_pattern:I56.*": 22,
+    "invalid_icd10_pattern:I57.*": 22,
+    "invalid_icd10_pattern:I58.*": 22
+  }
+}

@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Provizyon · Klinik Yerindelik & Policy Motoru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f6; --panel:#ffffff; --sidebar:#0f1a2e; --sidebar-hover:#1a2942;
+    --border:#e1e6ee; --text:#141c26; --text2:#54606f; --text3:#8b98a8;
+    --accent:#1f5fd6; --accent-deep:#123a86; --teal:#0f8a8a;
+    --green:#15803d; --green-bg:#e6f6ec;
+    --red:#b91c1c; --red-bg:#fdeaea; --amber:#b45309; --amber-bg:#fbf1e0;
+    --gray-bg:#eaeef4; --radius:11px;
+    --font-ui:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --font-display:"Space Grotesk","IBM Plex Sans",sans-serif;
+    --shadow:0 1px 2px rgba(16,29,54,.04),0 6px 20px -12px rgba(16,29,54,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:var(--font-ui);
+    background:
+      radial-gradient(1100px 620px at 82% -8%, rgba(31,95,214,.09), transparent 60%),
+      radial-gradient(880px 520px at -6% 108%, rgba(15,138,138,.07), transparent 55%),
+      var(--bg);
+    color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  h1,h2,h3,.font-display{font-family:var(--font-display)}
+
+  /* Layout */
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:238px;color:#c3cede;display:flex;flex-direction:column;
+    position:fixed;top:0;bottom:0;left:0;
+    background:linear-gradient(180deg,#0f1a2e 0%,#0c1526 60%,#0a1120 100%);
+    border-right:1px solid rgba(255,255,255,.06)}
+  .brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .brand h1{font-size:20px;margin:0;color:#fff;font-weight:700;letter-spacing:-.4px;line-height:1.05}
+  .brand h1 em{font-style:normal;color:#5b9bff}
+  .brand span{font-size:10.5px;color:#8394ab;letter-spacing:.09em;text-transform:uppercase;display:block;margin-top:5px}
+  .nav{padding:14px 12px;flex:1}
+  .nav-lbl{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#5d6c82;padding:10px 12px 6px}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;cursor:pointer;
+    color:#aebbcd;font-size:13.5px;font-weight:500;margin-bottom:2px;user-select:none;transition:.15s}
+  .nav-item:hover{background:var(--sidebar-hover);color:#fff}
+  .nav-item.active{background:linear-gradient(90deg,var(--accent),#2f74ea);color:#fff;box-shadow:0 6px 16px -8px rgba(31,95,214,.9)}
+  .nav-item svg{width:17px;height:17px;flex:none;opacity:.9}
+  .side-foot{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#8394ab}
+  .side-foot .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#64748b;margin-right:6px;vertical-align:middle}
+  .side-foot .dot.on{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+  .side-foot .dot.err{background:#ef4444}
+
+  .main{margin-left:238px;flex:1;display:flex;flex-direction:column;min-width:0;min-height:100vh}
+  .topbar{min-height:60px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:5;gap:16px}
+  .topbar h2{font-size:17px;margin:0;font-weight:600;letter-spacing:-.2px}
+  .topbar-right{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--text2)}
+  .content{padding:24px 26px;flex:1;max-width:1320px;width:100%}
+  .content.embed-mode{padding:0;max-width:none;display:flex;flex-direction:column;
+    height:calc(100vh - 60px);min-height:calc(100vh - 60px)}
+  .view-embed{display:none;flex:1;min-height:0;flex-direction:column}
+  .view-embed.active{display:flex}
+  .view-embed iframe{flex:1;width:100%;height:100%;border:0;background:#fff;display:block}
+
+  /* CTA / buttons */
+  .btn{font-family:var(--font-ui);font-size:13px;font-weight:600;border-radius:9px;padding:9px 15px;cursor:pointer;
+    border:1px solid var(--border);background:var(--panel);color:var(--text);display:inline-flex;align-items:center;gap:8px;transition:.15s}
+  .btn:hover{border-color:#c4cede;box-shadow:var(--shadow)}
+  .btn:disabled{opacity:.55;cursor:not-allowed}
+  .btn-primary{background:linear-gradient(90deg,var(--accent),#2f74ea);color:#fff;border-color:transparent;
+    box-shadow:0 8px 20px -10px rgba(31,95,214,.85)}
+  .btn-primary:hover{filter:brightness(1.05);box-shadow:0 10px 26px -10px rgba(31,95,214,.95)}
+  .btn svg{width:15px;height:15px}
+  .cta-note{font-size:11.5px;color:var(--text3);margin-top:6px}
+  .view{display:none}
+  .view.active{display:block}
+  .view.view-embed.active{display:flex}
+
+  /* KPI cards */
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:14px;margin-bottom:20px}
+  .kpi{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--text3);opacity:.5}
+  .kpi.green:before{background:var(--green)} .kpi.red:before{background:var(--red)} .kpi.amber:before{background:var(--amber)}
+  .kpi .val{font-family:var(--font-display);font-size:29px;font-weight:700;line-height:1.05;letter-spacing:-.5px}
+  .kpi .lbl{font-size:12px;color:var(--text2);margin-top:5px;font-weight:500}
+  .kpi .sub{font-size:11px;color:var(--text3);margin-top:2px;min-height:14px}
+  .kpi.green .val{color:var(--green)} .kpi.red .val{color:var(--red)} .kpi.amber .val{color:var(--amber)}
+
+  /* Cards / panels */
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow)}
+  .card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .card-head h3{margin:0;font-size:14.5px;font-weight:600;letter-spacing:-.1px}
+  .card-body{padding:16px 18px}
+  .muted{color:var(--text3);font-size:12px}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);
+    font-weight:600;padding:9px 12px;border-bottom:1px solid var(--border);background:#fafbfc;position:sticky;top:0}
+  td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+  tr.clickable{cursor:pointer}
+  tr.clickable:hover{background:#f7f9fb}
+  tr.active-row{background:#eef4ff}
+  .tbl-wrap{max-height:460px;overflow:auto}
+
+  /* Badges */
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+  .b-green{background:var(--green-bg);color:var(--green)}
+  .b-red{background:var(--red-bg);color:var(--red)}
+  .b-amber{background:var(--amber-bg);color:var(--amber)}
+  .b-gray{background:var(--gray-bg);color:var(--text2)}
+  .b-blue{background:#e8f0fe;color:var(--accent)}
+  .b-skip{background:#eef2f7;color:#64748b;border:1px dashed #c3cede}
+  .b-teal{background:#e2f4f4;color:var(--teal)}
+
+  /* Detail */
+  .banner{display:flex;gap:14px;align-items:center;padding:16px 18px;border-radius:var(--radius);margin-bottom:16px}
+  .banner.allowed{background:var(--green-bg)} .banner.denied{background:var(--red-bg)} .banner.review{background:var(--amber-bg)}
+  .banner .ico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:22px;font-weight:700;color:#fff;flex:none}
+  .banner.allowed .ico{background:var(--green)} .banner.denied .ico{background:var(--red)} .banner.review .ico{background:var(--amber)}
+  .banner h3{margin:0 0 2px;font-size:16px}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+  .info-grid .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);display:block}
+  .info-grid .v{font-weight:600}
+  pre.raw{background:#0f172a;color:#cbd5e1;padding:14px;border-radius:6px;overflow:auto;font-size:11.5px;
+    max-height:420px;line-height:1.5;margin:0}
+  details.raw-wrap summary{cursor:pointer;font-size:12px;color:var(--text2);padding:6px 0}
+
+  /* charts */
+  .donut{width:180px;height:180px;border-radius:50%;position:relative;flex:none}
+  .donut .hole{position:absolute;inset:34px;background:var(--panel);border-radius:50%;display:flex;
+    flex-direction:column;align-items:center;justify-content:center}
+  .donut .hole b{font-size:24px} .donut .hole span{font-size:11px;color:var(--text3)}
+  .legend{display:flex;flex-direction:column;gap:7px;font-size:12.5px}
+  .legend .row{display:flex;align-items:center;gap:8px}
+  .legend .dot{width:11px;height:11px;border-radius:3px;flex:none}
+  .bar-line{margin-bottom:12px}
+  .bar-line .lab{font-size:12px;font-weight:500;margin-bottom:5px;display:flex;justify-content:space-between}
+  .bar-track{display:flex;height:20px;border-radius:4px;overflow:hidden;background:var(--gray-bg)}
+  .bar-track > div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600}
+  .sys-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .sys-item{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:14px}
+  .sys-item .v{font-size:20px;font-weight:700} .sys-item .v.warn{color:var(--red)}
+  .sys-item .l{font-size:11px;color:var(--text2);margin-top:3px}
+
+  /* settings */
+  .set-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+  .set-row:last-child{border-bottom:none}
+  .set-row .desc{font-size:12px;color:var(--text3);margin-top:2px}
+  input[type=number]{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px}
+  .switch{position:relative;width:42px;height:24px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;inset:0;background:#cbd5e1;border-radius:24px;transition:.2s;cursor:pointer}
+  .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+  .switch input:checked + .slider{background:var(--accent)}
+  .switch input:checked + .slider:before{transform:translateX(18px)}
+  .empty{text-align:center;color:var(--text3);padding:40px 0;font-size:13px}
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);
+    border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* MedGemma / layer detail */
+  .mg-block{border:1px solid var(--border);border-radius:var(--radius);padding:15px 18px;margin:0 0 16px;
+    background:linear-gradient(180deg,#f6f9fe,#ffffff)}
+  .mg-block h4{margin:0 0 4px;font-size:13.5px;font-family:var(--font-display);display:flex;align-items:center;gap:8px}
+  .mg-flags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0}
+  .mg-flag{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--gray-bg);color:var(--text2);font-weight:500}
+  .mg-flag.pos{background:var(--green-bg);color:var(--green)}
+  .mg-flag.neg{background:var(--red-bg);color:var(--red)}
+  .mg-flag.na{background:#eef2f7;color:#8b98a8}
+  .docmode{display:flex;gap:11px;align-items:flex-start;padding:11px 15px;border-radius:var(--radius);
+    background:#eef2f7;border:1px dashed #c3cede;color:var(--text2);font-size:12.5px;margin-bottom:14px}
+  .docmode b{color:var(--text)}
+
+  /* Ürün Hikâyesi */
+  .story-hero{position:relative;overflow:hidden;border-radius:16px;padding:32px 34px;margin-bottom:20px;color:#eaf1ff;
+    background:linear-gradient(135deg,#0f1a2e 0%,#123a86 62%,#1f5fd6 130%)}
+  .story-hero:after{content:"";position:absolute;inset:0;opacity:.5;
+    background:radial-gradient(520px 300px at 88% 0%,rgba(91,155,255,.35),transparent 60%)}
+  .story-hero>*{position:relative;z-index:1}
+  .story-hero .ey{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8fb4ff;font-weight:600}
+  .story-hero h1{font-size:30px;margin:8px 0 10px;letter-spacing:-.6px;line-height:1.08;color:#fff;max-width:20ch}
+  .story-hero p{font-size:14.5px;color:#c3d4f2;margin:0;max-width:70ch;line-height:1.6}
+  .cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px}
+  .cap{border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;background:var(--panel);box-shadow:var(--shadow)}
+  .cap .tag{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-bottom:7px;display:inline-block}
+  .cap.clin{border-top:3px solid var(--teal)} .cap.clin .tag{color:var(--teal)}
+  .cap.policy{border-top:3px solid var(--accent)} .cap.policy .tag{color:var(--accent)}
+  .cap.exp{border-top:3px solid var(--amber)} .cap.exp .tag{color:var(--amber)}
+  .cap h4{margin:0 0 6px;font-size:15px;font-family:var(--font-display)}
+  .cap p{margin:0;font-size:12.8px;color:var(--text2);line-height:1.55}
+  .quote{border-left:3px solid var(--accent);background:#f6f9fe;padding:14px 18px;border-radius:0 10px 10px 0;
+    font-size:13.5px;color:var(--text);line-height:1.62}
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.story-grid{grid-template-columns:1fr}}
+  .chk{list-style:none;padding:0;margin:0}
+  .chk li{padding:7px 0 7px 26px;position:relative;font-size:13px;color:var(--text);border-bottom:1px solid var(--border)}
+  .chk li:last-child{border-bottom:none}
+  .chk li:before{content:"";position:absolute;left:0;top:11px;width:14px;height:14px;border-radius:4px;background:var(--green-bg);
+    border:1px solid var(--green)}
+  .chk.todo li:before{background:var(--amber-bg);border-color:var(--amber)}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0}
+  .steps li{position:relative;padding:10px 0 10px 40px;font-size:13px;border-bottom:1px solid var(--border)}
+  .steps li:last-child{border-bottom:none}
+  .steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;width:26px;height:26px;
+    border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .metric-tbl td{padding:8px 12px}
+  .metric-tbl td:last-child{text-align:right;font-family:var(--font-display);font-weight:600}
+  .funnel-note{font-size:12.5px;color:var(--text2);line-height:1.55;margin:0 0 14px}
+  .funnel-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0}
+  @media(max-width:1100px){.funnel-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:640px){.funnel-strip{grid-template-columns:1fr 1fr}}
+  .funnel-step{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 12px 12px;
+    background:linear-gradient(180deg,#fbfcfe 0%,#f3f7fc 100%);min-height:118px}
+  .funnel-step .n{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .funnel-step .lbl{font-size:11.5px;font-weight:600;color:var(--text2);line-height:1.35;padding-right:24px;min-height:2.6em}
+  .funnel-step .val{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.4px;margin:6px 0 4px;color:var(--text)}
+  .funnel-step .hint{font-size:11px;color:var(--muted);line-height:1.4}
+  .funnel-step.pilot{border-color:#c7d9f5;background:linear-gradient(180deg,#f7faff 0%,#eef5ff 100%)}
+  .funnel-callout{margin-top:14px;padding:12px 14px;border-radius:10px;background:#f6f9fe;border:1px solid #d7e4f6;
+    font-size:12.5px;color:var(--text2);line-height:1.55}
+  .funnel-callout b{color:var(--text)}
+  .shadow-advice{margin:0 0 16px;padding:14px 16px;border-radius:12px;border:1px dashed #c4a35a;
+    background:linear-gradient(180deg,#fffbeb 0%,#fef9ef 100%)}
+  .shadow-advice.match{border-color:#c4a35a}
+  .shadow-advice.miss{border-style:solid;border-color:#d7e0ec;background:#f7f9fc}
+  .shadow-advice h4{margin:0 0 6px;font-size:13.5px;font-family:var(--font-display);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .shadow-advice p{margin:0;font-size:12.5px;color:var(--text2);line-height:1.55}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>Provizyon<em>.</em>AI</h1>
+      <span>Klinik Yerindelik · Policy Motoru</span>
+    </div>
+    <nav class="nav">
+      <div class="nav-lbl">Operasyon</div>
+      <div class="nav-item active" data-view="prov" data-title="Provizyonlar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Provizyonlar
+      </div>
+      <div class="nav-item" data-view="analiz" data-title="Analiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+        Analiz
+      </div>
+      <div class="nav-item" data-view="sistem" data-title="Sistem Sağlığı">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+        Sistem
+      </div>
+      <div class="nav-lbl">Araçlar</div>
+      <div class="nav-item" data-view="copilot" data-title="Co-Pilot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.2 4.5L19 8.3l-3.5 3.4.8 4.8L12 14.3 7.7 16.5l.8-4.8L5 8.3l4.8-.8z"/><circle cx="12" cy="12" r="9"/></svg>
+        Co-Pilot
+      </div>
+      <div class="nav-item" data-view="yonetici" data-title="Yönetici Özeti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 16V9M12 16V7M16 16v-5"/></svg>
+        Yönetici
+      </div>
+      <div class="nav-item" data-view="anonim" data-title="Anonim Önizleme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a7 7 0 0 1 7 7c0 4-3 6-7 11-4-5-7-7-7-11a7 7 0 0 1 7-7z"/><circle cx="12" cy="10" r="2.2"/></svg>
+        Anonim
+      </div>
+      <div class="nav-item" data-view="hikaye" data-title="Ürün Hikâyesi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+        Ürün Hikâyesi
+      </div>
+      <div class="nav-item" data-view="demosunum" data-title="Demo Sunum">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M8 20h8M10 10.5l5 2.5-5 2.5z"/></svg>
+        Demo Sunum
+      </div>
+      <div class="nav-item" data-view="kuralonerileri" data-title="Kural Önerileri">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5h11M9 12h11M9 19h11"/><path d="M4 5h.01M4 12h.01M4 19h.01"/></svg>
+        Kural Önerileri
+      </div>
+      <div class="nav-item" data-view="ayarlar" data-title="Ayarlar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 2.6 7a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 7 2.6h.1A1.6 1.6 0 0 0 9 1.1V1a2 2 0 1 1 4 0v.1A1.6 1.6 0 0 0 15 2.6a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V7a1.6 1.6 0 0 0 1.1 1.9H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
+        Ayarlar
+      </div>
+    </nav>
+    <div class="side-foot">
+      <div><span class="dot" id="liveDot"></span><span id="liveText">Bağlanıyor…</span></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <h2 id="viewTitle">Provizyonlar</h2>
+      <div class="topbar-right">
+        <span id="sysBadge" class="badge b-gray">Sistem: —</span>
+        <span>Güncelleme: <span id="lastUpdate">—</span></span>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- ============ PROVIZYONLAR ============ -->
+      <section class="view active" id="view-prov">
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+            <div>
+              <div style="font-family:var(--font-display);font-weight:600;font-size:15px">Belgesiz DB Değerlendirmesi</div>
+              <div class="cta-note">Bekleyen kayıtlardan en fazla 100’ünü belge indirmeden değerlendirir (kurallar + klinik AI).</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span id="ctaMsg" class="cta-note" style="margin:0"></span>
+              <button class="btn" id="ctaClearOld" type="button" title="Tamamlanan / eski sonuçları listeden sil">Eski kayıtları sil</button>
+              <button class="btn btn-primary" id="ctaDocless">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                DB'den belgesiz değerlendir (100)
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="val" id="kpiTotal">—</div><div class="lbl">Toplam İş</div></div>
+          <div class="kpi green"><div class="val" id="kpiOk">—</div><div class="lbl">Uygun</div></div>
+          <div class="kpi red"><div class="val" id="kpiDenied">—</div><div class="lbl">Reddedilen</div></div>
+          <div class="kpi amber"><div class="val" id="kpiReview">—</div><div class="lbl">İnceleme</div></div>
+          <div class="kpi"><div class="val" id="kpiQueue">—</div><div class="lbl">Kuyruk</div><div class="sub" id="kpiQueueSub"></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Son İşler</h3><span class="muted" id="recentCount"></span>
+            <button class="btn" id="btnClearRecent" type="button" style="margin-left:auto;font-size:12px;padding:6px 10px">Listeyi temizle</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Provizyon</th><th>Hasta</th><th>Durum</th><th>Analiz</th><th>Karar</th><th>Risk</th><th>Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
+              <tbody id="recentTb"><tr><td colspan="9" class="empty">Yükleniyor…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" id="detailCard" style="display:none">
+          <div class="card-head"><h3>İş Detayı</h3><span class="muted" id="detailId"></span></div>
+          <div class="card-body" id="jobDetail"></div>
+        </div>
+      </section>
+
+      <!-- ============ ANALIZ ============ -->
+      <section class="view" id="view-analiz">
+        <div id="anLoading" class="empty"><span class="spinner"></span> Analiz yükleniyor…</div>
+        <div id="anContent" style="display:none">
+          <div class="kpi-row">
+            <div class="kpi"><div class="val" id="anTotal">—</div><div class="lbl">Toplam Provizyon</div><div class="sub" id="anTotalSub"></div></div>
+            <div class="kpi"><div class="val" id="anPoints">—</div><div class="lbl">Vektör Nokta</div><div class="sub"></div></div>
+            <div class="kpi"><div class="val" id="anHuv">—</div><div class="lbl">HUV Kayıt</div><div class="sub"></div></div>
+            <div class="kpi"><div class="val" id="anSut">—</div><div class="lbl">SUT Kayıt</div><div class="sub"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Nihai Karar Dağılımı</h3></div>
+            <div class="card-body" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+              <div class="donut" id="anDonut"></div>
+              <div class="legend" id="anLegend"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Katman Durumları</h3></div>
+            <div class="card-body" id="anLayerBars"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Demografi</h3></div>
+            <div class="card-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px">
+              <div><div class="muted" style="margin-bottom:8px">Yaş Grubu</div><div id="anYasBars"></div></div>
+              <div><div class="muted" style="margin-bottom:8px">Cinsiyet</div><div id="anCinsBars"></div></div>
+              <div><div class="muted" style="margin-bottom:8px">Kurum Tipi</div><div id="anFacBars"></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Kurum Bazlı Performans</h3></div>
+            <div class="tbl-wrap" style="max-height:360px">
+              <table>
+                <thead><tr>
+                  <th>Kurum</th><th>Toplam</th><th>Uygun</th><th>Tanı Uyumsuz</th>
+                  <th>Tanı Eksik</th><th>İnceleme</th><th>Diğer Red</th><th>Onay Oranı</th>
+                </tr></thead>
+                <tbody id="anKurumTb"><tr><td colspan="8" class="empty">—</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Son Tanı Uyumsuzluk Örnekleri</h3></div>
+            <div class="tbl-wrap" style="max-height:320px">
+              <table>
+                <thead><tr><th>Provizyon</th><th>Layer</th><th>Kurum</th><th>Karar</th><th>Mesaj</th></tr></thead>
+                <tbody id="anFailTb"><tr><td colspan="5" class="empty">—</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SISTEM ============ -->
+      <section class="view" id="view-sistem">
+        <div class="card">
+          <div class="card-head"><h3>Servisler & Kaynaklar</h3><span class="muted" id="sysTs"></span></div>
+          <div class="card-body"><div class="sys-grid" id="sysGrid"><div class="empty"><span class="spinner"></span> Yükleniyor…</div></div></div>
+        </div>
+      </section>
+
+      <!-- ============ MODEL & HIKAYE ============ -->
+      <section class="view" id="view-hikaye">
+        <div class="story-hero">
+          <div class="ey">Ürün Konumu</div>
+          <h1>İki yetenek, bir uzman katmanı</h1>
+          <p>MedGemma <strong>klinik yorum ve risk işareti</strong> üretir; canlı ödeme/mevzuat kararı ise
+             <strong>deterministik SUT/HUV/ICD kural motorundadır</strong>. Yapay zekâ canlı karar verici değildir;
+             belirsizlik ve yeni kural, yapılandırılmış uzman onayından geçer.</p>
+        </div>
+
+        <div class="cap-grid">
+          <div class="cap clin">
+            <span class="tag">Olasılıksal</span>
+            <h4>Klinik Yerindelik Asistanı</h4>
+            <p>MedGemma ağırlıklı. Çıktı tavsiye ve risk işaretidir; canlı bağlayıcı karar değildir.
+               Belge yoksa yalnız üstveriyle klinik yerindelik yorumlar.</p>
+          </div>
+          <div class="cap policy">
+            <span class="tag">Bağlayıcı</span>
+            <h4>Kurumsal Politika ve Provizyon Motoru</h4>
+            <p>Deterministik. SUT/HUV/ICD ve belge kuralları ile açıklanabilir sonuç.
+               Canlı kararı bu katman verir; sonuç izlenebilir ve denetlenebilir.</p>
+          </div>
+          <div class="cap exp">
+            <span class="tag">İnsan</span>
+            <h4>Uzman İnceleme ve Yayın</h4>
+            <p>Belirsizlik ve yeni kural için yetkili medikal-politika uzmanı.
+               Yapılandırılmış karar → taslak → gölge gözlem → yönetim onayı → kontrollü yayın.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Yöneticiye kısa cevap</h3><span class="badge b-blue">Sabit ürün dili</span></div>
+          <div class="card-body">
+            <div class="quote">
+              İki ayrı yerindeliği net ayırıyoruz: MedGemma klinik yorum üretir; canlı ödeme/mevzuat kararı
+              deterministik kural motorundadır. Geçmişte <b>2,36 milyon</b> provizyon satırı tarandı;
+              bu satırların tamamı Qdrant’a yazılmadı ve tamamı MedGemma’ya gönderilmedi — deterministik
+              katmanla REVIEW yoğunluğu süzüldü, öncelikli <b>50</b> aday shadow incelemeye alındı,
+              guardrail sonrası <b>3</b> gölge aday kaldı. 703790’da model geniş ICD önerirken göz→kulak
+              kod hatası yaptı; öneri reddedilip yalnız <b>H40</b> kapalı gölge öneriye daraltıldı —
+              canlı “manuel inceleme gerekli” değişmedi. Sonraki adım daha fazla model değil: uzman
+              onayı → taslak → gölge deneme → kontrollü yayın.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3>İnceleme azaltma hunisi</h3>
+            <span class="badge b-blue">2,36M → Top-50 → gölge</span>
+          </div>
+          <div class="card-body">
+            <p id="shadowFunnelSubtitle" class="funnel-note">
+              Paket özeti yükleniyor…
+            </p>
+            <div id="shadowFunnelStrip" class="funnel-strip"></div>
+            <div id="shadowFunnelCallout" class="funnel-callout" hidden></div>
+          </div>
+        </div>
+
+        <div class="story-grid">
+          <div class="card">
+            <div class="card-head"><h3>Üç katman — ne karşılıyoruz?</h3></div>
+            <table>
+              <thead><tr><th>Katman</th><th>Rol</th><th>Durum</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:500">Klinik yerindelik</td><td style="color:var(--text2)">MedGemma tavsiye / risk</td><td><span class="badge b-amber">Kısmen</span></td></tr>
+                <tr><td style="font-weight:500">Kurumsal politika motoru</td><td style="color:var(--text2)">SUT/HUV/ICD deterministik</td><td><span class="badge b-green">Büyük ölçüde</span></td></tr>
+                <tr><td style="font-weight:500">Uzman + gölge gözlem + yayın</td><td style="color:var(--text2)">Yapılandırılmış onay → kural</td><td><span class="badge b-amber">Kısmen</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>İki sepet (karıştırılmamalı)</h3></div>
+            <div class="card-body">
+              <div style="margin-bottom:12px">
+                <div style="font-weight:600;margin-bottom:3px">1 — Kurumsal bilgi + politika</div>
+                <div class="muted" style="font-size:12.5px">Listeler, eşleştirme, kural hafızası, deterministik motor, inceleme kuyruğu, 703790 kapalı gölge öneri.</div>
+              </div>
+              <div>
+                <div style="font-weight:600;margin-bottom:3px">2 — Çalışma ortamı (GemmaApp)</div>
+                <div class="muted" style="font-size:12.5px">Model sunucusu, ağ geçidi, provizyon API/işçi/izleyici, kuyruk ve vektör servisleri, mimari dokümanlar.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-grid">
+          <div class="card">
+            <div class="card-head">
+              <h3>703790 — Model hatası → H40 daraltma</h3>
+              <span id="shadowBadges" style="display:flex;gap:6px;flex-wrap:wrap">
+                <span class="badge b-skip">Gölge gözlem kapalı</span>
+                <span class="badge b-amber">Yayına hazır değil</span>
+                <span class="badge b-gray">İnsan onayı yok</span>
+              </span>
+            </div>
+            <div class="card-body">
+              <p style="margin:0 0 12px;font-size:13px;color:var(--text2)">
+                Sinir lifi analizörü (NFA). Model geniş ICD önerirken göz→kulak kod açıklaması hatası yaptı;
+                öneri reddedildi, yalnız <b>H40*</b> (glokom) için kapalı gölge öneri hazırlandı.
+                Canlı davranış değişmedi: <b>manuel inceleme gerekli</b>, otomatik onay yok
+                (gölge kapalı · yayına hazır değil · otomatik uygulama yok).
+              </p>
+              <table class="metric-tbl">
+                <tbody id="shadowH40Metrics">
+                  <tr><td>Geçmiş 703790 inceleme satırı</td><td>212</td></tr>
+                  <tr><td>H40 eşleşmesi (düzeltilmiş)</td><td>146</td></tr>
+                  <tr><td>Teorik tam çözüm</td><td>7</td></tr>
+                  <tr><td>Kısmi çözüm</td><td>139</td></tr>
+                  <tr><td>H40 dışı (manuel kalır)</td><td>66</td></tr>
+                </tbody>
+              </table>
+              <p id="shadowCounterfactualNote" class="muted" style="margin:12px 0 0;font-size:12px">
+                Eski geniş model varsayımı (199 / 16 tam çözüm) geçersiz sayılır — yönetim kararı için kullanılmaz.
+              </p>
+              <p id="shadowBundleMeta" class="muted" style="margin:8px 0 0;font-size:11.5px;word-break:break-all"></p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Sonraki somut adımlar</h3></div>
+            <div class="card-body">
+              <ol class="steps">
+                <li>Yönetici cevabını ilet; 703790 brifingi + paketle medikal-politika uzmanına git.</li>
+                <li>Yapılandırılmış uzman kararı → kural taslağı → doğrulama.</li>
+                <li>Uygunsa gölge deneme; rapor → yönetim.</li>
+                <li>Onay sonrası kontrollü yayın; geri alma hazır.</li>
+                <li>Sürekli öğrenme döngüsünün ürünleşmesi.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-head">
+            <h3>İnceleme azaltma — karar defteri</h3>
+            <span class="badge b-blue">özet · salt okunur</span>
+          </div>
+          <div class="card-body" style="padding-top:0">
+            <p class="muted" style="font-size:12.5px;margin:12px 0">
+              Aktarım paketinin özeti. Canlı kural değildir; üretim veritabanına veya kural hafızasına yazılmaz.
+              Doğrulama komutu: <code>python provizyon/scripts/validate_shadow_handoff.py</code>
+            </p>
+            <div id="shadowRegisterStatus" class="muted" style="font-size:12px;margin-bottom:8px">Yükleniyor…</div>
+            <div style="overflow:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Grup</th><th>Kod</th><th>Tema</th><th>Önerilen durum</th>
+                    <th>Güven</th><th>İnceleme</th>
+                  </tr>
+                </thead>
+                <tbody id="shadowRegisterTb">
+                  <tr><td colspan="6" class="empty">—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-head"><h3>703790 ICD önek sınıfları</h3><span class="badge b-skip">H40 çekirdek</span></div>
+          <div class="card-body" style="padding-top:0;overflow:auto">
+            <table style="margin-top:12px">
+              <thead><tr><th>Önek</th><th>Sınıf</th><th>Satır</th><th>Gerekçe</th></tr></thead>
+              <tbody id="shadowPrefixTb">
+                <tr><td colspan="4" class="empty">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="story-grid">
+          <div class="card">
+            <div class="card-head"><h3>Karşılıyoruz</h3></div>
+            <div class="card-body">
+              <ul class="chk">
+                <li>2,36M geçmiş tarama → Top-50 → 3 gölge aday hunisi (paket özeti ekranda)</li>
+                <li>Canlı karar deterministik; yapay zekâ ≠ canlı kural</li>
+                <li>Katalog / çalışma kuralları / vektör hafıza (karar verici değil)</li>
+                <li>703790: geniş öneri reddi → yalnız H40; canlı değişmedi</li>
+                <li>Ağ geçidi süre sınırı 300 sn / HTTP 504 (istemci loglama sözleşmesi)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Kısmen / sıradaki</h3></div>
+            <div class="card-body">
+              <ul class="chk todo">
+                <li>Klinik girdi paketi (lab/ilaç/geçmiş her vakada tam değil)</li>
+                <li>Uzman arayüzü (aday kovaları veri tarafında hazır)</li>
+                <li>Kural taslağı doğrulama + tam gölge gözlem metrikleri + yayın/geri alma kapıları</li>
+              </ul>
+              <ul class="chk" style="margin-top:8px">
+                <li>Sonuçlarda salt okunur gölge tavsiye (703790+H40*; canlı karar değişmez)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EMBED: COPILOT / YONETICI / ANONIM ============ -->
+      <section class="view view-embed" id="view-copilot">
+        <iframe title="Co-Pilot" data-src="/copilot" loading="lazy"></iframe>
+      </section>
+      <section class="view view-embed" id="view-yonetici">
+        <iframe title="Yönetici Raporu" data-src="/dashboard/yonetici" loading="lazy"></iframe>
+      </section>
+      <section class="view view-embed" id="view-anonim">
+        <iframe title="Anonim Önizleme" data-src="/dashboard/demo" loading="lazy"></iframe>
+      </section>
+      <section class="view view-embed" id="view-demosunum">
+        <iframe title="Demo Sunum" data-src="/dashboard/demo-sunum" loading="lazy"></iframe>
+      </section>
+      <section class="view view-embed" id="view-kuralonerileri">
+        <iframe title="Kural Önerileri Demo" data-src="/dashboard/kural-onerileri" loading="lazy"></iframe>
+      </section>
+
+      <!-- ============ AYARLAR ============ -->
+      <section class="view" id="view-ayarlar">
+        <div class="card" style="max-width:640px">
+          <div class="card-head"><h3>Görünüm & Yenileme</h3></div>
+          <div class="card-body">
+            <div class="set-row">
+              <div><strong>Otomatik yenileme</strong><div class="desc">Son işler listesini periyodik güncelle</div></div>
+              <label class="switch"><input type="checkbox" id="setAuto" checked><span class="slider"></span></label>
+            </div>
+            <div class="set-row">
+              <div><strong>Yenileme aralığı</strong><div class="desc">Saniye cinsinden</div></div>
+              <input type="number" id="setInterval" min="2" max="120" value="6">
+            </div>
+            <div class="set-row">
+              <div><strong>Listede kimlik maskele</strong><div class="desc">Provizyonlar listesinde ad/TC/sicil kısaltılır. Tam anonim panel için: Anonim sekmesi.</div></div>
+              <label class="switch"><input type="checkbox" id="setAnon"><span class="slider"></span></label>
+            </div>
+            <div class="set-row">
+              <div><strong>API</strong><div class="desc">Bu panelin bağlı olduğu kök adres</div></div>
+              <span class="v" id="setApiBase" style="font-weight:600;font-size:13px">aynı köken</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+const API='';
+// ---- label / renk haritaları ----
+const KARAR_LABEL={uygun:'Uygun',manuel_inceleme:'Manuel İnceleme',tani_uyumsuz:'Tanı Uyumsuz',tani_eksik:'Tanı Eksik',evrak_eksik:'Evrak Eksik',klinik_uyumsuzluk:'Klinik Uyumsuzluk',belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz',belge_analizi_tamamlanamadi:'Analiz Tamamlanamadı',yanlis_hasta_belgesi:'Yanlış Hasta Belgesi'};
+const KARAR_BADGE={uygun:'b-green',manuel_inceleme:'b-amber',tani_uyumsuz:'b-red',tani_eksik:'b-red',evrak_eksik:'b-red',klinik_uyumsuzluk:'b-red',belge_kaniti_yetersiz:'b-red',yanlis_hasta_belgesi:'b-red',belge_analizi_tamamlanamadi:'b-gray'};
+const DENIED=['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz'];
+const JOB_STATUS_LABEL={done:'Tamam',failed:'Hata',queued:'Kuyrukta',processing:'İşleniyor',pending:'Bekliyor'};
+const PIPELINE_LABEL={full:'Tam',vision:'Görsel',text:'Metin',ocr:'OCR'};
+const RISK_LABEL={low:'Düşük',medium:'Orta',high:'Yüksek',critical:'Kritik'};
+const RISK_BADGE={low:'b-green',medium:'b-amber',high:'b-red',critical:'b-red'};
+
+// ---- ayarlar (localStorage) ----
+const SET=Object.assign({auto:true,interval:6,anon:false},JSON.parse(localStorage.getItem('provdash')||'{}'));
+function saveSet(){localStorage.setItem('provdash',JSON.stringify(SET))}
+
+// ---- util ----
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function fmtN(n){return (n==null?0:n).toLocaleString('tr-TR')}
+function timeAgo(ts){if(!ts)return '';const t=typeof ts==='number'?ts*1000:Date.parse(ts);if(isNaN(t))return '';
+  const s=Math.floor((Date.now()-t)/1000);if(s<60)return s+' sn önce';if(s<3600)return Math.floor(s/60)+' dk önce';
+  if(s<86400)return Math.floor(s/3600)+' sa önce';return Math.floor(s/86400)+' gün önce'}
+function anon(v,keep){if(!SET.anon||!v)return v;const s=String(v);return s.length<=keep?'•••':s.slice(0,keep)+'•••'}
+
+let _items=[],_activeId=null;
+
+// ---- navigation ----
+const EMBED_VIEWS=new Set(['copilot','yonetici','anonim','demosunum','kuralonerileri']);
+function activateEmbed(viewId){
+  const content=document.querySelector('.content');
+  if(content)content.classList.toggle('embed-mode', EMBED_VIEWS.has(viewId));
+  if(!EMBED_VIEWS.has(viewId))return;
+  const iframe=document.querySelector('#view-'+viewId+' iframe');
+  if(!iframe)return;
+  const base=iframe.getAttribute('data-src')||'';
+  // Anonim: ana listeyle senkron kalsın — her açılışta taze yükle (recent/done).
+  // Demo Sunum: animasyonu baştan almak için her açılışta taze yükle.
+  if((viewId==='anonim' || viewId==='demosunum') && base){
+    iframe.setAttribute('src', base + (base.includes('?')?'&':'?') + '_=' + Date.now());
+    return;
+  }
+  if(!iframe.getAttribute('src') && base){
+    iframe.setAttribute('src', base);
+  }
+}
+document.querySelectorAll('.nav-item').forEach(el=>{
+  el.onclick=()=>{
+    const v=el.dataset.view;
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n===el));
+    document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
+    const viewEl=document.getElementById('view-'+v);
+    if(viewEl)viewEl.classList.add('active');
+    document.getElementById('viewTitle').textContent=el.dataset.title||el.textContent.trim();
+    activateEmbed(v);
+    if(v==='analiz')loadAnalytics();
+    if(v==='sistem')loadHealth();
+    if(v==='hikaye')loadShadowHandoff();
+  };
+});
+
+// ════════ Ürün Hikâyesi — gölge paket özeti ════════
+const SHADOW_GROUP_TR={
+  recommended_shadow_pilot:'Önerilen gölge deneme',
+  conditional_shadow_backlog:'Koşullu gölge bekleme',
+  guardrail_blocked_ai_approval:'Güven eşiğiyle bloklandı',
+  not_selected_for_shadow_preview:'Gölge önizlemeye alınmadı',
+  keep_manual_review:'Manuel incelemede kalsın',
+  mapping_backlog:'Eşleştirme bekleyen',
+};
+const SHADOW_THEME_TR={
+  eye_ear:'Göz / kulak',
+  obstetric_pregnancy:'Obstetrik / gebelik',
+  covid_or_viral_infection:'Covid / viral enfeksiyon',
+  non_specific_symptom_dominant:'Belirgin olmayan semptom',
+  cardiology_symptom_or_monitoring:'Kardiyoloji / izlem',
+  local_huv_mapping:'Yerel HUV eşleştirme',
+};
+const SHADOW_DISP_TR={
+  prepare_shadow_only_policy_proposal_for_governance_review:'Yalnız gölge politika önerisi hazırla (yönetim incelemesi)',
+  keep_as_conditional_shadow_backlog_until_human_or_policy_governance_review:'Koşullu gölge beklemede tut',
+  do_not_shadow_stage_without_stronger_evidence_or_human_governance:'Daha güçlü kanıt / insan onayı olmadan gölgeye alma',
+  hold_for_human_or_policy_review:'İnsan veya politika incelemesi için beklet',
+  keep_manual_review:'Manuel incelemede tut',
+  resolve_mapping_before_any_review_reduction_policy:'Önce eşleştirmeyi çöz',
+};
+const SHADOW_PREFIX_CLASS_TR={
+  shadow_candidate_core:'Gölge çekirdek aday',
+  observation_only:'Yalnız gözlem',
+  manual_review:'Manuel inceleme',
+};
+const SHADOW_PREFIX_REASON_TR={
+  'Glaucoma is the conservative NFA-coherent shadow cohort.':'Glokom, NFA ile uyumlu temkinli gölge kohortudur.',
+  'Optic neuritis may be relevant, but requires human medical validation.':'Optik nörit ilgili olabilir; insan tıbbi doğrulama gerekir.',
+  'Observed visual-pathway code; retain for analysis only.':'Görülen görme yolu kodu; yalnız analiz için tut.',
+  'Retinal disease code; clinical NFA specificity is not established here.':'Retina hastalığı kodu; NFA özgüllüğü burada kesinleşmedi.',
+  'Vitreous disorders are not sufficiently specific for NFA shadow pass.':'Vitreus bozuklukları NFA gölge geçişi için yeterince özgül değil.',
+  'Refraction/accommodation disorders are common but not specific NFA indications.':'Refraksiyon/akomodasyon sık görülür ama NFA için özgül endikasyon değil.',
+  'Lacrimal-system disorders are not a specific NFA indication.':'Gözyaşı sistemi bozuklukları özgül NFA endikasyonu değil.',
+  'Corneal disorders are not a specific NFA indication.':'Kornea bozuklukları özgül NFA endikasyonu değil.',
+};
+const SHADOW_CONF_TR={high:'Yüksek',medium:'Orta',low:'Düşük'};
+const SHADOW_BADGE_CLS={
+  'Gölge gözlem kapalı':'b-skip',
+  'Yayına hazır değil':'b-amber',
+  'İnsan onayı yok':'b-gray',
+  'shadow kapalı':'b-skip',
+  'apply-ready değil':'b-amber',
+  'insan onayı yok':'b-gray',
+};
+function trOr(map,key,fallback){
+  if(key==null||key==='')return fallback||'—';
+  return map[key]||fallback||String(key).replace(/_/g,' ');
+}
+let _shadowLoaded=false;
+async function loadShadowHandoff(force){
+  if(_shadowLoaded && !force)return;
+  const st=document.getElementById('shadowRegisterStatus');
+  if(st)st.textContent='Yükleniyor…';
+  try{
+    const[sumR,regR,d790R]=await Promise.all([
+      fetch(API+'/shadow/review-reduction/summary'),
+      fetch(API+'/shadow/review-reduction/decision-register'),
+      fetch(API+'/shadow/review-reduction/703790'),
+    ]);
+    if(!sumR.ok||!regR.ok||!d790R.ok){
+      const detail=(!sumR.ok?await sumR.text():!regR.ok?await regR.text():await d790R.text());
+      if(st)st.textContent='Paket yüklenemedi: '+(detail||'HTTP hata').slice(0,240);
+      return;
+    }
+    const summary=await sumR.json();
+    const register=await regR.json();
+    const d790=await d790R.json();
+    renderShadowSummary(summary);
+    renderShadowRegister(register);
+    renderShadowPrefixes(d790);
+    _shadowLoaded=true;
+    if(st){
+      const counts=summary.decision_register_counts||{};
+      const parts=Object.keys(counts).map(k=>trOr(SHADOW_GROUP_TR,k)+': '+counts[k]);
+      st.textContent=(register.row_count||0)+' satır · '+parts.join(' · ');
+    }
+  }catch(e){
+    if(st)st.textContent='Bağlantı hatası: '+(e.message||e);
+  }
+}
+function renderShadowFunnel(funnel){
+  const sub=document.getElementById('shadowFunnelSubtitle');
+  const strip=document.getElementById('shadowFunnelStrip');
+  const call=document.getElementById('shadowFunnelCallout');
+  if(!funnel||!strip){
+    if(sub)sub.textContent='Huni verisi yok.';
+    return;
+  }
+  if(sub)sub.textContent=funnel.subtitle||funnel.clarification||'';
+  const steps=funnel.steps||[];
+  strip.innerHTML=steps.map((st,i)=>{
+    const pilot=st.id==='pilot_703790_h40'?' pilot':'';
+    return `<div class="funnel-step${pilot}">
+      <span class="n">${i+1}</span>
+      <div class="lbl">${esc(st.label||'')}</div>
+      <div class="val">${fmtN(st.value)}</div>
+      <div class="hint">${esc(st.note||'')}</div>
+    </div>`;
+  }).join('');
+  if(call){
+    const hp=funnel.headline_preview||{};
+    const bits=[];
+    if(hp.recommended_shadow_pilot_code)bits.push('önerilen pilot <b>'+esc(hp.recommended_shadow_pilot_code)+'</b>');
+    if(hp.candidate_shadow_pass_occurrence_rows!=null)bits.push('geniş önizleme eşleşme '+fmtN(hp.candidate_shadow_pass_occurrence_rows));
+    if(hp.row_level_full_release_rows!=null)bits.push('tam çözüm (geniş) '+fmtN(hp.row_level_full_release_rows));
+    call.hidden=false;
+    call.innerHTML=(funnel.clarification?'<div style="margin-bottom:6px">'+esc(funnel.clarification)+'</div>':'')
+      +(bits.length?('<div>'+bits.join(' · ')+'. '+(hp.note?esc(hp.note):'')+'</div>'):'');
+  }
+}
+function renderShadowSummary(s){
+  renderShadowFunnel(s.funnel);
+  const h40=s.corrected_h40||{};
+  const share=h40.matched_share!=null?(' (~%'+(Number(h40.matched_share)*100).toFixed(1).replace('.',',')+')'):'';
+  const tb=document.getElementById('shadowH40Metrics');
+  if(tb){
+    tb.innerHTML=`
+      <tr><td>Geçmiş 703790 inceleme satırı</td><td>${fmtN(h40.historical_review_rows)}</td></tr>
+      <tr><td>H40 eşleşmesi (düzeltilmiş)</td><td>${fmtN(h40.h40_matched_rows)}${esc(share)}</td></tr>
+      <tr><td>Teorik tam çözüm</td><td>${fmtN(h40.full_release_counterfactual)}</td></tr>
+      <tr><td>Kısmi çözüm</td><td>${fmtN(h40.partial_resolution_counterfactual)}</td></tr>
+      <tr><td>H40 dışı (manuel kalır)</td><td>${fmtN(h40.unmatched_rows)}</td></tr>`;
+  }
+  const cf=s.broad_ai_counterfactual||{};
+  const cfEl=document.getElementById('shadowCounterfactualNote');
+  if(cfEl && cf.superseded){
+    const occ=cf.candidate_shadow_pass_occurrence_rows;
+    const full=cf.row_level_full_release_rows;
+    cfEl.textContent='Eski geniş model varsayımı'+(occ!=null?(' ('+occ+' / '+full+' tam çözüm)'):'')+' geçersiz sayılır — yönetim kararı için kullanılmaz.';
+  }
+  const meta=document.getElementById('shadowBundleMeta');
+  if(meta){
+    meta.innerHTML='Paket yolu: <code>'+esc(s.bundle_root||'')+'</code>'
+      +(s.validate_command?' · Doğrulama: <code>'+esc(s.validate_command)+'</code>':'');
+  }
+  const badgeHost=document.getElementById('shadowBadges');
+  if(badgeHost && Array.isArray(s.badges) && s.badges.length){
+    badgeHost.innerHTML=s.badges.map(b=>`<span class="badge ${SHADOW_BADGE_CLS[b]||'b-gray'}">${esc(b)}</span>`).join('');
+  }
+}
+function renderShadowRegister(reg){
+  const tb=document.getElementById('shadowRegisterTb');
+  if(!tb)return;
+  const rows=reg.rows||[];
+  if(!rows.length){tb.innerHTML='<tr><td colspan="6" class="empty">Kayıt yok</td></tr>';return}
+  const groupBadge=g=>{
+    if(g==='recommended_shadow_pilot')return 'b-green';
+    if(g==='conditional_shadow_backlog')return 'b-amber';
+    if(g==='guardrail_blocked_ai_approval')return 'b-red';
+    if(g==='mapping_backlog')return 'b-blue';
+    if(g==='keep_manual_review')return 'b-gray';
+    return 'b-skip';
+  };
+  tb.innerHTML=rows.map(r=>{
+    const conf=SHADOW_CONF_TR[r.confidence]||r.confidence||'';
+    return `<tr>
+    <td><span class="badge ${groupBadge(r.decision_group)}">${esc(trOr(SHADOW_GROUP_TR,r.decision_group))}</span></td>
+    <td style="font-weight:600">${esc(r.code||'—')}</td>
+    <td style="color:var(--text2);font-size:12.5px">${esc(trOr(SHADOW_THEME_TR,r.clinical_theme))}</td>
+    <td style="font-size:12px;color:var(--text2);max-width:280px">${esc(trOr(SHADOW_DISP_TR,r.recommended_disposition))}</td>
+    <td>${conf?`<span class="badge b-blue">${esc(conf)}${r.confidence_score!=null?' · '+r.confidence_score:''}</span>`:'—'}</td>
+    <td>${r.review_rows!=null?fmtN(r.review_rows):'—'}</td>
+  </tr>`;
+  }).join('');
+}
+function renderShadowPrefixes(d790){
+  const tb=document.getElementById('shadowPrefixTb');
+  if(!tb)return;
+  const rows=d790.prefix_decision_register||[];
+  if(!rows.length){tb.innerHTML='<tr><td colspan="4" class="empty">Kayıt yok</td></tr>';return}
+  const clsBadge=c=>{
+    if(c==='shadow_candidate_core')return 'b-green';
+    if(c==='observation_only')return 'b-amber';
+    if(c==='manual_review')return 'b-gray';
+    return 'b-skip';
+  };
+  tb.innerHTML=rows.map(r=>`<tr>
+    <td style="font-weight:600">${esc(r.diagnosis_prefix||'—')}</td>
+    <td><span class="badge ${clsBadge(r.proposal_class)}">${esc(trOr(SHADOW_PREFIX_CLASS_TR,r.proposal_class))}</span></td>
+    <td>${r.historical_703790_review_rows_with_prefix!=null?fmtN(r.historical_703790_review_rows_with_prefix):'—'}</td>
+    <td style="font-size:12px;color:var(--text2)">${esc(SHADOW_PREFIX_REASON_TR[r.proposal_reason]||r.proposal_reason||'')}</td>
+  </tr>`).join('');
+}
+
+// ════════ PROVIZYONLAR ════════
+async function loadRecent(){
+  const dot=document.getElementById('liveDot'),txt=document.getElementById('liveText');
+  try{
+    const[qd,rd]=await Promise.all([
+      fetch(API+'/queue/stats').then(r=>r.json()).catch(()=>null),
+      fetch(API+'/queue/recent?limit=100').then(r=>r.json()).catch(()=>({items:[]}))
+    ]);
+    _items=rd.items||[];
+    renderKpis(qd,_items);renderRecent(_items);
+    if(dot){dot.className='dot on'} if(txt)txt.textContent='Canlı';
+  }catch(e){ if(dot)dot.className='dot err'; if(txt)txt.textContent='Bağlantı yok'; }
+}
+function renderKpis(q,items){
+  const done=items.filter(x=>x.status==='done');
+  const ok=done.filter(x=>x.nihai_karar==='uygun').length;
+  const denied=done.filter(x=>DENIED.includes(x.nihai_karar)).length;
+  const rev=done.filter(x=>x.nihai_karar==='manuel_inceleme').length;
+  set('kpiTotal',items.length);set('kpiOk',ok);set('kpiDenied',denied);set('kpiReview',rev);
+  if(q&&q.depth){const p=(q.depth.pending||0)+(q.depth.processing||0);
+    set('kpiQueue',p);set('kpiQueueSub',p>0?`${q.depth.pending||0} bekleyen · ${q.depth.processing||0} işleniyor`:'Boş');
+  }else{set('kpiQueue','—')}
+  document.getElementById('recentCount').textContent=items.length+' kayıt';
+}
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=(typeof v==='number')?fmtN(v):v}
+
+function renderRecent(items){
+  const tb=document.getElementById('recentTb');
+  if(!items.length){tb.innerHTML='<tr><td colspan="9" class="empty">Henüz iş yok</td></tr>';return}
+  tb.innerHTML=items.map(it=>{
+    const kb=KARAR_BADGE[it.nihai_karar]||'b-blue';
+    const kl=KARAR_LABEL[it.nihai_karar]||(it.nihai_karar||'—').replace(/_/g,' ');
+    const pl=it.pipeline||'?';
+    const rl=it.risk_level;
+    const st=it.status;
+    const stCls=st==='done'?'b-green':st==='failed'?'b-red':'b-blue';
+    const active=_activeId===it.provizyon_id?' active-row':'';
+    const hasta=SET.anon?anon(it.patient_name||it.hasta_id,2):(it.patient_name||it.hasta_id||'—');
+    return `<tr class="clickable${active}" data-id="${esc(it.provizyon_id||'')}">
+      <td style="font-weight:600">${esc(it.provizyon_id||'—')}</td>
+      <td style="color:var(--text2)">${esc(hasta||'—')}</td>
+      <td><span class="badge ${stCls}">${esc(JOB_STATUS_LABEL[st]||st||'—')}</span></td>
+      <td><span class="badge b-gray">${esc(PIPELINE_LABEL[pl]||pl)}${it.vision_images!=null?' '+it.vision_images:''}</span></td>
+      <td><span class="badge ${kb}">${esc(kl)}</span>${it.shadow_advice_status==='matched_candidate'?` <span class="badge b-amber" title="${esc(it.shadow_advice_label||'Gölge aday')}">Gölge</span>`:''}</td>
+      <td>${rl?`<span class="badge ${RISK_BADGE[rl]||'b-gray'}">${esc(RISK_LABEL[rl]||rl)}</span>`:''}</td>
+      <td style="font-size:12px;color:var(--text2);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(it.risk_summary||it.gerekce||'')}">${esc((it.risk_summary||it.gerekce||'').slice(0,120))}</td>
+      <td style="font-size:12px;color:var(--text3)">${esc(it.elapsed||'')}</td>
+      <td style="font-size:12px;color:var(--text3)">${timeAgo(it.finished_at)}</td>
+    </tr>`}).join('');
+}
+document.getElementById('recentTb').onclick=e=>{const row=e.target.closest('tr[data-id]');if(row)selectJob(row.dataset.id)};
+
+async function selectJob(id){
+  if(!id)return;_activeId=id;
+  document.querySelectorAll('#recentTb tr').forEach(r=>r.classList.toggle('active-row',r.dataset.id===id));
+  const card=document.getElementById('detailCard'),el=document.getElementById('jobDetail');
+  card.style.display='block';document.getElementById('detailId').textContent=id;
+  el.innerHTML='<div class="empty"><span class="spinner"></span> Yükleniyor…</div>';
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  try{
+    const r=await fetch(API+'/provizyon/'+encodeURIComponent(id));
+    if(!r.ok){el.innerHTML='<div class="empty">Sonuç bulunamadı</div>';return}
+    renderDetail(await r.json());
+  }catch(err){el.innerHTML='<div class="empty" style="color:var(--red)">Hata: '+esc(err.message)+'</div>'}
+}
+
+function renderDetail(d){
+  const raw=d.raw||{},meta=raw.job_meta||{};
+  const karar=d.nihai_karar||'bilinmiyor';
+  const cls=karar==='uygun'?'allowed':DENIED.includes(karar)?'denied':'review';
+  const ico=cls==='allowed'?'✓':cls==='denied'?'✗':'!';
+  const label=KARAR_LABEL[karar]||karar.replace(/_/g,' ');
+  let h='';
+  h+=`<div class="banner ${cls}"><div class="ico">${ico}</div><div>
+      <h3>${esc(label)}</h3>
+      <div style="font-size:12.5px;color:var(--text2)">${esc(d.gerekce||d.risk_summary||'')}</div></div></div>`;
+
+  if((raw.documents_mode||'')==='skipped_full_pipeline'){
+    h+=`<div class="docmode"><div><b>Belgesiz değerlendirme.</b> Belge–hasta ve zorunlu evrak atlandı (SKIPPED). Klinik AI üstveri + kural özetiyle çalıştı.</div></div>`;
+  }
+
+  const sa=raw.shadow_advice||d.shadow_advice;
+  if(sa&&sa.status&&sa.status!=='not_applicable'){
+    const match=sa.status==='matched_candidate';
+    h+=`<div class="shadow-advice ${match?'match':'miss'}">
+      <h4>${esc(sa.label||'Gölge tavsiye')}
+        <span class="badge ${match?'b-amber':'b-gray'}">tavsiye</span>
+        <span class="badge b-skip">canlı karar değişmedi</span>
+        ${sa.apply_ready?'' : '<span class="badge b-amber">yayına hazır değil</span>'}
+      </h4>
+      <p>${esc(sa.message||'')}</p>
+    </div>`;
+  }
+
+  const name=SET.anon?anon(meta.patient_name,2):meta.patient_name;
+  const tc=SET.anon?anon(meta.tc_kimlik,3):meta.tc_kimlik;
+  const sicil=SET.anon?anon(d.hasta_id,2):d.hasta_id;
+  h+=`<div style="margin-bottom:16px"><div class="info-grid">
+    ${cell('Provizyon ID',d.provizyon_id)}${cell('Hasta Adı',name)}${cell('Hasta ID',sicil)}
+    ${cell('TC Kimlik',tc)}${cell('Yaş',meta.yas)}${cell('Cinsiyet',meta.cinsiyet&&meta.cinsiyet!=='bilinmiyor'?meta.cinsiyet:'')}
+    ${cell('Karar Tipi',d.decision_type)}${cell('Risk',d.risk_level?(RISK_LABEL[d.risk_level]||d.risk_level):'')}</div></div>`;
+
+  // katman özetleri (deterministik policy zinciri)
+  const LST_LBL={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',
+    uygun:'Uygun',manuel_inceleme:'İnceleme'};
+  const lstBadge=stt=>stt==='pass'||stt==='uygun'?'b-green':
+    (stt==='fail')?'b-red':(stt==='review'||stt==='manuel_inceleme'||stt==='insufficient')?'b-amber':
+    (stt==='skipped')?'b-skip':'b-gray';
+  const layers=[['belge_hasta','Belge–Hasta'],['zorunlu_evrak','Zorunlu Evrak'],['tani_kurali','HUV Tanı Kuralı'],
+    ['sut_tani_kurali','SUT Tanı Kuralı'],['sut_kurali','SUT İşlem Kuralı']];
+  let rows='';
+  layers.forEach(([k,lbl])=>{
+    const L=d[k]||raw[k];if(!L)return;
+    const stt=L.status||L.durum||'';
+    const msg=L.mesaj||L.message||L.gerekce||L.aciklama||'';
+    rows+=`<tr><td style="font-weight:500">${esc(lbl)}</td><td>${stt?`<span class="badge ${lstBadge(stt)}">${esc(LST_LBL[stt]||stt)}</span>`:'—'}</td>
+      <td style="font-size:12px;color:var(--text2)">${esc(String(msg).slice(0,220))}</td></tr>`;
+  });
+  if(rows)h+=`<div class="card" style="margin:0 0 16px"><div class="card-head"><h3>Deterministik Policy Katmanları</h3><span class="badge b-blue">bağlayıcı</span></div>
+    <table><thead><tr><th>Katman</th><th>Durum</th><th>Açıklama</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+
+  // MedGemma klinik (olasılıksal tavsiye) — ayrı, öne çıkan blok
+  const mg=d.medgemma||raw.medgemma, mgL=raw.medgemma_layer;
+  if(mg||mgL){
+    const guven=(mg&&mg.guven)||'';
+    const gvBadge=guven==='high'?'b-green':guven==='low'?'b-red':'b-amber';
+    const gvLbl={high:'Yüksek',medium:'Orta',low:'Düşük'}[guven]||guven;
+    const gerekce=(mg&&mg.gerekce)||(mgL&&(mgL.message||mgL.gerekce))||'—';
+    const flag=(lbl,v)=>{const cls=v===true?'pos':v===false?'neg':'na';const t=v===true?'Evet':v===false?'Hayır':'—';
+      return `<span class="mg-flag ${cls}">${esc(lbl)}: ${t}</span>`};
+    let flags='';
+    if(mg){
+      flags+=flag('İşlem belge-destekli',mg.islem_belge_destekli);
+      flags+=flag('Tanı belge-destekli',mg.tani_belge_destekli);
+      flags+=flag('Yaş/cinsiyet uygun',mg.yas_cinsiyet_uygun);
+      flags+=flag('Klinik çelişki',mg.klinik_celiski);
+      flags+=flag('Eksik evrak',mg.eksik_evrak);
+      flags+=`<span class="mg-flag ${mg.manuel_inceleme_gerekli?'neg':'pos'}">Manuel inceleme: ${mg.manuel_inceleme_gerekli?'Gerekli':'Gerekmez'}</span>`;
+    }
+    h+=`<div class="mg-block">
+      <h4>MedGemma Klinik Yerindelik <span class="badge b-teal">tavsiye</span>${guven?` <span class="badge ${gvBadge}">Güven: ${esc(gvLbl)}</span>`:''}</h4>
+      <div style="font-size:12.8px;color:var(--text)">${esc(String(gerekce).slice(0,600))}</div>
+      ${flags?`<div class="mg-flags">${flags}</div>`:''}
+    </div>`;
+  }
+
+  h+=`<details class="raw-wrap"><summary>Ham veri (JSON)</summary><pre class="raw">${esc(JSON.stringify(d,null,2))}</pre></details>`;
+  document.getElementById('jobDetail').innerHTML=h;
+}
+function cell(k,v){return `<div><span class="k">${esc(k)}</span><span class="v">${v!=null&&v!==''?esc(v):'—'}</span></div>`}
+
+// ════════ ANALIZ ════════
+let _anLoaded=false;
+const AN_COLORS={uygun:'#15803d',manuel_inceleme:'#b45309',tani_uyumsuz:'#b91c1c',tani_eksik:'#c2410c',evrak_eksik:'#6d28d9',klinik_uyumsuzluk:'#be185d',belge_kaniti_yetersiz:'#4338ca',belge_analizi_tamamlanamadi:'#64748b',yanlis_hasta_belgesi:'#991b1b'};
+const AN_STCOL={pass:'#15803d',fail:'#b91c1c',review:'#b45309',insufficient:'#c2410c',skipped:'#94a3b8'};
+const AN_STLBL={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı'};
+
+async function loadAnalytics(force){
+  if(_anLoaded&&!force)return;
+  try{
+    const d=await(await fetch(API+'/analytics/findings')).json();
+    if(d.error){document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">'+esc(d.error)+'</span>';return}
+    _anLoaded=true;
+    document.getElementById('anLoading').style.display='none';
+    document.getElementById('anContent').style.display='block';
+    renderAnalytics(d);
+  }catch(e){document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Analiz yüklenemedi</span>'}
+}
+function renderAnalytics(d){
+  const total=d.toplam_provizyon||0;
+  set('anTotal',total);document.getElementById('anTotalSub').textContent=`HUV: ${fmtN(d.huv_kayit||0)} · SUT: ${fmtN(d.sut_kayit||0)}`;
+  set('anPoints',d.toplam_nokta||0);set('anHuv',d.huv_kayit||0);set('anSut',d.sut_kayit||0);
+  renderDonut(d.karar_dagilimi||{},total);
+  renderLayers(d.layer_status||{});
+  groupBars('anYasBars',d.yas_grubu||{},total);
+  groupBars('anCinsBars',d.cinsiyet||{},total);
+  groupBars('anFacBars',d.kurum_tipi||{},total);
+  renderKurumTable(d.kurum_bazli||[]);
+  renderFailTable(d.tani_fail_ornekler||[]);
+}
+function renderDonut(karar,total){
+  const entries=Object.entries(karar).sort((a,b)=>b[1]-a[1]);
+  const donut=document.getElementById('anDonut'),legend=document.getElementById('anLegend');
+  if(!entries.length){donut.style.background='var(--gray-bg)';legend.innerHTML='<span class="muted">Veri yok</span>';return}
+  let a=0;const stops=[];
+  entries.forEach(([k,v])=>{const pct=v/Math.max(total,1)*100;const c=AN_COLORS[k]||'#94a3b8';stops.push(`${c} ${a}deg ${a+pct*3.6}deg`);a+=pct*3.6});
+  donut.style.background=`conic-gradient(${stops.join(',')})`;
+  donut.innerHTML=`<div class="hole"><b>${fmtN(total)}</b><span>provizyon</span></div>`;
+  legend.innerHTML=entries.map(([k,v])=>{const pct=(v/Math.max(total,1)*100).toFixed(1);const c=AN_COLORS[k]||'#94a3b8';
+    const l=KARAR_LABEL[k]||k.replace(/_/g,' ');return `<div class="row"><span class="dot" style="background:${c}"></span>${esc(l)}: ${fmtN(v)} (${pct}%)</div>`}).join('');
+}
+function renderLayers(ls){
+  const labels={tani_kurali:'HUV Tanı Kuralı',sut_tani_kurali:'SUT Tanı Kuralı',sut_kurali:'SUT İşlem Kuralı',medgemma:'MedGemma Klinik'};
+  let html='';
+  for(const[layer,st] of Object.entries(ls)){
+    const total=Object.values(st).reduce((s,v)=>s+v,0);if(!total)continue;
+    html+=`<div class="bar-line"><div class="lab"><span>${esc(labels[layer]||layer)}</span><span class="muted">${fmtN(total)}</span></div><div class="bar-track">`;
+    ['pass','review','fail','insufficient','skipped'].forEach(k=>{const v=st[k];if(!v)return;const pct=v/total*100;
+      html+=`<div style="width:${pct}%;background:${AN_STCOL[k]}" title="${AN_STLBL[k]}: ${v}">${pct>8?v:''}</div>`});
+    html+='</div></div>';
+  }
+  document.getElementById('anLayerBars').innerHTML=html||'<span class="muted">Veri yok</span>';
+}
+function groupBars(id,obj,total){
+  const el=document.getElementById(id);
+  const labels={pediatrik:'Pediatrik',eriskin:'Erişkin',geriatrik:'Geriatrik',erkek:'Erkek',kadin:'Kadın',bilinmiyor:'Bilinmiyor','özel':'Özel',üniversite:'Üniversite'};
+  const entries=Object.entries(obj||{});
+  if(!entries.length){el.innerHTML='<span class="muted">Veri yok</span>';return}
+  // API hem düz sayı hem karar-dağılımı nesnesi dönebilir
+  const rows=entries.map(([k,v])=>{
+    const gTotal=typeof v==='number'?v:Object.values(v||{}).reduce((s,n)=>s+(+n||0),0);
+    const uygun=typeof v==='number'?0:(v.uygun||0);
+    const uygunPct=gTotal?(uygun/gTotal*100):0;
+    return {k,gTotal,uygunPct};
+  }).sort((a,b)=>b.gTotal-a.gTotal);
+  const max=Math.max(1,...rows.map(r=>r.gTotal),total||0);
+  el.innerHTML=rows.map(r=>{
+    const pct=Math.max(4,r.gTotal/max*100);
+    const fill=r.uygunPct>0
+      ?`linear-gradient(90deg,var(--green) ${r.uygunPct}%,var(--red) ${r.uygunPct}%)`
+      :'var(--accent)';
+    return `<div class="bar-line"><div class="lab"><span>${esc(labels[r.k]||r.k)}</span><span class="muted">${fmtN(r.gTotal)}${r.uygunPct?` · %${r.uygunPct.toFixed(0)} uygun`:''}</span></div>
+      <div class="bar-track"><div style="width:${pct}%;background:${fill};min-width:24px"></div></div></div>`;
+  }).join('');
+}
+function renderKurumTable(kurumlar){
+  const tb=document.getElementById('anKurumTb');if(!tb)return;
+  if(!kurumlar.length){tb.innerHTML='<tr><td colspan="8" class="empty">Veri yok</td></tr>';return}
+  tb.innerHTML=kurumlar.map(k=>{
+    const oran=k.uygun_oran??0;
+    const col=oran>=60?'var(--green)':oran>=40?'var(--amber)':'var(--red)';
+    return `<tr>
+      <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(k.kurum)}">${esc(k.kurum)}</td>
+      <td>${fmtN(k.toplam)}</td>
+      <td style="color:var(--green)">${fmtN(k.uygun)}</td>
+      <td style="color:var(--red)">${fmtN(k.tani_uyumsuz)}</td>
+      <td style="color:var(--amber)">${fmtN(k.tani_eksik)}</td>
+      <td style="color:var(--amber)">${fmtN(k.manuel_inceleme)}</td>
+      <td>${fmtN(k.diger_red)}</td>
+      <td style="color:${col};font-weight:600">${oran}%</td>
+    </tr>`;
+  }).join('');
+}
+function renderFailTable(fails){
+  const tb=document.getElementById('anFailTb');if(!tb)return;
+  if(!fails.length){tb.innerHTML='<tr><td colspan="5" class="empty">Tanı uyumsuzluğu kaydı yok</td></tr>';return}
+  tb.innerHTML=fails.slice(0,30).map(f=>{
+    const layerLbl=f.layer==='tani_kurali'?'HUV':f.layer==='sut_tani_kurali'?'SUT':(f.layer||'—');
+    const kararLbl=KARAR_LABEL[f.nihai_karar]||(f.nihai_karar||'—').replace(/_/g,' ');
+    const kb=KARAR_BADGE[f.nihai_karar]||'b-gray';
+    return `<tr>
+      <td style="font-weight:600">${esc(f.provizyon_id)}</td>
+      <td><span class="badge b-blue">${esc(layerLbl)}</span></td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(f.kurum||'')}">${esc(f.kurum||'—')}</td>
+      <td><span class="badge ${kb}">${esc(kararLbl)}</span></td>
+      <td style="font-size:12px;color:var(--text2);max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(f.message||'')}">${esc(f.message||'')}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ════════ SISTEM ════════
+async function loadHealth(){
+  try{
+    const d=await(await fetch(API+'/system/health')).json();
+    renderHealth(d);
+    updateBadge(d.services);
+    document.getElementById('lastUpdate').textContent=new Date().toLocaleTimeString('tr-TR');
+  }catch(e){document.getElementById('sysGrid').innerHTML='<div class="empty" style="color:var(--red)">Sağlık verisi alınamadı</div>'}
+}
+function updateBadge(svcs){
+  const b=document.getElementById('sysBadge');if(!b)return;
+  if(!svcs||!svcs.length){b.className='badge b-gray';b.textContent='Sistem: —';return}
+  const down=svcs.filter(s=>s.status!=='ok').length;
+  if(down>0){b.className='badge b-red';b.textContent=`Sistem: ${down} servis kapalı`}
+  else{b.className='badge b-green';b.textContent='Sistem: çalışıyor'}
+}
+function renderHealth(d){
+  document.getElementById('sysTs').textContent=new Date().toLocaleTimeString('tr-TR');
+  const svcs=d.services||[],sys=d.system||{},diag=d.diagnosis_stats||{},gpu=d.gpu||{},qd=d.qdrant_collections||[];
+  const items=[];
+  const ok=svcs.filter(s=>s.status==='ok').length;
+  items.push({v:`${ok}/${svcs.length}`,l:'Servis çalışıyor',w:ok!==svcs.length});
+  svcs.forEach(s=>items.push({v:s.status==='ok'?'✓':'✗',l:s.name||'?',w:s.status!=='ok'}));
+  if(diag.huv_auto_rules!=null){items.push({v:fmtN(diag.huv_auto_rules),l:'HUV kural (auto)'});items.push({v:fmtN(diag.huv_review_rules||0),l:'HUV kural (review)'})}
+  if(diag.sut_auto_rules!=null){items.push({v:fmtN(diag.sut_auto_rules),l:'SUT kural (auto)'});items.push({v:fmtN(diag.sut_review_rules||0),l:'SUT kural (review)'})}
+  qd.forEach(c=>items.push({v:fmtN(c.points||0),l:'Qdrant: '+(c.name||'?')}));
+  if(sys.cpu_pct!=null)items.push({v:sys.cpu_pct+'%',l:'CPU',w:sys.cpu_pct>80});
+  if(sys.ram_pct!=null)items.push({v:sys.ram_pct+'%',l:'RAM',w:sys.ram_pct>85});
+  if(gpu.mem_used_mb!=null)items.push({v:`${gpu.mem_used_mb}/${gpu.mem_total_mb||'?'} MB`,l:gpu.utilization_pct!=null?`GPU (${gpu.utilization_pct}%)`:'GPU'});
+  document.getElementById('sysGrid').innerHTML=items.map(i=>`<div class="sys-item"><div class="v${i.w?' warn':''}">${esc(String(i.v))}</div><div class="l">${esc(i.l)}</div></div>`).join('');
+}
+
+// ════════ AYARLAR ════════
+function initSettings(){
+  const a=document.getElementById('setAuto'),i=document.getElementById('setInterval'),an=document.getElementById('setAnon');
+  a.checked=SET.auto;i.value=SET.interval;an.checked=SET.anon;
+  document.getElementById('setApiBase').textContent=location.origin;
+  a.onchange=()=>{SET.auto=a.checked;saveSet();restartTimer()};
+  i.onchange=()=>{SET.interval=Math.max(2,Math.min(120,+i.value||6));i.value=SET.interval;saveSet();restartTimer()};
+  an.onchange=()=>{SET.anon=an.checked;saveSet();renderRecent(_items);if(_activeId)selectJob(_activeId)};
+}
+
+// ════════ CTA: belgesiz DB değerlendirme / temizle ════════
+async function clearOldResults(){
+  const msg=document.getElementById('ctaMsg');
+  if(!confirm('Tamamlanan ve eski sonuçlar listeden silinsin mi?\n(Kuyruktaki bekleyen işler korunur.)'))return;
+  try{
+    const r=await fetch(API+'/queue/results?keep_active=true',{method:'DELETE'});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.detail||('HTTP '+r.status));
+    if(msg)msg.innerHTML=`<span style="color:var(--green)">${d.deleted||0} kayıt silindi${d.skipped_active?'; · '+d.skipped_active+' aktif korundu':''}.</span>`;
+    _activeId=null;
+    const card=document.getElementById('detailCard');if(card)card.style.display='none';
+    loadRecent();
+  }catch(e){
+    if(msg)msg.innerHTML=`<span style="color:var(--red)">Temizlik hatası: ${esc(e.message)}</span>`;
+  }
+}
+async function runDocless(){
+  const btn=document.getElementById('ctaDocless'),msg=document.getElementById('ctaMsg');
+  if(!btn)return;
+  btn.disabled=true;const orig=btn.innerHTML;
+  btn.innerHTML='<span class="spinner"></span> Kuyruğa alınıyor…';msg.textContent='';
+  try{
+    const r=await fetch(API+'/provizyon/intake-db',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pending:true,enqueue:true,skip_documents:true,limit:100})});
+    const d=await r.json();
+    if(!r.ok){throw new Error(d.detail||('HTTP '+r.status))}
+    const n=(d.queued_ids||[]).length||d.count||0;
+    msg.innerHTML=`<span style="color:var(--green)">${n} provizyon belgesiz akışa alındı.</span> Worker işledikçe listelenir.`;
+    setTimeout(loadRecent,1200);setTimeout(loadRecent,4000);
+  }catch(e){
+    msg.innerHTML=`<span style="color:var(--red)">Hata: ${esc(e.message)}</span>`;
+  }finally{
+    btn.disabled=false;btn.innerHTML=orig;
+  }
+}
+
+// ════════ timers ════════
+let _timer=null,_healthTimer=null;
+function restartTimer(){if(_timer)clearInterval(_timer);if(SET.auto)_timer=setInterval(loadRecent,SET.interval*1000)}
+function init(){
+  initSettings();loadRecent();loadHealth();restartTimer();
+  _healthTimer=setInterval(loadHealth,30000);
+  const cta=document.getElementById('ctaDocless');if(cta)cta.onclick=runDocless;
+  const clr=document.getElementById('ctaClearOld');if(clr)clr.onclick=clearOldResults;
+  const clr2=document.getElementById('btnClearRecent');if(clr2)clr2.onclick=clearOldResults;
+}
+init();
+</script>
+</body>
+</html>

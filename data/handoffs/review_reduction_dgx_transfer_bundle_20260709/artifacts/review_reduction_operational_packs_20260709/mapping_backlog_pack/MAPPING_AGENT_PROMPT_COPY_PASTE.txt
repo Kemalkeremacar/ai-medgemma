@@ -1,0 +1,42 @@
+REVIEW REDUCTION — LOCAL/HUV CANONICAL MAPPING BACKLOG
+
+Purpose:
+Resolve local/HUV/dotted procedure-code identity before any review-reduction policy refinement is considered.
+
+Important constraints:
+- Read-only catalog/procedure/code lookup only.
+- Do not change live rules, runtime lookup, Qdrant, or production databases.
+- Do not export case-level rows or patient identifiers.
+- Mapping evidence is not review-reduction approval.
+- After mapping, any policy refinement still requires domain expert/admin validation and deterministic preview gates.
+
+Priority mapping candidates:
+- #1 rank=35 code=34.36694 review_rows=77154 tier=tier_1_extreme_volume_mapping theme=non_specific_symptom_dominant prefixes=E55,R53,D51,D50
+- #2 rank=36 code=34.94376 review_rows=76949 tier=tier_1_extreme_volume_mapping theme=non_specific_symptom_dominant prefixes=E55,R53,I10,D51
+- #3 rank=37 code=34.27332 review_rows=75792 tier=tier_1_extreme_volume_mapping theme=non_specific_symptom_dominant prefixes=E55,D50,R53,D51
+- #4 rank=4 code=13.62646 review_rows=10469 tier=tier_1_high_volume_mapping theme=obstetric_pregnancy prefixes=Z33,Z34,O26,E55
+- #5 rank=39 code=34.20386 review_rows=9700 tier=tier_1_high_volume_mapping theme=genitourinary prefixes=A09,R11,K52,R10,J06
+- #6 rank=3 code=13.73366 review_rows=2080 tier=tier_2_medium_volume_mapping theme=obstetric_pregnancy prefixes=Z33,Z36,Z34,O35
+- #7 rank=7 code=24.60491 review_rows=579 tier=tier_3_targeted_mapping theme=obstetric_pregnancy prefixes=Z33,Z34,O26,O41
+- #8 rank=12 code=13.74706 review_rows=482 tier=tier_3_targeted_mapping theme=obstetric_pregnancy prefixes=Z33,Z36,Z34
+- #9 rank=17 code=13.06366 review_rows=248 tier=tier_3_targeted_mapping theme=genitourinary prefixes=N86,R10,N76
+- #10 rank=18 code=13.72696 review_rows=243 tier=tier_3_targeted_mapping theme=obstetric_pregnancy prefixes=Z33,O26,Z36,Z34
+- #11 rank=26 code=13.72026 review_rows=181 tier=tier_3_targeted_mapping theme=obstetric_pregnancy prefixes=Z33,Z34,O20,O21,O26,R10,D50,E55
+- #12 rank=28 code=16.81841 review_rows=173 tier=tier_3_targeted_mapping theme=eye_ear prefixes=T16,H61,J06,H60,H65
+
+Mapping decision options per row:
+1. mapped_to_existing_sut_code
+2. local_alias_of_existing_catalog_item
+3. legacy_code_requires_catalog_backfill
+4. unmapped_needs_business_owner
+5. exclude_from_review_reduction_scope
+
+Required fields:
+- code
+- mapping_status
+- canonical_sut_code
+- canonical_procedure_name
+- source_table_evidence
+- mapping_confidence
+- mapping_reviewer
+- mapping_notes

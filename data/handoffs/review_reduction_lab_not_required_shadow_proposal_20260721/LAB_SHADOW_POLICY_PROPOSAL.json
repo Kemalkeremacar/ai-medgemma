@@ -1,0 +1,696 @@
+{
+  "schema_version": "review_reduction_lab_not_required_shadow_proposal.v1",
+  "generated_at": "2026-07-21T15:13:39Z",
+  "proposal_id": "shadow_huv_routine_lab_not_required_v1",
+  "proposal_mode": "shadow_observation_only",
+  "title": "Rutin HUV laboratuvar işlemleri — diagnosis_policy: not_required (shadow aday)",
+  "code_system": "HUV",
+  "current_runtime_pattern": {
+    "diagnosis_policy": "review_required",
+    "tentative_status": "unsupported_policy",
+    "diagnosis_required": false,
+    "runtime_decision_mode": "manual_review",
+    "observation": "Motor gerekçesi sıklıkla 'tanı gerektirmez / laboratuvar incelemesi' demesine rağmen policy review_required kaldığı için provizyon turuncu/manuel kalıyor."
+  },
+  "proposed_overlay": {
+    "enabled": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "human_admin_approval_present": false,
+    "phase_1_codes": [
+      "34.53153",
+      "34.01511",
+      "34.16460",
+      "34.94074",
+      "34.58287",
+      "34.39563",
+      "34.22047",
+      "34.85618",
+      "34.76860",
+      "34.35788",
+      "34.96490",
+      "34.94376"
+    ],
+    "phase_1_policy": "not_required",
+    "phase_1_decision_if_missing_diagnosis": "PASS",
+    "shadow_event_on_match": "AI_PROVISIONAL_SHADOW_PASS_CANDIDATE",
+    "actual_runtime_decision_on_match": "UNCHANGED",
+    "fallback_actual_runtime_decision": "REVIEW_REQUIRED",
+    "phase_2_scope": "Aynı soft kalıptaki diğer 34.x lab kodları (batch'te 51 distinct 34.x)",
+    "out_of_scope_for_this_proposal": [
+      "03.10886 İV infüzyon (ayrı endikasyon kapsamı)",
+      "24.x radyoloji",
+      "diagnosis_required=True veya required_any kuralları"
+    ]
+  },
+  "why_not_icd_include_list": "Bu kova ICD eşleşmesi değil; tanı aranmayan rutin lab. rule_draft.schema.json şu an include_icd_prefixes zorunlu kıldığı için bu paket policy_overlay (not_required) + expert_decision formları kullanır. ICD-scoped drafts (ör. 03.10886) secondary adaydır.",
+  "batch_evidence": {
+    "total_batch": 100,
+    "uygun": 33,
+    "manuel_inceleme": 67,
+    "tani_review": 53,
+    "tani_review_with_34x": 26,
+    "documents_mode": "skipped_full_pipeline",
+    "blocking_items_total": 282,
+    "soft_unsupported_items": 281,
+    "counterfactual_full_resolve_if_all_34x_not_required": 16,
+    "counterfactual_full_resolve_if_top12_not_required": 0,
+    "counterfactual_cases_touched_by_top12": 19,
+    "counterfactual_partial_resolve_top12": 19,
+    "counterfactual_full_resolve_if_all_soft_not_required": 52,
+    "note_counterfactual": "Top-12 tek başına tam çözüm üretmez (vakalar çoklu lab paketidir). diagnosis_required=False soft item'lerin tümü not_required olursa 52/53 tam çözülür. Tüm 34.x not_required ile 16/53 tam çözülür (kalanlarda 03.x/24.x vb. kalır)."
+  },
+  "phase_1_candidates": [
+    {
+      "huv_code": "34.53153",
+      "procedure_name": "Kan sayımı (Tam kan sayımı / Hemogram / CBC)",
+      "case_coverage_of_53": 18,
+      "case_coverage_share": 0.3396,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "J06.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Kan sayımı (CBC), tanıdan bağımsız bir laboratuvar incelemesidir. Herhangi bir tanı gerektirmez.",
+      "bucket": "routine_lab_not_required",
+      "priority": 1
+    },
+    {
+      "huv_code": "34.01511",
+      "procedure_name": "Alanin aminotransferaz (ALT, SGPT)",
+      "case_coverage_of_53": 13,
+      "case_coverage_share": 0.2453,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "L30.3",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Alanin aminotransferaz (ALT, SGPT) testi, bir laboratuvar incelemesidir ve uygulama yolu/teknik olarak değerlendirilir. Tanısal bir işlem değildir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 2
+    },
+    {
+      "huv_code": "34.16460",
+      "procedure_name": "Aspartat aminotransferaz (AST, SGOT)",
+      "case_coverage_of_53": 12,
+      "case_coverage_share": 0.2264,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "L30.3",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "İşlem, bir laboratuvar incelemesidir ve uygulama yolu/teknik olarak tanımlanır. Tanı gerektirmez.",
+      "bucket": "routine_lab_not_required",
+      "priority": 3
+    },
+    {
+      "huv_code": "34.94074",
+      "procedure_name": "Üre nitrojeni, kan (BUN)",
+      "case_coverage_of_53": 12,
+      "case_coverage_share": 0.2264,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Üre nitrojeni (BUN) testi, bir tanıdan bağımsız olarak gerçekleştirilebilen bir laboratuvar incelemesidir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 4
+    },
+    {
+      "huv_code": "34.58287",
+      "procedure_name": "Kreatinin",
+      "case_coverage_of_53": 11,
+      "case_coverage_share": 0.2075,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "J00",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Kreatinin ölçümü, bir laboratuvar incelemesidir ve tanıya bağlı değildir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 5
+    },
+    {
+      "huv_code": "34.39563",
+      "procedure_name": "Glukoz (kan şekeri/akş), laboratuvar/hasta başı",
+      "case_coverage_of_53": 11,
+      "case_coverage_share": 0.2075,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 2
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "J00",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Glukoz ölçümü, tanı amacı ile kullanılmadığında veya laboratuvar olanağı varken uygulandığında değerlendirilmez. Yalnızca laboratuvar için örnek alma imkanı olmayan (zorunlu/acil) durumlarda dikkate alınır.",
+      "bucket": "routine_lab_not_required",
+      "priority": 6
+    },
+    {
+      "huv_code": "34.22047",
+      "procedure_name": "C reaktif protein (CRP), kantitatif",
+      "case_coverage_of_53": 11,
+      "case_coverage_share": 0.2075,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "K52.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "J06.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "M65.1",
+          "item_hits": 1
+        },
+        {
+          "icd": "J00",
+          "item_hits": 1
+        },
+        {
+          "icd": "R50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "C-reaktif protein (CRP) ölçümü, bir laboratuvar incelemesidir ve genellikle tanısal bir işlem değildir. Uygulama yolu/teknik olarak değerlendirilir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 7
+    },
+    {
+      "huv_code": "34.85618",
+      "procedure_name": "Sodyum (Na)",
+      "case_coverage_of_53": 10,
+      "case_coverage_share": 0.1887,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "E55.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50",
+          "item_hits": 1
+        },
+        {
+          "icd": "D51",
+          "item_hits": 1
+        },
+        {
+          "icd": "E88.9",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Sodyum (Na) ölçümü, bir laboratuvar incelemesidir ve tanıya bağlı değildir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 8
+    },
+    {
+      "huv_code": "34.76860",
+      "procedure_name": "Potasyum (K)",
+      "case_coverage_of_53": 10,
+      "case_coverage_share": 0.1887,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "E55.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "J21",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50",
+          "item_hits": 1
+        },
+        {
+          "icd": "D51",
+          "item_hits": 1
+        },
+        {
+          "icd": "E88.9",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Potasyum (K) ölçümü, bir laboratuvar incelemesidir ve uygulama yolu/teknik olarak değerlendirilir. Tanı gerektirmez.",
+      "bucket": "routine_lab_not_required",
+      "priority": 9
+    },
+    {
+      "huv_code": "34.35788",
+      "procedure_name": "Ferritin",
+      "case_coverage_of_53": 7,
+      "case_coverage_share": 0.1321,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50",
+          "item_hits": 1
+        },
+        {
+          "icd": "D51",
+          "item_hits": 1
+        },
+        {
+          "icd": "E88.9",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Ferritin testi, bir laboratuvar incelemesidir ve tanıdan bağımsız olarak uygulanabilir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 10
+    },
+    {
+      "huv_code": "34.96490",
+      "procedure_name": "Vitamin B12",
+      "case_coverage_of_53": 7,
+      "case_coverage_share": 0.1321,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 3
+        },
+        {
+          "icd": "D51.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J00",
+          "item_hits": 2
+        },
+        {
+          "icd": "D50.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50",
+          "item_hits": 1
+        },
+        {
+          "icd": "D51",
+          "item_hits": 1
+        },
+        {
+          "icd": "E88.9",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Vitamin B12 testi, bir laboratuvar incelemesidir ve tanısal bir işlem değildir. Uygulama yolu/teknik olarak değerlendirilir.",
+      "bucket": "routine_lab_not_required",
+      "priority": 11
+    },
+    {
+      "huv_code": "34.94376",
+      "procedure_name": "Ürik asit",
+      "case_coverage_of_53": 7,
+      "case_coverage_share": 0.1321,
+      "proposed_diagnosis_policy": "not_required",
+      "current_diagnosis_policy": "review_required",
+      "current_tentative_status": "unsupported_policy",
+      "diagnosis_required_observed": false,
+      "top_icds_in_batch": [
+        {
+          "icd": "E55.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "M65.1",
+          "item_hits": 1
+        },
+        {
+          "icd": "D50",
+          "item_hits": 1
+        },
+        {
+          "icd": "D51",
+          "item_hits": 1
+        },
+        {
+          "icd": "E88.9",
+          "item_hits": 1
+        },
+        {
+          "icd": "K30",
+          "item_hits": 1
+        },
+        {
+          "icd": "M79.1",
+          "item_hits": 1
+        },
+        {
+          "icd": "R10.4",
+          "item_hits": 1
+        }
+      ],
+      "engine_reason_sample": "Ürik asit ölçümü, bir laboratuvar incelemesidir ve uygulama yolu/teknik olarak değerlendirilir. Klinik bir tanı gerektirmez.",
+      "bucket": "routine_lab_not_required",
+      "priority": 12
+    }
+  ],
+  "secondary_candidates": [
+    {
+      "huv_code": "03.10886",
+      "procedure_name": "İntravenöz (İV) sıvı infüzyonu",
+      "case_coverage_of_53": 10,
+      "case_coverage_share": 0.1887,
+      "proposed_diagnosis_policy": "required_any_or_scoped_include",
+      "proposed_include_icd_prefixes_draft": [
+        "J06",
+        "J00",
+        "J11",
+        "J18",
+        "J21",
+        "J45"
+      ],
+      "note": "Tanı gerektirmeyen lab kovası değil; endikasyon kapsamı uzman kararı ister.",
+      "bucket": "iv_infusion_indication_scope",
+      "priority": 100,
+      "top_icds_in_batch": [
+        {
+          "icd": "J06.9",
+          "item_hits": 6
+        },
+        {
+          "icd": "K52.9",
+          "item_hits": 2
+        },
+        {
+          "icd": "B34.8",
+          "item_hits": 2
+        },
+        {
+          "icd": "J11.1",
+          "item_hits": 2
+        },
+        {
+          "icd": "J30.2",
+          "item_hits": 2
+        },
+        {
+          "icd": "R11",
+          "item_hits": 1
+        },
+        {
+          "icd": "M73",
+          "item_hits": 1
+        },
+        {
+          "icd": "R50.9",
+          "item_hits": 1
+        }
+      ]
+    }
+  ],
+  "required_next_gate": "real human medical-policy and admin governance review",
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

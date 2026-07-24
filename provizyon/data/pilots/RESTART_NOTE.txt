@@ -1,0 +1,6 @@
+Power-cut recovery 2026-07-23 afternoon:
+- Phase-2 Qdrant intact (HUV auto=1256)
+- 91/100 of phase2 batch already done (kept in jsonl)
+- Remaining 9 re-enqueued
+- Worker restarted WITH enriched MedGemma summary
+- After remaining 9: auto pilot-10 via wait_phase2_then_pilot10.sh

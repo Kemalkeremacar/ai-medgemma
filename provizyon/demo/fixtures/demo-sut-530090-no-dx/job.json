@@ -1,0 +1,13 @@
+{
+  "provizyon_id": "demo-sut-530090-no-dx",
+  "hasta_id": "DEMO001",
+  "patient_name": "Demo Hasta SUT Eksik Tanı",
+  "yas": 55,
+  "cinsiyet": "kadin",
+  "code_family": "SUT",
+  "sut_codes": ["530090"],
+  "diagnoses": [],
+  "documents": [],
+  "documents_mode": "skipped_full_pipeline",
+  "notes": ["Demo RED: 530090 diyabet eğitimi, tanı yok → tani_eksik (belgesiz)"]
+}

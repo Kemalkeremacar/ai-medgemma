@@ -1,0 +1,49 @@
+{
+  "_aciklama": "Zorunlu evrak kod eşlemesi. Kod -> belge gerekli mi (true/false). HUV veya SUT kodu olabilir. Kategori aralığı (prefix) belirtmek için 'prefix:' önek kullanılır. En spesifik prefix önce eşleşir.",
+
+  "_kategori_cerrahi": "02.x kodları (cerrahi müdahale) genellikle belge gerektirir",
+  "prefix:02.1": true,
+  "prefix:02.2": true,
+  "prefix:02.3": true,
+  "prefix:02.4": true,
+  "prefix:02.5": true,
+  "prefix:02.6": true,
+  "prefix:02.7": true,
+
+  "_kategori_radyoloji": "24.x ileri görüntüleme (BT, MR, PET, anjiyografi)",
+  "prefix:24.7": true,
+  "prefix:24.6": true,
+  "prefix:24.": false,
+
+  "_kategori_lab": "15.x laboratuvar/diagnostik işlemler - genellikle belge gerektirmez",
+  "prefix:15.": false,
+
+  "_kategori_goz": "11.x göz işlemleri - basit muayene belge gerektirmez",
+  "prefix:11.": false,
+
+  "_kategori_kbb": "16.x kulak burun boğaz",
+  "prefix:16.": false,
+
+  "_kategori_muayene": "01.x muayene/konsültasyon, 03.x genel tıbbi hizmetler",
+  "prefix:01.": false,
+  "prefix:03.": false,
+
+  "_kategori_diger": "Diğer yaygın kategoriler",
+  "prefix:04.": false,
+  "prefix:05.": false,
+  "prefix:06.": false,
+  "prefix:07.": false,
+  "prefix:08.": false,
+  "prefix:09.": false,
+  "prefix:10.": false,
+  "prefix:12.": false,
+  "prefix:13.": false,
+  "prefix:14.": false,
+  "prefix:17.": false,
+  "prefix:18.": false,
+
+  "_bireysel_kodlar": "Bireysel kod override'ları (bunlar kategori kurallarını ezer)",
+  "510070": true,
+  "02.16321": true,
+  "02.17681": false
+}

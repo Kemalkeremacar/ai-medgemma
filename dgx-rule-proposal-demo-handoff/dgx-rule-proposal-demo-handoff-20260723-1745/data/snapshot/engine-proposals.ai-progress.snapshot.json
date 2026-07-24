@@ -1,0 +1,37 @@
+{
+  "contract": {
+    "catalogSha256": "3c4066eb1a297b87a163bf54e70ed9b4b61895b32eba34ca9681f23a26990070",
+    "modelId": "/raid/monassist1/medgemma_model_gptq_w4",
+    "proposalPackageSha256": "3580ac21f05b513c117794bc645520eb24477d641384015ac93750c07d5e4f33",
+    "requestConfig": {
+      "maxTokens": 4096,
+      "responseFormatJson": true,
+      "temperature": 0.1,
+      "timeoutSeconds": 900
+    },
+    "selection": {
+      "maxPackets": null,
+      "maxPacketsPerStage": null
+    }
+  },
+  "counts": {
+    "completedPackets": 297,
+    "stage": {
+      "crosswalk_adjudication": 297
+    },
+    "status": {
+      "accepted": 161,
+      "blocked": 136
+    }
+  },
+  "safety": {
+    "containsRawModelResponses": false,
+    "containsSecrets": false,
+    "frozenSnapshot": true,
+    "writesToDatabase": false
+  },
+  "schemaVersion": "outpatient_rule_engine_ai_progress_snapshot.v1",
+  "snapshotCreatedAt": "2026-07-23T14:51:17.670856+00:00",
+  "sourceCheckpointSha256": "105d7571cb75aa03609a87b2306bb6b93c22c16b3c695c76890b3ff5684ed153",
+  "sourceState": "running"
+}

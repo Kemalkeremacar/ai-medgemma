@@ -1,0 +1,47 @@
+REVIEW REDUCTION POLICY REVIEW TASK
+
+Purpose:
+Review aggregate historical diagnosis-procedure evidence for high-volume manual REVIEW procedure codes and decide whether any narrow deterministic policy refinement is appropriate.
+
+Important:
+- This is not an approval to pay.
+- This is not a live runtime change.
+- MedGemma/AI output must remain shadow metadata only.
+- Any reduction of manual review requires official source or internal medical committee validation, human/admin approval, shadow batch preview, and rollback planning.
+
+Candidate list:
+- 01. 908115 | theme=covid_or_viral_infection | review_rows=4278 | top3_share=0.66724304 | action=expert_review_for_cohort_auto_pass_candidate | top=B34.2(3148), U07.3(180), R50.9(145), J06.9(120), R05(108)
+- 02. 906620 | theme=obstetric_pregnancy | review_rows=3352 | top3_share=0.70268899 | action=expert_review_for_cohort_auto_pass_candidate | top=R53(2056), R68(535), Z00.0(179), E55.9(78), Z33(71)
+- 03. 13.73366 | theme=obstetric_pregnancy | review_rows=2080 | top3_share=0.76046415 | action=resolve_local_huv_mapping_then_policy_refinement | top=Z33(1419), Z36.3(266), Z36(150), Z34.8(72), O35.8(65)
+- 04. 13.62646 | theme=obstetric_pregnancy | review_rows=10469 | top3_share=0.57977513 | action=resolve_local_huv_mapping_then_policy_refinement | top=Z33(6273), Z34(1402), O26.8(730), Z34.8(494), E55.9(328)
+- 05. 907450 | theme=obstetric_pregnancy | review_rows=3544 | top3_share=0.61979522 | action=expert_review_for_cohort_auto_pass_candidate | top=R53(2073), R68(463), Z33(188), Z00.0(181), E55.9(113)
+- 06. 906880 | theme=non_specific_symptom_dominant | review_rows=2522 | top3_share=0.570409 | action=expert_review_for_conditional_review_refinement | top=R68(1556), R53(289), Z00.0(233), E55.9(220), D50.9(92)
+- 07. 24.60491 | theme=obstetric_pregnancy | review_rows=579 | top3_share=0.55072464 | action=resolve_local_huv_mapping_then_policy_refinement | top=Z33(366), Z34(56), O26.8(34), O41.0(25), Z34.8(24)
+- 08. 906640 | theme=obstetric_pregnancy | review_rows=1151 | top3_share=0.51631117 | action=manual_review_policy_observation | top=R53(580), R68(173), Z33(70), E55.9(62), Z00.0(33)
+- 09. 906780 | theme=non_specific_symptom_dominant | review_rows=905 | top3_share=0.54371357 | action=manual_review_policy_observation | top=R68(303), R53(264), E55.9(86), M25.5(69), Z00.0(34)
+- 10. 700540 | theme=non_specific_symptom_dominant | review_rows=566 | top3_share=0.50408998 | action=manual_review_policy_observation | top=R00.2(299), R07.4(107), I10(87), R07.3(52), I49.9(39)
+- 11. 906750 | theme=obstetric_pregnancy | review_rows=490 | top3_share=0.98778004 | action=manual_review_policy_observation | top=R68(477), F06.6(5), Z10.1(3), J45(1), N39.0(1)
+- 12. 13.74706 | theme=obstetric_pregnancy | review_rows=482 | top3_share=0.76480541 | action=resolve_local_huv_mapping_then_policy_refinement | top=Z33(292), Z36.3(95), Z36(65), Z36.0(48), Z34.8(14)
+- 13. 700530 | theme=cardiology_symptom_or_monitoring | review_rows=373 | top3_share=0.56239016 | action=manual_review_policy_observation | top=R07.4(229), I10(52), R06.0(39), R00.2(39), R07.3(36)
+- 14. 905680 | theme=non_specific_symptom_dominant | review_rows=325 | top3_share=0.90379009 | action=manual_review_policy_observation | top=R68(295), N39.0(9), Z00.0(6), Q61.8(4), R50.9(3)
+- 15. 704530 | theme=obstetric_pregnancy | review_rows=297 | top3_share=0.53996101 | action=manual_review_policy_observation | top=Z33(222), R10.2(32), Z34(23), R10(22), N76.0(20)
+- 16. 906630 | theme=obstetric_pregnancy | review_rows=261 | top3_share=0.50274725 | action=manual_review_policy_observation | top=R53(116), Z33(52), E55.9(15), Z34(11), R10.4(7)
+- 17. 13.06366 | theme=genitourinary | review_rows=248 | top3_share=0.54448399 | action=resolve_local_huv_mapping_then_policy_refinement | top=N86(138), R10(107), R10.2(61), N76.1(47), N76.0(42)
+- 18. 13.72696 | theme=obstetric_pregnancy | review_rows=243 | top3_share=0.60689655 | action=resolve_local_huv_mapping_then_policy_refinement | top=Z33(121), O26.8(36), Z36(19), Z36.0(16), Z34(11)
+- 19. 906660 | theme=obstetric_pregnancy | review_rows=213 | top3_share=0.51394422 | action=manual_review_policy_observation | top=R53(72), R68(39), Z33(18), Z01(18), Z02.1(10)
+- 20. 703790 | theme=eye_ear | review_rows=212 | top3_share=0.50536193 | action=manual_review_policy_observation | top=H52.2(145), H40.0(144), H52.1(88), H04.1(55), H43.3(46)
+
+Expert decision options per candidate:
+1. keep_manual_review
+2. refine_review_policy_for_specific_diagnosis_cohort
+3. convert_to_known_no_diagnosis_rule_required_only_if_officially_supported
+4. resolve_local_huv_mapping_first
+5. reject_candidate_due_to_clinical_or_policy_risk
+
+Required response fields per candidate:
+- code
+- expert_decision
+- approved_diagnosis_prefixes_if_any
+- rejected_diagnosis_prefixes_if_any
+- official_source_or_committee_reference
+- notes

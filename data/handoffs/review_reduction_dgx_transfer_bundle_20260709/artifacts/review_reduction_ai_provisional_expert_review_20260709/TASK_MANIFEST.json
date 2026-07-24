@@ -1,0 +1,56 @@
+{
+  "schema_version": "review_reduction_ai_provisional_expert_review.v1",
+  "generated_at": "2026-07-09T18:09:22",
+  "mode": "medgemma_ai_only_provisional_expert_review",
+  "postprocessed_existing_responses": true,
+  "source_expert_fast_track_json": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.json",
+  "out_dir": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709",
+  "medgemma_base_url": "http://192.168.1.209:8000/v1",
+  "medgemma_model": "/raid/monassist1/medgemma_model_gptq_w4",
+  "counts": {
+    "requests": 19,
+    "responses": 19,
+    "valid_responses": 17,
+    "error_responses": 2,
+    "parse_counts": {
+      "parsed": 19
+    },
+    "status_counts": {
+      "completed": 19
+    },
+    "decision_counts": {
+      "ai_provisional_approve_shadow_staging_specific_prefixes": 3,
+      "ai_provisional_conditional_only": 8,
+      "ai_keep_manual_review": 8
+    },
+    "shadow_candidate_rows": 3
+  },
+  "timing": {
+    "total_model_elapsed_seconds": 1132.249
+  },
+  "safety": {
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "live_runtime_override": false,
+    "auto_apply": false,
+    "exports_case_level_rows": false,
+    "calls_medgemma": true,
+    "claims_human_admin_approval": false
+  },
+  "generated_files": [
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.jsonl",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_requests.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_responses.jsonl",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_raw_responses.jsonl",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_validation_rows.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_validation_rows.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_review_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\TASK_MANIFEST.json"
+  ],
+  "critical_warning": "These are AI-only provisional opinions. They do not constitute human/admin/expert approval and do not authorize live rules, Qdrant writes, runtime override, or payment approval."
+}

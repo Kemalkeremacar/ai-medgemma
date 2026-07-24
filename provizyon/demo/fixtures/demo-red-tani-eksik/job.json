@@ -1,0 +1,17 @@
+{
+  "provizyon_id": "demo-red-tani-eksik",
+  "hasta_id": "RED001",
+  "patient_name": "Demo Red Tanı Eksik",
+  "yas": 28,
+  "cinsiyet": "kadin",
+  "code_family": "HUV",
+  "huv_codes": [
+    "02.25841"
+  ],
+  "diagnoses": [],
+  "documents_mode": "skipped_full_pipeline",
+  "documents": [],
+  "notes": [
+    "Demo RED: spontan vajinal doğum, ICD yok → tani_eksik"
+  ]
+}

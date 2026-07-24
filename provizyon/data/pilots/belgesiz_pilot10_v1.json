@@ -1,0 +1,795 @@
+{
+  "pilot_id": "belgesiz_pilot10_v1",
+  "purpose": "Phase-2 soft-34x + enriched MedGemma deterministic_summary smoke; separate from 100-batch",
+  "documents_mode": "skipped_full_pipeline",
+  "selection": {
+    "pool_size": 120,
+    "candidates_after_exclude": 87,
+    "excluded_prior_retest_ids": 100,
+    "bucket_hits": {
+      "lab_heavy_phase2": 2,
+      "lab_with_phase1": 1,
+      "soft_nonlab": 2,
+      "imaging": 1,
+      "simple_passish": 1,
+      "multi_mixed": 1,
+      "diversity_fill": 2
+    },
+    "criteria": [
+      "Exclude Jul22/Jul23 retest IDs",
+      "Cover Phase-2 lab-heavy, soft non-lab, imaging, SUT, no-dx, simple",
+      "Prefer diagnosis present for clinical MedGemma path"
+    ]
+  },
+  "cases": [
+    {
+      "id": "2476721",
+      "codes": [
+        "01.14285",
+        "34.22047",
+        "34.53153",
+        "34.28087",
+        "34.28087",
+        "34.14648",
+        "03.10886",
+        "TZH.Ilac",
+        "TZH.Ilac",
+        "TZH.Ilac",
+        "34.14648"
+      ],
+      "n_proc": 11,
+      "n_dx": 1,
+      "dx": [
+        "A09"
+      ],
+      "yas": 6,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 6,
+      "labs": [
+        "34.22047",
+        "34.53153",
+        "34.28087",
+        "34.28087",
+        "34.14648",
+        "34.14648"
+      ],
+      "phase1_labs": [
+        "34.22047",
+        "34.53153"
+      ],
+      "soft_nonlab": [
+        "03.10886"
+      ],
+      "imaging": [],
+      "tzh": [
+        "TZH.Ilac",
+        "TZH.Ilac",
+        "TZH.Ilac"
+      ],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": true,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "01.14285",
+          "İş Günlerinde Hekimin İşyerinde  Gündüz"
+        ],
+        [
+          "34.22047",
+          "C reaktif protein, kantitatif"
+        ],
+        [
+          "34.53153",
+          "Kan sayımı (Tam kan sayımı / Hemogram / CBC), (en az 18 parametre)"
+        ],
+        [
+          "34.28087",
+          "Dışkıda parazit, manuel (amip, giardia, parazit aranması)"
+        ],
+        [
+          "34.28087",
+          "Dışkıda parazit, manuel (amip, giardia, parazit aranması)"
+        ],
+        [
+          "34.14648",
+          "Antijen arama, dışkı (adenovirüs, rotavirüs, entamoeba histolytica, cryptosporidium, giardia, her biri)"
+        ],
+        [
+          "03.10886",
+          "İntravenöz sıvı transfüzyonu"
+        ],
+        [
+          "TZH.Ilac",
+          "İLAÇ"
+        ]
+      ],
+      "pick_reason": "lab_heavy_phase2"
+    },
+    {
+      "id": "2569510",
+      "codes": [
+        "01.14285",
+        "34.46962",
+        "34.78823",
+        "34.06645",
+        "34.56626",
+        "34.56626"
+      ],
+      "n_proc": 6,
+      "n_dx": 1,
+      "dx": [
+        "M25.5"
+      ],
+      "yas": 37,
+      "cinsiyet": "kadin",
+      "family": "HUV",
+      "n_lab34": 5,
+      "labs": [
+        "34.46962",
+        "34.78823",
+        "34.06645",
+        "34.56626",
+        "34.56626"
+      ],
+      "phase1_labs": [],
+      "soft_nonlab": [],
+      "imaging": [],
+      "tzh": [],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": false,
+      "has_soft_nonlab": false,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "01.14285",
+          "İş Günlerinde Hekimin İşyerinde  Gündüz"
+        ],
+        [
+          "34.46962",
+          "İdrar tahlili (strip ve mikroskopi) (bilirubin, glukoz, hemoglobin, ketonlar, lökositler, nitrit, pH, protein, yoğunluk, ürobilinojen ve bu bileşenlerin herhangi bir sayıda içeren dip stick veya tablet halindeki reaktifleri kullanarak)"
+        ],
+        [
+          "34.78823",
+          "Protein elektroforezi"
+        ],
+        [
+          "34.06645",
+          "Anti ds DNA"
+        ],
+        [
+          "34.56626",
+          "Kompleman C3, 4 (her biri)"
+        ],
+        [
+          "34.56626",
+          "Kompleman C3, 4 (her biri)"
+        ]
+      ],
+      "pick_reason": "lab_heavy_phase2"
+    },
+    {
+      "id": "2562697",
+      "codes": [
+        "TZH.01.00001",
+        "34.53153",
+        "34.35788"
+      ],
+      "n_proc": 3,
+      "n_dx": 2,
+      "dx": [
+        "D50.8",
+        "E55.9"
+      ],
+      "yas": 33,
+      "cinsiyet": "kadin",
+      "family": "HUV",
+      "n_lab34": 2,
+      "labs": [
+        "34.53153",
+        "34.35788"
+      ],
+      "phase1_labs": [
+        "34.53153",
+        "34.35788"
+      ],
+      "soft_nonlab": [],
+      "imaging": [],
+      "tzh": [
+        "TZH.01.00001"
+      ],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": false,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": false,
+      "names": [
+        [
+          "TZH.01.00001",
+          "Prof.Dr. - Doç. Dr. Muayene"
+        ],
+        [
+          "34.53153",
+          "Kan sayımı (Tam kan sayımı / Hemogram / CBC), (en az 18 parametre)"
+        ],
+        [
+          "34.35788",
+          "Ferritin"
+        ]
+      ],
+      "pick_reason": "lab_with_phase1"
+    },
+    {
+      "id": "2568731",
+      "codes": [
+        "03.10886",
+        "01.14285",
+        "TZH.Ilac",
+        "TZH.Malzeme"
+      ],
+      "n_proc": 4,
+      "n_dx": 1,
+      "dx": [
+        "J06.9"
+      ],
+      "yas": 34,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 0,
+      "labs": [],
+      "phase1_labs": [],
+      "soft_nonlab": [
+        "03.10886"
+      ],
+      "imaging": [],
+      "tzh": [
+        "TZH.Ilac",
+        "TZH.Malzeme"
+      ],
+      "sut": [],
+      "has_lab": false,
+      "has_phase1": false,
+      "has_soft_nonlab": true,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": false,
+      "names": [
+        [
+          "03.10886",
+          "İntravenöz sıvı transfüzyonu"
+        ],
+        [
+          "01.14285",
+          "İş Günlerinde Hekimin İşyerinde  Gündüz"
+        ],
+        [
+          "TZH.Ilac",
+          "İLAÇ"
+        ],
+        [
+          "TZH.Malzeme",
+          "MALZEME"
+        ]
+      ],
+      "pick_reason": "soft_nonlab"
+    },
+    {
+      "id": "106844",
+      "codes": [
+        "01.14285",
+        "02.05441",
+        "34.53153",
+        "34.22047",
+        "TZH.Ilac"
+      ],
+      "n_proc": 5,
+      "n_dx": 1,
+      "dx": [
+        "K52.9"
+      ],
+      "yas": 55,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 2,
+      "labs": [
+        "34.53153",
+        "34.22047"
+      ],
+      "phase1_labs": [
+        "34.53153",
+        "34.22047"
+      ],
+      "soft_nonlab": [
+        "02.05441"
+      ],
+      "imaging": [],
+      "tzh": [
+        "TZH.Ilac"
+      ],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": true,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "01.14285",
+          "NORMAL İŞGÜNLERİNDE MUAYENEHANEDE GÜNDÜZ"
+        ],
+        [
+          "02.05441",
+          "SERUM TAKILMASI"
+        ],
+        [
+          "34.53153",
+          "KAN SAYIMI, OTOMATİZE (EN AZ 18 PARAMETRE)"
+        ],
+        [
+          "34.22047",
+          "C REAKTİF PROTEİN, KANTİTATİF"
+        ],
+        [
+          "TZH.Ilac",
+          "İLAÇ"
+        ]
+      ],
+      "pick_reason": "soft_nonlab"
+    },
+    {
+      "id": "107497",
+      "codes": [
+        "01.14285",
+        "24.00691"
+      ],
+      "n_proc": 2,
+      "n_dx": 1,
+      "dx": [
+        "Z47"
+      ],
+      "yas": 29,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 0,
+      "labs": [],
+      "phase1_labs": [],
+      "soft_nonlab": [],
+      "imaging": [
+        "24.00691"
+      ],
+      "tzh": [],
+      "sut": [],
+      "has_lab": false,
+      "has_phase1": false,
+      "has_soft_nonlab": false,
+      "has_imaging": true,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": false,
+      "names": [
+        [
+          "01.14285",
+          "NORMAL İŞGÜNLERİNDE MUAYENEHANEDE GÜNDÜZ"
+        ],
+        [
+          "24.00691",
+          "NORMAL İKİ YÖNLÜ GRAFİ"
+        ]
+      ],
+      "pick_reason": "imaging"
+    },
+    {
+      "id": "2566009",
+      "codes": [
+        "TZH.01.00001"
+      ],
+      "n_proc": 1,
+      "n_dx": 1,
+      "dx": [
+        "K60.0"
+      ],
+      "yas": 35,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 0,
+      "labs": [],
+      "phase1_labs": [],
+      "soft_nonlab": [],
+      "imaging": [],
+      "tzh": [
+        "TZH.01.00001"
+      ],
+      "sut": [],
+      "has_lab": false,
+      "has_phase1": false,
+      "has_soft_nonlab": false,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": false,
+      "names": [
+        [
+          "TZH.01.00001",
+          "Prof.Dr. - Doç. Dr. Muayene"
+        ]
+      ],
+      "pick_reason": "simple_passish"
+    },
+    {
+      "id": "2580856",
+      "codes": [
+        "34.01511",
+        "34.02266",
+        "34.16460",
+        "34.22047",
+        "34.27181",
+        "34.83202",
+        "34.35788",
+        "34.36694",
+        "34.38506",
+        "34.08155",
+        "34.39563",
+        "34.39261",
+        "34.47264",
+        "34.50284",
+        "34.52398",
+        "34.42130",
+        "34.62666",
+        "34.55871",
+        "34.58287",
+        "34.66592",
+        "34.76860",
+        "34.85618",
+        "34.87581",
+        "34.53153",
+        "34.90450",
+        "34.92262",
+        "34.94074",
+        "34.94376",
+        "34.96490",
+        "34.97094"
+      ],
+      "n_proc": 30,
+      "n_dx": 8,
+      "dx": [
+        "D50",
+        "D51",
+        "E55.9",
+        "E88.9",
+        "K30"
+      ],
+      "yas": 32,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 30,
+      "labs": [
+        "34.01511",
+        "34.02266",
+        "34.16460",
+        "34.22047",
+        "34.27181",
+        "34.83202",
+        "34.35788",
+        "34.36694"
+      ],
+      "phase1_labs": [
+        "34.01511",
+        "34.16460",
+        "34.22047",
+        "34.35788",
+        "34.39563",
+        "34.58287",
+        "34.76860",
+        "34.85618",
+        "34.53153",
+        "34.94074",
+        "34.94376",
+        "34.96490"
+      ],
+      "soft_nonlab": [],
+      "imaging": [],
+      "tzh": [],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": false,
+      "has_imaging": false,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "34.01511",
+          "Alanin aminotransferaz (ALT, SGPT)"
+        ],
+        [
+          "34.02266",
+          "Alkalen fosfataz (ALP)"
+        ],
+        [
+          "34.16460",
+          "Aspartat aminotransferaz (AST, SGOT)"
+        ],
+        [
+          "34.22047",
+          "C reaktif protein, kantitatif"
+        ],
+        [
+          "34.27181",
+          "Demir"
+        ],
+        [
+          "34.83202",
+          "Sedimentasyon"
+        ],
+        [
+          "34.35788",
+          "Ferritin"
+        ],
+        [
+          "34.36694",
+          "Folik asit"
+        ]
+      ],
+      "pick_reason": "multi_mixed"
+    },
+    {
+      "id": "2581695",
+      "codes": [
+        "02.05441",
+        "01.14285",
+        "15.13077",
+        "34.22047",
+        "34.39563",
+        "34.92866",
+        "34.57985",
+        "34.46962",
+        "34.64780",
+        "34.03172",
+        "34.38506",
+        "34.02266",
+        "34.18725",
+        "34.16460",
+        "34.58287",
+        "34.18574",
+        "34.01511",
+        "34.94074",
+        "34.76860",
+        "34.85618",
+        "34.53153",
+        "24.00461",
+        "TZH.24.74751",
+        "24.00461",
+        "TZH.Ilac"
+      ],
+      "n_proc": 25,
+      "n_dx": 1,
+      "dx": [
+        "R10.4"
+      ],
+      "yas": 65,
+      "cinsiyet": "erkek",
+      "family": "HUV",
+      "n_lab34": 18,
+      "labs": [
+        "34.22047",
+        "34.39563",
+        "34.92866",
+        "34.57985",
+        "34.46962",
+        "34.64780",
+        "34.03172",
+        "34.38506"
+      ],
+      "phase1_labs": [
+        "34.22047",
+        "34.39563",
+        "34.16460",
+        "34.58287",
+        "34.01511",
+        "34.94074",
+        "34.76860",
+        "34.85618",
+        "34.53153"
+      ],
+      "soft_nonlab": [
+        "02.05441"
+      ],
+      "imaging": [
+        "15.13077",
+        "24.00461",
+        "24.00461"
+      ],
+      "tzh": [
+        "TZH.24.74751",
+        "TZH.Ilac"
+      ],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": true,
+      "has_imaging": true,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "02.05441",
+          "SERUM TAKILMASI"
+        ],
+        [
+          "01.14285",
+          "NORMAL İŞGÜNLERİNDE MUAYENEHANEDE GÜNDÜZ"
+        ],
+        [
+          "15.13077",
+          "ELEKTROKARDİYOGRAM (12 DERİVASYONLU, SADECE EKG TRASE ÇEKİMİ)"
+        ],
+        [
+          "34.22047",
+          "C REAKTİF PROTEİN, KANTİTATİF"
+        ],
+        [
+          "34.39563",
+          "GLUKOZ (ŞEKER, AÇLIK, TOKLUK, HER BİRİ)"
+        ],
+        [
+          "34.92866",
+          "TROPONİN I, T (HER BİRİ)"
+        ],
+        [
+          "34.57985",
+          "KREATİN KİNAZ-MB (CK-MB)"
+        ],
+        [
+          "34.46962",
+          "İDRAR TAHLİLİ (STRİP VE MİKROSKOBİ) (BİLURUBİN, GLUKOZ, HEMOGLOBİN, KETONLAR, LÖKOSİTLER, NİTRİT, PH, PROTEİN, YOĞUNLUK, ÜROBİLİNOJEN VE BU BİLEŞENLERİN HERHANGİ BİR SAYIDA İÇEREN DİP STİCK VEYA TABLET HALİNDEKİ REAKTİFLERİ KULLANARAK)"
+        ]
+      ],
+      "pick_reason": "diversity_fill"
+    },
+    {
+      "id": "2582118",
+      "codes": [
+        "01.14285",
+        "34.39261",
+        "34.96490",
+        "34.55871",
+        "34.66592",
+        "34.53153",
+        "34.42130",
+        "34.94074",
+        "34.94376",
+        "34.39563",
+        "34.02266",
+        "34.85618",
+        "34.76860",
+        "34.97094",
+        "34.84108",
+        "34.62666",
+        "34.16460",
+        "34.52398",
+        "34.58287",
+        "34.92262",
+        "34.46962",
+        "34.35788",
+        "34.01511",
+        "34.38506",
+        "34.90450",
+        "24.47381",
+        "24.00461"
+      ],
+      "n_proc": 27,
+      "n_dx": 4,
+      "dx": [
+        "E78.5",
+        "K76.0",
+        "R03.0",
+        "R06.0"
+      ],
+      "yas": 60,
+      "cinsiyet": "kadin",
+      "family": "HUV",
+      "n_lab34": 24,
+      "labs": [
+        "34.39261",
+        "34.96490",
+        "34.55871",
+        "34.66592",
+        "34.53153",
+        "34.42130",
+        "34.94074",
+        "34.94376"
+      ],
+      "phase1_labs": [
+        "34.96490",
+        "34.53153",
+        "34.94074",
+        "34.94376",
+        "34.39563",
+        "34.85618",
+        "34.76860",
+        "34.16460",
+        "34.58287",
+        "34.35788",
+        "34.01511"
+      ],
+      "soft_nonlab": [],
+      "imaging": [
+        "24.47381",
+        "24.00461"
+      ],
+      "tzh": [],
+      "sut": [],
+      "has_lab": true,
+      "has_phase1": true,
+      "has_soft_nonlab": false,
+      "has_imaging": true,
+      "has_sut": false,
+      "has_dx": true,
+      "multi": true,
+      "names": [
+        [
+          "01.14285",
+          "İş Günlerinde Hekimin İşyerinde  Gündüz"
+        ],
+        [
+          "34.39261",
+          "Glukohemoglobin (HbA1c)"
+        ],
+        [
+          "34.96490",
+          "Vitamin B12"
+        ],
+        [
+          "34.55871",
+          "Kolesterol, serum, total"
+        ],
+        [
+          "34.66592",
+          "Magnezyum"
+        ],
+        [
+          "34.53153",
+          "Kan sayımı (Tam kan sayımı / Hemogram / CBC), (en az 18 parametre)"
+        ],
+        [
+          "34.42130",
+          "HDL-kolesterol"
+        ],
+        [
+          "34.94074",
+          "Üre nitrojeni, kan (BUN)"
+        ]
+      ],
+      "pick_reason": "diversity_fill"
+    }
+  ],
+  "provizyon_ids": [
+    "2476721",
+    "2569510",
+    "2562697",
+    "2568731",
+    "106844",
+    "107497",
+    "2566009",
+    "2580856",
+    "2581695",
+    "2582118"
+  ]
+}

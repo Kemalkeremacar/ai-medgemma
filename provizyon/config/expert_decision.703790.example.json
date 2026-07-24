@@ -1,0 +1,33 @@
+{
+  "decision_id": "expert-703790-pending",
+  "procedure_code": "703790",
+  "procedure_code_system": "SUT",
+  "procedure_name": "Nerve Fiber Analyzer (NFA)",
+  "verdict": "approve_shadow_scope",
+  "include_diagnoses": ["H40"],
+  "exclude_diagnoses": [],
+  "exceptions": [],
+  "decision_if_missing_diagnosis": "REVIEW_REQUIRED",
+  "rationale": "UZMAN DOLDURACAK: H40* grubunun 703790 için medikal-policy uygunluğu, hariç alt kodlar ve dayanak burada yazılacak.",
+  "source_refs": [
+    {
+      "label": "Kurumsal shadow proposal 2026-07-20",
+      "url_or_doc_id": "data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/",
+      "list_version": ""
+    }
+  ],
+  "confidence": "medium",
+  "valid_from": null,
+  "valid_to": null,
+  "shadow_pilot_approved": false,
+  "live_apply_approved": false,
+  "decided_by": {
+    "name": "UZMAN_ADI",
+    "role": "medikal-policy",
+    "organization": "Vakıf",
+    "authority_id": ""
+  },
+  "decided_at": "2026-07-20T00:00:00Z",
+  "notes": "Canlı sistem hâlâ REVIEW_REQUIRED. Bu form doldurulmadan shadow overlay açılmamalı (enabled=false kalır).",
+  "related_proposal_path": "data/handoffs/review_reduction_dgx_transfer_bundle_20260709/artifacts/review_reduction_703790_shadow_policy_proposal_20260720/"
+}

@@ -1,0 +1,148 @@
+[
+  {
+    "priority_order": 15,
+    "rank": 20,
+    "code": "703790",
+    "clinical_theme": "eye_ear",
+    "review_rows": 212,
+    "priority_tier": "tier_4_lower_volume_expert_queue",
+    "ai_review_status": "completed",
+    "ai_expert_decision": "ai_provisional_approve_shadow_staging_specific_prefixes",
+    "confidence": "high",
+    "confidence_score": 0.9,
+    "evidence_strength": "strong",
+    "safety_level": "low_risk",
+    "approved_prefixes_if_any": [
+      "H52",
+      "H40",
+      "H04",
+      "H43",
+      "H52.4",
+      "H52.0",
+      "H47.5",
+      "H35.3",
+      "H18.3"
+    ],
+    "rejected_prefixes_if_any": [],
+    "prefixes_requiring_manual_review": [],
+    "missing_evidence": [
+      "Detailed clinical context for each diagnosis code.",
+      "Specific patient demographics or comorbidities that might influence diagnosis prevalence.",
+      "Evidence regarding the specificity of the SUT code 703790 for these diagnoses."
+    ],
+    "risk_notes": [
+      "The top diagnoses are related to ear and hearing conditions (H codes).",
+      "The cohort appears clinically focused on these specific conditions.",
+      "Potential for misdiagnosis or overlapping conditions exists, requiring expert validation.",
+      "The specificity level is medium, suggesting potential for broader interpretation or overlap with other conditions."
+    ],
+    "reasoning_summary": "The aggregate diagnosis distribution for SUT code 703790 shows a strong concentration in specific ear and hearing related ICD-10 codes (H codes), particularly H52 (hearing impairment), H40 (otitis media), H04 (otitis externa), and H43 (other ear diseases). The top diagnoses (H52.2, H40.0, H52.1, H04.1, H43.3) represent a significant portion of the total cases (over 90%). The diagnosis cohort appears clinically narrow and plausible for this SUT code. The confidence is high due to the clear concentration. Mapping is not needed as the codes are well-defined. The recommended action is to send this candidate to a human expert for priority review due to the clinical focus and potential impact.",
+    "official_source_needed": true,
+    "human_admin_approval_present": false,
+    "shadow_staging_allowed_by_ai_only": true,
+    "apply_ready": false,
+    "auto_apply": false,
+    "validation_status": "valid",
+    "validation_errors": [],
+    "validation_warnings": []
+  },
+  {
+    "priority_order": 17,
+    "rank": 23,
+    "code": "907440",
+    "clinical_theme": "obstetric_pregnancy",
+    "review_rows": 199,
+    "priority_tier": "tier_4_lower_volume_expert_queue",
+    "ai_review_status": "completed",
+    "ai_expert_decision": "ai_provisional_conditional_only",
+    "confidence": "medium",
+    "confidence_score": 0.75,
+    "evidence_strength": "moderate",
+    "safety_level": "medium_risk",
+    "approved_prefixes_if_any": [
+      "R53",
+      "Z33",
+      "E55",
+      "R10",
+      "N39"
+    ],
+    "rejected_prefixes_if_any": [],
+    "prefixes_requiring_manual_review": [
+      "D76",
+      "R50",
+      "D50",
+      "E03",
+      "Z34"
+    ],
+    "missing_evidence": [
+      "Detailed clinical context for specific diagnoses within the cohort.",
+      "Evidence regarding the prevalence and clinical significance of less common diagnoses (e.g., Z34, D76.0, R50.9, D50, E03) in the context of the primary diagnoses (R53, Z33, E55, R10, N39).",
+      "Specific evidence linking the SUT code to the observed diagnoses."
+    ],
+    "risk_notes": [
+      "The top diagnoses (R53, Z33, E55, R10, N39) represent a range of conditions, some potentially serious (e.g., E55 - Endocrine disorders, N39 - Specific urethral disorders). While the cohort appears narrow based on the top diagnoses, the clinical significance varies.",
+      "The high concentration of 'R Symptoms/findings' codes (R53) requires careful consideration. Are these symptoms directly related to the intended clinical scenario, or are they incidental findings?",
+      "The presence of 'Z Factors/status' codes (Z33, Z34) indicates factors influencing health status or healthcare utilization. Their relevance to the primary clinical theme needs clarification.",
+      "The specificity level is medium, suggesting potential ambiguity in the diagnosis codes. Further refinement might be needed to ensure accurate targeting."
+    ],
+    "reasoning_summary": "The aggregate diagnosis distribution shows a concentration in 'R Symptoms/findings' (R53) and 'Z Factors/status' (Z33), along with specific diagnoses like 'E55' (Endocrine), 'R10' (Symptoms related to urinary system), and 'N39' (Urethral disorders). The top diagnoses represent a plausible, albeit broad, set of conditions related to obstetric pregnancy, potentially including complications or related symptoms/findings. The high concentration in R53 warrants careful review to ensure relevance. The cohort appears relatively narrow based on the top diagnoses, but the clinical significance varies. Given the medium confidence and the presence of potentially serious or non-specific codes, a conditional approval is recommended, focusing on the most specific and relevant prefixes while keeping others under manual review.",
+    "official_source_needed": true,
+    "human_admin_approval_present": false,
+    "shadow_staging_allowed_by_ai_only": true,
+    "apply_ready": false,
+    "auto_apply": false,
+    "validation_status": "valid",
+    "validation_errors": [],
+    "validation_warnings": []
+  },
+  {
+    "priority_order": 19,
+    "rank": 30,
+    "code": "906510",
+    "clinical_theme": "obstetric_pregnancy",
+    "review_rows": 159,
+    "priority_tier": "tier_4_lower_volume_expert_queue",
+    "ai_review_status": "completed",
+    "ai_expert_decision": "ai_provisional_conditional_only",
+    "confidence": "medium",
+    "confidence_score": 0.75,
+    "evidence_strength": "moderate",
+    "safety_level": "medium_risk",
+    "approved_prefixes_if_any": [
+      "R68",
+      "Z00",
+      "R53",
+      "Z01",
+      "B15"
+    ],
+    "rejected_prefixes_if_any": [],
+    "prefixes_requiring_manual_review": [
+      "E55",
+      "G35",
+      "E78",
+      "B18",
+      "Z34"
+    ],
+    "missing_evidence": [
+      "Specificity of R68 (e.g., which symptom/finding)",
+      "Context for Z00.0 (e.g., specific encounter)",
+      "Details for R53 (e.g., specific type of pain)",
+      "Details for Z01 (e.g., specific type of encounter)",
+      "Details for B15 (e.g., specific type of infection)"
+    ],
+    "risk_notes": [
+      "The top diagnoses are broad (symptoms, findings, factors/status).",
+      "Lack of specificity could lead to misinterpretation or inappropriate care if used without context.",
+      "The combination of codes might indicate a specific condition, but the aggregate data doesn't reveal it."
+    ],
+    "reasoning_summary": "The aggregate diagnosis distribution (R68, Z00.0, R53, Z01, B15) is clinically plausible for obstetric pregnancy, representing common symptoms, findings, and factors. The top diagnoses are narrow and represent a significant portion of the cases. The clinical theme is well-defined. The confidence is medium. The diagnosis cohort appears narrow but contains broad symptom/finding codes. Mapping is not required as the code is present in the rules. The prefixes R68, Z00, R53, Z01, B15 are potentially narrow enough for conditional approval, but the remaining prefixes (E55, G35, E78, B18, Z34) are broad or require more context. Therefore, a conditional approval with specific prefixes is recommended.",
+    "official_source_needed": true,
+    "human_admin_approval_present": false,
+    "shadow_staging_allowed_by_ai_only": true,
+    "apply_ready": false,
+    "auto_apply": false,
+    "validation_status": "valid",
+    "validation_errors": [],
+    "validation_warnings": []
+  }
+]

@@ -1,0 +1,4847 @@
+[
+  {
+    "request_id": "rr_medgemma_0001_908115",
+    "rank": 1,
+    "code": "908115",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "covid_or_viral_infection",
+    "review_rows": 4278,
+    "top3_diagnosis_share": 0.66724304,
+    "review_reduction_potential": "high",
+    "source_risk_level": "medium",
+    "source_recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "narrow_candidate",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.9",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "B34",
+      "U07",
+      "R50",
+      "J06",
+      "R05"
+    ],
+    "prefixes_to_keep_review": [],
+    "missing_evidence": [
+      "No specific missing evidence identified for this cohort."
+    ],
+    "risk_notes": [
+      "The cohort consists of diagnoses related to viral infections (B34, J06, J02, J18, J12), symptoms/findings (R50, R05, R53), and unspecified conditions (Z00, R50.9, J06.9). While generally plausible for a viral infection context, the specific combination and prevalence require expert validation to ensure appropriate application in the clinical workflow."
+    ],
+    "reasoning_summary": "The top diagnoses (B34.2, U07.3, R50.9, J06.9, R05) represent common conditions associated with viral infections or their sequelae. The cohort appears clinically focused and narrow enough to warrant expert review for potential fast-tracking. The diagnoses are well-represented in the top results, suggesting a clear signal. No mapping issues are apparent. The diagnoses are plausible in the context of 'covid_or_viral_infection'.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.9,
+    "top_diagnoses": "B34.2:3148;U07.3:180;R50.9:145;J06.9:120;R05:108;R53:108;J02:77;Z00:73",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "conditional",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 1,
+      "code": "908115",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "covid_or_viral_infection",
+      "specificity_level": "medium",
+      "review_reduction_potential": "high",
+      "risk_level": "medium",
+      "recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+      "review_rows": 4278,
+      "provision_rows": 4278,
+      "top3_diagnosis_share": 0.66724304,
+      "top1_diagnosis_share": 0.60480307,
+      "unique_diagnoses": 216,
+      "diagnosis_normalized_entropy": 0.42832528,
+      "top_diagnoses": [
+        {
+          "value": "B34.2",
+          "count": 3148
+        },
+        {
+          "value": "U07.3",
+          "count": 180
+        },
+        {
+          "value": "R50.9",
+          "count": 145
+        },
+        {
+          "value": "J06.9",
+          "count": 120
+        },
+        {
+          "value": "R05",
+          "count": 108
+        },
+        {
+          "value": "R53",
+          "count": 108
+        },
+        {
+          "value": "J02",
+          "count": 77
+        },
+        {
+          "value": "Z00",
+          "count": 73
+        },
+        {
+          "value": "J18.9",
+          "count": 55
+        },
+        {
+          "value": "J12.8",
+          "count": 54
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "B34",
+        "U07",
+        "R50",
+        "J06",
+        "R05"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "A-B Infectious",
+          "count": 3241
+        },
+        {
+          "value": "J Respiratory",
+          "count": 824
+        },
+        {
+          "value": "R Symptoms/findings",
+          "count": 508
+        },
+        {
+          "value": "U Special purposes",
+          "count": 192
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 140
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 109
+        },
+        {
+          "value": "K Digestive",
+          "count": 51
+        },
+        {
+          "value": "I Circulatory",
+          "count": 40
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "conditional",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "B34.2",
+          "diagnosis_chapter": "A-B Infectious",
+          "cooccurrence_rows": "3148",
+          "share_within_code_diagnosis_observations": "0.60480307",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "U07.3",
+          "diagnosis_chapter": "U Special purposes",
+          "cooccurrence_rows": "180",
+          "share_within_code_diagnosis_observations": "0.03458213",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "145",
+          "share_within_code_diagnosis_observations": "0.02785783",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "120",
+          "share_within_code_diagnosis_observations": "0.02305476",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "108",
+          "share_within_code_diagnosis_observations": "0.02074928",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "108",
+          "share_within_code_diagnosis_observations": "0.02074928",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "77",
+          "share_within_code_diagnosis_observations": "0.01479347",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "73",
+          "share_within_code_diagnosis_observations": "0.01402498",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J18.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "55",
+          "share_within_code_diagnosis_observations": "0.01056676",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J12.8",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "54",
+          "share_within_code_diagnosis_observations": "0.01037464",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "B99",
+          "diagnosis_chapter": "A-B Infectious",
+          "cooccurrence_rows": "52",
+          "share_within_code_diagnosis_observations": "0.00999039",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "52",
+          "share_within_code_diagnosis_observations": "0.00999039",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J39.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "45",
+          "share_within_code_diagnosis_observations": "0.00864553",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "45",
+          "share_within_code_diagnosis_observations": "0.00864553",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "44",
+          "share_within_code_diagnosis_observations": "0.00845341",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "39",
+          "share_within_code_diagnosis_observations": "0.0074928",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "37",
+          "share_within_code_diagnosis_observations": "0.00710855",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "33",
+          "share_within_code_diagnosis_observations": "0.00634006",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J12.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "31",
+          "share_within_code_diagnosis_observations": "0.00595581",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "29",
+          "share_within_code_diagnosis_observations": "0.00557157",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.8",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00422671",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J22",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00422671",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R06.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "20",
+          "share_within_code_diagnosis_observations": "0.00384246",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J00",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "20",
+          "share_within_code_diagnosis_observations": "0.00384246",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "908115",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J11.1",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "19",
+          "share_within_code_diagnosis_observations": "0.00365034",
+          "code_provision_rows": "4278",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Expert may evaluate whether these diagnosis prefixes can be allowed without manual review for this procedure: B34, U07, R50, J06, R05",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_1_policy_candidate",
+    "expert_review_question": "Bu işlem kodunda MedGemma'nın desteklediği prefix kohortu (B34, U07, R50, J06, R05) domain expert onayıyla shadow staging adayına dönüştürülebilir mi?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 1,
+    "supported_prefixes_for_expert_review": [
+      "B34",
+      "U07",
+      "R50",
+      "J06",
+      "R05"
+    ],
+    "prefixes_medgemma_says_keep_review": [],
+    "medgemma_missing_evidence": [
+      "No specific missing evidence identified for this cohort."
+    ],
+    "medgemma_risk_notes": [
+      "The cohort consists of diagnoses related to viral infections (B34, J06, J02, J18, J12), symptoms/findings (R50, R05, R53), and unspecified conditions (Z00, R50.9, J06.9). While generally plausible for a viral infection context, the specific combination and prevalence require expert validation to ensure appropriate application in the clinical workflow."
+    ],
+    "medgemma_reasoning_summary": "The top diagnoses (B34.2, U07.3, R50.9, J06.9, R05) represent common conditions associated with viral infections or their sequelae. The cohort appears clinically focused and narrow enough to warrant expert review for potential fast-tracking. The diagnoses are well-represented in the top results, suggesting a clear signal. No mapping issues are apparent. The diagnoses are plausible in the context of 'covid_or_viral_infection'."
+  },
+  {
+    "request_id": "rr_medgemma_0002_906620",
+    "rank": 2,
+    "code": "906620",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "obstetric_pregnancy",
+    "review_rows": 3352,
+    "top3_diagnosis_share": 0.70268899,
+    "review_reduction_potential": "high",
+    "source_risk_level": "medium",
+    "source_recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "narrow_candidate",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.95",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R53",
+      "R68",
+      "Z00",
+      "E55",
+      "Z33"
+    ],
+    "prefixes_to_keep_review": [],
+    "missing_evidence": [
+      "No specific missing evidence identified for the top diagnosis prefixes."
+    ],
+    "risk_notes": [
+      "The cohort is clinically plausible but requires expert confirmation for policy refinement.",
+      "Potential for drift if policy is applied without expert review."
+    ],
+    "reasoning_summary": "The top diagnosis prefixes (R53, R68, Z00, E55, Z33) represent common obstetric symptoms, findings, and related conditions. This cohort appears narrow and clinically plausible for the procedure code 906620. The high confidence and clinical plausibility support fast-tracking to human expert review for potential policy refinement.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.95,
+    "top_diagnoses": "R53:2056;R68:535;Z00.0:179;E55.9:78;Z33:71;R10.4:58;E55:22;T78.4:22",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 2,
+      "code": "906620",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "obstetric_pregnancy",
+      "specificity_level": "high",
+      "review_reduction_potential": "high",
+      "risk_level": "medium",
+      "recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+      "review_rows": 3352,
+      "provision_rows": 3352,
+      "top3_diagnosis_share": 0.70268899,
+      "top1_diagnosis_share": 0.52156266,
+      "unique_diagnoses": 320,
+      "diagnosis_normalized_entropy": 0.44832185,
+      "top_diagnoses": [
+        {
+          "value": "R53",
+          "count": 2056
+        },
+        {
+          "value": "R68",
+          "count": 535
+        },
+        {
+          "value": "Z00.0",
+          "count": 179
+        },
+        {
+          "value": "E55.9",
+          "count": 78
+        },
+        {
+          "value": "Z33",
+          "count": 71
+        },
+        {
+          "value": "R10.4",
+          "count": 58
+        },
+        {
+          "value": "E55",
+          "count": 22
+        },
+        {
+          "value": "T78.4",
+          "count": 22
+        },
+        {
+          "value": "J30.2",
+          "count": 21
+        },
+        {
+          "value": "Z01",
+          "count": 21
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R53",
+        "R68",
+        "Z00",
+        "E55",
+        "Z33"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 2777
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 310
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 186
+        },
+        {
+          "value": "J Respiratory",
+          "count": 136
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 105
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 87
+        },
+        {
+          "value": "K Digestive",
+          "count": 84
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 53
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "2056",
+          "share_within_code_diagnosis_observations": "0.52156266",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "535",
+          "share_within_code_diagnosis_observations": "0.13571791",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "179",
+          "share_within_code_diagnosis_observations": "0.04540842",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "78",
+          "share_within_code_diagnosis_observations": "0.01978691",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z33",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "71",
+          "share_within_code_diagnosis_observations": "0.01801116",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "58",
+          "share_within_code_diagnosis_observations": "0.01471334",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00558092",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "T78.4",
+          "diagnosis_chapter": "S-T Injury/poisoning",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00558092",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "21",
+          "share_within_code_diagnosis_observations": "0.00532725",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z01",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "21",
+          "share_within_code_diagnosis_observations": "0.00532725",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N39.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "19",
+          "share_within_code_diagnosis_observations": "0.00481989",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "19",
+          "share_within_code_diagnosis_observations": "0.00481989",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R94.5",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00456621",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N76.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00456621",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00456621",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "17",
+          "share_within_code_diagnosis_observations": "0.00431253",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.00405885",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00380518",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "13",
+          "share_within_code_diagnosis_observations": "0.00329782",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J45.0",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "12",
+          "share_within_code_diagnosis_observations": "0.00304414",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M25.5",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00279046",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E03",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00279046",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K30",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00279046",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00279046",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906620",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N92.6",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00279046",
+          "code_provision_rows": "3352",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Expert may evaluate whether these diagnosis prefixes can be allowed without manual review for this procedure: R53, R68, Z00, E55, Z33",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_1_policy_candidate",
+    "expert_review_question": "Bu işlem kodunda MedGemma'nın desteklediği prefix kohortu (R53, R68, Z00, E55, Z33) domain expert onayıyla shadow staging adayına dönüştürülebilir mi?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 2,
+    "supported_prefixes_for_expert_review": [
+      "R53",
+      "R68",
+      "Z00",
+      "E55",
+      "Z33"
+    ],
+    "prefixes_medgemma_says_keep_review": [],
+    "medgemma_missing_evidence": [
+      "No specific missing evidence identified for the top diagnosis prefixes."
+    ],
+    "medgemma_risk_notes": [
+      "The cohort is clinically plausible but requires expert confirmation for policy refinement.",
+      "Potential for drift if policy is applied without expert review."
+    ],
+    "medgemma_reasoning_summary": "The top diagnosis prefixes (R53, R68, Z00, E55, Z33) represent common obstetric symptoms, findings, and related conditions. This cohort appears narrow and clinically plausible for the procedure code 906620. The high confidence and clinical plausibility support fast-tracking to human expert review for potential policy refinement."
+  },
+  {
+    "request_id": "rr_medgemma_0005_907450",
+    "rank": 5,
+    "code": "907450",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "obstetric_pregnancy",
+    "review_rows": 3544,
+    "top3_diagnosis_share": 0.61979522,
+    "review_reduction_potential": "medium_high",
+    "source_risk_level": "medium",
+    "source_recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "narrow_candidate",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.95",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R53",
+      "R68",
+      "Z33",
+      "Z00",
+      "E55"
+    ],
+    "prefixes_to_keep_review": [],
+    "missing_evidence": [
+      "No specific missing evidence identified for the top diagnosis prefixes."
+    ],
+    "risk_notes": [
+      "The cohort is clinically plausible but requires expert confirmation for policy refinement.",
+      "Potential for drift if policy is applied without expert review."
+    ],
+    "reasoning_summary": "The top diagnosis prefixes (R53, R68, Z33, Z00, E55) represent common obstetric symptoms, findings, and related conditions. This cohort appears narrow and clinically plausible for the procedure code 907450. The high confidence and clinical plausibility support fast-tracking to human expert review for potential policy refinement.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.95,
+    "top_diagnoses": "R53:2073;R68:463;Z33:188;Z00.0:181;E55.9:113;R10.4:65;N76.0:39;N92.6:31",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 5,
+      "code": "907450",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "obstetric_pregnancy",
+      "specificity_level": "medium",
+      "review_reduction_potential": "medium_high",
+      "risk_level": "medium",
+      "recommended_action": "expert_review_for_cohort_auto_pass_candidate",
+      "review_rows": 3544,
+      "provision_rows": 3544,
+      "top3_diagnosis_share": 0.61979522,
+      "top1_diagnosis_share": 0.47167235,
+      "unique_diagnoses": 390,
+      "diagnosis_normalized_entropy": 0.4963242,
+      "top_diagnoses": [
+        {
+          "value": "R53",
+          "count": 2073
+        },
+        {
+          "value": "R68",
+          "count": 463
+        },
+        {
+          "value": "Z33",
+          "count": 188
+        },
+        {
+          "value": "Z00.0",
+          "count": 181
+        },
+        {
+          "value": "E55.9",
+          "count": 113
+        },
+        {
+          "value": "R10.4",
+          "count": 65
+        },
+        {
+          "value": "N76.0",
+          "count": 39
+        },
+        {
+          "value": "N92.6",
+          "count": 31
+        },
+        {
+          "value": "R10.2",
+          "count": 30
+        },
+        {
+          "value": "K30",
+          "count": 25
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R53",
+        "R68",
+        "Z33",
+        "Z00",
+        "E55"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 2796
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 457
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 235
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 195
+        },
+        {
+          "value": "K Digestive",
+          "count": 141
+        },
+        {
+          "value": "J Respiratory",
+          "count": 118
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 115
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 72
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "2073",
+          "share_within_code_diagnosis_observations": "0.47167235",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "463",
+          "share_within_code_diagnosis_observations": "0.10534699",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z33",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "188",
+          "share_within_code_diagnosis_observations": "0.04277588",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "181",
+          "share_within_code_diagnosis_observations": "0.04118316",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "113",
+          "share_within_code_diagnosis_observations": "0.02571104",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "65",
+          "share_within_code_diagnosis_observations": "0.01478953",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N76.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "39",
+          "share_within_code_diagnosis_observations": "0.00887372",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N92.6",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "31",
+          "share_within_code_diagnosis_observations": "0.00705347",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.2",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "30",
+          "share_within_code_diagnosis_observations": "0.00682594",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K30",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.00568828",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.00568828",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z01",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.00568828",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N39.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "23",
+          "share_within_code_diagnosis_observations": "0.00523322",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "23",
+          "share_within_code_diagnosis_observations": "0.00523322",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R94.5",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "23",
+          "share_within_code_diagnosis_observations": "0.00523322",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D64",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00500569",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z34",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "21",
+          "share_within_code_diagnosis_observations": "0.00477816",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M25.5",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00409556",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D64.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00409556",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00409556",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "17",
+          "share_within_code_diagnosis_observations": "0.00386803",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "17",
+          "share_within_code_diagnosis_observations": "0.00386803",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "O20.0",
+          "diagnosis_chapter": "O Pregnancy/childbirth",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.0036405",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.0036405",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "907450",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00341297",
+          "code_provision_rows": "3544",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Expert may evaluate whether these diagnosis prefixes can be allowed without manual review for this procedure: R53, R68, Z33, Z00, E55",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_1_policy_candidate",
+    "expert_review_question": "Bu işlem kodunda MedGemma'nın desteklediği prefix kohortu (R53, R68, Z33, Z00, E55) domain expert onayıyla shadow staging adayına dönüştürülebilir mi?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 3,
+    "supported_prefixes_for_expert_review": [
+      "R53",
+      "R68",
+      "Z33",
+      "Z00",
+      "E55"
+    ],
+    "prefixes_medgemma_says_keep_review": [],
+    "medgemma_missing_evidence": [
+      "No specific missing evidence identified for the top diagnosis prefixes."
+    ],
+    "medgemma_risk_notes": [
+      "The cohort is clinically plausible but requires expert confirmation for policy refinement.",
+      "Potential for drift if policy is applied without expert review."
+    ],
+    "medgemma_reasoning_summary": "The top diagnosis prefixes (R53, R68, Z33, Z00, E55) represent common obstetric symptoms, findings, and related conditions. This cohort appears narrow and clinically plausible for the procedure code 907450. The high confidence and clinical plausibility support fast-tracking to human expert review for potential policy refinement."
+  },
+  {
+    "request_id": "rr_medgemma_0006_906880",
+    "rank": 6,
+    "code": "906880",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 2522,
+    "top3_diagnosis_share": 0.570409,
+    "review_reduction_potential": "medium_high",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "expert_review_for_conditional_review_refinement",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.9",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R68",
+      "R53",
+      "Z00",
+      "E55",
+      "D50"
+    ],
+    "prefixes_to_keep_review": [
+      "R68",
+      "R53",
+      "Z00",
+      "E55",
+      "D50"
+    ],
+    "missing_evidence": [
+      "Specific clinical context for non-specific symptoms",
+      "Detailed patient history",
+      "Physical examination findings",
+      "Laboratory or imaging results"
+    ],
+    "risk_notes": [
+      "The diagnosis cohort is broad and includes non-specific symptoms. A conditional policy requires careful definition of the narrow cohort.",
+      "Potential for misdiagnosis or delayed diagnosis if review is reduced for patients outside the defined narrow cohort.",
+      "Need for clear documentation and training on the specific criteria for the narrow cohort."
+    ],
+    "reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are R68, R53, Z00.0, E55.9, D50.9. These are largely symptoms, signs, or general findings. The suggested policy hypothesis is to keep manual review except for a narrow, documented diagnosis cohort (R68, R53, Z00, E55, D50). This approach seems plausible as it targets a specific set of codes while maintaining review for others. The top diagnoses are largely symptoms/findings, making a conditional policy potentially feasible if the narrow cohort is well-defined and clinically justified. The confidence is high due to the clear separation of the top diagnoses into a potential narrow cohort and the remaining broader category. The assessment suggests eligibility for human expert fast-track review.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.9,
+    "top_diagnoses": "R68:1556;R53:289;Z00.0:233;E55.9:220;D50.9:92;E03.9:65;D51.9:42;D51.8:40",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 1,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 6,
+      "code": "906880",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "medium",
+      "review_reduction_potential": "medium_high",
+      "risk_level": "medium_high",
+      "recommended_action": "expert_review_for_conditional_review_refinement",
+      "review_rows": 2522,
+      "provision_rows": 2522,
+      "top3_diagnosis_share": 0.570409,
+      "top1_diagnosis_share": 0.42712051,
+      "unique_diagnoses": 248,
+      "diagnosis_normalized_entropy": 0.54398673,
+      "top_diagnoses": [
+        {
+          "value": "R68",
+          "count": 1556
+        },
+        {
+          "value": "R53",
+          "count": 289
+        },
+        {
+          "value": "Z00.0",
+          "count": 233
+        },
+        {
+          "value": "E55.9",
+          "count": 220
+        },
+        {
+          "value": "D50.9",
+          "count": 92
+        },
+        {
+          "value": "E03.9",
+          "count": 65
+        },
+        {
+          "value": "D51.9",
+          "count": 42
+        },
+        {
+          "value": "D51.8",
+          "count": 40
+        },
+        {
+          "value": "E78.5",
+          "count": 38
+        },
+        {
+          "value": "R73.9",
+          "count": 38
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R68",
+        "R53",
+        "Z00",
+        "E55",
+        "D50"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 2001
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 747
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 261
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 255
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 81
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 52
+        },
+        {
+          "value": "L Skin",
+          "count": 50
+        },
+        {
+          "value": "J Respiratory",
+          "count": 45
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 1,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "1556",
+          "share_within_code_diagnosis_observations": "0.42712051",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "289",
+          "share_within_code_diagnosis_observations": "0.07933022",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "233",
+          "share_within_code_diagnosis_observations": "0.06395828",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "220",
+          "share_within_code_diagnosis_observations": "0.06038979",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "92",
+          "share_within_code_diagnosis_observations": "0.02525391",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E03.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "65",
+          "share_within_code_diagnosis_observations": "0.01784244",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "42",
+          "share_within_code_diagnosis_observations": "0.01152896",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51.8",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "40",
+          "share_within_code_diagnosis_observations": "0.01097996",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E78.5",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "38",
+          "share_within_code_diagnosis_observations": "0.01043096",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R73.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "38",
+          "share_within_code_diagnosis_observations": "0.01043096",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E03",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "35",
+          "share_within_code_diagnosis_observations": "0.00960747",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E78.0",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "33",
+          "share_within_code_diagnosis_observations": "0.00905847",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "32",
+          "share_within_code_diagnosis_observations": "0.00878397",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E04.2",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "31",
+          "share_within_code_diagnosis_observations": "0.00850947",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M25.5",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "31",
+          "share_within_code_diagnosis_observations": "0.00850947",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E03.8",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "28",
+          "share_within_code_diagnosis_observations": "0.00768597",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "28",
+          "share_within_code_diagnosis_observations": "0.00768597",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E61.2",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.00686248",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E06.3",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "22",
+          "share_within_code_diagnosis_observations": "0.00603898",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "C73",
+          "diagnosis_chapter": "C-D48 Neoplasms",
+          "cooccurrence_rows": "20",
+          "share_within_code_diagnosis_observations": "0.00548998",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I10",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00494098",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E61.1",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00494098",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D64.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00411749",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D52.8",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00411749",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906880",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E56.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "14",
+          "share_within_code_diagnosis_observations": "0.00384299",
+          "code_provision_rows": "2522",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Expert may evaluate a conditional policy that keeps manual review except for a narrow, documented diagnosis cohort: R68, R53, Z00, E55, D50 (theme=non_specific_symptom_dominant)",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_1_policy_candidate",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (R68, R53, Z00, E55, D50) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 4,
+    "supported_prefixes_for_expert_review": [
+      "R68",
+      "R53",
+      "Z00",
+      "E55",
+      "D50"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R68",
+      "R53",
+      "Z00",
+      "E55",
+      "D50"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific clinical context for non-specific symptoms",
+      "Detailed patient history",
+      "Physical examination findings",
+      "Laboratory or imaging results"
+    ],
+    "medgemma_risk_notes": [
+      "The diagnosis cohort is broad and includes non-specific symptoms. A conditional policy requires careful definition of the narrow cohort.",
+      "Potential for misdiagnosis or delayed diagnosis if review is reduced for patients outside the defined narrow cohort.",
+      "Need for clear documentation and training on the specific criteria for the narrow cohort."
+    ],
+    "medgemma_reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are R68, R53, Z00.0, E55.9, D50.9. These are largely symptoms, signs, or general findings. The suggested policy hypothesis is to keep manual review except for a narrow, documented diagnosis cohort (R68, R53, Z00, E55, D50). This approach seems plausible as it targets a specific set of codes while maintaining review for others. The top diagnoses are largely symptoms/findings, making a conditional policy potentially feasible if the narrow cohort is well-defined and clinically justified. The confidence is high due to the clear separation of the top diagnoses into a potential narrow cohort and the remaining broader category. The assessment suggests eligibility for human expert fast-track review."
+  },
+  {
+    "request_id": "rr_medgemma_0022_801720",
+    "rank": 42,
+    "code": "801720",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 4169,
+    "top3_diagnosis_share": 0.22147056,
+    "review_reduction_potential": "low",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.85",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "J",
+      "R",
+      "E",
+      "K",
+      "M",
+      "D50-D89",
+      "I",
+      "N"
+    ],
+    "prefixes_to_keep_review": [
+      "R05",
+      "J06",
+      "R50",
+      "J20",
+      "J30"
+    ],
+    "missing_evidence": [
+      "Specific context for symptom dominance (e.g., acute vs. chronic, specific patient population).",
+      "Detailed prevalence data for the top diagnoses in the context of non-specific symptoms.",
+      "Information on potential comorbidities or differential diagnoses not captured in the top diagnoses."
+    ],
+    "risk_notes": [
+      "The 'non_specific_symptom_dominant' theme is broad. While the top diagnoses are plausible, the lack of specificity could lead to misdiagnosis or delayed diagnosis of underlying conditions.",
+      "Reliance on symptom codes (R codes) can be problematic due to their non-specificity. Review reduction should be approached cautiously.",
+      "The high prevalence of respiratory symptoms (J codes) might be influenced by seasonal factors or environmental conditions, which are not accounted for.",
+      "The top diagnoses represent a mix of acute and chronic conditions. The clinical context is crucial for differentiation."
+    ],
+    "reasoning_summary": "The clinical theme 'non_specific_symptom_dominant' (code 801720) is associated with several plausible diagnoses, including respiratory symptoms (J codes), symptom codes (R codes), and other conditions like E55.9, R50.9, J20, J30.2, J20.9, R07.4, R53, J18.9. The top diagnoses (R05, J06.9, R50.9, J20, J30.2) are clinically relevant given non-specific symptoms. However, the theme itself is broad, and the diagnoses are somewhat heterogeneous. The high confidence (0.85) and the fact that the code is present in the rules support the plausibility. The diagnosis cohort safety is considered 'conditional_only' because the non-specific nature requires careful clinical judgment. The mapping assessment is 'not_needed' as the code is directly linked to the theme. Given the high confidence and plausible diagnoses, the recommendation is to send this to a human expert for priority review (eligible_for_human_expert_fast_track=true). The prefixes to keep under manual review (R05, J06, R50, J20, J30) are those representing the most frequent symptom categories or specific conditions identified within the non-specific symptom theme, requiring expert validation.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.85,
+    "top_diagnoses": "R05:730;J06.9:713;R50.9:554;J20:463;J30.2:382;J20.9:372;E55.9:301;R07.4:241",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 42,
+      "code": "801720",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "low",
+      "review_reduction_potential": "low",
+      "risk_level": "medium_high",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 4169,
+      "provision_rows": 4169,
+      "top3_diagnosis_share": 0.22147056,
+      "top1_diagnosis_share": 0.08095819,
+      "unique_diagnoses": 574,
+      "diagnosis_normalized_entropy": 0.69288991,
+      "top_diagnoses": [
+        {
+          "value": "R05",
+          "count": 730
+        },
+        {
+          "value": "J06.9",
+          "count": 713
+        },
+        {
+          "value": "R50.9",
+          "count": 554
+        },
+        {
+          "value": "J20",
+          "count": 463
+        },
+        {
+          "value": "J30.2",
+          "count": 382
+        },
+        {
+          "value": "J20.9",
+          "count": 372
+        },
+        {
+          "value": "E55.9",
+          "count": 301
+        },
+        {
+          "value": "R07.4",
+          "count": 241
+        },
+        {
+          "value": "R53",
+          "count": 237
+        },
+        {
+          "value": "J18.9",
+          "count": 200
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R05",
+        "J06",
+        "R50",
+        "J20",
+        "J30"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "J Respiratory",
+          "count": 4123
+        },
+        {
+          "value": "R Symptoms/findings",
+          "count": 2701
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 553
+        },
+        {
+          "value": "K Digestive",
+          "count": 385
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 331
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 195
+        },
+        {
+          "value": "I Circulatory",
+          "count": 185
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 100
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "730",
+          "share_within_code_diagnosis_observations": "0.08095819",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "713",
+          "share_within_code_diagnosis_observations": "0.07907286",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "554",
+          "share_within_code_diagnosis_observations": "0.0614395",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "463",
+          "share_within_code_diagnosis_observations": "0.05134745",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "382",
+          "share_within_code_diagnosis_observations": "0.04236442",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "372",
+          "share_within_code_diagnosis_observations": "0.04125541",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "301",
+          "share_within_code_diagnosis_observations": "0.03338139",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "241",
+          "share_within_code_diagnosis_observations": "0.02672729",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "237",
+          "share_within_code_diagnosis_observations": "0.02628369",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J18.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "200",
+          "share_within_code_diagnosis_observations": "0.02218033",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "182",
+          "share_within_code_diagnosis_observations": "0.0201841",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "175",
+          "share_within_code_diagnosis_observations": "0.01940779",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "165",
+          "share_within_code_diagnosis_observations": "0.01829877",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R06.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "161",
+          "share_within_code_diagnosis_observations": "0.01785516",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "141",
+          "share_within_code_diagnosis_observations": "0.01563713",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J21.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "132",
+          "share_within_code_diagnosis_observations": "0.01463902",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "131",
+          "share_within_code_diagnosis_observations": "0.01452811",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J45.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "116",
+          "share_within_code_diagnosis_observations": "0.01286459",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "113",
+          "share_within_code_diagnosis_observations": "0.01253188",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "103",
+          "share_within_code_diagnosis_observations": "0.01142287",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J18.0",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "86",
+          "share_within_code_diagnosis_observations": "0.00953754",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J00",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "83",
+          "share_within_code_diagnosis_observations": "0.00920484",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "80",
+          "share_within_code_diagnosis_observations": "0.00887213",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J03",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "76",
+          "share_within_code_diagnosis_observations": "0.00842852",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "801720",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J21",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "70",
+          "share_within_code_diagnosis_observations": "0.00776311",
+          "code_provision_rows": "4169",
+          "recommended_category": "manual_review_policy_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_2_high_volume_conditional",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (J, R, E, K, M, D50-D89, I, N) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 5,
+    "supported_prefixes_for_expert_review": [
+      "J",
+      "R",
+      "E",
+      "K",
+      "M",
+      "D50-D89",
+      "I",
+      "N"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R05",
+      "J06",
+      "R50",
+      "J20",
+      "J30"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific context for symptom dominance (e.g., acute vs. chronic, specific patient population).",
+      "Detailed prevalence data for the top diagnoses in the context of non-specific symptoms.",
+      "Information on potential comorbidities or differential diagnoses not captured in the top diagnoses."
+    ],
+    "medgemma_risk_notes": [
+      "The 'non_specific_symptom_dominant' theme is broad. While the top diagnoses are plausible, the lack of specificity could lead to misdiagnosis or delayed diagnosis of underlying conditions.",
+      "Reliance on symptom codes (R codes) can be problematic due to their non-specificity. Review reduction should be approached cautiously.",
+      "The high prevalence of respiratory symptoms (J codes) might be influenced by seasonal factors or environmental conditions, which are not accounted for.",
+      "The top diagnoses represent a mix of acute and chronic conditions. The clinical context is crucial for differentiation."
+    ],
+    "medgemma_reasoning_summary": "The clinical theme 'non_specific_symptom_dominant' (code 801720) is associated with several plausible diagnoses, including respiratory symptoms (J codes), symptom codes (R codes), and other conditions like E55.9, R50.9, J20, J30.2, J20.9, R07.4, R53, J18.9. The top diagnoses (R05, J06.9, R50.9, J20, J30.2) are clinically relevant given non-specific symptoms. However, the theme itself is broad, and the diagnoses are somewhat heterogeneous. The high confidence (0.85) and the fact that the code is present in the rules support the plausibility. The diagnosis cohort safety is considered 'conditional_only' because the non-specific nature requires careful clinical judgment. The mapping assessment is 'not_needed' as the code is directly linked to the theme. Given the high confidence and plausible diagnoses, the recommendation is to send this to a human expert for priority review (eligible_for_human_expert_fast_track=true). The prefixes to keep under manual review (R05, J06, R50, J20, J30) are those representing the most frequent symptom categories or specific conditions identified within the non-specific symptom theme, requiring expert validation."
+  },
+  {
+    "request_id": "rr_medgemma_0024_803570",
+    "rank": 44,
+    "code": "803570",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 2612,
+    "top3_diagnosis_share": 0.24077181,
+    "review_reduction_potential": "low",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.85",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R10",
+      "E55",
+      "R11",
+      "N39",
+      "R53",
+      "K21",
+      "R50",
+      "J06",
+      "K30",
+      "A09"
+    ],
+    "prefixes_to_keep_review": [
+      "R10",
+      "E55",
+      "R11",
+      "N39",
+      "R53"
+    ],
+    "missing_evidence": [
+      "Specific context for symptom presentation (e.g., duration, severity, associated signs).",
+      "Differential diagnoses beyond the top diagnoses listed.",
+      "Patient demographics (age, sex, comorbidities) which could influence diagnosis probability."
+    ],
+    "risk_notes": [
+      "The top diagnoses are non-specific symptoms or findings (R codes) and conditions with broad symptom overlap (e.g., E55.9, K21).",
+      "Reliance on symptom codes increases the risk of misdiagnosis or delayed diagnosis of underlying conditions.",
+      "The clinical context is crucial for interpreting these symptoms and determining the appropriate diagnostic pathway. Review reduction without careful consideration could lead to inappropriate care."
+    ],
+    "reasoning_summary": "The candidate code (803570) maps to a clinical theme dominated by non-specific symptoms. The top diagnoses include several R codes (symptoms/findings) and conditions with vague presentations. While the aggregate data shows a plausible distribution, the lack of specificity in the symptoms makes it difficult to definitively rule out serious underlying conditions without further clinical context. Therefore, while the distribution is plausible, manual review is recommended to ensure appropriate clinical evaluation and prevent potential harm due to reliance on non-specific symptom codes. The high confidence and plausible clinical picture support fast-tracking to a human expert for review.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.85,
+    "top_diagnoses": "R10.4:825;E55.9:368;R11:242;N39.0:195;R53:164;K21:142;R50.9:111;J06.9:110",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 44,
+      "code": "803570",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "low",
+      "review_reduction_potential": "low",
+      "risk_level": "medium_high",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 2612,
+      "provision_rows": 2612,
+      "top3_diagnosis_share": 0.24077181,
+      "top1_diagnosis_share": 0.13842282,
+      "unique_diagnoses": 574,
+      "diagnosis_normalized_entropy": 0.74019831,
+      "top_diagnoses": [
+        {
+          "value": "R10.4",
+          "count": 825
+        },
+        {
+          "value": "E55.9",
+          "count": 368
+        },
+        {
+          "value": "R11",
+          "count": 242
+        },
+        {
+          "value": "N39.0",
+          "count": 195
+        },
+        {
+          "value": "R53",
+          "count": 164
+        },
+        {
+          "value": "K21",
+          "count": 142
+        },
+        {
+          "value": "R50.9",
+          "count": 111
+        },
+        {
+          "value": "J06.9",
+          "count": 110
+        },
+        {
+          "value": "K30",
+          "count": 107
+        },
+        {
+          "value": "A09",
+          "count": 105
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R10",
+        "E55",
+        "R11",
+        "N39",
+        "R53"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 1865
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 851
+        },
+        {
+          "value": "K Digestive",
+          "count": 842
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 703
+        },
+        {
+          "value": "J Respiratory",
+          "count": 535
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 432
+        },
+        {
+          "value": "A-B Infectious",
+          "count": 169
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 143
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "825",
+          "share_within_code_diagnosis_observations": "0.13842282",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "368",
+          "share_within_code_diagnosis_observations": "0.06174497",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "242",
+          "share_within_code_diagnosis_observations": "0.04060403",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N39.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "195",
+          "share_within_code_diagnosis_observations": "0.03271812",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "164",
+          "share_within_code_diagnosis_observations": "0.02751678",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "142",
+          "share_within_code_diagnosis_observations": "0.0238255",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "111",
+          "share_within_code_diagnosis_observations": "0.01862416",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "110",
+          "share_within_code_diagnosis_observations": "0.01845638",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K30",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "107",
+          "share_within_code_diagnosis_observations": "0.01795302",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "A09",
+          "diagnosis_chapter": "A-B Infectious",
+          "cooccurrence_rows": "105",
+          "share_within_code_diagnosis_observations": "0.01761745",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "84",
+          "share_within_code_diagnosis_observations": "0.01409396",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R14",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "83",
+          "share_within_code_diagnosis_observations": "0.01392617",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I10",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "78",
+          "share_within_code_diagnosis_observations": "0.01308725",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "75",
+          "share_within_code_diagnosis_observations": "0.01258389",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "74",
+          "share_within_code_diagnosis_observations": "0.01241611",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "70",
+          "share_within_code_diagnosis_observations": "0.01174497",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N23",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "69",
+          "share_within_code_diagnosis_observations": "0.01157718",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K59.0",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "66",
+          "share_within_code_diagnosis_observations": "0.01107383",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "61",
+          "share_within_code_diagnosis_observations": "0.0102349",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "61",
+          "share_within_code_diagnosis_observations": "0.0102349",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "56",
+          "share_within_code_diagnosis_observations": "0.00939597",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "52",
+          "share_within_code_diagnosis_observations": "0.00872483",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K27",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "49",
+          "share_within_code_diagnosis_observations": "0.00822148",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K58",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "47",
+          "share_within_code_diagnosis_observations": "0.00788591",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "803570",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D64",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "47",
+          "share_within_code_diagnosis_observations": "0.00788591",
+          "code_provision_rows": "2612",
+          "recommended_category": "manual_review_policy_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_2_high_volume_conditional",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (R10, E55, R11, N39, R53, K21, R50, J06, K30, A09) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 6,
+    "supported_prefixes_for_expert_review": [
+      "R10",
+      "E55",
+      "R11",
+      "N39",
+      "R53",
+      "K21",
+      "R50",
+      "J06",
+      "K30",
+      "A09"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R10",
+      "E55",
+      "R11",
+      "N39",
+      "R53"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific context for symptom presentation (e.g., duration, severity, associated signs).",
+      "Differential diagnoses beyond the top diagnoses listed.",
+      "Patient demographics (age, sex, comorbidities) which could influence diagnosis probability."
+    ],
+    "medgemma_risk_notes": [
+      "The top diagnoses are non-specific symptoms or findings (R codes) and conditions with broad symptom overlap (e.g., E55.9, K21).",
+      "Reliance on symptom codes increases the risk of misdiagnosis or delayed diagnosis of underlying conditions.",
+      "The clinical context is crucial for interpreting these symptoms and determining the appropriate diagnostic pathway. Review reduction without careful consideration could lead to inappropriate care."
+    ],
+    "medgemma_reasoning_summary": "The candidate code (803570) maps to a clinical theme dominated by non-specific symptoms. The top diagnoses include several R codes (symptoms/findings) and conditions with vague presentations. While the aggregate data shows a plausible distribution, the lack of specificity in the symptoms makes it difficult to definitively rule out serious underlying conditions without further clinical context. Therefore, while the distribution is plausible, manual review is recommended to ensure appropriate clinical evaluation and prevent potential harm due to reliance on non-specific symptom codes. The high confidence and plausible clinical picture support fast-tracking to a human expert for review."
+  },
+  {
+    "request_id": "rr_medgemma_0025_530100",
+    "rank": 45,
+    "code": "530100",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 2428,
+    "top3_diagnosis_share": 0.29020333,
+    "review_reduction_potential": "low",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.85",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R07",
+      "I10",
+      "R00",
+      "R11",
+      "E55",
+      "R06",
+      "R10",
+      "R53",
+      "M79"
+    ],
+    "prefixes_to_keep_review": [
+      "R07",
+      "I10",
+      "R00",
+      "R11"
+    ],
+    "missing_evidence": [
+      "Specific context for R07.4 (e.g., specific type of pain, duration)",
+      "Specific context for I10 (e.g., type of heart disease, severity)",
+      "Specific context for R00.2 (e.g., specific type of chest pain, radiation)",
+      "Specific context for R11 (e.g., specific type of dizziness, cause)",
+      "Specific context for E55.9 (e.g., specific endocrine disorder, symptoms)",
+      "Specific context for R06.0 (e.g., specific type of localized edema)",
+      "Specific context for R10.4 (e.g., specific type of visual disturbance)",
+      "Specific context for R53 (e.g., specific type of headache)",
+      "Specific context for M79.1 (e.g., specific type of back pain, location)"
+    ],
+    "risk_notes": [
+      "The top diagnoses are non-specific symptoms and findings (R codes) and general conditions (I10, E55.9).",
+      "Without specific context or associated findings, these codes can be ambiguous and may not represent the underlying cause.",
+      "Review reduction could lead to misdiagnosis or delayed treatment if the underlying cause is missed.",
+      "The prevalence of symptom codes suggests a need for careful evaluation to differentiate between various potential underlying conditions."
+    ],
+    "reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are primarily symptom codes (R codes) and general conditions like essential hypertension (I10) and unspecified hypothyroidism (E55.9). While the aggregate distribution shows a concentration in symptom codes, the specific context for these symptoms is missing at the aggregate level. The diagnosis cohort is plausible but requires careful interpretation due to the non-specificity. The confidence is high based on the aggregate data. The assessment suggests that while the distribution is plausible, the non-specific nature warrants expert review to ensure appropriate diagnosis and management, especially given the potential for serious underlying conditions masked by general symptoms. Therefore, the recommendation is to send this to an expert for priority review.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.85,
+    "top_diagnoses": "R07.4:853;I10:329;R00.2:231;R07.3:176;R11:141;E55.9:138;R06.0:135;R10.4:119",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 45,
+      "code": "530100",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "low",
+      "review_reduction_potential": "low",
+      "risk_level": "medium_high",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 2428,
+      "provision_rows": 2428,
+      "top3_diagnosis_share": 0.29020333,
+      "top1_diagnosis_share": 0.17518998,
+      "unique_diagnoses": 425,
+      "diagnosis_normalized_entropy": 0.70896963,
+      "top_diagnoses": [
+        {
+          "value": "R07.4",
+          "count": 853
+        },
+        {
+          "value": "I10",
+          "count": 329
+        },
+        {
+          "value": "R00.2",
+          "count": 231
+        },
+        {
+          "value": "R07.3",
+          "count": 176
+        },
+        {
+          "value": "R11",
+          "count": 141
+        },
+        {
+          "value": "E55.9",
+          "count": 138
+        },
+        {
+          "value": "R06.0",
+          "count": 135
+        },
+        {
+          "value": "R10.4",
+          "count": 119
+        },
+        {
+          "value": "R53",
+          "count": 115
+        },
+        {
+          "value": "M79.1",
+          "count": 107
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R07",
+        "I10",
+        "R00",
+        "R11"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 2399
+        },
+        {
+          "value": "I Circulatory",
+          "count": 828
+        },
+        {
+          "value": "J Respiratory",
+          "count": 421
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 405
+        },
+        {
+          "value": "K Digestive",
+          "count": 235
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 163
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 109
+        },
+        {
+          "value": "Q Congenital",
+          "count": 55
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "853",
+          "share_within_code_diagnosis_observations": "0.17518998",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I10",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "329",
+          "share_within_code_diagnosis_observations": "0.06757034",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R00.2",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "231",
+          "share_within_code_diagnosis_observations": "0.04744301",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.3",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "176",
+          "share_within_code_diagnosis_observations": "0.03614705",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "141",
+          "share_within_code_diagnosis_observations": "0.02895872",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "138",
+          "share_within_code_diagnosis_observations": "0.02834258",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R06.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "135",
+          "share_within_code_diagnosis_observations": "0.02772643",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "119",
+          "share_within_code_diagnosis_observations": "0.02444034",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "115",
+          "share_within_code_diagnosis_observations": "0.02361881",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "107",
+          "share_within_code_diagnosis_observations": "0.02197577",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "104",
+          "share_within_code_diagnosis_observations": "0.02135962",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "85",
+          "share_within_code_diagnosis_observations": "0.01745738",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R42",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "79",
+          "share_within_code_diagnosis_observations": "0.0162251",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "76",
+          "share_within_code_diagnosis_observations": "0.01560895",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I25.1",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "70",
+          "share_within_code_diagnosis_observations": "0.01437667",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R51",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "59",
+          "share_within_code_diagnosis_observations": "0.01211748",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I21",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "58",
+          "share_within_code_diagnosis_observations": "0.0119121",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R01.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "56",
+          "share_within_code_diagnosis_observations": "0.01150133",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "54",
+          "share_within_code_diagnosis_observations": "0.01109057",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "53",
+          "share_within_code_diagnosis_observations": "0.01088519",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "48",
+          "share_within_code_diagnosis_observations": "0.00985829",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E78.5",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "40",
+          "share_within_code_diagnosis_observations": "0.00821524",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J18.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "33",
+          "share_within_code_diagnosis_observations": "0.00677757",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "I21.9",
+          "diagnosis_chapter": "I Circulatory",
+          "cooccurrence_rows": "32",
+          "share_within_code_diagnosis_observations": "0.00657219",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "530100",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "30",
+          "share_within_code_diagnosis_observations": "0.00616143",
+          "code_provision_rows": "2428",
+          "recommended_category": "manual_review_policy_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_2_high_volume_conditional",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (R07, I10, R00, R11, E55, R06, R10, R53, M79) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 7,
+    "supported_prefixes_for_expert_review": [
+      "R07",
+      "I10",
+      "R00",
+      "R11",
+      "E55",
+      "R06",
+      "R10",
+      "R53",
+      "M79"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R07",
+      "I10",
+      "R00",
+      "R11"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific context for R07.4 (e.g., specific type of pain, duration)",
+      "Specific context for I10 (e.g., type of heart disease, severity)",
+      "Specific context for R00.2 (e.g., specific type of chest pain, radiation)",
+      "Specific context for R11 (e.g., specific type of dizziness, cause)",
+      "Specific context for E55.9 (e.g., specific endocrine disorder, symptoms)",
+      "Specific context for R06.0 (e.g., specific type of localized edema)",
+      "Specific context for R10.4 (e.g., specific type of visual disturbance)",
+      "Specific context for R53 (e.g., specific type of headache)",
+      "Specific context for M79.1 (e.g., specific type of back pain, location)"
+    ],
+    "medgemma_risk_notes": [
+      "The top diagnoses are non-specific symptoms and findings (R codes) and general conditions (I10, E55.9).",
+      "Without specific context or associated findings, these codes can be ambiguous and may not represent the underlying cause.",
+      "Review reduction could lead to misdiagnosis or delayed treatment if the underlying cause is missed.",
+      "The prevalence of symptom codes suggests a need for careful evaluation to differentiate between various potential underlying conditions."
+    ],
+    "medgemma_reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are primarily symptom codes (R codes) and general conditions like essential hypertension (I10) and unspecified hypothyroidism (E55.9). While the aggregate distribution shows a concentration in symptom codes, the specific context for these symptoms is missing at the aggregate level. The diagnosis cohort is plausible but requires careful interpretation due to the non-specificity. The confidence is high based on the aggregate data. The assessment suggests that while the distribution is plausible, the non-specific nature warrants expert review to ensure appropriate diagnosis and management, especially given the potential for serious underlying conditions masked by general symptoms. Therefore, the recommendation is to send this to an expert for priority review."
+  },
+  {
+    "request_id": "rr_medgemma_0027_905670",
+    "rank": 47,
+    "code": "905670",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 1733,
+    "top3_diagnosis_share": 0.40892054,
+    "review_reduction_potential": "low",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.85",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "J06",
+      "J39",
+      "J03",
+      "E55",
+      "J00",
+      "J11",
+      "R50",
+      "R05",
+      "J30",
+      "R68"
+    ],
+    "prefixes_to_keep_review": [
+      "J06",
+      "R68",
+      "J39",
+      "J03",
+      "E55"
+    ],
+    "missing_evidence": [
+      "Specific context for R68 (e.g., fall, injury mechanism)",
+      "Specific context for J03.9 (e.g., specific upper respiratory infection)",
+      "Specific context for J39.9 (e.g., specific lower respiratory infection)",
+      "Specific context for J06.9 (e.g., specific acute upper respiratory infection)",
+      "Specific context for E55.9 (e.g., specific nutritional deficiency)",
+      "Specific context for J00 (e.g., specific acute nasopharyngitis)",
+      "Specific context for J11.1 (e.g., specific influenza)",
+      "Specific context for R50.9 (e.g., specific headache)",
+      "Specific context for R05 (e.g., specific cough)",
+      "Specific context for J30.2 (e.g., specific acute bronchitis)"
+    ],
+    "risk_notes": [
+      "Non-specific symptom dominance (J06, J39, J03, J00, J11, R50, R05, J30) makes it difficult to rule out serious underlying conditions without further context.",
+      "R68 (Other symptoms and signs involving the circulatory and lymphatic systems) is very broad and requires specific context.",
+      "E55.9 (Other specific nutritional and metabolic deficiencies) is broad and requires specific context.",
+      "The combination of symptoms could represent multiple conditions or a single complex condition.",
+      "The top diagnoses are common but require careful evaluation to exclude more serious pathology."
+    ],
+    "reasoning_summary": "The candidate code (905670) maps to a set of diagnoses dominated by non-specific symptoms (e.g., J06, R68, J39, J03, E55) and common conditions (J00, J11, R50, R05, J30). While the diagnoses are plausible and represent common presentations, the lack of specificity raises concerns about potentially missing serious underlying conditions. The top diagnoses are common respiratory symptoms, circulatory/lymphatic symptoms, and nutritional deficiencies. The clinical plausibility is assessed as 'plausible' given the common nature of these symptoms, but the safety is 'conditional_only' due to the non-specific nature. The confidence is high (0.85) because the mapping is clear and the diagnoses are common. The assessment recommends sending to a human expert for priority review (eligible_for_human_expert_fast_track=true) because while the diagnoses are plausible, the non-specific nature requires expert clinical judgment to ensure appropriate workup and rule out serious conditions. The prefixes J06, R68, J39, J03, and E55 are kept under manual review due to their broad nature and potential for serious underlying causes.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.85,
+    "top_diagnoses": "J06.9:602;R68:246;J39.9:243;J03.9:185;E55.9:170;J00:100;J11.1:84;R50.9:74",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 47,
+      "code": "905670",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "low",
+      "review_reduction_potential": "low",
+      "risk_level": "medium_high",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 1733,
+      "provision_rows": 1733,
+      "top3_diagnosis_share": 0.40892054,
+      "top1_diagnosis_share": 0.22563718,
+      "unique_diagnoses": 187,
+      "diagnosis_normalized_entropy": 0.64038827,
+      "top_diagnoses": [
+        {
+          "value": "J06.9",
+          "count": 602
+        },
+        {
+          "value": "R68",
+          "count": 246
+        },
+        {
+          "value": "J39.9",
+          "count": 243
+        },
+        {
+          "value": "J03.9",
+          "count": 185
+        },
+        {
+          "value": "E55.9",
+          "count": 170
+        },
+        {
+          "value": "J00",
+          "count": 100
+        },
+        {
+          "value": "J11.1",
+          "count": 84
+        },
+        {
+          "value": "R50.9",
+          "count": 74
+        },
+        {
+          "value": "R05",
+          "count": 74
+        },
+        {
+          "value": "J30.2",
+          "count": 62
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "J06",
+        "R68",
+        "J39",
+        "J03",
+        "E55"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "J Respiratory",
+          "count": 1554
+        },
+        {
+          "value": "R Symptoms/findings",
+          "count": 645
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 195
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 74
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 35
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 31
+        },
+        {
+          "value": "K Digestive",
+          "count": 29
+        },
+        {
+          "value": "A-B Infectious",
+          "count": 28
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "602",
+          "share_within_code_diagnosis_observations": "0.22563718",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "246",
+          "share_within_code_diagnosis_observations": "0.0922039",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J39.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "243",
+          "share_within_code_diagnosis_observations": "0.09107946",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J03.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "185",
+          "share_within_code_diagnosis_observations": "0.06934033",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "170",
+          "share_within_code_diagnosis_observations": "0.06371814",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J00",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "100",
+          "share_within_code_diagnosis_observations": "0.03748126",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J11.1",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "84",
+          "share_within_code_diagnosis_observations": "0.03148426",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "74",
+          "share_within_code_diagnosis_observations": "0.02773613",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R05",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "74",
+          "share_within_code_diagnosis_observations": "0.02773613",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "62",
+          "share_within_code_diagnosis_observations": "0.02323838",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R11",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "62",
+          "share_within_code_diagnosis_observations": "0.02323838",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "61",
+          "share_within_code_diagnosis_observations": "0.02286357",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "49",
+          "share_within_code_diagnosis_observations": "0.01836582",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "33",
+          "share_within_code_diagnosis_observations": "0.01236882",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J06",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "28",
+          "share_within_code_diagnosis_observations": "0.01049475",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J03",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "28",
+          "share_within_code_diagnosis_observations": "0.01049475",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R06.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.00937031",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J02",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "21",
+          "share_within_code_diagnosis_observations": "0.00787106",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N39.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.00674663",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J01.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "17",
+          "share_within_code_diagnosis_observations": "0.00637181",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J20.9",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.005997",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.005997",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00562219",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "14",
+          "share_within_code_diagnosis_observations": "0.00524738",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        },
+        {
+          "code": "905670",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R07.0",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "14",
+          "share_within_code_diagnosis_observations": "0.00524738",
+          "code_provision_rows": "1733",
+          "recommended_category": "manual_review_policy_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_2_high_volume_conditional",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (J06, J39, J03, E55, J00, J11, R50, R05, J30, R68) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 8,
+    "supported_prefixes_for_expert_review": [
+      "J06",
+      "J39",
+      "J03",
+      "E55",
+      "J00",
+      "J11",
+      "R50",
+      "R05",
+      "J30",
+      "R68"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "J06",
+      "R68",
+      "J39",
+      "J03",
+      "E55"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific context for R68 (e.g., fall, injury mechanism)",
+      "Specific context for J03.9 (e.g., specific upper respiratory infection)",
+      "Specific context for J39.9 (e.g., specific lower respiratory infection)",
+      "Specific context for J06.9 (e.g., specific acute upper respiratory infection)",
+      "Specific context for E55.9 (e.g., specific nutritional deficiency)",
+      "Specific context for J00 (e.g., specific acute nasopharyngitis)",
+      "Specific context for J11.1 (e.g., specific influenza)",
+      "Specific context for R50.9 (e.g., specific headache)",
+      "Specific context for R05 (e.g., specific cough)",
+      "Specific context for J30.2 (e.g., specific acute bronchitis)"
+    ],
+    "medgemma_risk_notes": [
+      "Non-specific symptom dominance (J06, J39, J03, J00, J11, R50, R05, J30) makes it difficult to rule out serious underlying conditions without further context.",
+      "R68 (Other symptoms and signs involving the circulatory and lymphatic systems) is very broad and requires specific context.",
+      "E55.9 (Other specific nutritional and metabolic deficiencies) is broad and requires specific context.",
+      "The combination of symptoms could represent multiple conditions or a single complex condition.",
+      "The top diagnoses are common but require careful evaluation to exclude more serious pathology."
+    ],
+    "medgemma_reasoning_summary": "The candidate code (905670) maps to a set of diagnoses dominated by non-specific symptoms (e.g., J06, R68, J39, J03, E55) and common conditions (J00, J11, R50, R05, J30). While the diagnoses are plausible and represent common presentations, the lack of specificity raises concerns about potentially missing serious underlying conditions. The top diagnoses are common respiratory symptoms, circulatory/lymphatic symptoms, and nutritional deficiencies. The clinical plausibility is assessed as 'plausible' given the common nature of these symptoms, but the safety is 'conditional_only' due to the non-specific nature. The confidence is high (0.85) because the mapping is clear and the diagnoses are common. The assessment recommends sending to a human expert for priority review (eligible_for_human_expert_fast_track=true) because while the diagnoses are plausible, the non-specific nature requires expert clinical judgment to ensure appropriate workup and rule out serious conditions. The prefixes J06, R68, J39, J03, and E55 are kept under manual review due to their broad nature and potential for serious underlying causes."
+  },
+  {
+    "request_id": "rr_medgemma_0008_906640",
+    "rank": 8,
+    "code": "906640",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "obstetric_pregnancy",
+    "review_rows": 1151,
+    "top3_diagnosis_share": 0.51631117,
+    "review_reduction_potential": "medium",
+    "source_risk_level": "medium",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "narrow_candidate",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.9",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R53",
+      "R68",
+      "Z33",
+      "E55",
+      "Z00",
+      "R10",
+      "N76",
+      "N92",
+      "Z01"
+    ],
+    "prefixes_to_keep_review": [
+      "R53",
+      "R68",
+      "Z33",
+      "E55",
+      "Z00",
+      "R10",
+      "N76",
+      "N92",
+      "Z01"
+    ],
+    "missing_evidence": [
+      "Detailed clinical context for each diagnosis code is missing. Aggregate data provides plausibility but not specific patient scenarios.",
+      "Information on the prevalence and severity of these conditions in the target population is not available.",
+      "Specific guidelines or standard practices for managing these conditions in the context of the code are not provided."
+    ],
+    "risk_notes": [
+      "While the top diagnoses appear plausible for obstetric/pregnancy contexts, the lack of specific clinical context makes it difficult to assess the full risk profile.",
+      "The concentration on symptoms/findings (R codes) and factors/status (Z codes) requires careful interpretation. Are these primary diagnoses or secondary findings?",
+      "The potential for misinterpretation or inappropriate application exists without detailed clinical context."
+    ],
+    "reasoning_summary": "The aggregate diagnosis distribution (R53, R68, Z33, E55, Z00, R10, N76, N92, Z01) appears clinically plausible within the obstetric/pregnancy theme. The top diagnoses are concentrated in symptom/finding (R) and factor/status (Z) categories, which is common in this area. The distribution is relatively narrow, suggesting a focused cohort. The confidence is high based on the aggregate data. The mapping assessment is 'not_needed' as the code is present in rules by SUT code. Given the high confidence and narrow cohort, this candidate is eligible for human expert fast-track review.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.9,
+    "top_diagnoses": "R53:580;R68:173;Z33:70;E55.9:62;Z00.0:33;R10.4:30;N76.0:25;N92.6:23",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 3,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 8,
+      "code": "906640",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "obstetric_pregnancy",
+      "specificity_level": "medium",
+      "review_reduction_potential": "medium",
+      "risk_level": "medium",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 1151,
+      "provision_rows": 1151,
+      "top3_diagnosis_share": 0.51631117,
+      "top1_diagnosis_share": 0.36386449,
+      "unique_diagnoses": 252,
+      "diagnosis_normalized_entropy": 0.61908065,
+      "top_diagnoses": [
+        {
+          "value": "R53",
+          "count": 580
+        },
+        {
+          "value": "R68",
+          "count": 173
+        },
+        {
+          "value": "Z33",
+          "count": 70
+        },
+        {
+          "value": "E55.9",
+          "count": 62
+        },
+        {
+          "value": "Z00.0",
+          "count": 33
+        },
+        {
+          "value": "R10.4",
+          "count": 30
+        },
+        {
+          "value": "N76.0",
+          "count": 25
+        },
+        {
+          "value": "N92.6",
+          "count": 23
+        },
+        {
+          "value": "R10.2",
+          "count": 19
+        },
+        {
+          "value": "Z01",
+          "count": 19
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R53",
+        "R68",
+        "Z33",
+        "E55",
+        "Z00"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 892
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 157
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 118
+        },
+        {
+          "value": "N Genitourinary",
+          "count": 110
+        },
+        {
+          "value": "K Digestive",
+          "count": 74
+        },
+        {
+          "value": "J Respiratory",
+          "count": 61
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 48
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 31
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 3,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "580",
+          "share_within_code_diagnosis_observations": "0.36386449",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "173",
+          "share_within_code_diagnosis_observations": "0.10853199",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z33",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "70",
+          "share_within_code_diagnosis_observations": "0.04391468",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "62",
+          "share_within_code_diagnosis_observations": "0.03889586",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "33",
+          "share_within_code_diagnosis_observations": "0.02070263",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "30",
+          "share_within_code_diagnosis_observations": "0.01882058",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N76.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.01568381",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N92.6",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "23",
+          "share_within_code_diagnosis_observations": "0.01442911",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.2",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "19",
+          "share_within_code_diagnosis_observations": "0.0119197",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z01",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "19",
+          "share_within_code_diagnosis_observations": "0.0119197",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K30",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "16",
+          "share_within_code_diagnosis_observations": "0.01003764",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "15",
+          "share_within_code_diagnosis_observations": "0.00941029",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D50.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "13",
+          "share_within_code_diagnosis_observations": "0.00815558",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R94.5",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "13",
+          "share_within_code_diagnosis_observations": "0.00815558",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00690088",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R50.9",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00690088",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N39.0",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "10",
+          "share_within_code_diagnosis_observations": "0.00627353",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z02.1",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "10",
+          "share_within_code_diagnosis_observations": "0.00627353",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E78.5",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "9",
+          "share_within_code_diagnosis_observations": "0.00564617",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D64",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "9",
+          "share_within_code_diagnosis_observations": "0.00564617",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z34",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00439147",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J34.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00439147",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00439147",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "J30.2",
+          "diagnosis_chapter": "J Respiratory",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00439147",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906640",
+          "code_type": "sut_6_digit",
+          "diagnosis": "N93.9",
+          "diagnosis_chapter": "N Genitourinary",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00439147",
+          "code_provision_rows": "1151",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_2_high_volume_observation_to_expert",
+    "expert_review_question": "Bu işlem kodunda MedGemma'nın desteklediği prefix kohortu (R53, R68, Z33, E55, Z00, R10, N76, N92, Z01) domain expert onayıyla shadow staging adayına dönüştürülebilir mi?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 9,
+    "supported_prefixes_for_expert_review": [
+      "R53",
+      "R68",
+      "Z33",
+      "E55",
+      "Z00",
+      "R10",
+      "N76",
+      "N92",
+      "Z01"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R53",
+      "R68",
+      "Z33",
+      "E55",
+      "Z00",
+      "R10",
+      "N76",
+      "N92",
+      "Z01"
+    ],
+    "medgemma_missing_evidence": [
+      "Detailed clinical context for each diagnosis code is missing. Aggregate data provides plausibility but not specific patient scenarios.",
+      "Information on the prevalence and severity of these conditions in the target population is not available.",
+      "Specific guidelines or standard practices for managing these conditions in the context of the code are not provided."
+    ],
+    "medgemma_risk_notes": [
+      "While the top diagnoses appear plausible for obstetric/pregnancy contexts, the lack of specific clinical context makes it difficult to assess the full risk profile.",
+      "The concentration on symptoms/findings (R codes) and factors/status (Z codes) requires careful interpretation. Are these primary diagnoses or secondary findings?",
+      "The potential for misinterpretation or inappropriate application exists without detailed clinical context."
+    ],
+    "medgemma_reasoning_summary": "The aggregate diagnosis distribution (R53, R68, Z33, E55, Z00, R10, N76, N92, Z01) appears clinically plausible within the obstetric/pregnancy theme. The top diagnoses are concentrated in symptom/finding (R) and factor/status (Z) categories, which is common in this area. The distribution is relatively narrow, suggesting a focused cohort. The confidence is high based on the aggregate data. The mapping assessment is 'not_needed' as the code is present in rules by SUT code. Given the high confidence and narrow cohort, this candidate is eligible for human expert fast-track review."
+  },
+  {
+    "request_id": "rr_medgemma_0009_906780",
+    "rank": 9,
+    "code": "906780",
+    "code_type": "sut_6_digit",
+    "lookup_status": "present_in_rules_by_sut_code",
+    "clinical_theme": "non_specific_symptom_dominant",
+    "review_rows": 905,
+    "top3_diagnosis_share": 0.54371357,
+    "review_reduction_potential": "medium",
+    "source_risk_level": "medium_high",
+    "source_recommended_action": "manual_review_policy_observation",
+    "medgemma_status": "completed",
+    "clinical_plausibility": "plausible",
+    "diagnosis_cohort_safety": "conditional_only",
+    "mapping_assessment": "not_needed",
+    "confidence": "0.85",
+    "eligible_for_human_expert_fast_track": "True",
+    "recommended_triage": "send_to_expert_priority_1",
+    "merged_triage_category": "fast_track_to_human_expert_review",
+    "supported_prefixes": [
+      "R68",
+      "R53",
+      "E55.9",
+      "M25.5",
+      "Z00.0",
+      "M35.9",
+      "M79.1",
+      "M06.9",
+      "M35.0",
+      "M45.9"
+    ],
+    "prefixes_to_keep_review": [
+      "R68",
+      "R53",
+      "E55",
+      "M25",
+      "Z00"
+    ],
+    "missing_evidence": [
+      "Specific context for R68 (Fall/unspecified)",
+      "Specific context for R53 (Headache)",
+      "Specific context for E55.9 (Hypothyroidism, unspecified)",
+      "Specific context for M25.5 (Pain in joint)",
+      "Specific context for Z00.0 (Encounter for general adult medical examination without abnormal findings)",
+      "Specific context for M35.9 (Low back pain, unspecified)",
+      "Specific context for M79.1 (Pain in limb)",
+      "Specific context for M06.9 (Polymyalgia rheumatica, unspecified)",
+      "Specific context for M35.0 (Low back pain with radiculopathy)",
+      "Specific context for M45.9 (Low back pain, unspecified)"
+    ],
+    "risk_notes": [
+      "Non-specific symptom dominance (clinical_theme) requires careful evaluation.",
+      "The top diagnoses are broad symptom/finding codes (R codes) and non-specific musculoskeletal/other codes, which could represent various underlying conditions. Review reduction might miss specific diagnoses.",
+      "The diagnosis distribution is spread across multiple chapters, indicating a lack of focus on a specific system or disease category. This makes it harder to assess the overall clinical picture without more context.",
+      "The top diagnoses (R68, R53, E55.9, M25.5, Z00.0, M35.9, M79.1, M06.9, M35.0, M45.9) are common and can be associated with a wide range of conditions, some serious. Manual review is needed to ensure appropriate diagnosis and management.",
+      "The relatively high entropy (0.6175) suggests a diverse set of diagnoses, potentially making it harder to pinpoint a specific condition without further information."
+    ],
+    "reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are broad codes like R68 (Fall/unspecified), R53 (Headache), E55.9 (Hypothyroidism, unspecified), M25.5 (Pain in joint), Z00.0 (General exam), M35.9 (Low back pain), M79.1 (Limb pain), M06.9 (Polymyalgia rheumatica), M35.0 (Low back pain with radiculopathy), M45.9 (Low back pain). While the aggregate distribution is plausible, the non-specificity of the top codes warrants caution. The diagnosis distribution is broad (multiple chapters). The confidence is high (0.85) based on the aggregate data. The diagnosis cohort safety is considered 'conditional_only' because the broad symptom codes require careful interpretation in context. Mapping assessment is 'not_needed' as the codes are generally well-defined. Given the high confidence and plausible distribution but the need for context due to non-specific symptoms, the recommendation is to send this to a human expert for priority review (eligible_for_human_expert_fast_track=true). The prefixes to keep under manual review (R68, R53, E55, M25, Z00) are those representing the most frequent, but also potentially non-specific, symptom/finding categories.",
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "medgemma_confidence": 0.85,
+    "top_diagnoses": "R68:303;R53:264;E55.9:86;M25.5:69;Z00.0:34;M35.9:25;M79.1:20;M06.9:18",
+    "current_runtime_rule_context": {
+      "present_in_rules_by_sut_code": true,
+      "diagnosis_policy": "review_required",
+      "runtime_decision_mode": "manual_review",
+      "review_required": true,
+      "required_icd10_patterns_count": 0,
+      "excluded_icd10_patterns_count": 0,
+      "confidence": "medium"
+    },
+    "policy_source_candidate": {
+      "rank": 9,
+      "code": "906780",
+      "code_type": "sut_6_digit",
+      "lookup_status": "present_in_rules_by_sut_code",
+      "clinical_theme": "non_specific_symptom_dominant",
+      "specificity_level": "medium",
+      "review_reduction_potential": "medium",
+      "risk_level": "medium_high",
+      "recommended_action": "manual_review_policy_observation",
+      "review_rows": 905,
+      "provision_rows": 905,
+      "top3_diagnosis_share": 0.54371357,
+      "top1_diagnosis_share": 0.25228976,
+      "unique_diagnoses": 207,
+      "diagnosis_normalized_entropy": 0.61754096,
+      "top_diagnoses": [
+        {
+          "value": "R68",
+          "count": 303
+        },
+        {
+          "value": "R53",
+          "count": 264
+        },
+        {
+          "value": "E55.9",
+          "count": 86
+        },
+        {
+          "value": "M25.5",
+          "count": 69
+        },
+        {
+          "value": "Z00.0",
+          "count": 34
+        },
+        {
+          "value": "M35.9",
+          "count": 25
+        },
+        {
+          "value": "M79.1",
+          "count": 20
+        },
+        {
+          "value": "M06.9",
+          "count": 18
+        },
+        {
+          "value": "M35.0",
+          "count": 12
+        },
+        {
+          "value": "M45.9",
+          "count": 12
+        }
+      ],
+      "top_diagnosis_prefixes_for_expert_review": [
+        "R68",
+        "R53",
+        "E55",
+        "M25",
+        "Z00"
+      ],
+      "top_diagnosis_chapters": [
+        {
+          "value": "R Symptoms/findings",
+          "count": 606
+        },
+        {
+          "value": "M Musculoskeletal",
+          "count": 271
+        },
+        {
+          "value": "E Endocrine/metabolic",
+          "count": 122
+        },
+        {
+          "value": "Z Factors/status",
+          "count": 41
+        },
+        {
+          "value": "K Digestive",
+          "count": 33
+        },
+        {
+          "value": "L Skin",
+          "count": 31
+        },
+        {
+          "value": "D50-D89 Blood/immune",
+          "count": 26
+        },
+        {
+          "value": "I Circulatory",
+          "count": 16
+        }
+      ],
+      "current_runtime_rule_context": {
+        "present_in_rules_by_sut_code": true,
+        "diagnosis_policy": "review_required",
+        "runtime_decision_mode": "manual_review",
+        "review_required": true,
+        "required_icd10_patterns_count": 0,
+        "excluded_icd10_patterns_count": 0,
+        "confidence": "medium"
+      },
+      "diagnosis_evidence_top25": [
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R68",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "303",
+          "share_within_code_diagnosis_observations": "0.25228976",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R53",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "264",
+          "share_within_code_diagnosis_observations": "0.21981682",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55.9",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "86",
+          "share_within_code_diagnosis_observations": "0.07160699",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M25.5",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "69",
+          "share_within_code_diagnosis_observations": "0.05745212",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z00.0",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "34",
+          "share_within_code_diagnosis_observations": "0.02830974",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M35.9",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "25",
+          "share_within_code_diagnosis_observations": "0.02081599",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79.1",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "20",
+          "share_within_code_diagnosis_observations": "0.01665279",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M06.9",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "18",
+          "share_within_code_diagnosis_observations": "0.01498751",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M35.0",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "12",
+          "share_within_code_diagnosis_observations": "0.00999167",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M45.9",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "12",
+          "share_within_code_diagnosis_observations": "0.00999167",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M32.9",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "11",
+          "share_within_code_diagnosis_observations": "0.00915903",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "R10.4",
+          "diagnosis_chapter": "R Symptoms/findings",
+          "cooccurrence_rows": "9",
+          "share_within_code_diagnosis_observations": "0.00749376",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "L50.1",
+          "diagnosis_chapter": "L Skin",
+          "cooccurrence_rows": "9",
+          "share_within_code_diagnosis_observations": "0.00749376",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M46.8",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "8",
+          "share_within_code_diagnosis_observations": "0.00666112",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M46.9",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "8",
+          "share_within_code_diagnosis_observations": "0.00666112",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "E55",
+          "diagnosis_chapter": "E Endocrine/metabolic",
+          "cooccurrence_rows": "7",
+          "share_within_code_diagnosis_observations": "0.00582848",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "Z33",
+          "diagnosis_chapter": "Z Factors/status",
+          "cooccurrence_rows": "6",
+          "share_within_code_diagnosis_observations": "0.00499584",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K30",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "6",
+          "share_within_code_diagnosis_observations": "0.00499584",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M35",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "5",
+          "share_within_code_diagnosis_observations": "0.0041632",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "D51.9",
+          "diagnosis_chapter": "D50-D89 Blood/immune",
+          "cooccurrence_rows": "5",
+          "share_within_code_diagnosis_observations": "0.0041632",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M54.5",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "5",
+          "share_within_code_diagnosis_observations": "0.0041632",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K21.9",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "5",
+          "share_within_code_diagnosis_observations": "0.0041632",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M11.8",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "5",
+          "share_within_code_diagnosis_observations": "0.0041632",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "M79",
+          "diagnosis_chapter": "M Musculoskeletal",
+          "cooccurrence_rows": "4",
+          "share_within_code_diagnosis_observations": "0.00333056",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        },
+        {
+          "code": "906780",
+          "code_type": "sut_6_digit",
+          "diagnosis": "K76.0",
+          "diagnosis_chapter": "K Digestive",
+          "cooccurrence_rows": "4",
+          "share_within_code_diagnosis_observations": "0.00333056",
+          "code_provision_rows": "905",
+          "recommended_category": "review_reduction_candidate"
+        }
+      ],
+      "suggested_policy_hypothesis": "Keep manual review for now; use this aggregate evidence for observation and future policy refinement.",
+      "required_safety_gates": [
+        "official_source_or_internal_medical_committee_validation",
+        "human_admin_approval_required",
+        "shadow_only_batch_preview_before_any_live_apply",
+        "approve_to_reject_drift_must_be_zero",
+        "rollback_manifest_required",
+        "post_deployment_monitoring_required_if_later_approved"
+      ],
+      "safety": {
+        "auto_apply": false,
+        "live_runtime_override": false,
+        "writes_to_qdrant": false,
+        "exports_case_level_rows": false
+      }
+    },
+    "safety": {
+      "writes_to_production_db": false,
+      "writes_to_qdrant": false,
+      "live_runtime_override": false,
+      "auto_apply": false,
+      "exports_case_level_rows": false,
+      "claims_human_admin_approval": false
+    },
+    "priority_tier": "tier_3_conditional_or_safety_review",
+    "expert_review_question": "Bu işlem kodu için yalnızca dar ve belgelenmiş kohortta (R68, R53, E55.9, M25.5, Z00.0, M35.9, M79.1, M06.9, M35.0, M45.9) manual REVIEW azaltımı tıbben ve policy açısından uygun olabilir mi? Hangi prefix'ler mutlaka REVIEW kalmalı?",
+    "expert_decision": "",
+    "approved_prefixes_if_any": "",
+    "rejected_prefixes_if_any": "",
+    "official_source_or_committee_reference": "",
+    "expert_reviewer": "",
+    "expert_notes": "",
+    "shadow_staging_allowed_after_expert_approval": false,
+    "priority_order": 10,
+    "supported_prefixes_for_expert_review": [
+      "R68",
+      "R53",
+      "E55.9",
+      "M25.5",
+      "Z00.0",
+      "M35.9",
+      "M79.1",
+      "M06.9",
+      "M35.0",
+      "M45.9"
+    ],
+    "prefixes_medgemma_says_keep_review": [
+      "R68",
+      "R53",
+      "E55",
+      "M25",
+      "Z00"
+    ],
+    "medgemma_missing_evidence": [
+      "Specific context for R68 (Fall/unspecified)",
+      "Specific context for R53 (Headache)",
+      "Specific context for E55.9 (Hypothyroidism, unspecified)",
+      "Specific context for M25.5 (Pain in joint)",
+      "Specific context for Z00.0 (Encounter for general adult medical examination without abnormal findings)",
+      "Specific context for M35.9 (Low back pain, unspecified)",
+      "Specific context for M79.1 (Pain in limb)",
+      "Specific context for M06.9 (Polymyalgia rheumatica, unspecified)",
+      "Specific context for M35.0 (Low back pain with radiculopathy)",
+      "Specific context for M45.9 (Low back pain, unspecified)"
+    ],
+    "medgemma_risk_notes": [
+      "Non-specific symptom dominance (clinical_theme) requires careful evaluation.",
+      "The top diagnoses are broad symptom/finding codes (R codes) and non-specific musculoskeletal/other codes, which could represent various underlying conditions. Review reduction might miss specific diagnoses.",
+      "The diagnosis distribution is spread across multiple chapters, indicating a lack of focus on a specific system or disease category. This makes it harder to assess the overall clinical picture without more context.",
+      "The top diagnoses (R68, R53, E55.9, M25.5, Z00.0, M35.9, M79.1, M06.9, M35.0, M45.9) are common and can be associated with a wide range of conditions, some serious. Manual review is needed to ensure appropriate diagnosis and management.",
+      "The relatively high entropy (0.6175) suggests a diverse set of diagnoses, potentially making it harder to pinpoint a specific condition without further information."
+    ],
+    "medgemma_reasoning_summary": "The clinical theme is non-specific symptom dominant. The top diagnoses are broad codes like R68 (Fall/unspecified), R53 (Headache), E55.9 (Hypothyroidism, unspecified), M25.5 (Pain in joint), Z00.0 (General exam), M35.9 (Low back pain), M79.1 (Limb pain), M06.9 (Polymyalgia rheumatica), M35.0 (Low back pain with radiculopathy), M45.9 (Low back pain). While the aggregate distribution is plausible, the non-specificity of the top codes warrants caution. The diagnosis distribution is broad (multiple chapters). The confidence is high (0.85) based on the aggregate data. The diagnosis cohort safety is considered 'conditional_only' because the broad symptom codes require careful interpretation in context. Mapping assessment is 'not_needed' as the codes are generally well-defined. Given the high confidence and plausible distribution but the need for context due to non-specific symptoms, the recommendation is to send this to a human expert for priority review (eligible_for_human_expert_fast_track=true). The prefixes to keep under manual review (R68, R53, E55, M25, Z00) are those representing the most frequent, but also potentially non-specific, symptom/finding categories."
+  }
+]

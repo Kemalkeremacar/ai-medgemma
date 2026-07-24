@@ -1,0 +1,78 @@
+{
+  "draft_id": "draft-huv-03.10886-j0x-shadow-v0",
+  "version": "0.1.0-shadow",
+  "status": "draft",
+  "procedure_code": "03.10886",
+  "procedure_code_system": "HUV",
+  "match": {
+    "include_icd_prefixes": [
+      "J06",
+      "J00",
+      "J11",
+      "J18",
+      "J21",
+      "J45"
+    ],
+    "exclude_icd_prefixes": [],
+    "exceptions": [
+      "Uzman daraltabilir / genişletebilir"
+    ]
+  },
+  "outcomes": {
+    "on_match": "SHADOW_CANDIDATE",
+    "on_missing_diagnosis": "REVIEW_REQUIRED",
+    "fallback": "REVIEW_REQUIRED"
+  },
+  "governance": {
+    "enabled": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "human_admin_approval_present": false,
+    "rationale": "ÜSYE/solunum ağırlıklı batch gözlemi; uzman onayı şart."
+  },
+  "monitoring": {
+    "min_observation_days": 30,
+    "min_procedure_review_cases": 20,
+    "min_include_diagnosis_matches": 10,
+    "max_human_disagreement_rate": 0.02,
+    "max_deterministic_fail_on_candidates": 0
+  },
+  "rollback": {
+    "steps": [
+      "Shadow overlay'i kapat (enabled=false)",
+      "Shadow aday olay üretimini durdur",
+      "Varsa yalnız shadow/preview kayıtlarını kaldır; production Qdrant/DB'ye dokunma",
+      "Canlı diagnosis_policy'nin hâlâ review_required olduğunu doğrula",
+      "Dashboard/API'de runtime_decision_changed=false kanıtını sakla"
+    ]
+  },
+  "historical_impact": {
+    "cohort_size": 53,
+    "matched": 10,
+    "notes": "Bu batch'te 03.10886 × J06.9 öne çıktı; geniş tarihsel kohort değil."
+  },
+  "test_scenarios": [
+    {
+      "name": "J06.9 match",
+      "diagnoses": [
+        "J06.9"
+      ],
+      "expected_outcome": "SHADOW_CANDIDATE"
+    },
+    {
+      "name": "no diagnosis",
+      "diagnoses": [],
+      "expected_outcome": "REVIEW_REQUIRED"
+    },
+    {
+      "name": "unrelated M54",
+      "diagnoses": [
+        "M54.5"
+      ],
+      "expected_outcome": "REVIEW_REQUIRED"
+    }
+  ],
+  "source_expert_decision_id": "expert-huv-03.10886-pending",
+  "created_at": "2026-07-21T15:13:39Z",
+  "created_by": "batch_100_lab_analysis_20260721"
+}

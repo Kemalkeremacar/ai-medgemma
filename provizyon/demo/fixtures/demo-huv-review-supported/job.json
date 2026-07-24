@@ -1,0 +1,12 @@
+{
+  "provizyon_id": "demo-huv-review-supported",
+  "hasta_id": "DEMO005",
+  "patient_name": "Demo Hasta BT Destekli",
+  "yas": 45,
+  "cinsiyet": "erkek",
+  "code_family": "HUV",
+  "huv_codes": ["24.73601"],
+  "diagnoses": ["K22"],
+  "documents": [{"path": "rapor.txt", "doc_type": "radyoloji_raporu", "title": "BT Toraks raporu"}],
+  "notes": ["Demo: BT review_required + belge/tanı destekli → düşük risk"]
+}

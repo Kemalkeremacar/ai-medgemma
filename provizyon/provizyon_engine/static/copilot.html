@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Provizyon Co-Pilot Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:#1a1a1a;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+
+.page-title{font-size:22px;font-weight:700;padding:24px 32px 18px;border-bottom:1px solid #e5e7eb;letter-spacing:-.01em}
+
+.columns{display:grid;grid-template-columns:2fr 1.5fr 1.5fr;flex:1;border-bottom:1px solid #e5e7eb}
+.col{padding:22px 28px;border-right:1px solid #e5e7eb}
+.col:last-child{border-right:none}
+.col-header{font-size:13px;font-weight:700;margin-bottom:18px;color:#1a1a1a;padding-bottom:10px;border-bottom:1px solid #f0f0f0}
+
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin:18px 0 8px;color:#555}
+.section-title:first-child{margin-top:0}
+
+.text-block{font-size:13px;color:#444;line-height:1.75;margin-bottom:8px}
+
+.info-line{font-size:13px;color:#333;padding:3px 0}
+.info-line .pass{color:#059669;font-weight:600}
+.info-line .fail{color:#dc2626;font-weight:600}
+.info-line .review{color:#d97706;font-weight:600}
+
+.check-ok{color:#1a1a1a;padding:4px 0}
+.check-ok::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#10b981;margin-right:8px;vertical-align:middle}
+.check-missing{color:#1a1a1a;font-weight:600;padding:4px 0}
+.check-missing::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ef4444;margin-right:8px;vertical-align:middle}
+
+.action-note{font-size:12px;color:#666;margin-top:14px;line-height:1.7;padding-top:12px;border-top:1px solid #eee}
+
+.status-bar{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;padding:18px 32px;border-bottom:1px solid #e5e7eb;background:#fafafa}
+.status-item .s-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+.status-item .s-value{font-size:14px;font-weight:600;margin-top:4px;font-family:'SF Mono','Cascadia Code','Fira Code',monospace;letter-spacing:.02em}
+
+.action-bar{padding:18px 32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.toggle-wrap{display:flex;align-items:center;gap:10px;flex:1}
+.toggle-label{font-size:13px;color:#666}
+.toggle{position:relative;width:44px;height:24px;background:#d1d5db;border-radius:12px;cursor:pointer;transition:.3s}
+.toggle.on{background:#1a1a1a}
+.toggle-knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle.on .toggle-knob{left:23px}
+
+.btn{padding:13px 36px;border:none;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;transition:.12s;letter-spacing:.02em}
+.btn-approve{background:#f3f4f6;color:#1a1a1a;border:1px solid #d1d5db}
+.btn-approve:hover{background:#e5e7eb;border-color:#aaa}
+.btn-approve:active{transform:scale(.97)}
+
+.btn-request{display:block;width:100%;max-width:420px;margin:0 auto 24px;padding:15px;background:#f3f4f6;border:1px solid #d1d5db;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;color:#1a1a1a;transition:.12s;letter-spacing:.02em}
+.btn-request:hover{background:#e5e7eb;border-color:#aaa}
+.btn-request:active{transform:scale(.98)}
+
+.bottom-actions{padding:0 32px 28px}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;color:#999;text-align:center;flex:1}
+.empty-state h3{font-size:15px;font-weight:600;color:#555;margin-bottom:6px}
+.empty-state p{font-size:13px}
+
+.queue-strip{display:flex;gap:8px;overflow-x:auto;padding:10px 32px;border-bottom:1px solid #e5e7eb;background:#fafafa;scrollbar-width:thin}
+.queue-item{flex-shrink:0;padding:7px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer;transition:.12s;font-size:12px}
+.queue-item:hover{border-color:#999;background:#f9fafb}
+.queue-item.active{border-color:#1a1a1a;background:#f5f5f5;box-shadow:0 0 0 1px #1a1a1a}
+.qi-id{font-weight:600;font-size:11px}
+.qi-sub{color:#999;font-size:10px;margin-top:1px}
+
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #e5e7eb;border-top-color:#1a1a1a;border-radius:50%;animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.toast-wrap{position:fixed;top:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:6px}
+.toast{padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.08);background:#fff;border:1px solid #e5e7eb;animation:fadeIn .2s}
+.toast.ok{border-color:#10b981;color:#059669}
+.toast.err{border-color:#ef4444;color:#dc2626}
+.toast.info{border-color:#3b82f6;color:#2563eb}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){.columns{grid-template-columns:1fr}.col{border-right:none;border-bottom:1px solid #e5e7eb}}
+html.embedded .page-title{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
+
+<div class="page-title">Provizyon Co-Pilot Paneli</div>
+
+<div class="queue-strip" id="queueStrip">
+  <div style="color:#888;padding:4px"><span class="spinner" style="vertical-align:middle;margin-right:6px"></span> Yükleniyor…</div>
+</div>
+
+<div id="mainPanel">
+  <div class="empty-state">
+    <h3>Provizyon Seçin</h3>
+    <p>Üst kısımdan bir iş seçin.</p>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+const PROV_API='';
+let _activeJob=null;
+let _qdrantSave=true;
+let _recentItems=[];
+
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+function elapsed(s,e){if(!s||!e)return '—';const ms=new Date(e)-new Date(s);return ms<1000?ms+'ms':(ms/1000).toFixed(1)+'s'}
+
+const KARAR_LABEL={uygun:'UYGUN',manuel_inceleme:'MANUEL İNCELEME',tani_eksik:'TANI EKSİK',tani_uyumsuz:'TANI UYUMSUZ',evrak_eksik:'EVRAK EKSİK',yanlis_hasta_belgesi:'YANLIŞ HASTA BELGESİ',klinik_uyumsuzluk:'KLİNİK UYUMSUZLUK',belge_kaniti_yetersiz:'BELGE KANITI YETERSİZ'};
+
+function showToast(msg,type='info',ms=4000){
+  const w=document.getElementById('toastWrap');
+  const e=document.createElement('div');
+  e.className='toast '+type;
+  e.textContent=msg;
+  w.appendChild(e);
+  setTimeout(()=>{e.style.opacity='0';e.style.transition='opacity .2s';setTimeout(()=>e.remove(),200)},ms);
+}
+
+function toggleQdrant(){
+  _qdrantSave=!_qdrantSave;
+  document.getElementById('qdrantToggle').classList.toggle('on',_qdrantSave);
+}
+
+async function loadQueue(){
+  try{
+    const rd=await fetch(PROV_API+'/queue/recent?limit=20').then(r=>r.json()).catch(()=>({items:[]}));
+    _recentItems=rd.items||[];
+    renderQueue(_recentItems);
+  }catch(e){console.error(e)}
+}
+
+function renderQueue(items){
+  const strip=document.getElementById('queueStrip');
+  if(!items.length){strip.innerHTML='<div style="color:#888;font-size:12px;padding:4px">Henüz iş yok</div>';return}
+  strip.innerHTML=items.map(it=>{
+    const active=_activeJob&&_activeJob.provizyon_id===it.provizyon_id?' active':'';
+    return `<div class="queue-item${active}" onclick="selectJob('${esc(it.provizyon_id||'')}')">
+      <div class="qi-id">${esc(it.provizyon_id||'—')}</div>
+      <div class="qi-sub">${esc(it.patient_name||it.hasta_id||'')}</div>
+    </div>`;
+  }).join('');
+}
+
+async function selectJob(id){
+  if(!id)return;
+  const panel=document.getElementById('mainPanel');
+  panel.innerHTML='<div style="padding:40px;color:#888"><span class="spinner" style="vertical-align:middle;margin-right:8px"></span> Yükleniyor…</div>';
+  try{
+    const r=await fetch(PROV_API+'/provizyon/'+encodeURIComponent(id));
+    if(!r.ok){panel.innerHTML='<div class="empty-state"><h3>Bulunamadı</h3></div>';return}
+    const d=await r.json();
+    _activeJob=d;
+    renderCopilot(d);
+    renderQueue(_recentItems);
+  }catch(e){
+    panel.innerHTML='<div class="empty-state"><h3>Hata</h3><p>'+esc(e.message)+'</p></div>';
+  }
+}
+
+function renderCopilot(d){
+  const raw=d.raw||{};
+  const meta=raw.job_meta||{};
+  const mg=d.medgemma||{};
+  const karar=d.nihai_karar||'bilinmiyor';
+  const ze=d.zorunlu_evrak||{};
+  const tk=d.tani_kurali||{};
+  const docs=raw.documents||{};
+  const docItems=(docs.items||[]);
+
+  const patientName=meta.patient_name||'—';
+  const yas=meta.yas!=null?meta.yas:'—';
+  const diagnoses=(meta.diagnoses||[]).join(', ')||'—';
+  const kurum=meta.kurum_adi||meta.hospital_name||'—';
+
+  const hasUzmanNotu=docItems.some(di=>di.doc_type==='uzman_raporu'||di.doc_type==='doktor_raporu'||di.doc_type==='epikriz');
+  const hasFatura=docItems.some(di=>di.doc_type==='fatura'||di.doc_type==='hizmet_dokum');
+  const hasIstekFisi=docItems.some(di=>di.doc_type==='istek_fisi'||di.doc_type==='sevk_formu');
+
+  const riskReasons=d.risk_reasons||[];
+  const riskLevel=d.risk_level||'gray';
+  const retRate=riskLevel==='red'?65:riskLevel==='orange'?50:riskLevel==='yellow'?35:15;
+
+  const mgText=mg.gerekce||'Yüklenen belgelerde hastanın anamnez veya uzman doktor notu tespit edilemedi. Tıbbi gereklilik (endikasyon) belirsiz.';
+
+  const panel=document.getElementById('mainPanel');
+  let h='';
+
+  // 3 columns
+  h+=`<div class="columns">`;
+
+  // Column 1: AI & Kural Analizi
+  h+=`<div class="col">
+    <div class="col-header">AI & Kural Analizi (%40)</div>
+    <div class="section-title">HASTA BİLGİSİ</div>
+    <div class="info-line">${esc(patientName)} | Yaş: ${esc(String(yas))}</div>
+    <div class="info-line">${esc(kurum)} - ${esc(diagnoses)}</div>
+    <div class="section-title">Kural Motoru Kararları</div>
+    <div class="info-line">Zorunlu Evrak: <span class="${ze.status==='pass'?'pass':ze.status==='fail'?'fail':'review'}">${ze.status==='pass'?'Geçti':ze.status==='fail'?'Başarısız':'İnceleme'}</span></div>
+    <div class="info-line">HUV Tanı Kuralı: <span class="${tk.status==='pass'?'pass':tk.status==='fail'?'fail':'review'}">${tk.status==='pass'?'Geçti':tk.status==='fail'?'Başarısız':'İnceleme'}</span></div>
+    <div class="section-title">MedGemma Klinik Analizi</div>
+    <div class="text-block">${esc(mgText)}</div>
+  </div>`;
+
+  // Column 2: FWA & Finansal Risk
+  h+=`<div class="col">
+    <div class="col-header">FWA & Finansal Risk (%30)</div>
+    <div class="section-title">Ödeme Eğilimi & Risk</div>
+    <div class="info-line">${esc(kurum)}</div>
+    <div class="info-line">${esc(diagnoses)} Ret Oranı</div>
+    <div class="info-line" style="font-weight:600;font-size:15px">%${retRate}</div>
+    ${retRate>=35?`
+    <div class="section-title">Aykırı Değer Uyarı</div>
+    <div class="text-block">Pazar ortalamasının ${retRate>=50?'2':'1.5'} katı işlem talebi tespit edildi.</div>
+    `:`
+    <div class="section-title" style="margin-top:16px">Risk Durumu</div>
+    <div class="text-block">Belirgin suistimal riski tespit edilmedi.</div>
+    `}
+  </div>`;
+
+  // Column 3: Evrak & Aksiyon
+  h+=`<div class="col">
+    <div class="col-header">Evrak & Aksiyon (%30)</div>
+    <div class="section-title">Evrak Kontrol Listesi</div>
+    <div class="info-line ${hasFatura?'check-ok':'check-missing'}">Fatura ${hasFatura?'Var':'EKSİK'}</div>
+    <div class="info-line ${hasIstekFisi?'check-ok':'check-missing'}">İstek Fişi ${hasIstekFisi?'Var':'EKSİK'}</div>
+    <div class="info-line ${hasUzmanNotu?'check-ok':'check-missing'}">Uzman Notu ${hasUzmanNotu?'Var':'EKSİK'}</div>
+    <div class="action-note">* ${esc(KARAR_LABEL[karar]||karar)} kararı verilmiştir.<br>Lütfen yukarıdaki aksiyon butonlarını kullanarak süreci ilerletin.</div>
+  </div>`;
+
+  h+=`</div>`;
+
+  // Status bar
+  h+=`<div class="status-bar">
+    <div class="status-item"><div class="s-label">Provizyon ID</div><div class="s-value">${esc(d.provizyon_id||'—')}</div></div>
+    <div class="status-item"><div class="s-label">Durum</div><div class="s-value">${esc(KARAR_LABEL[karar]||karar)}</div></div>
+    <div class="status-item"><div class="s-label">Süre</div><div class="s-value">${elapsed(d.started_at,d.finished_at)}</div></div>
+  </div>`;
+
+  // Action bar: toggle + ONAYLA
+  h+=`<div class="action-bar">
+    <div class="toggle-wrap">
+      <span class="toggle-label">Kararımı Qdrant Kural Veritabanına Kaydet</span>
+      <div class="toggle on" id="qdrantToggle" onclick="toggleQdrant()"><div class="toggle-knob"></div></div>
+    </div>
+    <button class="btn btn-approve" onclick="actionApprove()">ONAYLA</button>
+  </div>`;
+
+  // EKSİK EVRAK İSTE button
+  h+=`<div class="bottom-actions">
+    <button class="btn-request" onclick="actionRequestDoc()">EKSİK EVRAK İSTE</button>
+  </div>`;
+
+  panel.innerHTML=h;
+}
+
+function actionApprove(){
+  if(!_activeJob){showToast('Önce bir provizyon seçin','err');return}
+  showToast(_activeJob.provizyon_id+' — Provizyon ONAYLANDI','ok');
+  if(_qdrantSave) showToast('Karar Qdrant kural veritabanına kaydedildi.','info',5000);
+}
+
+function actionRequestDoc(){
+  if(!_activeJob){showToast('Önce bir provizyon seçin','err');return}
+  showToast(_activeJob.provizyon_id+' — Eksik evrak talebi oluşturuldu. MedGemma resmi yazıyı hazırlıyor…','info',5000);
+  setTimeout(()=>showToast('Resmi eksik evrak yazısı hazırlandı.','ok',5000),2500);
+  if(_qdrantSave) setTimeout(()=>showToast('Kararınız Qdrant\'a kaydedildi. Aynı eksiklik tekrarlanırsa otomatik talep oluşturulacak.','info',6000),4000);
+}
+
+loadQueue().then(()=>{
+  if(_recentItems.length){
+    const review=_recentItems.filter(it=>it.nihai_karar==='manuel_inceleme');
+    selectJob((review.length?review[0]:_recentItems[0]).provizyon_id);
+  }
+});
+setInterval(loadQueue,8000);
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "schema_version": "review_reduction_dgx_transfer_bundle.v1",
+  "generated_at": "2026-07-20T12:28:17",
+  "suggested_collection": "sut_policy_shadow_review_reduction_20260709",
+  "purpose": "Preview-only payloads for a separate shadow Qdrant collection. This is not a production upsert request.",
+  "minimum_required_payload_flags": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_rule_candidate": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "shadow_only": true,
+    "production_qdrant_write_allowed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false
+  },
+  "hard_rules": [
+    "Do not write these records to production Qdrant collections.",
+    "If indexed, use only a separate shadow collection.",
+    "Do not treat any record as human/admin/expert approval.",
+    "Do not use these records for live rule lookup, runtime override, payment approval, or auto-apply.",
+    "Do not index case-level historical rows or case IDs."
+  ],
+  "record_count": 20,
+  "preview_jsonl": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\review_reduction_dgx_transfer_bundle_20260709\\qdrant_shadow\\QDRANT_SHADOW_PAYLOAD_PREVIEW.jsonl"
+}

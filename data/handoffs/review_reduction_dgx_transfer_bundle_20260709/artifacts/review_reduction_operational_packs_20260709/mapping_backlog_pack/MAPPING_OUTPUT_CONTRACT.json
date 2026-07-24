@@ -1,0 +1,23 @@
+{
+  "schema_version": "review_reduction_mapping_output_contract.v1",
+  "required_fields": [
+    "code",
+    "mapping_status",
+    "canonical_sut_code",
+    "canonical_procedure_name",
+    "source_table_evidence",
+    "mapping_confidence",
+    "mapping_reviewer",
+    "mapping_notes",
+    "no_live_write_ack",
+    "no_qdrant_write_ack",
+    "no_case_level_export_ack"
+  ],
+  "allowed_mapping_status": [
+    "mapped_to_existing_sut_code",
+    "local_alias_of_existing_catalog_item",
+    "legacy_code_requires_catalog_backfill",
+    "unmapped_needs_business_owner",
+    "exclude_from_review_reduction_scope"
+  ]
+}

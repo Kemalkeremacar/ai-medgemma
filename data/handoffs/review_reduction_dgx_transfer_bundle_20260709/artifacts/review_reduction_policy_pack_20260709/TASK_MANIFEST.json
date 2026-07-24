@@ -1,0 +1,51 @@
+{
+  "schema_version": "review_reduction_policy_pack.v1",
+  "generated_at": "2026-07-09T15:25:34",
+  "source_review_candidates": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\full_historical_empirical_rule_intelligence_20260709\\review_reduction_candidates.csv",
+  "source_rule_dashboard": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\full_historical_empirical_rule_intelligence_20260709\\rule_coverage_dashboard.json",
+  "source_lookup": "C:\\Projects\\ADDQ\\SUT\\generated\\sut_diagnosis_rules\\ek2b\\runtime\\sut_diagnosis_runtime_lookup.json",
+  "out_dir": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709",
+  "counts": {
+    "candidates": 50,
+    "by_potential": {
+      "high": 3,
+      "medium_high": 4,
+      "medium": 27,
+      "low": 16
+    },
+    "by_risk": {
+      "medium": 22,
+      "high": 6,
+      "medium_high": 22
+    },
+    "by_action": {
+      "expert_review_for_cohort_auto_pass_candidate": 3,
+      "resolve_local_huv_mapping_then_policy_refinement": 16,
+      "expert_review_for_conditional_review_refinement": 1,
+      "manual_review_policy_observation": 30
+    },
+    "by_theme": {
+      "covid_or_viral_infection": 1,
+      "obstetric_pregnancy": 19,
+      "non_specific_symptom_dominant": 14,
+      "cardiology_symptom_or_monitoring": 3,
+      "genitourinary": 5,
+      "eye_ear": 4,
+      "digestive": 1,
+      "musculoskeletal": 3
+    }
+  },
+  "source_context": {
+    "total_provision_rows": 2358495,
+    "total_review_rows": 239281,
+    "review_reduction_candidate_count": 34,
+    "manual_review_policy_candidate_count": 134
+  },
+  "safety": {
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "live_runtime_override": false,
+    "auto_apply": false,
+    "exports_case_level_rows": false
+  }
+}

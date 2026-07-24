@@ -1,0 +1,70 @@
+{
+  "schema_version": "sut_diagnosis_runtime.v1",
+  "generated_at": "2026-06-23T04:02:07",
+  "source_candidates_jsonl": "C:\\Projects\\ADDQ\\SUT\\generated\\sut_diagnosis_rules\\ek2b\\sut_ek2b_diagnosis_rule_candidates_hardened.jsonl",
+  "source_errors_jsonl": "C:\\Projects\\ADDQ\\SUT\\generated\\sut_diagnosis_rules\\ek2b\\sut_ek2b_diagnosis_rule_candidate_errors.jsonl",
+  "total_source_rows": 7058,
+  "total_rules": 7058,
+  "unique_sut_codes": 7058,
+  "unique_procedure_keys": 7058,
+  "duplicate_procedure_keys": 0,
+  "duplicate_sut_codes": 0,
+  "auto_usable_rules": 15,
+  "review_queue_rules": 7043,
+  "historical_error_rows": 0,
+  "unresolved_error_rows": 0,
+  "policy_counts": {
+    "not_required": 16,
+    "review_required": 6522,
+    "conditional": 376,
+    "required_any": 144
+  },
+  "review_required_counts": {
+    "False": 15,
+    "True": 7043
+  },
+  "confidence_counts": {
+    "high": 358,
+    "medium": 6578,
+    "low": 122
+  },
+  "source_list_counts": {
+    "EK-2B": 7058
+  },
+  "runtime_decision_mode_counts": {
+    "automatic": 15,
+    "manual_review": 7043
+  },
+  "quality_flags_top": {
+    "json_parse_fallback": 113,
+    "broad_icd10_pattern_removed:O00-O99": 37,
+    "invalid_icd10_pattern:C00-D49": 36,
+    "broad_icd10_pattern_removed:P00-P96": 19,
+    "invalid_icd10_pattern:I75": 17,
+    "invalid_icd10_pattern:I76": 17,
+    "invalid_icd10_pattern:R08": 16,
+    "broad_icd10_pattern_removed:S00-T98": 15,
+    "invalid_icd10_pattern:I90": 13,
+    "invalid_icd10_pattern:I91": 13,
+    "invalid_icd10_pattern:I92": 13,
+    "invalid_icd10_pattern:I93": 13,
+    "invalid_icd10_pattern:I94": 13,
+    "invalid_icd10_pattern:I96": 13,
+    "invalid_icd10_pattern:M74": 13,
+    "invalid_icd10_pattern:C99": 12,
+    "invalid_icd10_pattern:M97": 12,
+    "invalid_icd10_pattern:M98": 12,
+    "invalid_icd10_pattern:C98": 11,
+    "invalid_icd10_pattern:R08.*": 11,
+    "invalid_icd10_pattern:M78": 11,
+    "invalid_icd10_pattern:C86": 10,
+    "invalid_icd10_pattern:C87": 10,
+    "invalid_icd10_pattern:C89": 10,
+    "invalid_icd10_pattern:I53": 10,
+    "invalid_icd10_pattern:I54": 10,
+    "invalid_icd10_pattern:I55": 10,
+    "invalid_icd10_pattern:I56": 10,
+    "invalid_icd10_pattern:I57": 10,
+    "invalid_icd10_pattern:I58": 10
+  }
+}

@@ -1,0 +1,5 @@
+Recommended next steps:
+1. Send DOMAIN_EXPERT_REVIEW_PROMPT_COPY_PASTE.txt and review_reduction_policy_candidates_top20_for_admin.csv to medical/policy reviewers.
+2. Do not change live rules from empirical evidence alone.
+3. If experts approve a narrow cohort, create shadow staging candidates only.
+4. Run deterministic batch preview and business impact/rollback gates before any live apply discussion.

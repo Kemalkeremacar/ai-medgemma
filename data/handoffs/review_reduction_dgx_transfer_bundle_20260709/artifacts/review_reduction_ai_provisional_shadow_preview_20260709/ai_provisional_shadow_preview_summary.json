@@ -1,0 +1,102 @@
+[
+  {
+    "code": "703790",
+    "clinical_theme": "eye_ear",
+    "ai_expert_decision": "ai_provisional_approve_shadow_staging_specific_prefixes",
+    "confidence": "high",
+    "confidence_score": 0.9,
+    "review_rows_from_ai_pack": 212,
+    "historical_review_code_rows": 212,
+    "candidate_prefix_hit_rows": 199,
+    "candidate_shadow_pass_occurrence_rows": 199,
+    "candidate_blocked_by_manual_prefix_rows": 0,
+    "candidate_other_diagnosis_rows": 13,
+    "candidate_review_code_not_seen_delta_vs_ai_pack": 0,
+    "row_level_full_release_rows": 16,
+    "row_level_partial_resolution_rows": 183,
+    "approved_prefixes_if_any": [
+      "H52",
+      "H40",
+      "H04",
+      "H43",
+      "H52.4",
+      "H52.0",
+      "H47.5",
+      "H35.3",
+      "H18.3"
+    ],
+    "prefixes_requiring_manual_review": [],
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "preview_only": true
+  },
+  {
+    "code": "907440",
+    "clinical_theme": "obstetric_pregnancy",
+    "ai_expert_decision": "ai_provisional_conditional_only",
+    "confidence": "medium",
+    "confidence_score": 0.75,
+    "review_rows_from_ai_pack": 199,
+    "historical_review_code_rows": 199,
+    "candidate_prefix_hit_rows": 163,
+    "candidate_shadow_pass_occurrence_rows": 160,
+    "candidate_blocked_by_manual_prefix_rows": 14,
+    "candidate_other_diagnosis_rows": 25,
+    "candidate_review_code_not_seen_delta_vs_ai_pack": 0,
+    "row_level_full_release_rows": 3,
+    "row_level_partial_resolution_rows": 157,
+    "approved_prefixes_if_any": [
+      "R53",
+      "Z33",
+      "E55",
+      "R10",
+      "N39"
+    ],
+    "prefixes_requiring_manual_review": [
+      "D76",
+      "R50",
+      "D50",
+      "E03",
+      "Z34"
+    ],
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "preview_only": true
+  },
+  {
+    "code": "906510",
+    "clinical_theme": "obstetric_pregnancy",
+    "ai_expert_decision": "ai_provisional_conditional_only",
+    "confidence": "medium",
+    "confidence_score": 0.75,
+    "review_rows_from_ai_pack": 159,
+    "historical_review_code_rows": 159,
+    "candidate_prefix_hit_rows": 146,
+    "candidate_shadow_pass_occurrence_rows": 146,
+    "candidate_blocked_by_manual_prefix_rows": 9,
+    "candidate_other_diagnosis_rows": 4,
+    "candidate_review_code_not_seen_delta_vs_ai_pack": 0,
+    "row_level_full_release_rows": 13,
+    "row_level_partial_resolution_rows": 133,
+    "approved_prefixes_if_any": [
+      "R68",
+      "Z00",
+      "R53",
+      "Z01",
+      "B15"
+    ],
+    "prefixes_requiring_manual_review": [
+      "E55",
+      "G35",
+      "E78",
+      "B18",
+      "Z34"
+    ],
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "preview_only": true
+  }
+]

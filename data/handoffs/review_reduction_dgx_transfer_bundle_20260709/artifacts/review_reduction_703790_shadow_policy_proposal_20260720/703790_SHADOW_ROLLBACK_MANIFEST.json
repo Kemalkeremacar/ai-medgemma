@@ -1,0 +1,41 @@
+{
+  "schema_version": "review_reduction_703790_shadow_policy_proposal.v1",
+  "generated_at": "2026-07-20T12:08:44",
+  "proposal_id": "shadow_703790_h40_v1",
+  "rollback_type": "shadow_overlay_deactivation",
+  "live_runtime_changed": false,
+  "production_rollback_required": false,
+  "rollback_triggers": [
+    "any deterministic FAIL/reject signal for a shadow candidate",
+    "manual-review disagreement rate above 2%",
+    "unexpected diagnosis-prefix drift above monitoring threshold",
+    "payload safety flag mutation",
+    "accidental use by a live decision path"
+  ],
+  "rollback_steps": [
+    "disable the 703790 shadow observer configuration",
+    "stop emitting AI_PROVISIONAL_SHADOW_PASS_CANDIDATE events",
+    "remove only 703790 shadow points from the dedicated shadow collection if such indexing was separately approved",
+    "preserve audit logs and monitoring aggregates",
+    "verify runtime rule remains diagnosis_policy=review_required and runtime_decision_mode=manual_review"
+  ],
+  "expected_post_rollback_state": {
+    "sut_code": "703790",
+    "diagnosis_policy": "review_required",
+    "decision_if_missing": "REVIEW_REQUIRED",
+    "review_required": true,
+    "runtime_decision_mode": "manual_review"
+  },
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

@@ -1,0 +1,4 @@
+Hasta: Demo Hasta SUT E11
+Tanı: E11 Tip 2 diyabetes mellitus
+Yapılan işlem: 530090 Diyabetli hasta eğitimi
+Epikriz: Hasta diyabet eğitimi almıştır. Tanı ve işlem uyumludur.

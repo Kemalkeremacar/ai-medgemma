@@ -1,0 +1,39 @@
+703790 SHADOW-ONLY POLICY PROPOSAL
+==================================
+
+Procedure: Nerve Fiber Analyzer (NFA) (703790)
+Current runtime policy: review_required
+Current runtime decision mode: manual_review
+
+PROPOSAL
+--------
+Observe H40* diagnoses as AI_PROVISIONAL_SHADOW_PASS_CANDIDATE.
+Do not change the actual runtime decision; every row remains governed by the deterministic rule engine.
+All non-H40 diagnoses remain REVIEW_REQUIRED.
+
+WHY THE EARLIER AI PREFIX SET WAS NARROWED
+-------------------------------------------
+The prior MedGemma response incorrectly described H52/H40/H04/H43 as hearing/ear diagnoses.
+They are eye ICD codes, and several are not specific indications for Nerve Fiber Analyzer.
+Therefore the broad AI prefix list is retained only as a counterfactual, not as the recommended policy.
+
+HISTORICAL CORE-SCENARIO IMPACT
+-------------------------------
+703790 REVIEW rows: 212
+H40 shadow-candidate rows: 146
+H40 matched share: 0.68867925
+Full-row release counterfactual: 7
+Partial-resolution counterfactual: 139
+
+AI SOURCE STATUS
+----------------
+AI confidence score: 0.9
+AI output is advisory and is not human/admin/expert approval.
+
+CURRENT GOVERNANCE STATUS
+-------------------------
+human_admin_approval_present=false
+apply_ready=false
+auto_apply=false
+runtime_decision_changed=false
+shadow_only=true

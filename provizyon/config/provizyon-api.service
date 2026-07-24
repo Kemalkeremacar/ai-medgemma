@@ -1,0 +1,16 @@
+[Unit]
+Description=Provizyon Orkestrator API (:8020)
+After=network-online.target redis.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=monassist1
+WorkingDirectory=/home/monassist1/GemmaApp/provizyon
+EnvironmentFile=/home/monassist1/GemmaApp/provizyon/config/provizyon.env
+ExecStart=/home/monassist1/GemmaApp/provizyon/run_api.sh start-foreground
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

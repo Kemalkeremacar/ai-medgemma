@@ -1,0 +1,29 @@
+﻿{
+    "schema_version":  "review_reduction_medgemma_shadow_top50_combined.v1",
+    "generated_at":  "2026-07-09T16:39:50",
+    "source_top20":  "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top20_20260709",
+    "source_rank21_50":  "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_rank21_50_20260709",
+    "out_dir":  "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709",
+    "counts":  {
+                   "total_rows":  50,
+                   "by_merged_triage_category":  {
+                                                     "fast_track_to_human_expert_review":  19,
+                                                     "keep_manual_review_observation":  13,
+                                                     "mapping_backlog_before_policy":  16,
+                                                     "response_invalid_manual_review_required":  2
+                                                 }
+               },
+    "safety":  {
+                   "writes_to_production_db":  false,
+                   "writes_to_qdrant":  false,
+                   "live_runtime_override":  false,
+                   "auto_apply":  false,
+                   "exports_case_level_rows":  false,
+                   "claims_human_admin_approval":  false
+               },
+    "generated_files":  [
+                            "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.csv",
+                            "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.json",
+                            "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\TASK_MANIFEST.json"
+                        ]
+}

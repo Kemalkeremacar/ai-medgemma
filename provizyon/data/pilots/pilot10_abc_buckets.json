@@ -1,0 +1,317 @@
+{
+  "note": "100 batch permanently kept; continue from pilot10",
+  "case_buckets": {
+    "2476721": "B",
+    "2569510": "A",
+    "2562697": "A",
+    "2568731": "B",
+    "106844": "B",
+    "107497": "B",
+    "2566009": "A_skip",
+    "2580856": "A",
+    "2581695": "B",
+    "2582118": "B"
+  },
+  "cases": [
+    {
+      "provizyon_id": "2476721",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "A09"
+      ],
+      "blocking": [
+        {
+          "code": "03.10886",
+          "name": "İntravenöz (İV) sıvı infüzyonu",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İntravenöz (İV) sıvı infüzyonu, uygulama yolu/teknik olarak tanımlanır ve tanı gerektirmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İntravenöz (İV) sıvı infüzyonu, uygulama yolu/teknik olarak tanımlanır ve tanı gerektirmez."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 1,
+      "case_bucket": "B"
+    },
+    {
+      "provizyon_id": "2569510",
+      "nihai_karar": "uygun",
+      "tani": "pass",
+      "medgemma": "medium",
+      "diagnoses": [
+        "M25.5"
+      ],
+      "blocking": [],
+      "n_blocking": 0,
+      "case_bucket": "A"
+    },
+    {
+      "provizyon_id": "2562697",
+      "nihai_karar": "uygun",
+      "tani": "pass",
+      "medgemma": "medium",
+      "diagnoses": [
+        "D50.8",
+        "E55.9"
+      ],
+      "blocking": [],
+      "n_blocking": 0,
+      "case_bucket": "A"
+    },
+    {
+      "provizyon_id": "2568731",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "J06.9"
+      ],
+      "blocking": [
+        {
+          "code": "03.10886",
+          "name": "İntravenöz (İV) sıvı infüzyonu",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İntravenöz (İV) sıvı infüzyonu, uygulama yolu/teknik olarak tanımlanır ve tanı gerektirmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İntravenöz (İV) sıvı infüzyonu, uygulama yolu/teknik olarak tanımlanır ve tanı gerektirmez."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 1,
+      "case_bucket": "B"
+    },
+    {
+      "provizyon_id": "106844",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "K52.9"
+      ],
+      "blocking": [
+        {
+          "code": "02.05441",
+          "name": "İntravenöz (İV) sıvı infüzyonu",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İntravenöz (İV) sıvı infüzyonu, yatan hasta günlük tedavi ve takip hizmeti kapsamında olup, ek işlem olarak değerlendirilmez. Tanı gerektirmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İntravenöz (İV) sıvı infüzyonu, yatan hasta günlük tedavi ve takip hizmeti kapsamında olup, ek işlem olarak değerlendirilmez. Tanı gerektirmez."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 1,
+      "case_bucket": "B"
+    },
+    {
+      "provizyon_id": "107497",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "Z47"
+      ],
+      "blocking": [
+        {
+          "code": "24.00691",
+          "name": "Normal iki yönlü grafi",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (normal iki yönlü grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik durumla ilişkili değildir.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (normal iki yönlü grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik durumla ilişkili değildir."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 1,
+      "case_bucket": "B"
+    },
+    {
+      "provizyon_id": "2566009",
+      "nihai_karar": "uygun",
+      "tani": "skipped",
+      "medgemma": "medium",
+      "diagnoses": [],
+      "blocking": [],
+      "n_blocking": 0,
+      "case_bucket": "A_skip"
+    },
+    {
+      "provizyon_id": "2580856",
+      "nihai_karar": "uygun",
+      "tani": "pass",
+      "medgemma": "medium",
+      "diagnoses": [
+        "D50",
+        "D51",
+        "E55.9",
+        "E88.9",
+        "K30",
+        "M79.1",
+        "R10.4",
+        "R53"
+      ],
+      "blocking": [],
+      "n_blocking": 0,
+      "case_bucket": "A"
+    },
+    {
+      "provizyon_id": "2581695",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "R10.4"
+      ],
+      "blocking": [
+        {
+          "code": "02.05441",
+          "name": "İntravenöz (İV) sıvı infüzyonu",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İntravenöz (İV) sıvı infüzyonu, yatan hasta günlük tedavi ve takip hizmeti kapsamında olup, ek işlem olarak değerlendirilmez. Tanı gerektirmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İntravenöz (İV) sıvı infüzyonu, yatan hasta günlük tedavi ve takip hizmeti kapsamında olup, ek işlem olarak değerlendirilmez. Tanı gerektirmez."
+          },
+          "bucket": "B"
+        },
+        {
+          "code": "24.00461",
+          "name": "Normal tek yönlü grafi",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik duruma işaret etmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik duruma işaret etmez."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 2,
+      "case_bucket": "B"
+    },
+    {
+      "provizyon_id": "2582118",
+      "nihai_karar": "manuel_inceleme",
+      "tani": "review",
+      "medgemma": "low",
+      "diagnoses": [
+        "E78.5",
+        "K76.0",
+        "R03.0",
+        "R06.0"
+      ],
+      "blocking": [
+        {
+          "code": "24.47381",
+          "name": "Tüm abdomen US",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "Tüm abdomen USG, bir görüntüleme işlemidir ve tanıdan bağımsız olarak uygulanabilir.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "Tüm abdomen USG, bir görüntüleme işlemidir ve tanıdan bağımsız olarak uygulanabilir."
+          },
+          "bucket": "B"
+        },
+        {
+          "code": "24.00461",
+          "name": "Normal tek yönlü grafi",
+          "qdrant_policy": "review_required",
+          "diagnosis_required": false,
+          "tentative": "unsupported_policy",
+          "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik duruma işaret etmez.",
+          "disk_policy": "not_required",
+          "disk_runtime_mode": "automatic",
+          "qdrant_live": {
+            "policy": "review_required",
+            "runtime_decision_mode": "manual_review",
+            "diagnosis_required": null,
+            "reason": "İşlem, radyolojik bir görüntüleme tekniğidir (grafi). Uygulama yolu/teknik olarak tanımlanır ve spesifik bir klinik duruma işaret etmez."
+          },
+          "bucket": "B"
+        }
+      ],
+      "n_blocking": 2,
+      "case_bucket": "B"
+    }
+  ],
+  "blocking_code_freq": [
+    [
+      "03.10886",
+      2
+    ],
+    [
+      "02.05441",
+      2
+    ],
+    [
+      "24.00461",
+      2
+    ],
+    [
+      "24.00691",
+      1
+    ],
+    [
+      "24.47381",
+      1
+    ]
+  ],
+  "propose_qdrant_fix_B": [
+    "02.05441",
+    "03.10886",
+    "24.00461",
+    "24.00691",
+    "24.47381"
+  ]
+}

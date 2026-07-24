@@ -1,0 +1,6 @@
+{
+  "_aciklama": "Zorunlu evrak kod eslemesi override dosyasi. Bu dosyayi 'document_requirements.json' adiyla kopyalayip doldurun. Kod -> belge gerekli mi (true/false). Burada belirtilen kodlar SUT kurallarindaki otomatik tespiti EZER. Belirtilmeyen kodlar icin SUT 'required_document' kurallari kullanilir.",
+  "02.16321": true,
+  "02.17681": false,
+  "510070": true
+}

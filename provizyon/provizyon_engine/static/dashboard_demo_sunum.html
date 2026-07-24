@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Sunum · Provizyon Akışı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg0:#07101c; --bg1:#0c1829; --panel:rgba(255,255,255,.035);
+  --line:rgba(255,255,255,.09); --text:#e8eef8; --muted:#8fa0b8;
+  --accent:#3b82f6; --accent2:#14b8a6; --green:#34d399; --amber:#fbbf24; --red:#f87171;
+  --font-ui:"IBM Plex Sans",system-ui,sans-serif;
+  --font-display:"Space Grotesk","IBM Plex Sans",sans-serif;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg0);color:var(--text);font-family:var(--font-ui)}
+body{
+  overflow:hidden;
+  background:
+    radial-gradient(720px 360px at 10% -8%, rgba(59,130,246,.14), transparent 55%),
+    radial-gradient(520px 300px at 96% 8%, rgba(20,184,166,.09), transparent 50%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+}
+/* 4 satır: header · livebar · canvas(1fr) · footer — 1fr yanlışlıkla livebar'a gitmesin */
+.stage{
+  height:100vh; max-height:100vh; overflow:hidden;
+  display:grid; grid-template-rows:auto auto minmax(0,1fr) auto;
+  padding:12px 16px 8px; gap:8px;
+}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+h1{font-family:var(--font-display);font-size:clamp(19px,2vw,26px);margin:0;letter-spacing:-.35px;font-weight:700;line-height:1.15}
+h1 span{color:#93c5fd}
+.sub{color:var(--muted);font-size:13px;margin:4px 0 0;max-width:62ch;line-height:1.4}
+.controls{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.btn{font-family:var(--font-ui);border:1px solid var(--line);background:var(--panel);color:var(--text);
+  border-radius:9px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:rgba(147,197,253,.4);background:rgba(59,130,246,.12)}
+.btn.primary{background:linear-gradient(90deg,#1d4ed8,#2563eb);border-color:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select.sel{font-family:var(--font-ui);border:1px solid var(--line);background:rgba(7,16,28,.9);color:var(--text);
+  border-radius:9px;padding:7px 10px;font-size:12.5px;font-weight:600;min-width:170px;max-width:300px}
+.mode{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.mode button{border:0;background:transparent;color:var(--muted);padding:7px 12px;font:600 12.5px var(--font-ui);cursor:pointer}
+.mode button.on{background:rgba(59,130,246,.22);color:#dbeafe}
+.progress{display:flex;gap:4px;align-items:center;margin-top:6px}
+.pip{width:20px;height:3px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;position:relative}
+.pip.on{background:rgba(59,130,246,.35)}
+.pip.on::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#60a5fa,#2dd4bf);transform-origin:left;animation:pipFill .9s ease forwards}
+@keyframes pipFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+.livebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 12px;border:1px solid var(--line);
+  border-radius:9px;background:rgba(255,255,255,.025);font-size:12.5px;color:var(--muted)}
+.livebar strong{color:#e2e8f0;font-weight:600}
+.livebar .badge{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.livebar .b-g{background:rgba(52,211,153,.15);color:var(--green)}
+.livebar .b-a{background:rgba(251,191,36,.15);color:var(--amber)}
+.livebar .b-r{background:rgba(248,113,113,.15);color:var(--red)}
+.livebar .b-x{background:rgba(148,163,184,.12);color:#cbd5e1}
+
+/* canvas: ince akış üstte, detay altta kalan alanı doldurur */
+.canvas{
+  position:relative; min-height:0; overflow:hidden;
+  display:grid; grid-template-rows:auto auto minmax(0,1fr);
+  border:1px solid var(--line); border-radius:13px;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012));
+}
+.flow-wrap{position:relative;padding:12px 12px 8px}
+svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.85}
+.nodes{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;position:relative;z-index:1}
+.node{
+  border:1px solid var(--line); border-radius:10px; padding:9px 9px 8px;
+  background:rgba(7,16,28,.78); min-height:0;
+  transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  position:relative; overflow:hidden; cursor:pointer;
+  display:flex; flex-direction:column; gap:3px;
+}
+.node::before{content:"";position:absolute;inset:0;background:radial-gradient(90px 50px at 15% 0%, rgba(59,130,246,.16), transparent 70%);opacity:0;transition:.3s}
+.node.active{border-color:rgba(96,165,250,.6);box-shadow:0 0 0 1px rgba(96,165,250,.2);background:rgba(15,30,52,.92)}
+.node.active::before{opacity:1}
+.node.done{border-color:rgba(52,211,153,.32)}
+.node.skip-mode .chip{border-style:dashed;opacity:.7}
+.node .idx{font-family:var(--font-display);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.node h3{font-family:var(--font-display);font-size:13.5px;margin:0;font-weight:700;letter-spacing:-.15px;line-height:1.2}
+.node p{display:none;margin:0;font-size:11.5px;color:var(--muted);line-height:1.3}
+.node.active p{display:block}
+.node .chip{align-self:flex-start;margin-top:3px;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:5px;
+  background:rgba(255,255,255,.05);color:#cbd5e1;border:1px solid rgba(255,255,255,.08)}
+.node.active .chip{background:rgba(59,130,246,.18);color:#bfdbfe;border-color:rgba(96,165,250,.35)}
+.pulse{position:absolute;width:8px;height:8px;border-radius:50%;background:#60a5fa;opacity:0;pointer-events:none;z-index:2}
+.pulse.run{opacity:1;animation:pulseMove 1.1s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes pulseMove{0%{offset-distance:0%;opacity:0}12%{opacity:1}88%{opacity:1}100%{offset-distance:100%;opacity:0}}
+
+.branches{display:none;grid-template-columns:repeat(3,1fr);gap:7px;padding:0 12px 10px}
+.branches.show{display:grid}
+.branch{
+  border:1px solid var(--line); border-radius:9px; padding:9px 11px;
+  background:rgba(0,0,0,.18); opacity:.4; transition:opacity .35s ease, border-color .35s ease;
+  display:flex; flex-direction:column; gap:3px; min-height:0;
+}
+.branch.lit{opacity:1}
+.branch.g{border-color:rgba(52,211,153,.35)} .branch.a{border-color:rgba(251,191,36,.35)} .branch.r{border-color:rgba(248,113,113,.35)}
+.branch h5{margin:0;font-family:var(--font-display);font-size:13px;font-weight:700}
+.branch.g h5{color:var(--green)} .branch.a h5{color:var(--amber)} .branch.r h5{color:var(--red)}
+.branch p{
+  margin:0; font-size:11.5px; color:var(--muted); line-height:1.35;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+.detail{
+  display:grid; grid-template-columns:1.15fr .85fr; gap:0;
+  border-top:1px solid var(--line); min-height:0; overflow:hidden;
+}
+.panel{padding:12px 14px; min-width:0; min-height:0; overflow:auto}
+.panel + .panel{border-left:1px solid var(--line)}
+.panel h4{margin:0 0 6px;font-family:var(--font-display);font-size:14px;font-weight:700}
+.note{font-size:13px;color:#d7e0ee;line-height:1.45;margin:0}
+.tips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tip{font-size:11.5px;padding:5px 8px;border-radius:7px;border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.025);color:#b7c5d8}
+.tip strong{color:#e2e8f0;font-weight:600}
+.payload{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; line-height:1.5;
+  background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.07); border-radius:9px;
+  padding:10px 12px; color:#c7d5e8; white-space:pre-wrap;
+  height:100%; min-height:0; max-height:none; overflow:auto;
+}
+.panel:has(.payload){display:flex;flex-direction:column}
+.panel:has(.payload) .payload{flex:1}
+.payload .hl{color:#93c5fd} .payload .ok{color:#6ee7b7} .payload .warn{color:#fcd34d}
+.payload .bad{color:#fca5a5} .payload .dim{color:#64748b}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.pathcard{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:11.5px;color:#b7c5d8;background:rgba(255,255,255,.015)}
+.pathcard.on{border-color:rgba(96,165,250,.4);background:rgba(59,130,246,.08);color:#dbeafe}
+.pathcard b{display:block;font-family:var(--font-display);font-size:12px;color:#fff;margin-bottom:2px}
+
+.footer{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:11.5px;flex-wrap:wrap;padding:0 2px}
+.legend{display:flex;gap:12px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.a{background:var(--accent)} .dot.t{background:var(--accent2)} .dot.g{background:var(--green)} .dot.w{background:var(--amber)} .dot.r{background:var(--red)}
+
+@media (max-width:1100px){
+  body{overflow:auto}
+  .stage{height:auto;max-height:none;overflow:visible;grid-template-rows:auto}
+  .nodes{grid-template-columns:repeat(4,1fr)}
+  .canvas{grid-template-rows:auto}
+  .detail{grid-template-columns:1fr;max-height:none}
+  .panel + .panel{border-left:0;border-top:1px solid var(--line)}
+  .branches{grid-template-columns:1fr}
+  .payload{max-height:200px}
+  svg.wires{display:none}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <header class="top">
+    <div>
+      <p class="brand-kicker">Provizyon.AI · Demo Sunum</p>
+      <h1>Bir provizyon <span>nasıl akar?</span></h1>
+      <p class="sub">Giriş → kuyruk → belge/kural → MedGemma → karar. Belgeli / belgesiz yollar ve canlı örnek.</p>
+      <div class="progress" id="pips"></div>
+    </div>
+    <div class="controls">
+      <div class="mode" title="Akış modu">
+        <button type="button" id="modeDocless" class="on">Belgesiz</button>
+        <button type="button" id="modeDocs">Belgeli</button>
+      </div>
+      <select class="sel" id="liveSelect" title="Canlı örnek">
+        <option value="">Canlı örnek yükleniyor…</option>
+      </select>
+      <button class="btn" id="btnPrev" type="button">Geri</button>
+      <button class="btn primary" id="btnPlay" type="button"><span id="playLabel">Oynat</span></button>
+      <button class="btn" id="btnNext" type="button">İleri</button>
+    </div>
+  </header>
+
+  <div class="livebar" id="liveBar">
+    <span>Canlı örnek: <strong id="liveId">—</strong></span>
+    <span class="badge b-x" id="liveKarar">—</span>
+    <span>Risk: <strong id="liveRisk">—</strong></span>
+    <span>Mod: <strong id="liveMode">belgesiz</strong></span>
+    <span id="liveMeta" style="margin-left:auto"></span>
+  </div>
+
+  <main class="canvas">
+    <div class="flow-wrap">
+      <svg class="wires" id="wires" preserveAspectRatio="none"></svg>
+      <div class="nodes" id="nodes"></div>
+      <div class="pulse" id="pulse"></div>
+    </div>
+    <div class="branches" id="branches">
+      <div class="branch g" data-b="uygun"><h5>Uygun</h5><p>FAIL yok · soft/skip + medium|high → düşük risk</p></div>
+      <div class="branch a" data-b="manuel"><h5>Manuel inceleme</h5><p>REVIEW + low · strict policy · AI belirsizlik</p></div>
+      <div class="branch r" data-b="red"><h5>Red / blok</h5><p>Yanlış hasta · evrak FAIL · tanı eksik/uyumsuz</p></div>
+    </div>
+    <div class="detail">
+      <section class="panel">
+        <h4 id="stepTitle">—</h4>
+        <div class="note" id="stepNote"></div>
+        <div class="paths">
+          <div class="pathcard" id="pathDocless"><b>Belgesiz yol</b><span id="pathDoclessTxt">—</span></div>
+          <div class="pathcard" id="pathDocs"><b>Belgeli yol</b><span id="pathDocsTxt">—</span></div>
+        </div>
+        <div class="tips" id="stepTips"></div>
+      </section>
+      <section class="panel">
+        <h4 id="payloadTitle">Bu adımda veri</h4>
+        <div class="payload" id="payload"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="legend">
+      <span><i class="dot a"></i> Policy</span>
+      <span><i class="dot t"></i> MedGemma</span>
+      <span><i class="dot g"></i> Uygun</span>
+      <span><i class="dot w"></i> İnceleme</span>
+      <span><i class="dot r"></i> Red</span>
+    </div>
+    <div>Canlı karar = deterministik motor · AI tavsiye / risk</div>
+  </footer>
+</div>
+
+<script>
+const API = "";
+const STEP_MS = 4200; // daha yavaş sunum temposu
+
+const STEPS = [
+  {
+    id: "intake",
+    short: "1. Giriş",
+    blurb: "DB’den üstveri okunur.",
+    chip: "intake",
+    note: "Provizyon kimliği, yaş, cinsiyet, ICD tanıları ve HUV/SUT/TZH işlemleri gelir. Belgesiz CTA belge indirmez; belgeli akışta klasör/OCR yolu açılır.",
+    tips: [
+      {t: "Ortak girdi", d: "İki yol da aynı üstveriyle başlar"},
+      {t: "Limit", d: "Dashboard CTA en fazla 100 kayıt"}
+    ],
+    pathDocless: "skip_documents=true · documents=[]",
+    pathDocs: "Belge dosyaları indirilir / klasörden okunur",
+    payloadStatic: (m) => `<span class="dim">// ProvizyonJob</span>
+{
+  <span class="hl">"provizyon_id"</span>: "…",
+  <span class="hl">"yas"</span>: …, <span class="hl">"cinsiyet"</span>: "…",
+  <span class="hl">"diagnoses"</span>: ["ICD…"],
+  <span class="hl">"procedures"</span>: [{"code":"HUV/SUT","name":"…"}],
+  <span class="hl">"documents_mode"</span>: "${m==="docless"?"skipped_full_pipeline":"normal"}"
+}`
+  },
+  {
+    id: "queue",
+    short: "2. Kuyruk",
+    blurb: "Redis’e enqueue.",
+    chip: "worker",
+    note: "API işi kuyruğa yazar. Worker sırayla alır. MedGemma 45–70 sn sürebildiği için kuyruk yükü dengeler; crash sonrası processing reclaim edilir.",
+    tips: [
+      {t: "Durum", d: "queued → processing → done"},
+      {t: "Ölçek", d: "Worker sayısı paralel iş"}
+    ],
+    pathDocless: "Aynı kuyruk; docs_mode bayrağı taşınır",
+    pathDocs: "Aynı kuyruk; belge yolu job’da dolu",
+    payloadStatic: () => `<span class="dim">POST /provizyon/intake-db | /enqueue</span>
+status: <span class="ok">queued</span>
+queue: pending↑ · processing=aktif worker`
+  },
+  {
+    id: "belge_hasta",
+    short: "3. Belge–Hasta",
+    blurb: "Kimlik / hasta uyumu.",
+    chip: "belge_hasta",
+    note: "Belgedeki kimlik bilgisi provizyon hastasıyla karşılaştırılır. Uyuşmazlık tüm akışı geçersiz kılar (yanlis_hasta_belgesi).",
+    tips: [
+      {t: "Öncelik 1", d: "FAIL diğer her şeyi ezer"},
+      {t: "Belgesiz", d: "SKIPPED — hata sayılmaz"}
+    ],
+    pathDocless: "status=skipped · belge yokluğu hata değil",
+    pathDocs: "PASS / REVIEW / FAIL (TC, ad, sicil)",
+    skipInDocless: true,
+    payloadStatic: (m) => m==="docless"
+      ? `layer: belge_hasta
+status: <span class="dim">skipped</span>
+message: "Belgesiz değerlendirme; belge-hasta atlandı."`
+      : `layer: belge_hasta
+status: <span class="ok">pass</span> | <span class="warn">review</span> | <span class="bad">fail</span>
+<span class="dim">fail → nihai: yanlis_hasta_belgesi</span>`
+  },
+  {
+    id: "evrak",
+    short: "4. Zorunlu Evrak",
+    blurb: "Gerekli belge kapısı.",
+    chip: "zorunlu_evrak",
+    note: "İşlem tipine göre zorunlu evrak listesi kontrol edilir. Eksik evrak FAIL üretir (evrak_eksik).",
+    tips: [
+      {t: "Öncelik 2", d: "Tanıdan önce keser"},
+      {t: "Belgesiz", d: "SKIPPED"}
+    ],
+    pathDocless: "status=skipped",
+    pathDocs: "PASS veya FAIL (eksik evrak)",
+    skipInDocless: true,
+    payloadStatic: (m) => m==="docless"
+      ? `layer: zorunlu_evrak
+status: <span class="dim">skipped</span>`
+      : `layer: zorunlu_evrak
+status: <span class="ok">pass</span> / <span class="bad">fail</span>
+<span class="dim">fail → nihai: evrak_eksik</span>`
+  },
+  {
+    id: "rules",
+    short: "5. Tanı Kuralları",
+    blurb: "HUV / SUT policy.",
+    chip: "tani_kurali",
+    note: "Deterministik motor: PASS, REVIEW veya FAIL. TZH meta kodları SKIPPED olabilir. Soft lab REVIEW’de diagnosis_required=false sık görülür — AI override’a açıktır. Strict unsupported_policy manuel kalır.",
+    tips: [
+      {t: "AI değildir", d: "Açıklanabilir kural"},
+      {t: "REVIEW ≠ red", d: "Soft ise devam"}
+    ],
+    pathDocless: "Aynı kural motoru (üstveri ile)",
+    pathDocs: "Aynı kural + belge kanıtı sonra AI’da",
+    payloadStatic: () => `layer: tani_kurali
+status: <span class="ok">pass</span> | <span class="warn">review</span> | <span class="bad">fail</span> | <span class="dim">skipped</span>
+<span class="dim">soft: diagnosis_required=false</span>
+<span class="dim">strict: unsupported_policy + diag_req</span>`
+  },
+  {
+    id: "medgemma",
+    short: "6. MedGemma",
+    blurb: "Klinik yerindelik AI.",
+    chip: "vLLM",
+    note: "Modele üstveri + kural özeti (ve belgeliyse OCR/metin kanıtı) gider. JSON döner: çelişki, yaş/cinsiyet, guven, manuel bayrağı, gerekçe. Çıktı tavsiyedir; canlı kural yazmaz.",
+    tips: [
+      {t: "Belgesiz", d: "belge alanları null"},
+      {t: "guven", d: "high | medium | low"}
+    ],
+    pathDocless: "DOCLESS prompt · ~45–70 sn",
+    pathDocs: "Belge kanıtı + vision/text paket",
+    payloadStatic: (m) => `<span class="dim">→ /v1/chat/completions</span>
+{
+  "klinik_celiski": false,
+  "manuel_inceleme_gerekli": false,
+  "guven": "medium",
+  "islem_belge_destekli": ${m==="docless"?"null":"true"},
+  "gerekce": "…"
+}`
+  },
+  {
+    id: "merge",
+    short: "7. Birleştirme",
+    blurb: "Öncelik + override.",
+    chip: "merge_decisions",
+    note: "FAIL katmanları erken keser. Soft/skip REVIEW’de belgesiz medium|high + çelişki yok + manuel=false → uygun. Belgeli override için high gerekir. Strict policy manuel kalır.",
+    tips: [
+      {t: "Sıra", d: "hasta > evrak > tanı FAIL > AI"},
+      {t: "Belgesiz", d: "medium yeterli (soft/skip)"}
+    ],
+    pathDocless: "medium override açık (B+C)",
+    pathDocs: "high + belge desteği şart",
+    payloadStatic: () => `<span class="dim">Örnek yollar</span>
+pass + medium          → <span class="ok">uygun</span>
+review(soft)+medium    → <span class="ok">uygun</span>
+skipped(TZH)+medium    → <span class="ok">uygun</span>
+review+low             → <span class="warn">manuel</span>
+strict unsupported     → <span class="warn">manuel</span>
+tani FAIL              → <span class="bad">red</span>`
+  },
+  {
+    id: "result",
+    short: "8. Sonuç",
+    blurb: "Karar + risk + gerekçe.",
+    chip: "dashboard",
+    note: "Panelde durum, karar rozeti, risk rengi ve gerekçe görünür. Canlı örnek seçicide uygun / manuel / red karışımı var; red’ler demo fixture’larından gelir. İnceleme otomatik ödeme değildir.",
+    tips: [
+      {t: "Dikkat", d: "AI ≠ bağlayıcı karar"},
+      {t: "Sonraki", d: "Lab shadow + low kovası"}
+    ],
+    pathDocless: "Son koşu: 74 / 26 / 0",
+    pathDocs: "Belge FAIL’leri burada görünür",
+    showBranches: true,
+    payloadStatic: () => `<span class="dim">GET /provizyon/{id}</span>
+nihai_karar · risk_level · gerekce
+layers: { belge_hasta, zorunlu_evrak,
+  tani_kurali, medgemma, … }`
+  }
+];
+
+let mode = "docless"; // docless | docs
+let step = 0;
+let playing = false;
+let timer = null;
+let live = null; // full /provizyon/{id} payload
+let liveList = [];
+
+const nodesEl = document.getElementById("nodes");
+const pipsEl = document.getElementById("pips");
+const branchesEl = document.getElementById("branches");
+const pulse = document.getElementById("pulse");
+
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+const RED_KARARLAR = [
+  "tani_eksik","tani_uyumsuz","evrak_eksik","yanlis_hasta_belgesi",
+  "klinik_uyumsuzluk","belge_kaniti_yetersiz",
+];
+const RED_LABEL = {
+  tani_eksik: "Tanı eksik",
+  tani_uyumsuz: "Tanı uyumsuz",
+  evrak_eksik: "Evrak eksik",
+  yanlis_hasta_belgesi: "Yanlış hasta",
+  klinik_uyumsuzluk: "Klinik uyumsuz",
+  belge_kaniti_yetersiz: "Belge kanıtı yetersiz",
+};
+
+function isRedKarar(k){ return RED_KARARLAR.includes(k); }
+
+function kararBadge(k){
+  if(k==="uygun") return ["b-g","Uygun"];
+  if(!k) return ["b-x","—"];
+  if(isRedKarar(k)) return ["b-r", RED_LABEL[k]||k];
+  return ["b-a", k==="manuel_inceleme"?"Manuel İnceleme":k];
+}
+
+function layerStatus(d, key){
+  const L = d && d[key];
+  if(!L || typeof L!=="object") return null;
+  return L.status || null;
+}
+
+function renderNodes(){
+  nodesEl.innerHTML = STEPS.map((s,i)=>{
+    const title = String(s.short||"").replace(/^\d+\.\s*/,"");
+    return `
+    <article class="node${s.skipInDocless && mode==="docless"?" skip-mode":""}" data-i="${i}" id="node-${i}">
+      <div class="idx">${i+1}/8</div>
+      <h3>${title}</h3>
+      <p>${s.blurb}</p>
+      <span class="chip">${s.skipInDocless && mode==="docless"?"skipped":s.chip}</span>
+    </article>`;
+  }).join("");
+  pipsEl.innerHTML = STEPS.map(()=>`<div class="pip"></div>`).join("");
+  nodesEl.querySelectorAll(".node").forEach(n=>{
+    n.onclick=()=>{ stop(); go(+n.dataset.i, true); };
+  });
+}
+
+function drawWires(){
+  const svg = document.getElementById("wires");
+  if(getComputedStyle(svg).display==="none") return;
+  const wrap = svg.parentElement.getBoundingClientRect();
+  const pts = STEPS.map((_,i)=>{
+    const el = document.getElementById("node-"+i);
+    if(!el) return {x:0,y:0};
+    const r = el.getBoundingClientRect();
+    return {x:r.left-wrap.left+r.width/2, y:r.top-wrap.top+r.height/2};
+  });
+  let d="";
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i], b=pts[i+1], mx=(a.x+b.x)/2;
+    d += `<path class="wire" data-i="${i}" d="M ${a.x} ${a.y} C ${mx} ${a.y}, ${mx} ${b.y}, ${b.x} ${b.y}" fill="none" stroke="rgba(148,163,184,.28)" stroke-width="2"/>`;
+  }
+  svg.innerHTML=d;
+  svg.setAttribute("viewBox", `0 0 ${wrap.width} ${wrap.height}`);
+}
+
+function livePayloadForStep(i){
+  if(!live) return null;
+  const d=live, mg=d.medgemma||{}, raw=d.raw||{};
+  const L=(k)=>{const x=d[k]; return x&&typeof x==="object"?x:null;};
+  switch(STEPS[i].id){
+    case "intake":
+      return `<span class="dim">// canlı ${esc(d.provizyon_id)}</span>
+yas=${esc(d.yas??"—")} cinsiyet=${esc(d.cinsiyet??"—")}
+mode=<span class="hl">${esc(raw.documents_mode||"—")}</span>
+tanı/işlem: gerekçe ve katmanlardan`;
+    case "queue":
+      return `status: <span class="ok">${esc(d.status||"done")}</span>
+elapsed_ms: ${esc(d.elapsed_ms??"—")}`;
+    case "belge_hasta": {
+      const x=L("belge_hasta");
+      return `belge_hasta: <span class="${x?.status==="fail"?"bad":x?.status==="skipped"?"dim":"ok"}">${esc(x?.status||"—")}</span>
+${esc((x?.message||"").slice(0,160))}`;
+    }
+    case "evrak": {
+      const x=L("zorunlu_evrak");
+      return `zorunlu_evrak: <span class="${x?.status==="fail"?"bad":x?.status==="skipped"?"dim":"ok"}">${esc(x?.status||"—")}</span>
+${esc((x?.message||"").slice(0,160))}`;
+    }
+    case "rules": {
+      const x=L("tani_kurali");
+      return `tani_kurali: <span class="warn">${esc(x?.status||"—")}</span>
+${esc((x?.message||"").slice(0,180))}`;
+    }
+    case "medgemma":
+      return `guven: <span class="hl">${esc(mg.guven||"—")}</span>
+manuel: ${esc(String(mg.manuel_inceleme_gerekli))}
+celiski: ${esc(String(mg.klinik_celiski))}
+gerekce: ${esc((mg.gerekce||"").slice(0,220))}`;
+    case "merge":
+    case "result": {
+      const nk=d.nihai_karar||"—";
+      const cls=nk==="uygun"?"ok":(isRedKarar(nk)?"bad":"warn");
+      return `nihai: <span class="${cls}">${esc(nk)}</span>
+risk: ${esc(d.risk_level||"—")}
+gerekce: ${esc((d.gerekce||"").slice(0,240))}`;
+    }
+    default: return null;
+  }
+}
+
+function updateLiveBar(){
+  const idEl=document.getElementById("liveId");
+  const kEl=document.getElementById("liveKarar");
+  const rEl=document.getElementById("liveRisk");
+  const mEl=document.getElementById("liveMode");
+  const meta=document.getElementById("liveMeta");
+  mEl.textContent = mode==="docless"?"belgesiz":"belgeli";
+  document.getElementById("pathDocless").classList.toggle("on", mode==="docless");
+  document.getElementById("pathDocs").classList.toggle("on", mode==="docs");
+  if(!live){
+    idEl.textContent="örnek seçilmedi (şablon)";
+    kEl.className="badge b-x"; kEl.textContent="şablon";
+    rEl.textContent="—";
+    meta.textContent="";
+    return;
+  }
+  idEl.textContent=live.provizyon_id||"—";
+  const [cls,label]=kararBadge(live.nihai_karar);
+  kEl.className="badge "+cls; kEl.textContent=label;
+  rEl.textContent=live.risk_level||"—";
+  const tani=layerStatus(live,"tani_kurali");
+  const mg=(live.medgemma||{}).guven;
+  meta.textContent=`tani=${tani||"—"} · mg=${mg||"—"}`;
+}
+
+function lightBranches(){
+  const show = STEPS[step]?.showBranches;
+  branchesEl.classList.toggle("show", !!show);
+  const nodes=branchesEl.querySelectorAll(".branch");
+  nodes.forEach(n=>n.classList.remove("lit"));
+  if(!show) return;
+  const k = live?.nihai_karar;
+  let key="manuel";
+  if(k==="uygun") key="uygun";
+  else if(k && isRedKarar(k)) key="red";
+  // animate all then focus
+  setTimeout(()=>nodes.forEach(n=>n.classList.add("lit")), 80);
+  if(k){
+    nodes.forEach(n=>{
+      if(n.dataset.b!==key) n.style.opacity=".35";
+      else n.style.opacity="1";
+    });
+  } else {
+    nodes.forEach(n=>n.style.opacity="1");
+  }
+}
+
+function setActive(i, animatePulse){
+  document.querySelectorAll(".node").forEach((n,idx)=>{
+    n.classList.toggle("active", idx===i);
+    n.classList.toggle("done", idx<i);
+  });
+  document.querySelectorAll(".pip").forEach((p,idx)=>p.classList.toggle("on", idx<=i));
+  const s=STEPS[i];
+  document.getElementById("stepTitle").textContent=s.short+" — "+(s.blurb||"");
+  document.getElementById("stepNote").textContent=s.note;
+  document.getElementById("pathDoclessTxt").textContent=s.pathDocless;
+  document.getElementById("pathDocsTxt").textContent=s.pathDocs;
+  document.getElementById("stepTips").innerHTML=s.tips.map(t=>`<div class="tip"><strong>${t.t}:</strong> ${t.d}</div>`).join("");
+  const liveP = livePayloadForStep(i);
+  document.getElementById("payload").innerHTML = liveP
+    ? `<span class="dim">// canlı örnek</span>\n${liveP}`
+    : s.payloadStatic(mode);
+  lightBranches();
+  if(animatePulse && i>0){
+    const svg=document.getElementById("wires");
+    const path=svg.querySelector(`path.wire[data-i="${i-1}"]`);
+    if(path){
+      const len=path.getTotalLength();
+      pulse.style.offsetPath=`path('${path.getAttribute("d")}')`;
+      pulse.classList.remove("run"); void pulse.offsetWidth; pulse.classList.add("run");
+      path.style.stroke="rgba(96,165,250,.85)";
+      path.animate([{strokeDasharray:len,strokeDashoffset:len},{strokeDasharray:len,strokeDashoffset:0}],
+        {duration:1100,easing:"cubic-bezier(.4,0,.2,1)",fill:"forwards"});
+    }
+  }
+}
+
+function go(i, withPulse=false){
+  step=Math.max(0,Math.min(STEPS.length-1,i));
+  setActive(step, withPulse);
+}
+
+function stop(){
+  playing=false;
+  document.getElementById("playLabel").textContent="Oynat";
+  if(timer){clearTimeout(timer); timer=null;}
+}
+
+function play(){
+  if(playing){ stop(); return; }
+  playing=true;
+  document.getElementById("playLabel").textContent="Duraklat";
+  const tick=()=>{
+    if(!playing) return;
+    if(step>=STEPS.length-1){ stop(); return; }
+    go(step+1, true);
+    timer=setTimeout(tick, STEP_MS);
+  };
+  if(step===STEPS.length-1) go(0,false);
+  else go(step, step>0);
+  timer=setTimeout(tick, step===0?1800:STEP_MS);
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById("modeDocless").classList.toggle("on", m==="docless");
+  document.getElementById("modeDocs").classList.toggle("on", m==="docs");
+  renderNodes();
+  requestAnimationFrame(()=>{ drawWires(); setActive(step,false); updateLiveBar(); });
+}
+
+function optionLabel(x){
+  const k=x.nihai_karar||"?";
+  const label=k==="uygun"?"Uygun":(k==="manuel_inceleme"?"Manuel":(RED_LABEL[k]||k));
+  return `${x.provizyon_id} · ${label}`;
+}
+
+function takeUnique(src, n, seen){
+  const out=[];
+  for(const x of src){
+    if(!x?.provizyon_id || seen.has(x.provizyon_id)) continue;
+    seen.add(x.provizyon_id);
+    out.push(x);
+    if(out.length>=n) break;
+  }
+  return out;
+}
+
+async function loadLiveList(){
+  const sel=document.getElementById("liveSelect");
+  try{
+    const r=await fetch(API+"/queue/recent?limit=120");
+    const d=await r.json();
+    liveList=(d.items||[]).filter(x=>x.status==="done" && x.provizyon_id);
+    if(!liveList.length){
+      sel.innerHTML=`<option value="">Canlı örnek yok — şablon</option>`;
+      return;
+    }
+    // Karışık örnek: uygun + manuel + red (demo-red* önce)
+    const uygun=liveList.filter(x=>x.nihai_karar==="uygun");
+    const man=liveList.filter(x=>x.nihai_karar==="manuel_inceleme");
+    const redAll=liveList.filter(x=>isRedKarar(x.nihai_karar));
+    const redDemo=redAll.filter(x=>String(x.provizyon_id).startsWith("demo-"));
+    const redOther=redAll.filter(x=>!String(x.provizyon_id).startsWith("demo-"));
+    const seen=new Set();
+    const gUygun=takeUnique(uygun, 6, seen);
+    const gMan=takeUnique(man, 5, seen);
+    const gRed=takeUnique([...redDemo, ...redOther], 8, seen);
+    const mkOpts=(arr)=>arr.map(x=>`<option value="${esc(x.provizyon_id)}">${esc(optionLabel(x))}</option>`).join("");
+    sel.innerHTML=`<option value="">Şablon (canlı değil)</option>`+
+      (gUygun.length?`<optgroup label="Uygun">${mkOpts(gUygun)}</optgroup>`:"")+
+      (gMan.length?`<optgroup label="Manuel inceleme">${mkOpts(gMan)}</optgroup>`:"")+
+      (gRed.length?`<optgroup label="Red / blok">${mkOpts(gRed)}</optgroup>`:"")+
+      (!gUygun.length && !gMan.length && !gRed.length
+        ? liveList.slice(0,20).map(x=>`<option value="${esc(x.provizyon_id)}">${esc(optionLabel(x))}</option>`).join("")
+        : "");
+    const auto=(gUygun[0]||gMan[0]||gRed[0]||liveList[0]);
+    if(auto){
+      sel.value=auto.provizyon_id;
+      await selectLive(auto.provizyon_id);
+    }
+  }catch(e){
+    sel.innerHTML=`<option value="">API yok — şablon</option>`;
+  }
+}
+
+async function selectLive(id){
+  if(!id){ live=null; updateLiveBar(); setActive(step,false); return; }
+  try{
+    const r=await fetch(API+"/provizyon/"+encodeURIComponent(id));
+    live=await r.json();
+    const dm=(live.raw||{}).documents_mode||"";
+    const bh=layerStatus(live,"belge_hasta");
+    const ze=layerStatus(live,"zorunlu_evrak");
+    const looksDocless=dm==="skipped_full_pipeline" || (bh==="skipped" && ze==="skipped");
+    const looksDocs=dm==="normal" || (bh && bh!=="skipped") || (ze && ze!=="skipped");
+    if(looksDocless && mode!=="docless") setMode("docless");
+    else if(looksDocs && mode!=="docs") setMode("docs");
+    updateLiveBar();
+    setActive(step,false);
+  }catch(e){
+    live=null; updateLiveBar();
+  }
+}
+
+document.getElementById("btnPlay").onclick=play;
+document.getElementById("btnPrev").onclick=()=>{stop(); go(step-1,true);};
+document.getElementById("btnNext").onclick=()=>{stop(); go(step+1,true);};
+document.getElementById("modeDocless").onclick=()=>{stop(); setMode("docless");};
+document.getElementById("modeDocs").onclick=()=>{stop(); setMode("docs");};
+document.getElementById("liveSelect").onchange=(e)=>{stop(); selectLive(e.target.value);};
+
+renderNodes();
+updateLiveBar();
+go(0,false);
+requestAnimationFrame(()=>drawWires());
+window.addEventListener("resize", ()=>{ drawWires(); setActive(step,false); });
+loadLiveList().then(()=>{ setTimeout(()=>{ if(!playing) play(); }, 900); });
+</script>
+</body>
+</html>

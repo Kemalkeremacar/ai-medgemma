@@ -1,0 +1,67 @@
+{
+  "schema_version": "review_reduction_operational_packs.v1",
+  "generated_at": "2026-07-09T17:25:26",
+  "source_triage_path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.csv",
+  "source_policy_candidates_path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top50.json",
+  "out_dir": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709",
+  "counts": {
+    "source_triage_rows": 50,
+    "expert_fast_track_rows": 19,
+    "expert_priority10_rows": 10,
+    "mapping_backlog_rows": 16,
+    "mapping_priority10_rows": 10,
+    "manual_review_hold_rows": 15,
+    "expert_by_priority_tier": {
+      "tier_1_policy_candidate": 4,
+      "tier_2_high_volume_conditional": 4,
+      "tier_2_high_volume_observation_to_expert": 1,
+      "tier_3_conditional_or_safety_review": 4,
+      "tier_4_lower_volume_expert_queue": 6
+    },
+    "mapping_by_priority_tier": {
+      "tier_1_extreme_volume_mapping": 3,
+      "tier_1_high_volume_mapping": 2,
+      "tier_2_medium_volume_mapping": 1,
+      "tier_3_targeted_mapping": 10
+    },
+    "hold_by_category": {
+      "response_invalid_manual_review_required": 2,
+      "keep_manual_review_observation": 13
+    }
+  },
+  "safety": {
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "live_runtime_override": false,
+    "auto_apply": false,
+    "exports_case_level_rows": false,
+    "claims_human_admin_approval": false
+  },
+  "generated_files": [
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_priority10.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_priority10.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\EXPERT_DECISION_TEMPLATE.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\DOMAIN_EXPERT_FAST_TRACK_REVIEW_PROMPT_COPY_PASTE.txt",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_candidates_all16.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_candidates_all16.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_priority10.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_priority10.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_RESEARCH_TEMPLATE.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_OUTPUT_CONTRACT.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\MAPPING_AGENT_PROMPT_COPY_PASTE.txt",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\READ_ONLY_MAPPING_SQL_TEMPLATE.sql",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_candidates.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_candidates.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\manual_review_hold_pack\\manual_review_hold_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\TASK_MANIFEST.json"
+  ],
+  "next_steps": [
+    "Send expert_fast_track_candidates_priority10.csv and DOMAIN_EXPERT_FAST_TRACK_REVIEW_PROMPT_COPY_PASTE.txt to domain experts.",
+    "Send mapping_backlog_priority10.csv and MAPPING_AGENT_PROMPT_COPY_PASTE.txt to mapping/catalog owners.",
+    "Do not stage or apply any policy until expert/admin decisions and mapping outputs are returned and validated."
+  ]
+}

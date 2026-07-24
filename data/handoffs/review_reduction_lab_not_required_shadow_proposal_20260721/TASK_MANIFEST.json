@@ -1,0 +1,57 @@
+{
+  "schema_version": "review_reduction_lab_not_required_shadow_proposal.v1",
+  "generated_at": "2026-07-21T15:13:39Z",
+  "mode": "huv_routine_lab_not_required_shadow_only",
+  "source_batch": {
+    "description": "Dashboard belgesiz 100'lük değerlendirme (2026-07-21)",
+    "documents_mode": "skipped_full_pipeline",
+    "result_log": "logs/provizyon-results.jsonl (last 100)",
+    "exports_case_ids": false
+  },
+  "counts": {
+    "total_batch": 100,
+    "uygun": 33,
+    "manuel_inceleme": 67,
+    "tani_review": 53,
+    "tani_review_with_34x": 26,
+    "documents_mode": "skipped_full_pipeline",
+    "blocking_items_total": 282,
+    "soft_unsupported_items": 281,
+    "counterfactual_full_resolve_if_all_34x_not_required": 16,
+    "counterfactual_full_resolve_if_top12_not_required": 0,
+    "counterfactual_cases_touched_by_top12": 19,
+    "counterfactual_partial_resolve_top12": 19,
+    "counterfactual_full_resolve_if_all_soft_not_required": 52,
+    "note_counterfactual": "Top-12 tek başına tam çözüm üretmez (vakalar çoklu lab paketidir). diagnosis_required=False soft item'lerin tümü not_required olursa 52/53 tam çözülür. Tüm 34.x not_required ile 16/53 tam çözülür (kalanlarda 03.x/24.x vb. kalır)."
+  },
+  "phase_1_code_count": 12,
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  },
+  "generated_files": [
+    "LAB_CANDIDATE_REGISTER.csv",
+    "LAB_CANDIDATE_REGISTER.json",
+    "LAB_GOVERNANCE_REVIEW.txt",
+    "LAB_POLICY_OVERLAY_DRAFTS.json",
+    "LAB_SHADOW_MONITORING_PLAN.json",
+    "LAB_SHADOW_POLICY_PROPOSAL.json",
+    "LAB_SHADOW_ROLLBACK_MANIFEST.json",
+    "README.md",
+    "expert_decision.huv_34.01511.example.json",
+    "expert_decision.huv_34.16460.example.json",
+    "expert_decision.huv_34.53153.example.json",
+    "expert_decision.huv_34.58287.example.json",
+    "expert_decision.huv_34.94074.example.json",
+    "expert_decision.huv_routine_lab_phase1.example.json",
+    "rule_draft.huv_03.10886.example.json"
+  ]
+}

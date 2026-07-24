@@ -1,0 +1,58 @@
+[
+  {
+    "diagnosis_prefix": "H40",
+    "historical_703790_review_rows_with_prefix": 146,
+    "share_of_703790_review_rows": 0.68867925,
+    "proposal_class": "shadow_candidate_core",
+    "proposal_reason": "Glaucoma is the conservative NFA-coherent shadow cohort."
+  },
+  {
+    "diagnosis_prefix": "H46",
+    "historical_703790_review_rows_with_prefix": 4,
+    "share_of_703790_review_rows": 0.01886792,
+    "proposal_class": "observation_only",
+    "proposal_reason": "Optic neuritis may be relevant, but requires human medical validation."
+  },
+  {
+    "diagnosis_prefix": "H47.5",
+    "historical_703790_review_rows_with_prefix": 22,
+    "share_of_703790_review_rows": 0.10377358,
+    "proposal_class": "observation_only",
+    "proposal_reason": "Observed visual-pathway code; retain for analysis only."
+  },
+  {
+    "diagnosis_prefix": "H35.3",
+    "historical_703790_review_rows_with_prefix": 16,
+    "share_of_703790_review_rows": 0.0754717,
+    "proposal_class": "observation_only",
+    "proposal_reason": "Retinal disease code; clinical NFA specificity is not established here."
+  },
+  {
+    "diagnosis_prefix": "H43",
+    "historical_703790_review_rows_with_prefix": 55,
+    "share_of_703790_review_rows": 0.25943396,
+    "proposal_class": "manual_review",
+    "proposal_reason": "Vitreous disorders are not sufficiently specific for NFA shadow pass."
+  },
+  {
+    "diagnosis_prefix": "H52",
+    "historical_703790_review_rows_with_prefix": 171,
+    "share_of_703790_review_rows": 0.80660377,
+    "proposal_class": "manual_review",
+    "proposal_reason": "Refraction/accommodation disorders are common but not specific NFA indications."
+  },
+  {
+    "diagnosis_prefix": "H04",
+    "historical_703790_review_rows_with_prefix": 61,
+    "share_of_703790_review_rows": 0.28773585,
+    "proposal_class": "manual_review",
+    "proposal_reason": "Lacrimal-system disorders are not a specific NFA indication."
+  },
+  {
+    "diagnosis_prefix": "H18",
+    "historical_703790_review_rows_with_prefix": 28,
+    "share_of_703790_review_rows": 0.13207547,
+    "proposal_class": "manual_review",
+    "proposal_reason": "Corneal disorders are not a specific NFA indication."
+  }
+]

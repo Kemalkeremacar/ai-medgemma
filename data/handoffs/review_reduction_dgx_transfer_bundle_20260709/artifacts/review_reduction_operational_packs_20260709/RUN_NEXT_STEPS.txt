@@ -1,0 +1,3 @@
+1. Send expert_fast_track_candidates_priority10.csv and DOMAIN_EXPERT_FAST_TRACK_REVIEW_PROMPT_COPY_PASTE.txt to domain experts.
+2. Send mapping_backlog_priority10.csv and MAPPING_AGENT_PROMPT_COPY_PASTE.txt to mapping/catalog owners.
+3. Do not stage or apply any policy until expert/admin decisions and mapping outputs are returned and validated.

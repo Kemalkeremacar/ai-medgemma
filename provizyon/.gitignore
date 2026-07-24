@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Generated runtime artifacts (large JSON/JSONL)
+data/generated/diagnosis_rules/runtime/huv_diagnosis_runtime_lookup.json
+data/generated/sut_diagnosis_rules/ek2b/runtime/sut_diagnosis_runtime_lookup.json

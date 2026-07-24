@@ -1,0 +1,62 @@
+{
+  "schema_version": "review_reduction_703790_shadow_policy_proposal.v1",
+  "generated_at": "2026-07-20T12:08:44",
+  "proposal_id": "shadow_703790_h40_v1",
+  "mode": "shadow_observation_only",
+  "baseline": {
+    "historical_703790_review_rows": 212,
+    "h40_shadow_candidate_rows": 146,
+    "h40_shadow_candidate_share": 0.68867925,
+    "row_level_full_release_counterfactual": 7,
+    "row_level_partial_resolution_counterfactual": 139
+  },
+  "minimum_observation_window": {
+    "days": 30,
+    "minimum_703790_review_rows": 100,
+    "minimum_h40_matches": 50
+  },
+  "metrics": [
+    {
+      "metric": "h40_shadow_candidate_share",
+      "alert_if": "absolute change from historical baseline exceeds 10 percentage points"
+    },
+    {
+      "metric": "new_diagnosis_prefix_share",
+      "alert_if": "previously unseen diagnosis prefixes exceed 5% of 703790 rows"
+    },
+    {
+      "metric": "manual_review_disagreement_rate",
+      "alert_if": "human/manual outcome disagrees with shadow candidate in more than 2% of labeled rows"
+    },
+    {
+      "metric": "candidate_with_other_review_codes_share",
+      "alert_if": "increase exceeds 10 percentage points from historical partial-resolution baseline"
+    },
+    {
+      "metric": "fail_or_reject_signal",
+      "alert_if": "any deterministic FAIL/reject signal occurs for an H40 shadow candidate"
+    }
+  ],
+  "promotion_gates": [
+    "human medical-policy review completed",
+    "human_admin_approval_present=true from a real authorized reviewer",
+    "official source or internal committee rationale attached",
+    "minimum observation window completed",
+    "manual_review_disagreement_rate <= 0.02",
+    "fail_or_reject_signal_count == 0",
+    "separate guarded apply and rollback review completed"
+  ],
+  "current_status": "not_approved_shadow_only",
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

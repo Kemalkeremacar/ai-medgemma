@@ -1,0 +1,6 @@
+# Her satır bir API key. Format:  <key>:<isim>
+# İsim log'da "kimin çağırdığı" olarak görünür. # ile başlayan satırlar yok sayılır.
+# Yeni anahtar üretmek için:  openssl rand -hex 32
+# ÖRNEK (kendi anahtarınızı üretin):
+0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef:makine-1
+fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210:makine-2

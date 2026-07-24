@@ -1,0 +1,203 @@
+{
+  "ts": "2026-07-23T14:00:52.929934+00:00",
+  "codes": [
+    "02.05441",
+    "03.10886",
+    "24.00461",
+    "24.00691",
+    "24.47381"
+  ],
+  "before": {
+    "02.05441": {
+      "point_ids": [
+        "ff0919d2-c7a4-e0ea-0f4a-7e5d02f59a16"
+      ],
+      "payloads": [
+        {
+          "id": "ff0919d2-c7a4-e0ea-0f4a-7e5d02f59a16",
+          "diagnosis_policy": "review_required",
+          "runtime_decision_mode": "manual_review",
+          "review_required": true,
+          "confidence": "medium"
+        }
+      ]
+    },
+    "03.10886": {
+      "point_ids": [
+        "05a239df-d0bf-4628-752a-58d2eb9aaa9c"
+      ],
+      "payloads": [
+        {
+          "id": "05a239df-d0bf-4628-752a-58d2eb9aaa9c",
+          "diagnosis_policy": "review_required",
+          "runtime_decision_mode": "manual_review",
+          "review_required": true,
+          "confidence": "medium"
+        }
+      ]
+    },
+    "24.00461": {
+      "point_ids": [
+        "ba7fd02c-ba80-63c7-19d1-df333dee8b20"
+      ],
+      "payloads": [
+        {
+          "id": "ba7fd02c-ba80-63c7-19d1-df333dee8b20",
+          "diagnosis_policy": "review_required",
+          "runtime_decision_mode": "manual_review",
+          "review_required": true,
+          "confidence": "medium"
+        }
+      ]
+    },
+    "24.00691": {
+      "point_ids": [
+        "da4a02f3-1f8c-ec27-f7d9-7cebb6e40daa"
+      ],
+      "payloads": [
+        {
+          "id": "da4a02f3-1f8c-ec27-f7d9-7cebb6e40daa",
+          "diagnosis_policy": "review_required",
+          "runtime_decision_mode": "manual_review",
+          "review_required": true,
+          "confidence": "medium"
+        }
+      ]
+    },
+    "24.47381": {
+      "point_ids": [
+        "0f045c2a-ba51-9ac9-482e-6b6fb373a37f"
+      ],
+      "payloads": [
+        {
+          "id": "0f045c2a-ba51-9ac9-482e-6b6fb373a37f",
+          "diagnosis_policy": "review_required",
+          "runtime_decision_mode": "manual_review",
+          "review_required": true,
+          "confidence": "medium"
+        }
+      ]
+    }
+  },
+  "updates": [
+    {
+      "code": "02.05441",
+      "point_ids": [
+        "ff0919d2-c7a4-e0ea-0f4a-7e5d02f59a16"
+      ],
+      "set_status": "ok",
+      "new": {
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high"
+      }
+    },
+    {
+      "code": "03.10886",
+      "point_ids": [
+        "05a239df-d0bf-4628-752a-58d2eb9aaa9c"
+      ],
+      "set_status": "ok",
+      "new": {
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high"
+      }
+    },
+    {
+      "code": "24.00461",
+      "point_ids": [
+        "ba7fd02c-ba80-63c7-19d1-df333dee8b20"
+      ],
+      "set_status": "ok",
+      "new": {
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high"
+      }
+    },
+    {
+      "code": "24.00691",
+      "point_ids": [
+        "da4a02f3-1f8c-ec27-f7d9-7cebb6e40daa"
+      ],
+      "set_status": "ok",
+      "new": {
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high"
+      }
+    },
+    {
+      "code": "24.47381",
+      "point_ids": [
+        "0f045c2a-ba51-9ac9-482e-6b6fb373a37f"
+      ],
+      "set_status": "ok",
+      "new": {
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high"
+      }
+    }
+  ],
+  "after": {
+    "02.05441": [
+      {
+        "id": "ff0919d2-c7a4-e0ea-0f4a-7e5d02f59a16",
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high",
+        "pilot_fix": "pilot10_B_align_disk"
+      }
+    ],
+    "03.10886": [
+      {
+        "id": "05a239df-d0bf-4628-752a-58d2eb9aaa9c",
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high",
+        "pilot_fix": "pilot10_B_align_disk"
+      }
+    ],
+    "24.00461": [
+      {
+        "id": "ba7fd02c-ba80-63c7-19d1-df333dee8b20",
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high",
+        "pilot_fix": "pilot10_B_align_disk"
+      }
+    ],
+    "24.00691": [
+      {
+        "id": "da4a02f3-1f8c-ec27-f7d9-7cebb6e40daa",
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high",
+        "pilot_fix": "pilot10_B_align_disk"
+      }
+    ],
+    "24.47381": [
+      {
+        "id": "0f045c2a-ba51-9ac9-482e-6b6fb373a37f",
+        "diagnosis_policy": "not_required",
+        "runtime_decision_mode": "automatic",
+        "review_required": false,
+        "confidence": "high",
+        "pilot_fix": "pilot10_B_align_disk"
+      }
+    ]
+  },
+  "huv_automatic_count": 1261,
+  "huv_manual_review_count": 6789
+}

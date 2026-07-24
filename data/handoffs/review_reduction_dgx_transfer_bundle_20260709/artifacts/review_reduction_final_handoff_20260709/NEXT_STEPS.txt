@@ -1,0 +1,10 @@
+ONERILEN SONRAKI ADIMLAR
+========================
+1. 703790 icin sadece shadow-only policy proposal hazirla; human/admin governance onayi olmadan live apply yapma.
+2. 703790 proposal icin deterministic diff, rollback manifest ve monitoring kriterlerini ayrica uret.
+3. 907440 ve 906510'u conditional backlog'da tut; daha fazla klinik kaynak veya human review gelirse tekrar degerlendir.
+4. 908115 ve 704530 icin confidence guardrail'i asmak icin ya daha guclu kanit ya da human/admin governance gerektir.
+5. 16 mapping backlog adayini katalog/mapping owner surecine ver; mapping cozulmeden review reduction yapma.
+6. Manual-review hold grubunu canli sistemde aynen REVIEW tut.
+
+NOT: Bu dosya uygulama talimati degildir; governance/handoff ozetidir.

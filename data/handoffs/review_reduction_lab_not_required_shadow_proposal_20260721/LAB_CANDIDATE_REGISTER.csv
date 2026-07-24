@@ -1,0 +1,14 @@
+priority,huv_code,procedure_name,case_coverage_of_53,share,proposed_policy,bucket,top_icds
+1,34.53153,Kan sayımı (Tam kan sayımı / Hemogram / CBC),18,0.3396,not_required,routine_lab_not_required,E55.9;K52.9;D51.8;J00;R11
+2,34.01511,"Alanin aminotransferaz (ALT, SGPT)",13,0.2453,not_required,routine_lab_not_required,E55.9;D51.8;J00;R11;K52.9
+3,34.16460,"Aspartat aminotransferaz (AST, SGOT)",12,0.2264,not_required,routine_lab_not_required,E55.9;D51.8;J00;R11;K52.9
+4,34.94074,"Üre nitrojeni, kan (BUN)",12,0.2264,not_required,routine_lab_not_required,E55.9;D51.8;J00;R11;K52.9
+5,34.58287,Kreatinin,11,0.2075,not_required,routine_lab_not_required,E55.9;D51.8;R11;K52.9;D50.9
+6,34.39563,"Glukoz (kan şekeri/akş), laboratuvar/hasta başı",11,0.2075,not_required,routine_lab_not_required,E55.9;D51.8;R11;K52.9;D50.9
+7,34.22047,"C reaktif protein (CRP), kantitatif",11,0.2075,not_required,routine_lab_not_required,K52.9;J06.9;R11;M73;M65.1
+8,34.85618,Sodyum (Na),10,0.1887,not_required,routine_lab_not_required,K52.9;E55.9;R11;M73;J21
+9,34.76860,Potasyum (K),10,0.1887,not_required,routine_lab_not_required,K52.9;E55.9;R11;M73;J21
+10,34.35788,Ferritin,7,0.1321,not_required,routine_lab_not_required,E55.9;D51.8;J00;D50.9;R11
+11,34.96490,Vitamin B12,7,0.1321,not_required,routine_lab_not_required,E55.9;D51.8;J00;D50.9;R11
+12,34.94376,Ürik asit,7,0.1321,not_required,routine_lab_not_required,E55.9;M65.1;D50;D51;E88.9
+100,03.10886,İntravenöz (İV) sıvı infüzyonu,10,0.1887,required_any_or_scoped_include,iv_infusion_indication_scope,J06.9;K52.9;B34.8;J11.1;J30.2

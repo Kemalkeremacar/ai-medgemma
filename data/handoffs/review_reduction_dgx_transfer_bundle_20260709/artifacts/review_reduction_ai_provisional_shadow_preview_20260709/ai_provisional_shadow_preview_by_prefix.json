@@ -1,0 +1,205 @@
+[
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H52",
+    "review_code_rows_with_prefix": 171,
+    "share_of_historical_review_code_rows": 0.80660377
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H40",
+    "review_code_rows_with_prefix": 146,
+    "share_of_historical_review_code_rows": 0.68867925
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H04",
+    "review_code_rows_with_prefix": 61,
+    "share_of_historical_review_code_rows": 0.28773585
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H43",
+    "review_code_rows_with_prefix": 55,
+    "share_of_historical_review_code_rows": 0.25943396
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H52.4",
+    "review_code_rows_with_prefix": 37,
+    "share_of_historical_review_code_rows": 0.1745283
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H52.0",
+    "review_code_rows_with_prefix": 24,
+    "share_of_historical_review_code_rows": 0.11320755
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H47.5",
+    "review_code_rows_with_prefix": 22,
+    "share_of_historical_review_code_rows": 0.10377358
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H35.3",
+    "review_code_rows_with_prefix": 16,
+    "share_of_historical_review_code_rows": 0.0754717
+  },
+  {
+    "code": "703790",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "H18.3",
+    "review_code_rows_with_prefix": 15,
+    "share_of_historical_review_code_rows": 0.07075472
+  },
+  {
+    "code": "907440",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "R53",
+    "review_code_rows_with_prefix": 147,
+    "share_of_historical_review_code_rows": 0.73869347
+  },
+  {
+    "code": "907440",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "Z33",
+    "review_code_rows_with_prefix": 8,
+    "share_of_historical_review_code_rows": 0.04020101
+  },
+  {
+    "code": "907440",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "E55",
+    "review_code_rows_with_prefix": 5,
+    "share_of_historical_review_code_rows": 0.02512563
+  },
+  {
+    "code": "907440",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "R10",
+    "review_code_rows_with_prefix": 4,
+    "share_of_historical_review_code_rows": 0.0201005
+  },
+  {
+    "code": "907440",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "N39",
+    "review_code_rows_with_prefix": 3,
+    "share_of_historical_review_code_rows": 0.01507538
+  },
+  {
+    "code": "907440",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "R50",
+    "review_code_rows_with_prefix": 3,
+    "share_of_historical_review_code_rows": 0.01507538
+  },
+  {
+    "code": "907440",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "E03",
+    "review_code_rows_with_prefix": 3,
+    "share_of_historical_review_code_rows": 0.01507538
+  },
+  {
+    "code": "907440",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "Z34",
+    "review_code_rows_with_prefix": 3,
+    "share_of_historical_review_code_rows": 0.01507538
+  },
+  {
+    "code": "907440",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "D76",
+    "review_code_rows_with_prefix": 3,
+    "share_of_historical_review_code_rows": 0.01507538
+  },
+  {
+    "code": "907440",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "D50",
+    "review_code_rows_with_prefix": 2,
+    "share_of_historical_review_code_rows": 0.01005025
+  },
+  {
+    "code": "906510",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "R68",
+    "review_code_rows_with_prefix": 74,
+    "share_of_historical_review_code_rows": 0.46540881
+  },
+  {
+    "code": "906510",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "Z00",
+    "review_code_rows_with_prefix": 44,
+    "share_of_historical_review_code_rows": 0.27672956
+  },
+  {
+    "code": "906510",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "R53",
+    "review_code_rows_with_prefix": 20,
+    "share_of_historical_review_code_rows": 0.12578616
+  },
+  {
+    "code": "906510",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "Z01",
+    "review_code_rows_with_prefix": 5,
+    "share_of_historical_review_code_rows": 0.03144654
+  },
+  {
+    "code": "906510",
+    "prefix_type": "ai_provisional_approved_prefix",
+    "diagnosis_prefix": "B15",
+    "review_code_rows_with_prefix": 4,
+    "share_of_historical_review_code_rows": 0.02515723
+  },
+  {
+    "code": "906510",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "E55",
+    "review_code_rows_with_prefix": 4,
+    "share_of_historical_review_code_rows": 0.02515723
+  },
+  {
+    "code": "906510",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "G35",
+    "review_code_rows_with_prefix": 2,
+    "share_of_historical_review_code_rows": 0.01257862
+  },
+  {
+    "code": "906510",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "E78",
+    "review_code_rows_with_prefix": 2,
+    "share_of_historical_review_code_rows": 0.01257862
+  },
+  {
+    "code": "906510",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "B18",
+    "review_code_rows_with_prefix": 1,
+    "share_of_historical_review_code_rows": 0.00628931
+  },
+  {
+    "code": "906510",
+    "prefix_type": "manual_review_prefix",
+    "diagnosis_prefix": "Z34",
+    "review_code_rows_with_prefix": 1,
+    "share_of_historical_review_code_rows": 0.00628931
+  }
+]

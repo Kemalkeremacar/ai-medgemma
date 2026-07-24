@@ -1,0 +1,15 @@
+DO NOT WRITE THIS BUNDLE TO PRODUCTION QDRANT.
+
+The JSONL file in this folder is a shadow payload preview only.
+If Qdrant indexing is needed, use a separate shadow collection:
+sut_policy_shadow_review_reduction_20260709
+
+Required semantics:
+human_admin_approval_present=false
+apply_ready=false
+auto_apply=false
+live_rule_candidate=false
+shadow_only=true
+production_qdrant_write_allowed=false
+
+No live rule lookup, runtime override, production DB write, payment approval, or auto-apply is authorized.

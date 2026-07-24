@@ -1,0 +1,18 @@
+{
+  "provizyon_id": "demo-red-evrak-eksik",
+  "hasta_id": "RED005",
+  "patient_name": "Demo Red Evrak Eksik",
+  "yas": 45,
+  "cinsiyet": "kadin",
+  "code_family": "HUV",
+  "huv_codes": [
+    "02.16321"
+  ],
+  "diagnoses": [
+    "T39.1"
+  ],
+  "documents": [],
+  "notes": [
+    "Demo RED: belge yok (belgeli mod) → evrak_eksik"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "provizyon_id": "demo-red-fimozis-uyumsuz",
+  "hasta_id": "RED003",
+  "patient_name": "Demo Red Fimozis",
+  "yas": 22,
+  "cinsiyet": "erkek",
+  "code_family": "HUV",
+  "huv_codes": [
+    "02.21761"
+  ],
+  "diagnoses": [
+    "J06.9"
+  ],
+  "documents_mode": "skipped_full_pipeline",
+  "documents": [],
+  "notes": [
+    "Demo RED: fimozis açılması + J06.9 → tani_uyumsuz"
+  ]
+}

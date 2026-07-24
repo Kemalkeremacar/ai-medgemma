@@ -1,0 +1,99 @@
+{
+  "pilot_id": "belgesiz_pilot10_v1",
+  "n": 10,
+  "karar": {
+    "manuel_inceleme": 6,
+    "uygun": 4
+  },
+  "tani_kurali": {
+    "review": 6,
+    "pass": 3,
+    "skipped": 1
+  },
+  "medgemma": {
+    "low": 6,
+    "medium": 4
+  },
+  "cases": [
+    {
+      "provizyon_id": "2476721",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 82970
+    },
+    {
+      "provizyon_id": "2569510",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 83992
+    },
+    {
+      "provizyon_id": "2562697",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "skipped",
+      "medgemma": "medium",
+      "elapsed_ms": 69830
+    },
+    {
+      "provizyon_id": "2568731",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 86271
+    },
+    {
+      "provizyon_id": "106844",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 78063
+    },
+    {
+      "provizyon_id": "107497",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 73597
+    },
+    {
+      "provizyon_id": "2566009",
+      "nihai_karar": "uygun",
+      "tani_kurali": "skipped",
+      "sut_kurali": "skipped",
+      "medgemma": "medium",
+      "elapsed_ms": 57108
+    },
+    {
+      "provizyon_id": "2580856",
+      "nihai_karar": "uygun",
+      "tani_kurali": "pass",
+      "sut_kurali": "pass",
+      "medgemma": "medium",
+      "elapsed_ms": 138068
+    },
+    {
+      "provizyon_id": "2581695",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 106388
+    },
+    {
+      "provizyon_id": "2582118",
+      "nihai_karar": "manuel_inceleme",
+      "tani_kurali": "review",
+      "sut_kurali": "pass",
+      "medgemma": "low",
+      "elapsed_ms": 139073
+    }
+  ]
+}

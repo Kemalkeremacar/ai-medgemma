@@ -1,0 +1,366 @@
+{
+  "schema_version": "review_reduction_lab_not_required_shadow_proposal.v1",
+  "generated_at": "2026-07-21T15:13:39Z",
+  "drafts": [
+    {
+      "draft_id": "draft-huv-34.53153-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.53153",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Kan sayımı (Tam kan sayımı / Hemogram / CBC)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.53153-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.01511-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.01511",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Alanin aminotransferaz (ALT, SGPT)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.01511-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.16460-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.16460",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Aspartat aminotransferaz (AST, SGOT)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.16460-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.94074-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.94074",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Üre nitrojeni, kan (BUN)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.94074-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.58287-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.58287",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Kreatinin",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.58287-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.39563-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.39563",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Glukoz (kan şekeri/akş), laboratuvar/hasta başı",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.39563-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.22047-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.22047",
+      "procedure_code_system": "HUV",
+      "procedure_name": "C reaktif protein (CRP), kantitatif",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.22047-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.85618-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.85618",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Sodyum (Na)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.85618-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.76860-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.76860",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Potasyum (K)",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.76860-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.35788-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.35788",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Ferritin",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.35788-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.96490-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.96490",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Vitamin B12",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.96490-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    },
+    {
+      "draft_id": "draft-huv-34.94376-not-required-shadow-v0",
+      "status": "draft",
+      "procedure_code": "34.94376",
+      "procedure_code_system": "HUV",
+      "procedure_name": "Ürik asit",
+      "policy_overlay": {
+        "diagnosis_policy": "not_required",
+        "required_icd10_patterns": [],
+        "excluded_icd10_patterns": [],
+        "decision_if_missing_diagnosis": "PASS",
+        "review_required": false
+      },
+      "outcomes": {
+        "on_any_or_missing_diagnosis": "SHADOW_CANDIDATE",
+        "live_on_any_or_missing_diagnosis_after_approval": "PASS",
+        "fallback_today": "REVIEW_REQUIRED"
+      },
+      "governance": {
+        "enabled": false,
+        "apply_ready": false,
+        "auto_apply": false,
+        "human_admin_approval_present": false
+      },
+      "source_expert_decision_id": "expert-huv-34.94376-pending",
+      "created_at": "2026-07-21T15:13:39Z",
+      "created_by": "batch_100_lab_analysis_20260721",
+      "schema_note": "rule_draft.schema.json ICD include zorunlu; bu not_required overlay onun yanında policy taslağıdır. Canlıya yazılmaz."
+    }
+  ],
+  "safety": {
+    "human_admin_approval_present": false,
+    "apply_ready": false,
+    "auto_apply": false,
+    "live_runtime_override": false,
+    "runtime_decision_changed": false,
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "shadow_only": true
+  }
+}

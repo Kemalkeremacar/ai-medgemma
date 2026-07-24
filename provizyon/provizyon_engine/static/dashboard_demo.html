@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Anonim Önizleme — Provizyon Kontrol Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0f2f5;--bg2:#ffffff;--bg3:#f6f8fa;--border:#e0e4ea;--border2:#c8cdd5;
+  --text:#111827;--text2:#4b5563;--text3:#9ca3af;
+  --green:#10b981;--green-bg:#ecfdf5;--green-border:#6ee7b7;
+  --red:#ef4444;--red-bg:#fef2f2;--red-border:#fca5a5;
+  --yellow:#f59e0b;--yellow-bg:#fffbeb;--yellow-border:#fde68a;
+  --blue:#3b82f6;--blue-bg:#eff6ff;--blue-border:#93c5fd;
+  --indigo:#6366f1;--indigo-bg:#eef2ff;--indigo-border:#a5b4fc;
+  --orange:#f97316;--orange-bg:#fff7ed;--orange-border:#fdba74;
+  --cyan:#06b6d4;--violet:#8b5cf6;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.03);
+  --shadow-md:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.08),0 4px 8px rgba(0,0,0,.04);
+  --radius:10px;--radius-lg:14px;--radius-xl:18px;--gap:16px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+html.embedded .header,html.embedded .page-header{display:none}
+html.embedded #sysHealthPanel{display:none}
+html.embedded .content{padding-top:16px}
+
+/* Header */
+.header{background:rgba(255,255,255,.82);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.header-left{display:flex;align-items:center;gap:14px}
+.logo{width:38px;height:38px;background:linear-gradient(135deg,var(--indigo),#818cf8);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;letter-spacing:-.03em;box-shadow:0 2px 8px rgba(99,102,241,.3)}
+.header-titles h1{font-size:17px;font-weight:800;line-height:1.2;letter-spacing:-.03em}
+.header-titles h1 span{background:linear-gradient(135deg,var(--indigo),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-sub{font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:.01em}
+.header-right{display:flex;align-items:center;gap:14px}
+.sys-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid transparent;transition:.2s}
+.sys-badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.sys-badge.warn{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)}
+.sys-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.update-ts{font-size:10px;color:var(--text3)}
+
+/* Tabs */
+.tab-bar{display:flex;gap:2px;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:0}
+.tab-btn{padding:10px 22px;font-size:13px;font-weight:600;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;transition:.15s;letter-spacing:.01em}
+.tab-btn:hover{color:var(--text);background:var(--bg3);border-radius:8px 8px 0 0}
+.tab-btn.active{color:var(--indigo);border-bottom-color:var(--indigo)}
+.tab-pane{display:none;animation:fadeIn .25s ease}
+.tab-pane.active{display:block}
+
+/* Analytics */
+.an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap)}
+.an-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow)}
+.an-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);margin-bottom:14px}
+.an-card-wide{grid-column:1/-1}
+.an-card-half{grid-column:span 2}
+.an-big-num{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.an-sub{font-size:12px;color:var(--text2);margin-top:4px}
+
+/* Bar chart (CSS-only) */
+.bar-chart{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:11px;font-weight:600;width:130px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.bar-track{flex:1;height:22px;background:var(--bg);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.bar-val{font-size:11px;font-weight:600;width:60px;text-align:right;flex-shrink:0;color:var(--text2)}
+
+/* Donut chart (CSS conic-gradient) */
+.donut-wrap{display:flex;align-items:center;gap:24px}
+.donut{width:140px;height:140px;border-radius:50%;position:relative;flex-shrink:0}
+.donut-hole{position:absolute;top:20px;left:20px;right:20px;bottom:20px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.donut-center{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.donut-center-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.legend{display:flex;flex-direction:column;gap:6px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* Kurum tablosu */
+.an-table{width:100%;border-collapse:collapse;font-size:12px}
+.an-table th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);text-align:left;padding:8px 10px;border-bottom:2px solid var(--border)}
+.an-table td{padding:7px 10px;border-bottom:1px solid var(--border)}
+.an-table tr:hover td{background:var(--bg3)}
+.an-table .num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.an-oran-bar{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+
+/* Layout */
+.content{padding:28px 32px 48px;max-width:1520px;margin:0 auto}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.page-header{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.page-title{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
+.page-desc{font-size:13px;color:var(--text2);max-width:640px;line-height:1.6}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .15s}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-table-wrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.card-table-wrap table th:first-child,.card-table-wrap table td:first-child{padding-left:16px}
+.card-table-wrap table th:last-child,.card-table-wrap table td:last-child{padding-right:16px}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.02em}
+.b-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.b-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.b-yellow{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.b-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.b-indigo{background:var(--indigo-bg);color:var(--indigo);border:1px solid var(--indigo-border)}
+.b-gray{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+.b-orange{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.mini-badge{display:inline-flex;align-items:center;gap:2px;padding:1px 5px;border-radius:6px;font-size:9px;font-weight:600;white-space:nowrap;vertical-align:middle;margin-left:3px}
+
+/* Table */
+table{width:100%;border-collapse:collapse}
+th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);background:var(--bg3);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--bg3);font-size:12px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:rgba(246,248,250,.5)}
+tr:hover td{background:rgba(99,102,241,.03)}
+tr.clickable{cursor:pointer;transition:background .12s}
+tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 var(--indigo)}
+
+/* Grids */
+.grid{display:grid;gap:var(--gap)}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g-auto{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+
+/* KPI */
+.kpi{padding:18px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);transition:transform .15s,box-shadow .15s;border-top:3px solid var(--border);position:relative;overflow:hidden}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-icon{font-size:18px;margin-bottom:6px;opacity:.8}
+.kpi-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
+.kpi-val{font-size:28px;font-weight:800;line-height:1.15;margin-top:4px;letter-spacing:-.03em}
+.kpi-sub{font-size:11px;color:var(--text2);margin-top:6px}
+#provKpis .kpi:nth-child(1){border-top-color:var(--indigo)}
+#provKpis .kpi:nth-child(2){border-top-color:var(--green)}
+#provKpis .kpi:nth-child(3){border-top-color:var(--red)}
+#provKpis .kpi:nth-child(4){border-top-color:var(--yellow)}
+#provKpis .kpi:nth-child(5){border-top-color:var(--blue)}
+
+/* Pipeline Visual */
+.pipeline{display:flex;gap:0;flex-wrap:wrap;margin:16px 0;background:var(--bg3);border-radius:var(--radius-lg);padding:6px;border:1px solid var(--border)}
+.pipe-step{position:relative;display:flex;align-items:center;gap:8px;padding:8px 14px 8px 12px;background:var(--bg2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text2);transition:.2s;border-radius:var(--radius)}
+.pipe-step .pipe-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--text3);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
+.pipe-step.pass{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.pipe-step.pass .pipe-num{background:var(--green);color:#fff}
+.pipe-step.fail{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}
+.pipe-step.fail .pipe-num{background:var(--red);color:#fff}
+.pipe-step.review{background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--yellow)}
+.pipe-step.review .pipe-num{background:var(--yellow);color:#fff}
+.pipe-step.skip{background:var(--bg2);border-color:var(--border);color:var(--text3)}
+.pipe-step.active{background:var(--indigo-bg);border-color:var(--indigo-border);color:var(--indigo)}
+.pipe-step.active .pipe-num{background:var(--indigo);color:#fff}
+.pipe-connector{display:flex;align-items:center;padding:0 3px;color:var(--border2);font-size:9px}
+
+/* Result Banner */
+.result-banner{border-radius:var(--radius-xl);padding:22px 24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow-md)}
+.result-banner.allowed{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border:1px solid var(--green-border)}
+.result-banner.denied{background:linear-gradient(135deg,#fef2f2 0%,#fee2e2 100%);border:1px solid var(--red-border)}
+.result-banner.review{background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1px solid var(--yellow-border)}
+.result-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.result-banner.allowed .result-icon{background:var(--green);color:#fff}
+.result-banner.denied .result-icon{background:var(--red);color:#fff}
+.result-banner.review .result-icon{background:var(--yellow);color:#fff}
+.result-banner .result-text{flex:1;min-width:0}
+.banner-lead{margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--text2)}
+.banner-details{margin-top:10px;font-size:12px}
+.banner-details summary{cursor:pointer;color:var(--indigo);font-weight:600;user-select:none}
+.banner-details[open] summary{margin-bottom:6px}
+.banner-reason-list{margin:6px 0 0;padding-left:18px;color:var(--text2);line-height:1.45;max-height:280px;overflow-y:auto}
+.banner-reason-list li{margin-bottom:6px}
+.result-text h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.result-text p{font-size:13px;opacity:.85;margin-top:4px;line-height:1.5}
+
+/* Step Detail Cards */
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:var(--gap);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.step-card.open{border-color:var(--indigo-border);box-shadow:var(--shadow-md)}
+.step-header{padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .12s}
+.step-card.open .step-header{border-bottom-color:var(--border);background:var(--bg3)}
+.step-header:hover{background:var(--bg3)}
+.step-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.step-header .step-title{font-size:14px;font-weight:700;flex:1;letter-spacing:-.01em}
+.step-header .step-status{margin-left:auto}
+.step-body{padding:18px 20px;display:none;animation:fadeIn .2s ease}
+.step-card.open .step-body{display:block}
+.step-arrow{font-size:10px;color:var(--text3);transition:transform .2s;margin-left:8px}
+.step-card.open .step-arrow{transform:rotate(90deg)}
+
+/* Detail Grid */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:12px}
+.detail-grid.g1{grid-template-columns:1fr}
+.detail-label{font-weight:600;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.detail-badges{display:flex;gap:4px;flex-wrap:wrap}
+
+/* Section Title */
+.sec-title{font-size:14px;font-weight:700;margin:20px 0 10px;display:flex;align-items:center;gap:8px;color:var(--text)}
+
+/* Collapsible JSON */
+.json-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-family:'SF Mono','Cascadia Code',monospace;font-size:10px;line-height:1.5;max-height:300px;overflow:auto;color:var(--text2);white-space:pre-wrap}
+
+/* Infra */
+.infra-card{padding:16px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg2)}
+.infra-card h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.infra-role{font-size:10px;color:var(--text3);margin-bottom:8px}
+.infra-val{font-size:20px;font-weight:800;color:var(--indigo)}
+.infra-sub{font-size:10px;color:var(--text2);margin-top:4px}
+
+/* Meter */
+.meter-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.meter-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.meter-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* Svc card */
+.svc-card{display:flex;align-items:center;gap:10px;padding:14px 16px}
+.svc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.svc-icon.ok{background:var(--green-bg);color:var(--green)}.svc-icon.down{background:var(--red-bg);color:var(--red)}
+.svc-name{font-weight:700;font-size:12px}.svc-detail{font-size:10px;color:var(--text2);margin-top:1px}
+.svc-dot{width:7px;height:7px;border-radius:50%;margin-left:auto;flex-shrink:0}
+.svc-dot.ok{background:var(--green)}.svc-dot.down{background:var(--red)}
+
+/* Toolbar */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.refresh-toggle{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);cursor:pointer}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:.3s}
+.live-dot.on{background:var(--green);box-shadow:0 0 8px rgba(16,185,129,.5)}
+.live-dot.err{background:var(--red)}
+
+/* Toast */
+.toast-wrap{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{pointer-events:auto;padding:12px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;box-shadow:var(--shadow-lg);background:var(--bg2);animation:slideUp .2s;max-width:360px}
+.toast.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.toast.err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.toast.info{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Empty */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;color:var(--text3);text-align:center;min-height:120px}
+.empty-icon{font-size:28px;margin-bottom:8px;opacity:.4}
+.empty-text{font-size:12px;max-width:260px}
+
+/* Spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--indigo);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{display:flex;align-items:center;gap:8px;color:var(--text3);padding:20px;font-size:12px}
+
+/* Responsive */
+@media(max-width:1100px){.g4,.g5{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}.g2{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}.content{padding:16px}}
+@media(max-width:640px){.g3{grid-template-columns:1fr}.pipeline{flex-direction:column}.pipe-step{border-radius:var(--radius)!important}}
+
+/* Dev tools */
+.dev-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.dev-toolbar button{padding:8px 16px;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);cursor:pointer;color:var(--text2);transition:.15s}
+.dev-toolbar button:hover{background:var(--indigo-bg);border-color:var(--indigo-border);color:var(--indigo)}
+.dev-score{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.dev-score .kpi{min-width:0;padding:14px 16px;text-align:center;border-top-width:2px}
+.dev-score .kpi-val{font-size:24px}
+.dev-matrix.card{padding:0;overflow:hidden}
+.dev-matrix .card-title{padding:16px 20px 0;margin-bottom:0}
+.dev-matrix .dev-toolbar{padding:12px 20px 16px}
+.dev-matrix table{margin:0}
+.dev-matrix thead th{background:var(--bg2);border-top:1px solid var(--border)}
+.pipe-step.clickable{cursor:pointer}
+.pipe-step.clickable:hover{transform:translateY(-1px);box-shadow:var(--shadow);z-index:1}
+.dev-mg-audit{margin-bottom:14px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.dev-mg-pages{max-height:140px;overflow:auto;font-family:monospace;font-size:10px;color:var(--text2);line-height:1.6;margin-top:6px;padding:8px;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);word-break:break-word}
+.dev-mg-raw .json-box{max-height:520px}
+.dev-qcell{display:flex;align-items:center;gap:6px;min-width:100px}
+.dev-qbar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--border);min-width:48px;max-width:72px}
+.dev-qbar.wide{max-width:none;height:8px;margin-top:6px}
+.dev-qfill{height:100%;border-radius:3px;transition:width .4s ease}
+.dev-qfill.q-green{background:var(--green)}.dev-qfill.q-yellow{background:var(--yellow)}.dev-qfill.q-red{background:var(--red)}
+.dev-status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:12px 0;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.dev-status-item{text-align:center}
+.dev-status-val{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--indigo)}
+.dev-status-val.warn{color:var(--red)}
+.dev-status-lbl{font-size:10px;color:var(--text3);margin-top:4px;font-weight:600}
+.dev-vision-block{margin-bottom:14px;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.dev-sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px}
+.dev-hint{font-size:11px;color:var(--text3);margin-top:8px}
+.dev-hint.warn{color:var(--yellow)}
+
+/* Detail */
+.detail-empty-hint{font-size:13px;color:var(--text3);padding:40px;text-align:center;border:2px dashed var(--border);border-radius:var(--radius-lg);background:var(--bg3)}
+@media(max-width:640px){.dev-score{grid-template-columns:repeat(2,1fr)}}
+
+/* System Health Panel */
+.sys-panel{margin-top:var(--gap)}
+.sys-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.sys-item{padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);text-align:center}
+.sys-item-val{font-size:18px;font-weight:800;color:var(--indigo);letter-spacing:-.02em}
+.sys-item-lbl{font-size:10px;color:var(--text3);margin-top:4px;font-weight:600}
+</style>
+</head>
+
+<body>
+<script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo">PV</div>
+    <div class="header-titles">
+      <h1><span>Anonim</span> Önizleme <span style="font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.02em">HASTA GİZLİ</span></h1>
+      <div class="header-sub">Provizyonlar + Analiz · hasta bilgileri anonimleştirilmiştir</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="sys-badge ok" id="sysBadge"><span class="sys-dot"></span><span id="sysText">Kontrol ediliyor</span></div>
+    <span class="update-ts" id="lastUpdate"></span>
+  </div>
+</header>
+
+<main class="content">
+
+<div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+  <div>
+    <div class="page-title">Anonim Önizleme</div>
+    <div class="page-desc">Aynı Provizyonlar ve Analiz görünümü; kimlik alanları maskeli (sunum / dış paylaşım).</div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('prov')">Provizyonlar</button>
+  <button class="tab-btn" onclick="switchTab('analiz')">Analiz &amp; Rapor</button>
+</div>
+
+<section class="tab-pane active" id="tabProv" style="animation:fadeIn .3s ease">
+
+  <div class="grid g5 g-auto" id="provKpis" style="margin-bottom:var(--gap)">
+    <div class="kpi"><div class="kpi-label">Toplam</div><div class="kpi-val" id="kpiTotal" style="color:var(--indigo)">—</div></div>
+    <div class="kpi"><div class="kpi-label">Uygun</div><div class="kpi-val" id="kpiOk" style="color:var(--green)">—</div><div class="kpi-sub" id="kpiOkSub"></div></div>
+    <div class="kpi"><div class="kpi-label">Reddedilen</div><div class="kpi-val" id="kpiDenied" style="color:var(--red)">—</div><div class="kpi-sub" id="kpiDeniedSub"></div></div>
+    <div class="kpi"><div class="kpi-label">İnceleme</div><div class="kpi-val" id="kpiReview" style="color:var(--yellow)">—</div><div class="kpi-sub" id="kpiReviewSub"></div></div>
+    <div class="kpi"><div class="kpi-label">Kuyruk</div><div class="kpi-val" id="kpiQueue" style="color:var(--blue)">—</div><div class="kpi-sub" id="kpiQueueSub"></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:var(--gap)">
+    <div class="toolbar">
+      <span class="card-title">Son İşler</span>
+      <button type="button" class="tab-btn" id="btnClearRecent" style="margin-left:auto;font-size:12px;padding:6px 12px">Eski kayıtları sil</button>
+      <label class="refresh-toggle"><input type="checkbox" id="autoRefresh" checked style="display:none">
+        <span class="live-dot" id="liveDot"></span> Canlı yenile
+      </label>
+    </div>
+    <div class="card-table-wrap">
+    <table>
+      <thead><tr><th style="width:100px">Provizyon</th><th>Hasta</th><th>Durum</th><th>Analiz</th><th>Karar</th><th>Risk</th><th style="max-width:200px">Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
+      <tbody id="recentTb"><tr><td colspan="9" class="empty-text" style="text-align:center;padding:20px">Yükleniyor…</td></tr></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div id="jobDetail"><div class="detail-empty-hint">Detay görmek için yukarıdaki listeden bir provizyon seçin.</div></div>
+
+  <div class="sys-panel" id="sysHealthPanel">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Sistem Sağlığı</span><span class="badge b-gray" id="sysHealthTs"></span></div>
+      <div class="sys-grid" id="sysHealthGrid">
+        <div class="sys-item"><div class="sys-item-val">—</div><div class="sys-item-lbl">Yükleniyor…</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ANALİZ & RAPOR TAB ═══════════ -->
+<section class="tab-pane" id="tabAnaliz">
+
+  <div id="anLoading" class="loading" style="padding:40px;justify-content:center">Vektör DB analizi yükleniyor…</div>
+
+  <div id="anContent" style="display:none">
+
+    <!-- KPI Satırı -->
+    <div class="an-grid" style="margin-bottom:var(--gap)">
+      <div class="an-card">
+        <div class="an-card-title">Toplam Provizyon</div>
+        <div class="an-big-num" id="anTotal" style="color:var(--indigo)">—</div>
+        <div class="an-sub" id="anTotalSub"></div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">Vektör Noktası</div>
+        <div class="an-big-num" id="anPoints" style="color:var(--blue)">—</div>
+        <div class="an-sub">patient_findings collection</div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">HUV Kayıt</div>
+        <div class="an-big-num" id="anHuv" style="color:var(--cyan)">—</div>
+        <div class="an-sub">tani_kurali layer</div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">SUT Kayıt</div>
+        <div class="an-big-num" id="anSut" style="color:var(--violet)">—</div>
+        <div class="an-sub">sut_tani_kurali layer</div>
+      </div>
+    </div>
+
+    <!-- Karar Dağılımı + Layer Status -->
+    <div class="an-grid" style="margin-bottom:var(--gap);grid-template-columns:1fr 1fr">
+      <div class="an-card">
+        <div class="an-card-title">Nihai Karar Dağılımı</div>
+        <div class="donut-wrap">
+          <div class="donut" id="anDonut"></div>
+          <div class="legend" id="anLegend"></div>
+        </div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">Tanı-İşlem Uyumu (Layer Status)</div>
+        <div id="anLayerBars"></div>
+      </div>
+    </div>
+
+    <!-- Yaş Grubu + Cinsiyet + Kurum Tipi -->
+    <div class="an-grid" style="margin-bottom:var(--gap);grid-template-columns:1fr 1fr 1fr">
+      <div class="an-card">
+        <div class="an-card-title">Yaş Grubu Dağılımı</div>
+        <div id="anYasBars"></div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">Cinsiyet Dağılımı</div>
+        <div id="anCinsBars"></div>
+      </div>
+      <div class="an-card">
+        <div class="an-card-title">Kurum Tipi Dağılımı</div>
+        <div id="anFacBars"></div>
+      </div>
+    </div>
+
+    <!-- Kurum Bazlı Performans Tablosu -->
+    <div class="an-grid" style="margin-bottom:var(--gap)">
+      <div class="an-card an-card-wide">
+        <div class="an-card-title">Kurum Bazlı Performans</div>
+        <div style="overflow-x:auto">
+          <table class="an-table" id="anKurumTable">
+            <thead><tr>
+              <th>Kurum</th>
+              <th class="num">Toplam</th>
+              <th class="num">Uygun</th>
+              <th class="num">Tanı Uyumsuz</th>
+              <th class="num">Tanı Eksik</th>
+              <th class="num">İnceleme</th>
+              <th class="num">Diğer Red</th>
+              <th class="num">Onay Oranı</th>
+            </tr></thead>
+            <tbody id="anKurumTb"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tanı Fail Örnekleri -->
+    <div class="an-grid">
+      <div class="an-card an-card-wide">
+        <div class="an-card-title">Son Tanı Uyumsuzluk Örnekleri</div>
+        <div style="overflow-x:auto">
+          <table class="an-table" id="anFailTable">
+            <thead><tr>
+              <th>Provizyon</th>
+              <th>Layer</th>
+              <th>Kurum</th>
+              <th>Karar</th>
+              <th style="max-width:400px">Mesaj</th>
+            </tr></thead>
+            <tbody id="anFailTb"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+const PROV_API='';
+
+// ════════════════════════════════════════════════════
+// ANONİMLEŞTİRME KATMANI (Anonim Önizleme paneli)
+// API'den gelen ham veri kopyası üzerinde çalışır; backend hiç değişmez.
+// Gerçek isim / TC / sicil değerlerini tutarlı, gerçekçi sahte
+// karşılıklarıyla değiştirir (aynı gerçek değer -> hep aynı sahte değer).
+// ════════════════════════════════════════════════════
+const ANON_FIRST_NAMES=['Mehmet','Ayşe','Mustafa','Fatma','Ahmet','Emine','Hüseyin','Hatice','Ali','Zeynep','İbrahim','Elif','Hasan','Meryem','Murat','Sultan','Ömer','Hanife','Yusuf','Şerife','Kemal','Havva','Osman','Münevver','Halil','Sevim','İsmail','Necla','Salih','Gülay','Ramazan','Nuray','Bekir','Selma','Recep','Aysel','Kadir','Leyla','Cengiz','Nurten'];
+const ANON_LAST_NAMES=['Yıldız','Demir','Şahin','Çelik','Yıldırım','Yılmaz','Öztürk','Aydın','Özdemir','Arslan','Doğan','Kılıç','Aslan','Çetin','Kara','Koç','Kurt','Özkan','Şimşek','Polat','Korkmaz','Çakır','Erdoğan','Taş','Aksoy','Bulut','Güneş','Kaya','Acar','Bozkurt'];
+
+const _anonNames=new Map();        // tam isim -> sahte tam isim
+const _anonNameTokens=new Map();   // isim parçası (lower) -> {real, fake}
+const _anonTc=new Map();           // gerçek TC -> sahte TC
+const _anonSicil=new Map();        // gerçek sicil/hasta_id -> sahte
+let _anonNameCounter=0;
+let _anonFirstCounter=0;
+let _anonTcCounter=0;
+let _anonSicilCounter=0;
+let _anonPairCache=null;           // sorted [real,fake] çiftleri önbelleği
+
+const NAME_KEYS=new Set(['patient_name','hasta_adi','hasta_ad']);
+const SICIL_KEYS=new Set(['hasta_id','sicil','sicil_no']);
+const TC_KEYS=new Set(['tc_kimlik','tc','tc_no']);
+// Klinik / kod alanları: ASLA maskelenmez. İşlem ve tanılar (ICD-10, HUV/SUT
+// kodları, işlem adları, tanı kuralı sonuçları) olduğu gibi bırakılır — hasta
+// adının bir parçası tesadüfen bir kodla eşleşse bile bu alanlar korunur.
+const PROTECTED_KEYS=new Set([
+  'diagnoses','huv_codes','sut_codes','codes','icd_codes',
+  'diagnosis_codes','input_diagnoses','output_diagnoses','matched_diagnoses',
+  'excluded_diagnoses','required_icd10_patterns','tentative_diagnoses',
+  'procedures','resolved_services','blocking_items','items',
+  'huv_code','sut_code','input_code','diagnosis_code','pattern',
+  'procedure_name','code','code_type','code_family','doc_type',
+]);
+
+function _isPlaceholder(s){return /^(—|-|–|bilinmiyor|unknown|n\/a|null|none)$/i.test(String(s||'').trim());}
+
+function _nextFakeName(){
+  const f=ANON_FIRST_NAMES[_anonNameCounter%ANON_FIRST_NAMES.length];
+  const l=ANON_LAST_NAMES[(_anonNameCounter*7+3)%ANON_LAST_NAMES.length];
+  _anonNameCounter++;
+  let fake=f+' '+l;
+  // çakışma olursa numara ekle
+  let n=1; const base=fake;
+  const used=new Set([..._anonNames.values()]);
+  while(used.has(fake)){fake=base+' '+(++n);}
+  return fake;
+}
+function _nextFakeFirst(){return ANON_FIRST_NAMES[(_anonFirstCounter++)%ANON_FIRST_NAMES.length];}
+
+function registerNameToken(realTok,fakeTok){
+  const k=String(realTok||'').toLocaleLowerCase('tr');
+  if(!k) return fakeTok;
+  if(_anonNameTokens.has(k)) return _anonNameTokens.get(k).fake;
+  const f=fakeTok||_nextFakeFirst();
+  _anonNameTokens.set(k,{real:String(realTok),fake:f});
+  _anonPairCache=null;
+  return f;
+}
+function registerName(real){
+  const name=String(real||'').trim();
+  if(!name||_isPlaceholder(name)) return name;
+  if(_anonNames.has(name)) return _anonNames.get(name);
+  const fake=_nextFakeName();
+  _anonNames.set(name,fake);
+  _anonPairCache=null;
+  const rt=name.split(/\s+/).filter(t=>t.length>=2);
+  const ft=fake.split(/\s+/);
+  rt.forEach((tok,i)=>registerNameToken(tok, ft[i]||_nextFakeFirst()));
+  return fake;
+}
+function registerTc(real){
+  const tc=String(real||'').trim();
+  if(!tc||_isPlaceholder(tc)||!/\d/.test(tc)) return tc;
+  if(_anonTc.has(tc)) return _anonTc.get(tc);
+  const fake=String(10000000000+(_anonTcCounter++)*137+29).slice(0,11);
+  _anonTc.set(tc,fake);
+  _anonPairCache=null;
+  return fake;
+}
+function registerSicil(real){
+  const s=String(real||'').trim();
+  if(!s||_isPlaceholder(s)) return s;
+  if(_anonSicil.has(s)) return _anonSicil.get(s);
+  let fake;
+  if(/^\d+$/.test(s)){
+    const base=String(90000000+(_anonSicilCounter++)*131+7);
+    fake=base.slice(0,Math.max(s.length,base.length)).slice(0,Math.max(4,s.length));
+  }else{
+    fake='HX-'+String(1000+(_anonSicilCounter++));
+  }
+  _anonSicil.set(s,fake);
+  _anonPairCache=null;
+  return fake;
+}
+
+function _escapeRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function _boundaryRe(token){
+  const esc=_escapeRe(token);
+  try{return new RegExp('(?<![\\p{L}\\p{N}])'+esc+'(?![\\p{L}\\p{N}])','giu');}
+  catch(_){return new RegExp('\\b'+esc+'\\b','gi');}
+}
+// Serbest metin (gerekçe, mesaj, OCR önizleme) için: SADECE tam isim + TC + sicil
+// değiştirilir. Tek isim parçaları (ör. "E11" gibi kısa tokenlar) burada
+// kullanılmaz; aksi halde tanı/işlem kodlarını bozabilir.
+function _anonPairs(){
+  if(_anonPairCache) return _anonPairCache;
+  const pairs=[];
+  for(const [r,f] of _anonNames) if(r&&r.trim().length>=4&&/\s/.test(r)) pairs.push([r,f]);
+  for(const [r,f] of _anonTc) if(r&&r.length>=6) pairs.push([r,f]);
+  for(const [r,f] of _anonSicil) if(r&&r.length>=5) pairs.push([r,f]);
+  pairs.sort((a,b)=>b[0].length-a[0].length);
+  _anonPairCache=pairs;
+  return pairs;
+}
+function scrub(str){
+  if(typeof str!=='string'||!str) return str;
+  let out=str;
+  for(const [real,fake] of _anonPairs()){
+    if(!real) continue;
+    out=out.replace(_boundaryRe(real),fake);
+  }
+  return out;
+}
+function _maskNameHits(arr){
+  return arr.map(t=>{
+    if(typeof t!=='string') return t;
+    const e=_anonNameTokens.get(t.toLocaleLowerCase('tr'));
+    return e?e.fake:t;
+  });
+}
+
+// Kimlik değerlerini (isim/TC/sicil + isim parçaları) tüm objede toplayıp
+// kayıt defterine yazar. Böylece sahte karşılıklar liste ve detayda tutarlıdır.
+function _collectIdentifiers(node){
+  if(node==null) return;
+  if(Array.isArray(node)){node.forEach(_collectIdentifiers);return;}
+  if(typeof node!=='object') return;
+  for(const [k,v] of Object.entries(node)){
+    if(typeof v==='string'){
+      if(NAME_KEYS.has(k)) registerName(v);
+      else if(TC_KEYS.has(k)) registerTc(v);
+      else if(SICIL_KEYS.has(k)) registerSicil(v);
+    }else if(k==='name_hits'&&Array.isArray(v)){
+      v.forEach(t=>{if(typeof t==='string') registerNameToken(t);});
+    }
+    _collectIdentifiers(v);
+  }
+}
+// Hedefli maskeleme: kimlik alanları alan bazında değiştirilir; klinik/kod
+// alanları (PROTECTED_KEYS) aynen korunur; kalan serbest metinlerde yalnızca
+// tam isim/TC/sicil değiştirilir.
+function _scrubDeep(node){
+  if(node==null) return node;
+  if(typeof node==='string') return scrub(node);
+  if(Array.isArray(node)) return node.map(_scrubDeep);
+  if(typeof node==='object'){
+    const out={};
+    for(const [k,v] of Object.entries(node)){
+      if(NAME_KEYS.has(k)&&typeof v==='string') out[k]=registerName(v);
+      else if(TC_KEYS.has(k)&&typeof v==='string') out[k]=registerTc(v);
+      else if(SICIL_KEYS.has(k)&&typeof v==='string') out[k]=registerSicil(v);
+      else if(k==='name_hits'&&Array.isArray(v)) out[k]=_maskNameHits(v);
+      else if(PROTECTED_KEYS.has(k)) out[k]=v;
+      else out[k]=_scrubDeep(v);
+    }
+    return out;
+  }
+  return node;
+}
+function anonScrub(obj){
+  if(obj==null) return obj;
+  let clone;
+  try{clone=JSON.parse(JSON.stringify(obj));}catch(_){return obj;}
+  _collectIdentifiers(clone);
+  return _scrubDeep(clone);
+}
+const KARAR_CLS={uygun:'allowed',tani_eksik:'denied',tani_uyumsuz:'denied',evrak_eksik:'denied',yanlis_hasta_belgesi:'denied',klinik_uyumsuzluk:'denied',belge_kaniti_yetersiz:'denied'};
+const KARAR_LABEL={uygun:'Uygun',manuel_inceleme:'Manuel İnceleme',tani_eksik:'Tanı Eksik',tani_uyumsuz:'Tanı Uyumsuz',evrak_eksik:'Evrak Eksik',yanlis_hasta_belgesi:'Yanlış Hasta Belgesi',klinik_uyumsuzluk:'Klinik Uyumsuzluk',belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz'};
+const KARAR_BADGE={uygun:'b-green',tani_eksik:'b-red',tani_uyumsuz:'b-red',evrak_eksik:'b-red',yanlis_hasta_belgesi:'b-red',klinik_uyumsuzluk:'b-red',belge_kaniti_yetersiz:'b-yellow',manuel_inceleme:'b-yellow'};
+const STATUS_BADGE={pass:'b-green',fail:'b-red',review:'b-yellow',insufficient:'b-yellow',skipped:'b-gray',skip:'b-gray'};
+const STATUS_LABEL={pass:'Başarılı',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',skip:'Atlandı'};
+const JOB_STATUS_LABEL={done:'Tamamlandı',failed:'Hatalı',queued:'Kuyrukta',processing:'İşleniyor',pending:'Bekliyor'};
+const VERDICT_LABEL={match:'Eşleşti',uncertain:'Belirsiz',mismatch:'Uyuşmadı',exempt:'Muaf'};
+const CONFIDENCE_LABEL={high:'Yüksek',medium:'Orta',low:'Düşük'};
+const RISK_LEVEL_BADGE={green:'b-green',blue:'b-blue',yellow:'b-yellow',orange:'b-orange',red:'b-red',gray:'b-gray'};
+const RISK_LEVEL_LABEL={green:'Düşük',blue:'Düşük',yellow:'Dikkat',orange:'İnceleme',red:'Yüksek',gray:'Belirsiz'};
+const DECISION_TYPE_LABEL={automatic_defensible:'Savunulabilir',manual_review:'Manuel',low_risk:'Düşük Risk'};
+const DECISION_TYPE_BADGE={automatic_defensible:'b-red',manual_review:'b-orange',low_risk:'b-green'};
+
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+function fmtN(n){return typeof n==='number'?n.toLocaleString('tr-TR'):'—'}
+function asList(v){return Array.isArray(v)?v:[]}
+function triboolLabel(v){return v===true?'Evet':v===false?'Hayır':'Belirsiz'}
+function bvPos(v){return v===true?'<span class="badge b-green">✓</span>':v===false?'<span class="badge b-red">✗</span>':'<span class="badge b-gray">—</span>'}
+function bvNeg(v){return v===false?'<span class="badge b-green">✓</span>':v===true?'<span class="badge b-red">✗</span>':'<span class="badge b-gray">—</span>'}
+function docTypeBadge(type,conf,src){
+  const t=type||'?';
+  const c=conf||'';
+  const cLabel=CONFIDENCE_LABEL[c]||c||'bilinmiyor';
+  const s=src?` <span style="opacity:.7;font-size:10px">${esc(src)}</span>`:'';
+  const cls=c==='low'?'b-yellow':c==='high'?'b-green':'b-blue';
+  return `<span class="badge ${cls}" title="${esc(cLabel)}">${esc(t)}${s}</span>`;
+}
+const EVIDENCE_ROLE_LABEL={klinik_kanit:'Klinik Kanıt',hasta_dogrulama:'Hasta Doğrulama',fatura_hizmet:'Fatura / Hizmet',ek_belge:'Ek Belge'};
+const EVIDENCE_ROLE_BADGE={klinik_kanit:'b-green',hasta_dogrulama:'b-indigo',fatura_hizmet:'b-blue',ek_belge:'b-gray'};
+function evidenceRoleBadge(role){
+  if(!role) return '';
+  return `<span class="badge ${EVIDENCE_ROLE_BADGE[role]||'b-gray'}">${esc(EVIDENCE_ROLE_LABEL[role]||role)}</span>`;
+}
+function medgemmaQA(mg,raw){
+  const layer=(raw.medgemma_layer&&raw.medgemma_layer.detail)||{};
+  let qa=asList(mg&&mg.ozel_soru_cevaplari);
+  if(!qa.length) qa=asList(layer.ozel_soru_cevaplari);
+  if(qa.length) return qa;
+  return [
+    {soru:'Hasta yaşı nedir?',cevap:(raw.job_meta&&raw.job_meta.yas!=null)?String(raw.job_meta.yas):'Belirsiz'},
+    {soru:'Hasta cinsiyeti nedir?',cevap:(raw.job_meta&&raw.job_meta.cinsiyet)||'Belirsiz'},
+    {soru:'İşlem belge tarafından destekleniyor mu?',cevap:triboolLabel(mg&&mg.islem_belge_destekli)},
+    {soru:'Tanı belge tarafından destekleniyor mu?',cevap:triboolLabel(mg&&mg.tani_belge_destekli)},
+    {soru:'Yaş/cinsiyet klinik olarak uygun mu?',cevap:triboolLabel(mg&&mg.yas_cinsiyet_uygun)},
+    {soru:'Klinik çelişki var mı?',cevap:triboolLabel(mg&&mg.klinik_celiski)},
+    {soru:'Eksik evrak var mı?',cevap:triboolLabel(mg&&mg.eksik_evrak)},
+  ];
+}
+function isTzhCode(code){return /^TZH\./i.test(String(code||'').trim())}
+const PIPELINE_LABEL={'v4 tam':'Tam analiz','v4 kısmi':'Kısmi analiz','v3 kısmi':'Kısmi (eski)','v4':'Standart','legacy':'Eski'};
+function pipelinePlCls(pl){
+  if(pl==='v4 tam') return 'b-green';
+  if(pl==='v4 kısmi'||pl==='v3 kısmi') return 'b-yellow';
+  if(pl==='v4') return 'b-blue';
+  return 'b-gray';
+}
+function pipelineInfo(raw){
+  const p=(raw&&raw.pipeline)||{};
+  const ev=(raw&&raw.medgemma_evidence)||{};
+  const partial=!!(ev.partial_vision||((ev.excluded_pages||[]).length>0));
+  if(p.version==='v4'&&p.full_vision) return {label:'Tam analiz',cls:'b-green',legacy:false};
+  if(p.version==='v4'&&partial) return {label:'Kısmi analiz',cls:'b-yellow',legacy:false};
+  if(p.version==='v4') return {label:'Standart',cls:'b-blue',legacy:false};
+  if(partial) return {label:'Kısmi (eski)',cls:'b-yellow',legacy:true};
+  return {label:'?',cls:'b-gray',legacy:true};
+}
+function pipelineBadge(raw,item){
+  const p=pipelineInfo(raw||{});
+  if(item&&item.pipeline){
+    return {label:item.pipeline,cls:pipelinePlCls(item.pipeline)};
+  }
+  return p;
+}
+function docAggStats(docs){
+  const items=asList(docs&&docs.items);
+  return {
+    pages: items.reduce((s,d)=>s+(d.page_count||0),0),
+    ocr: items.reduce((s,d)=>s+(d.ocr_pages||0),0),
+    embedded: items.reduce((s,d)=>s+(d.embedded_images||0),0),
+  };
+}
+
+function devOcrQualityMeta(score){
+  if(score==null||score==='') return {label:'—',cls:'b-gray',pct:0,s:null};
+  const s=Number(score);
+  if(Number.isNaN(s)) return {label:'—',cls:'b-gray',pct:0,s:null};
+  const pct=Math.round(Math.min(100,Math.max(0,s*100)));
+  const cls=s>=0.7?'b-green':s>=0.45?'b-yellow':'b-red';
+  const label=s>=0.7?'İyi':s>=0.45?'Orta':'Düşük';
+  return {label,cls,pct,s};
+}
+
+function devOcrQualityCell(avg,lowPages){
+  if(avg==null||avg==='') return '<span style="color:var(--text3)">—</span>';
+  const m=devOcrQualityMeta(avg);
+  const low=Number(lowPages)>0?` <span class="badge b-red" title="Düşük kalite sayfa">${fmtN(lowPages)}</span>`:'';
+  return `<div class="dev-qcell"><div class="dev-qbar"><div class="dev-qfill ${m.cls.replace('b-','q-')}" style="width:${m.pct}%"></div></div><span class="badge ${m.cls}">${esc(m.label)} ${Math.round(m.s*100)}%</span>${low}</div>`;
+}
+
+function devOcrSummaryHtml(docs){
+  const items=asList(docs&&docs.items);
+  if(!items.length) return '';
+  const withQ=items.filter(i=>i.ocr_quality_avg!=null);
+  if(!withQ.length){
+    return '<div class="dev-hint">OCR kalite verisi yok — worker güncellemesi sonrası provizyonu yeniden işleyin.</div>';
+  }
+  const avg=withQ.reduce((s,i)=>s+(Number(i.ocr_quality_avg)||0),0)/withQ.length;
+  const lowPages=withQ.reduce((s,i)=>s+(Number(i.ocr_low_quality_pages)||0),0);
+  const ocrPages=withQ.reduce((s,i)=>s+(Number(i.ocr_pages)||0),0);
+  const m=devOcrQualityMeta(avg);
+  return `<div class="dev-status-grid">
+    <div class="dev-status-item">
+      <div class="dev-status-val">${Math.round(avg*100)}%</div>
+      <div class="dev-status-lbl">Ortalama OCR kalitesi</div>
+      <div class="dev-qbar wide"><div class="dev-qfill ${m.cls.replace('b-','q-')}" style="width:${m.pct}%"></div></div>
+    </div>
+    <div class="dev-status-item"><div class="dev-status-val">${fmtN(ocrPages)}</div><div class="dev-status-lbl">OCR sayfası</div></div>
+    <div class="dev-status-item"><div class="dev-status-val${lowPages>0?' warn':''}">${fmtN(lowPages)}</div><div class="dev-status-lbl">Düşük kalite sayfa</div></div>
+    <div class="dev-status-item"><div class="dev-status-val">${fmtN(withQ.length)}</div><div class="dev-status-lbl">Skorlu belge</div></div>
+  </div>`;
+}
+
+function devVisionStatusHtml(mgEvidence,mgLayer,warnings){
+  const det=(mgLayer&&mgLayer.detail)||{};
+  const req=det.vision_requested??mgEvidence.vision_requested??mgEvidence.image_count??0;
+  const sent=det.vision_sent??mgEvidence.vision_sent??mgEvidence.image_count??0;
+  const dropped=!!(det.vision_dropped||mgEvidence.vision_dropped);
+  const partial=!!mgEvidence.partial_vision;
+  let statusLabel='Tüm görseller gönderildi',statusCls='b-green';
+  if(dropped){statusLabel='Görsel gönderilemedi (yalnızca metin)';statusCls='b-red'}
+  else if(Number(sent)<Number(req)){statusLabel='Kısmi görsel gönderildi';statusCls='b-yellow'}
+  else if(partial){statusLabel='Seçili sayfalar gönderildi';statusCls='b-yellow'}
+  const pct=req?Math.round((Number(sent)/Number(req))*100):100;
+  const fillCls=dropped?'q-red':Number(sent)<Number(req)?'q-yellow':'q-green';
+  return `<div class="dev-vision-block">
+    <div class="dev-sec-title">Görsel analiz durumu</div>
+    <div class="detail-badges" style="margin-bottom:10px">
+      <span class="badge ${statusCls}">${esc(statusLabel)}</span>
+      <span class="badge b-blue">${fmtN(sent)} / ${fmtN(req)} görsel gönderildi</span>
+      ${det.attempts?`<span class="badge b-gray">${det.attempts} deneme</span>`:''}
+      ${det.json_mode_used===false?'<span class="badge b-yellow">Yapılandırılmış çıktı kapalı (yedek mod)</span>':''}
+    </div>
+    <div class="dev-qbar wide"><div class="dev-qfill ${fillCls}" style="width:${pct}%"></div></div>
+    ${det.fallback_reason?`<div class="dev-hint warn">${esc(String(det.fallback_reason).slice(0,220))}</div>`:''}
+    ${asList(warnings).filter(w=>/vision/i.test(w)).map(w=>`<div class="dev-hint warn">${esc(w)}</div>`).join('')}
+  </div>`;
+}
+function showToast(msg,type='info',ms=3500){const w=document.getElementById('toastWrap');const e=document.createElement('div');e.className='toast '+(type||'info');e.textContent=msg;w.appendChild(e);setTimeout(()=>{e.style.opacity='0';e.style.transition='opacity .2s';setTimeout(()=>e.remove(),200)},ms)}
+function badges(arr,cls){return asList(arr).map(x=>`<span class="badge ${cls}">${esc(String(x))}</span>`).join(' ')||'<span style="color:var(--text3)">—</span>'}
+function badgesFuzzy(obj,cls){
+  if(!obj||typeof obj!=='object'||Array.isArray(obj))return badges(obj,cls);
+  const entries=Object.entries(obj);
+  if(!entries.length)return '<span style="color:var(--text3)">—</span>';
+  return entries.map(([k,v])=>`<span class="badge ${cls}">${esc(k)}≈${esc(v)}</span>`).join(' ');
+}
+function timeAgo(iso){if(!iso)return '—';const s=Math.floor((Date.now()-new Date(iso).getTime())/1000);if(s<60)return s+'sn';if(s<3600)return Math.floor(s/60)+'dk';if(s<86400)return Math.floor(s/3600)+'sa';return Math.floor(s/86400)+'g'}
+function fmtTime(iso){if(!iso)return '—';return new Date(iso).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function elapsed(s,e){if(!s||!e)return '—';const ms=new Date(e)-new Date(s);return ms<1000?ms+'ms':(ms/1000).toFixed(1)+'s'}
+
+let _activeId=null;
+let _jobData=null;
+let _recentItems=[];
+
+const DEV_STEPS=[
+  {n:0,name:'Provizyon Girdisi',key:'_input'},
+  {n:1,name:'Belge Alım',key:'_docs'},
+  {n:2,name:'Belge–Hasta',key:'belge_hasta'},
+  {n:3,name:'Zorunlu Evrak',key:'zorunlu_evrak'},
+  {n:4,name:'HUV Tanı',key:'tani_kurali'},
+  {n:5,name:'SUT Tanı',key:'sut_tani_kurali'},
+  {n:6,name:'SUT Kuralı',key:'sut_kurali'},
+  {n:7,name:'Hasta Bağlamı',key:'_ctx'},
+  {n:8,name:'MedGemma',key:'_mg'},
+  {n:9,name:'Karar',key:'_karar'},
+  {n:10,name:'Veri Kayıt',key:'_persist'},
+];
+
+function devStepStatus(d,s){
+  const raw=d.raw||{};
+  const karar=d.nihai_karar||'';
+  const cls=KARAR_CLS[karar]||'review';
+  if(s.key==='_input') return 'pass';
+  if(s.key==='_docs'){const dd=raw.documents||{};return dd.found>0?'pass':dd.provided>0?'fail':'skip'}
+  if(s.key==='_ctx'){return raw.patient_context?'pass':'skip'}
+  if(s.key==='_mg'){return d.medgemma?'pass':'skip'}
+  if(s.key==='_karar'){return karar==='uygun'?'pass':(cls==='denied'?'fail':'review')}
+  if(s.key==='_persist'){const p=raw.persistence||{};return p.written>0?'pass':'skip'}
+  const layer=d[s.key];
+  if(!layer) return 'skip';
+  return layer.status||'skip';
+}
+
+function devStepMessage(d,s){
+  if(s.key==='_input') return 'Provizyon iş girdisi yüklendi';
+  if(s.key==='_docs'){const dd=(d.raw||{}).documents||{};return `${dd.found??0}/${dd.provided??0} belge`}
+  if(s.key==='_ctx'){const pc=(d.raw||{}).patient_context;return pc?`${pc.history_count||0} geçmiş · ${pc.similar_count||0} benzer`:'İlk kayıt'}
+  if(s.key==='_mg'){const ev=(d.raw||{}).medgemma_evidence||{};return d.medgemma?`${ev.image_count||0} görsel`:'Atlandı'}
+  if(s.key==='_karar') return d.gerekce||'—';
+  if(s.key==='_persist'){const p=(d.raw||{}).persistence||{};return `${p.written??0} nokta yazıldı`}
+  const layer=d[s.key];
+  return layer?(layer.message||layer.status||'—'):'Atlandı';
+}
+
+function buildDevScoreCounts(d){
+  const c={pass:0,fail:0,review:0,skip:0};
+  DEV_STEPS.filter(s=>s.n>=1&&s.n<=10).forEach(s=>{
+    const st=devStepStatus(d,s);
+    const k=st==='insufficient'?'review':st==='skipped'?'skip':st;
+    c[k]=(c[k]||0)+1;
+  });
+  return c;
+}
+
+function buildResultBannerBody(d){
+  const mg=(d.medgemma||{}).gerekce||'';
+  const full=String(d.gerekce||'').trim();
+  const karar=d.nihai_karar||'';
+  const reasons=asList(d.risk_reasons||d.riskReasons);
+  const codeLines=reasons.length
+    ? reasons.map(r=>r.message).filter(Boolean)
+    : full.split(/\s*\|\s*/).filter(Boolean);
+  let lead='—';
+  if(karar==='uygun'&&mg){
+    lead=mg;
+  }else if(mg){
+    lead=mg;
+  }else if(codeLines.length){
+    lead=codeLines[0];
+  }else if(full){
+    lead=full;
+  }
+  let html=`<p class="banner-lead">${esc(lead)}</p>`;
+  const detailLines=(karar==='uygun'&&mg)?codeLines:(codeLines.length>1?codeLines:(full&&full!==lead?[full]:[]));
+  if(detailLines.length>1||(karar==='uygun'&&mg&&codeLines.length>0)){
+    const label=reasons.length
+      ?`Kod bazlı değerlendirme (${detailLines.length} işlem)`
+      :`Tam gerekçe (${detailLines.length} madde)`;
+    html+=`<details class="banner-details"><summary>${esc(label)}</summary><ul class="banner-reason-list">`;
+    detailLines.forEach(line=>{html+=`<li>${esc(line)}</li>`});
+    html+=`</ul></details>`;
+  }else if(!mg&&full&&full!==lead){
+    html+=`<p class="banner-lead" style="margin-top:8px">${esc(full)}</p>`;
+  }
+  return html;
+}
+
+function decisionTypeBadge(dt){
+  const cls=DECISION_TYPE_BADGE[dt]||'b-gray';
+  const lbl=DECISION_TYPE_LABEL[dt]||dt||'—';
+  return `<span class="badge ${cls}">${esc(lbl)}</span>`;
+}
+
+function buildDecisionTree(d){
+  const rows=[
+    {prio:1,layer:'belge_hasta',label:'Belge–hasta uyumu',fail:'yanlis_hasta_belgesi'},
+    {prio:2,layer:'zorunlu_evrak',label:'Zorunlu evrak',fail:'evrak_eksik'},
+    {prio:3,layer:'tani_kurali',label:'HUV tanı kuralı',fail:'tani_eksik/uyumsuz'},
+    {prio:4,layer:'sut_tani_kurali',label:'SUT tanı kuralı',fail:'tani_eksik/uyumsuz'},
+    {prio:5,layer:'medgemma',label:'MedGemma klinik',fail:'klinik/belge'},
+    {prio:6,layer:'sut_kurali',label:'SUT işlem kuralı',fail:'manuel_inceleme'},
+  ];
+  const karar=d.nihai_karar||'';
+  return rows.map(r=>{
+    let st='skip',msg='—';
+    if(r.layer==='medgemma'){
+      st=d.medgemma?rawMedgemmaLayerStatus(d):'skip';
+      msg=d.medgemma?(d.medgemma.gerekce||'').slice(0,80):'Atlandı';
+    }else{
+      const L=d[r.layer];
+      if(L){st=L.status||'skip';msg=(L.message||'').slice(0,80)}
+    }
+    const decisive=(st==='fail'&&karar!=='uygun')||(st==='review'&&karar==='manuel_inceleme');
+    return {...r,status:st,message:msg,decisive};
+  });
+}
+function rawMedgemmaLayerStatus(d){return ((d.raw||{}).medgemma_layer||{}).status||'pass'}
+
+function devFormatJsonRaw(raw){
+  if(!raw) return '';
+  const s=String(raw).trim();
+  try{return JSON.stringify(JSON.parse(s),null,2)}catch(_){return s}
+}
+
+function devMedgemmaEvidenceHtml(mgEvidence,pipeCfg,pipe){
+  const pages=asList(mgEvidence.selected_pages);
+  const excluded=asList(mgEvidence.excluded_pages);
+  const titles=asList(mgEvidence.document_titles);
+  const notes=asList(mgEvidence.notes);
+  const imgCount=mgEvidence.image_count||0;
+  const totalVis=pages.length||imgCount;
+  let h=`<div class="dev-mg-audit">
+    <div class="detail-label" style="margin-bottom:8px">Yapay zekaya gönderilen belgeler</div>
+    <div class="detail-badges" style="margin-bottom:8px">
+      <span class="badge ${pipe.cls}">${esc(pipe.label)}</span>`;
+  const totalPages=pages.length+excluded.length;
+  const isPartial=mgEvidence.partial_vision||excluded.length>0;
+  if(pipeCfg.full_vision&&!pipe.legacy){
+    h+=`<span class="badge b-green">Tüm sayfalar gönderildi</span>`;
+  }else if(isPartial){
+    h+=`<span class="badge b-yellow">Seçili sayfalar gönderildi</span>`;
+  }
+  h+=`<span class="badge b-blue">${fmtN(imgCount)} görsel gönderildi</span>`;
+  h+=`<span class="badge b-gray">${fmtN(totalVis)} toplam sayfa</span>`;
+  if(mgEvidence.embedded_images) h+=`<span class="badge b-indigo">${fmtN(mgEvidence.embedded_images)} gömülü görsel</span>`;
+  if(mgEvidence.text_chars!=null) h+=`<span class="badge b-gray">${fmtN(mgEvidence.text_chars)} karakter metin</span>`;
+  h+=`</div>`;
+  if(isPartial&&totalPages>0){
+    h+=`<div style="background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--yellow)">
+      <strong>Kısmi görsel analiz:</strong> Toplam ${fmtN(totalPages)} sayfanın ${fmtN(pages.length)} tanesi görsel modele gönderildi; sayfa seçim algoritması en ilgili sayfaları belirledi.
+      ${excluded.length>0?` ${fmtN(excluded.length)} sayfa gönderilmedi.`:''}
+    </div>`;
+  }
+  if(titles.length){
+    h+=`<div style="font-size:11px;color:var(--text2);margin-bottom:6px"><strong>Belgeler:</strong> ${titles.map(t=>esc(t)).join(' · ')}</div>`;
+  }
+  if(excluded.length){
+    h+=`<div style="font-size:11px;color:var(--yellow);margin-bottom:6px"><strong>Gönderilmeyen sayfalar (${excluded.length}):</strong> ${excluded.join(', ')}</div>`;
+  }
+  if(pages.length){
+    h+=`<div class="detail-label">Gönderilen global sayfa numaraları (${pages.length})</div>`;
+    h+=`<div class="dev-mg-pages">${pages.join(', ')}</div>`;
+  }else if(imgCount&&!pages.length){
+    h+=`<div style="font-size:11px;color:var(--text3);margin-top:4px">${fmtN(imgCount)} görsel gönderildi (sayfa listesi eski kayıtta yok)</div>`;
+  }
+  if(notes.length){
+    h+=`<div style="margin-top:8px;font-size:11px;color:var(--text2)"><strong>Notlar:</strong> ${notes.map(n=>esc(n)).join(' · ')}</div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function devMedgemmaRawHtml(mg,mgLayer){
+  const det=mgLayer.detail||{};
+  const rawFull=det.raw_response||det.raw_excerpt||(mg&&mg.raw_text)||'';
+  let h='';
+  if(rawFull){
+    const isFull=!!det.raw_response;
+    h+=`<div class="dev-mg-raw" style="margin-top:14px">
+      <div class="detail-label" style="margin-bottom:6px">AI ham yanıtı ${isFull?'':'<span class="badge b-yellow" style="margin-left:6px">kısaltılmış — yeniden işleyin</span>'}</div>
+      <div class="json-box">${esc(devFormatJsonRaw(rawFull))}</div>
+    </div>`;
+  }
+  if(mg){
+    h+=`<div style="margin-top:12px">
+      <div class="detail-label" style="margin-bottom:6px">Yapılandırılmış AI çıktısı</div>
+      <div class="json-box" style="max-height:320px">${esc(JSON.stringify(mg,null,2))}</div>
+    </div>`;
+  }
+  return h;
+}
+
+function toggleAllDevSteps(open){
+  document.querySelectorAll('#jobDetail .step-card').forEach(c=>c.classList.toggle('open',open));
+}
+
+function scrollToDevStep(n){
+  const el=document.getElementById('dev-step-'+n);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('open')}
+}
+
+// ── Tanı helpers ──
+
+function taniStatusLabel(st){
+  const m={
+    allowed:'Uygun',allowed_no_diagnosis_required:'Tanı gerekmez',allowed_by_diagnosis:'Tanı ile uygun',
+    allowed_no_excluded_diagnosis:'Dışlama yok',review_required:'Manuel inceleme',missing_diagnosis:'Tanı eksik',
+    diagnosis_missing:'Tanı eksik',diagnosis_mismatch:'Tanı uyumsuz',diagnosis_excluded:'Dışlayıcı tanı',
+    unknown_huv:'Kural yok',unknown_sut:'SUT kural yok',sut_constraint_failed:'SUT şart ihlali',
+    unsupported_policy:'Manuel inceleme',denied:'Red',
+  };
+  return m[st]||(String(st||'').replace(/_/g,' '));
+}
+
+function taniStatusBadgeCls(st){
+  if(!st||st.startsWith('allowed'))return 'b-green';
+  if(st==='review_required')return 'b-yellow';
+  return 'b-red';
+}
+
+function taniMatchedLabel(it){
+  const matched=asList(it.matched_diagnoses);
+  if(!matched.length) return '';
+  return matched.map(m=>`${m.diagnosis_code||'?'} → ${m.pattern||'?'}`).join(', ');
+}
+
+function devTaniEffectiveStatus(it){
+  const st=it.status||'';
+  if(st==='review_required'&&it.tentative_status) return it.tentative_status;
+  return st;
+}
+
+function devTaniPolicyLabel(policy){
+  const m={
+    not_required:'Tanı zorunlu değil',
+    required_any:'En az bir tanı gerekli',
+    required_all:'Tüm tanılar gerekli',
+    excluded_any:'Dışlama kontrolü',
+    review_required:'Manuel inceleme',
+    conditional:'Koşullu',
+  };
+  return m[policy]||(policy||'—');
+}
+
+function devTaniRequiredBadge(it){
+  const req=it.diagnosis_required;
+  if(req===true) return '<span class="badge b-yellow">Evet</span>';
+  if(req===false) return '<span class="badge b-gray">Hayır</span>';
+  return '<span class="badge b-gray">—</span>';
+}
+
+function devTaniMatchedCell(it){
+  const matched=taniMatchedLabel(it);
+  if(matched) return `<span class="badge b-green">${esc(matched)}</span>`;
+  const st=devTaniEffectiveStatus(it);
+  const policy=it.diagnosis_policy||'';
+  const inputs=asList(it.input_diagnoses);
+  if(st==='allowed_no_diagnosis_required'||policy==='not_required'){
+    if(inputs.length) return `<span class="badge b-gray" title="Bu işlem için tanı kuralı zorunlu değil; girilen tanılar satır bazında doğrulanmadı">${esc(inputs.join(', '))} · kural dışı</span>`;
+    return '<span style="color:var(--text3)">Tanı şartı yok</span>';
+  }
+  if(st==='missing_diagnosis'||st==='diagnosis_missing') return '<span class="badge b-red">Tanı girilmemiş</span>';
+  if(st==='diagnosis_mismatch') return '<span class="badge b-red">Eşleşme yok</span>';
+  if(it.status==='review_required'){
+    return it.tentative_status
+      ? `<span class="badge b-yellow">Muhtemel: ${esc(taniStatusLabel(it.tentative_status))}</span>`
+      : '<span class="badge b-yellow">Manuel inceleme</span>';
+  }
+  return '<span style="color:var(--text3)">—</span>';
+}
+
+function formatExpectedIcd(it){
+  const patterns=asList(it.required_icd10_patterns);
+  if(patterns.length){
+    const base=patterns.join(', ');
+    if(it.status==='review_required') return base+' (inceleme gerekli)';
+    return base;
+  }
+  const st=it.status||'';
+  const policy=it.diagnosis_policy||'';
+  if(st==='allowed_no_diagnosis_required'||policy==='not_required') return 'Tanı şartı yok';
+  if(st==='allowed_no_excluded_diagnosis') return 'Dışlama kuralı yok';
+  if(st==='allowed_by_diagnosis') return 'Girilen tanı ile uyumlu';
+  if(st==='missing_diagnosis') return 'Tanı girilmedi';
+  if(st==='diagnosis_mismatch') return 'Beklenen patern eşleşmedi';
+  if(st==='diagnosis_excluded') return 'Dışlayıcı tanı tespit edildi';
+  if(st==='unknown_huv') return 'Kural bulunamadı';
+  if(st==='review_required'||st==='unsupported_policy'){
+    if(it.tentative_status) return 'Ön: '+taniStatusLabel(it.tentative_status);
+    return 'Manuel inceleme';
+  }
+  return '—';
+}
+
+function devTaniRowHtml(it, codeKey){
+  const code=it[codeKey]||'';
+  if(isTzhCode(code)) return '';
+  const displaySt=it.status||'?';
+  const stCls=taniStatusBadgeCls(displaySt);
+  const stLbl=taniStatusLabel(displaySt);
+  const reviewNote=(displaySt==='review_required'&&it.tentative_status)
+    ? `<div style="font-size:9px;color:var(--text3);margin-top:2px">Muhtemel: ${esc(taniStatusLabel(it.tentative_status))}</div>` : '';
+  const expected=formatExpectedIcd(it);
+  const patterns=asList(it.required_icd10_patterns).join(', ');
+  return `<tr>
+    <td style="font-weight:700;font-family:monospace">${esc(code)}</td>
+    <td style="font-size:11px">${esc((it.procedure_name||'').slice(0,44))}</td>
+    <td>${devTaniRequiredBadge(it)}</td>
+    <td><span class="badge ${stCls}">${esc(stLbl)}</span>${reviewNote}</td>
+    <td style="font-size:11px">${esc(devTaniPolicyLabel(it.diagnosis_policy))}</td>
+    <td><span class="badge b-blue">${esc(CONFIDENCE_LABEL[it.confidence]||it.confidence||'?')}</span></td>
+    <td style="font-size:10px">${devTaniMatchedCell(it)}</td>
+    <td style="font-size:10px" title="${esc(patterns)}">${esc(expected)}</td>
+  </tr>`;
+}
+
+function devTaniCountSummary(items, codeKey){
+  const rows=items.filter(it=>!isTzhCode(it[codeKey]||it.huv_code||it.sut_code||''));
+  const nReq=rows.filter(it=>it.diagnosis_required===true).length;
+  const nSkip=rows.filter(it=>it.diagnosis_required===false).length;
+  const nMatch=rows.filter(it=>devTaniEffectiveStatus(it)==='allowed_by_diagnosis').length;
+  const parts=[];
+  if(nReq) parts.push(`${nReq} tanı zorunlu`);
+  if(nSkip) parts.push(`${nSkip} tanı şartı yok`);
+  if(nMatch) parts.push(`${nMatch} eşleşti`);
+  return parts.join(' · ');
+}
+
+function devOverallTaniLabel(st){
+  const m={
+    allowed:'Uygun',
+    review_required:'Manuel inceleme',
+    not_payable_by_diagnosis:'Tanı ile ödenmez',
+    not_payable_by_sut_diagnosis:'SUT tanı ile ödenmez',
+    unknown:'Belirsiz',
+  };
+  return m[st]||taniStatusLabel(st);
+}
+
+// ════════════════════════════════════════════════════
+// PROVIZYON — Data loading
+// ════════════════════════════════════════════════════
+
+async function loadRecent(){
+  const dot=document.getElementById('liveDot');
+  if(dot)dot.className='live-dot';
+  try{
+    const[qd,rd]=await Promise.all([
+      fetch(PROV_API+'/queue/stats').then(r=>r.json()).catch(()=>null),
+      fetch(PROV_API+'/queue/recent?limit=100').then(r=>r.json()).catch(()=>({items:[]}))
+    ]);
+    const prevActive=_recentItems.find(x=>x.provizyon_id===_activeId);
+    _recentItems=(rd.items||[]).map(anonScrub);
+    renderKpis(qd,_recentItems);
+    renderRecent(_recentItems);
+    // Aktif iş kuyruktan tamamlandıysa detayı yeniden çek
+    if(_activeId){
+      const cur=_recentItems.find(x=>x.provizyon_id===_activeId);
+      if(cur && (!prevActive || prevActive.status!==cur.status || prevActive.finished_at!==cur.finished_at)){
+        selectJob(_activeId);
+      }
+    }
+    if(dot)dot.className='live-dot on';
+  }catch(e){
+    if(dot)dot.className='live-dot err';
+  }
+}
+
+function renderKpis(q,items){
+  const done=items.filter(x=>x.status==='done');
+  const ok=done.filter(x=>x.nihai_karar==='uygun').length;
+  const denied=done.filter(x=>['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz'].includes(x.nihai_karar)).length;
+  const rev=done.filter(x=>x.nihai_karar==='manuel_inceleme').length;
+  document.getElementById('kpiTotal').textContent=items.length;
+  document.getElementById('kpiOk').textContent=ok;
+  document.getElementById('kpiDenied').textContent=denied;
+  document.getElementById('kpiReview').textContent=rev;
+  const dtLow=done.filter(x=>x.decision_type==='low_risk').length;
+  const dtDef=done.filter(x=>x.decision_type==='automatic_defensible').length;
+  const dtMan=done.filter(x=>x.decision_type==='manual_review').length;
+  const okSub=document.getElementById('kpiOkSub');
+  if(okSub) okSub.textContent=dtLow?`${dtLow} düşük risk`:'';
+  const denSub=document.getElementById('kpiDeniedSub');
+  if(denSub) denSub.textContent=dtDef?`${dtDef} savunulabilir`:'';
+  const revSub=document.getElementById('kpiReviewSub');
+  if(revSub) revSub.textContent=dtMan?`${dtMan} manuel`:'';
+  if(q&&q.depth){
+    const p=(q.depth.pending||0)+(q.depth.processing||0);
+    document.getElementById('kpiQueue').textContent=p;
+    document.getElementById('kpiQueueSub').textContent=p>0?`${q.depth.pending||0} bekleyen · ${q.depth.processing||0} işleniyor`:'Boş';
+  }else{
+    document.getElementById('kpiQueue').textContent='—';
+    document.getElementById('kpiQueueSub').textContent='';
+  }
+}
+
+function renderRecent(items){
+  const tb=document.getElementById('recentTb');
+  if(!items.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:20px">Henüz iş yok</td></tr>';return}
+  tb.innerHTML=items.map(it=>{
+    const kb=KARAR_BADGE[it.nihai_karar]||'b-blue';
+    const kl=KARAR_LABEL[it.nihai_karar]||(it.nihai_karar||'—').replace(/_/g,' ');
+    const pl=it.pipeline||'?';
+    const plCls=pipelinePlCls(pl);
+    const plTitle=it.vision_images!=null?`${it.vision_images} görsel`:pl;
+    const rl=it.risk_level;
+    const rlBadge=rl?RISK_LEVEL_BADGE[rl]||'b-gray':'';
+    const rlLabel=rl?RISK_LEVEL_LABEL[rl]||rl:'';
+    const rlTitle=it.risk_summary||'';
+    let extras='';
+    if(it.document_count!=null)extras+=`<span class="mini-badge b-gray" title="Belge sayısı">\u{1F4C4}${it.document_count}</span>`;
+    if(it.warnings_count>0)extras+=`<span class="mini-badge b-yellow" title="${it.warnings_count} uyarı">\u26A0\uFE0F${it.warnings_count}</span>`;
+    if(it.medgemma_guven!=null&&it.medgemma_guven!==''){
+      const gv=it.medgemma_guven;
+      const gvNum=typeof gv==='number'?gv:null;
+      const gvKey=typeof gv==='string'?gv.toLowerCase():'';
+      const gvCls=gvNum!=null?(gvNum>=0.7?'b-green':gvNum>=0.4?'b-orange':'b-red')
+        :(gvKey==='high'?'b-green':gvKey==='medium'?'b-orange':'b-red');
+      const gvTxt=gvNum!=null?`${(gvNum*100).toFixed(0)}%`:(CONFIDENCE_LABEL[gvKey]||String(gv));
+      extras+=`<span class="mini-badge ${gvCls}" title="MedGemma güven: ${esc(String(gv))}">${esc(gvTxt)}</span>`;
+    }
+    if(it.partial_vision)extras+=`<span class="mini-badge b-yellow" title="Kısmi görüntü analizi">\u{1F441}</span>`;
+    if(it.shadow_advice_status==='matched_candidate'){
+      extras+=`<span class="mini-badge b-yellow" title="${esc(it.shadow_advice_label||'Gölge aday — canlı karar değişmedi')}">Gölge</span>`;
+    }
+    const active=_activeId===it.provizyon_id?' row-active':'';
+    return `<tr class="clickable${active}" data-id="${esc(it.provizyon_id||'')}">
+      <td style="font-weight:700;font-size:13px">${esc(it.provizyon_id||'—')}</td>
+      <td style="font-size:12px;color:var(--text2)">${esc(it.patient_name||it.hasta_id||'—')}</td>
+      <td><span class="badge ${it.status==='done'?'b-green':it.status==='failed'?'b-red':'b-blue'}">${esc(JOB_STATUS_LABEL[it.status]||it.status||'—')}</span></td>
+      <td><span class="badge ${plCls}" title="${esc(plTitle)}">${esc(PIPELINE_LABEL[pl]||pl)}</span>${extras}</td>
+      <td><span class="badge ${kb}">${esc(kl)}</span></td>
+      <td>${rl?`<span class="badge ${rlBadge}" title="${esc(rlTitle)}">${esc(rlLabel)}</span>`:''}</td>
+      <td style="font-size:11px;color:var(--text2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(it.risk_summary||it.gerekce||'')}">${esc((it.risk_summary||it.gerekce||'').slice(0,140))}</td>
+      <td style="font-size:11px;color:var(--text3)">${esc(it.elapsed||'')}</td>
+      <td style="font-size:11px;color:var(--text3)">${timeAgo(it.finished_at)}</td>
+    </tr>`}).join('');
+}
+
+document.getElementById('recentTb').onclick=e=>{
+  const row=e.target.closest('tr[data-id]');if(!row)return;
+  selectJob(row.dataset.id);
+};
+
+async function selectJob(id){
+  if(!id)return;
+  _activeId=id;
+  document.querySelectorAll('#recentTb tr').forEach(r=>r.classList.toggle('row-active',r.dataset.id===id));
+  const elDev=document.getElementById('jobDetail');
+  const loading='<div class="loading"><div class="spinner"></div> Yükleniyor…</div>';
+  if(elDev)elDev.innerHTML=loading;
+  try{
+    const r=await fetch(PROV_API+'/provizyon/'+encodeURIComponent(id));
+    if(!r.ok){
+      const empty=`<div class="empty"><div class="empty-icon">?</div><div class="empty-text">Sonuç bulunamadı: ${esc(id)}</div></div>`;
+      if(elDev)elDev.innerHTML=empty;
+      return;
+    }
+    const d=anonScrub(await r.json());
+    _jobData=d;
+    try{renderJobDetailDev(d)}catch(err){
+      console.error(err);
+      const errHtml=`<div class="card" style="color:var(--red);padding:20px">Görüntüleme hatası: ${esc(err.message)}</div>`;
+      if(elDev)elDev.innerHTML=errHtml;
+    }
+  }catch(err){
+    const errHtml=`<div class="card" style="color:var(--red);padding:20px">Hata: ${esc(err.message)}</div>`;
+    if(elDev)elDev.innerHTML=errHtml;
+  }
+}
+
+function renderJobDetailDev(d){
+  const el=document.getElementById('jobDetail');
+  const raw=d.raw||{};
+  const meta=raw.job_meta||{};
+  const karar=d.nihai_karar||'bilinmiyor';
+  const cls=KARAR_CLS[karar]||'review';
+  const label=KARAR_LABEL[karar]||karar.replace(/_/g,' ');
+
+  let h='';
+
+  // Result Banner
+  h+=`<div class="result-banner ${cls}" style="margin-bottom:var(--gap)">
+    <div class="result-icon">${cls==='allowed'?'✓':cls==='denied'?'✗':'!'}</div>
+    <div class="result-text">
+      <h3>${esc(label)}${d.decision_type?` ${decisionTypeBadge(d.decision_type)}`:''}${d.risk_level?` <span class="badge b-gray">${esc(d.risk_level)}</span>`:''}</h3>
+      ${buildResultBannerBody(d)}
+    </div>
+  </div>`;
+
+  const sa=(d.raw||{}).shadow_advice||d.shadow_advice;
+  if(sa&&sa.status&&sa.status!=='not_applicable'){
+    const match=sa.status==='matched_candidate';
+    h+=`<div class="card" style="margin-bottom:var(--gap);padding:14px 16px;border:1px dashed ${match?'#f59e0b':'#cbd5e1'};background:${match?'#fffbeb':'#f8fafc'}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+        <strong style="font-size:13px">${esc(sa.label||'Gölge tavsiye')}</strong>
+        <span class="badge ${match?'b-yellow':'b-gray'}">tavsiye</span>
+        <span class="badge b-gray">canlı karar değişmedi</span>
+        <span class="badge b-orange">yayına hazır değil</span>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5">${esc(sa.message||'')}</div>
+    </div>`;
+  }
+
+  // Kimlik Bilgileri
+  h+=`<div class="card" style="margin-bottom:var(--gap);padding:16px 20px">
+    <div class="card-title" style="margin-bottom:10px">Kimlik Bilgileri</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;font-size:12px">
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Provizyon ID</span><strong>${esc(d.provizyon_id||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Hasta Adı</span><strong>${esc(meta.patient_name||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Hasta ID (Sicil)</span><strong>${esc(d.hasta_id||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">TC Kimlik</span><strong>${esc(meta.tc_kimlik||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Yaş</span><strong>${meta.yas!=null?meta.yas:'—'}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Cinsiyet</span><strong>${esc(meta.cinsiyet&&meta.cinsiyet!=='bilinmiyor'?meta.cinsiyet:'—')}</strong></div>
+    </div>
+  </div>`;
+
+  // Patient info bar
+  const pipe=pipelineInfo(raw);
+  const ds=meta.diagnosis_code_source||'';
+  const dsLabel=ds==='huv'?'HUV tanı routing':ds==='sut'?'SUT tanı routing':ds?String(ds).toUpperCase():'';
+  h+=`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--gap)">
+    ${d.provizyon_id?`<span class="badge b-indigo">Provizyon: ${esc(d.provizyon_id)}</span>`:''}
+    <span class="badge ${pipe.cls}">${esc(pipe.label)}</span>
+    ${dsLabel?`<span class="badge b-indigo">${esc(dsLabel)}</span>`:''}
+    ${meta.patient_name?`<span class="badge b-blue">${esc(meta.patient_name)}</span>`:''}
+    ${d.hasta_id?`<span class="badge b-blue">Sicil: ${esc(d.hasta_id)}</span>`:''}
+    ${meta.tc_kimlik?`<span class="badge b-blue">TC: ${esc(meta.tc_kimlik)}</span>`:''}
+    ${meta.yas?`<span class="badge b-gray">${meta.yas} yaş</span>`:''}
+    ${meta.cinsiyet&&meta.cinsiyet!=='bilinmiyor'?`<span class="badge b-gray">${esc(meta.cinsiyet)}</span>`:''}
+    ${(()=>{
+      const ocrItems=asList((raw.documents||{}).items).filter(i=>i.ocr_quality_avg!=null);
+      if(!ocrItems.length) return '';
+      const avg=ocrItems.reduce((s,i)=>s+(Number(i.ocr_quality_avg)||0),0)/ocrItems.length;
+      const om=devOcrQualityMeta(avg);
+      return `<span class="badge ${om.cls}">OCR ${Math.round(avg*100)}%</span>`;
+    })()}
+    ${(()=>{
+      const mgEv=raw.medgemma_evidence||{};
+      const det=(raw.medgemma_layer||{}).detail||{};
+      const vReq=det.vision_requested??mgEv.vision_requested;
+      const vSent=det.vision_sent??mgEv.vision_sent;
+      if(vReq==null&&vSent==null) return '';
+      const dropped=!!(det.vision_dropped||mgEv.vision_dropped);
+      const vCls=dropped?'b-red':Number(vSent)<Number(vReq)?'b-yellow':'b-green';
+      return `<span class="badge ${vCls}">Vision ${fmtN(vSent??0)}/${fmtN(vReq??0)}</span>`;
+    })()}
+    <span class="badge b-gray">Süre: ${elapsed(d.started_at,d.finished_at)}</span>
+    <span class="badge b-gray">${fmtTime(d.finished_at)}</span>
+  </div>`;
+
+  const scores=buildDevScoreCounts(d);
+  h+=`<div class="dev-score">
+    <div class="kpi"><div class="kpi-label">Geçti</div><div class="kpi-val" style="color:var(--green)">${scores.pass}</div></div>
+    <div class="kpi"><div class="kpi-label">Başarısız</div><div class="kpi-val" style="color:var(--red)">${scores.fail}</div></div>
+    <div class="kpi"><div class="kpi-label">İnceleme</div><div class="kpi-val" style="color:var(--yellow)">${scores.review}</div></div>
+    <div class="kpi"><div class="kpi-label">Atlandı</div><div class="kpi-val" style="color:var(--text3)">${scores.skip}</div></div>
+  </div>`;
+
+  h+=`<div class="card dev-matrix" style="margin-bottom:var(--gap)">
+    <div class="card-title">Değerlendirme Aşamaları</div>
+    <table><thead><tr><th>#</th><th>Aşama</th><th>Sonuç</th><th>Açıklama</th></tr></thead><tbody>`;
+  DEV_STEPS.forEach(s=>{
+    const st=devStepStatus(d,s);
+    const sb=STATUS_BADGE[st]||'b-gray';
+    h+=`<tr style="cursor:pointer" onclick="scrollToDevStep(${s.n})"><td>${s.n}</td><td>${esc(s.name)}</td><td><span class="badge ${sb}">${esc(STATUS_LABEL[st]||st)}</span></td><td style="font-size:11px;color:var(--text2);max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(devStepMessage(d,s))}</td></tr>`;
+  });
+  h+=`</tbody></table>
+    <div class="dev-toolbar" style="margin-top:10px">
+      <button type="button" onclick="toggleAllDevSteps(true)">Tümünü aç</button>
+      <button type="button" onclick="toggleAllDevSteps(false)">Tümünü kapat</button>
+    </div>
+  </div>`;
+
+  if(raw.traceback){
+    h+=`<div class="card" style="margin-bottom:var(--gap);border-color:var(--red-border);background:var(--red-bg);padding:12px">
+      <div class="detail-label" style="color:var(--red);margin-bottom:6px">Hata Detayı</div>
+      <div class="json-box" style="max-height:160px;color:var(--red)">${esc(raw.traceback)}</div>
+    </div>`;
+  }
+
+  // Pipeline Visual
+  const steps=DEV_STEPS.filter(s=>s.n>=1&&s.n<=10);
+  function stepStatus(s){return devStepStatus(d,s)}
+  h+=`<div class="pipeline">`;
+  steps.forEach((s,i)=>{
+    const st=stepStatus(s);
+    const stCls=st==='pass'?'pass':st==='fail'?'fail':(st==='review'||st==='insufficient')?'review':'skip';
+    h+=`<div class="pipe-step ${stCls} clickable" onclick="scrollToDevStep(${s.n})"><span class="pipe-num">${s.n}</span>${esc(s.name)}</div>`;
+    if(i<steps.length-1)h+=`<div class="pipe-connector">→</div>`;
+  });
+  h+=`</div>`;
+
+  // Step 0: Provizyon girdisi
+  const procs=asList(meta.procedures);
+  const diags=asList(meta.diagnoses);
+  h+=`<div id="dev-step-0">${stepCard(0,'Provizyon Girdisi','pass',`
+    <div class="detail-grid">
+      <div><div class="detail-label">Durum / Hata</div><span class="badge ${d.status==='done'?'b-green':d.status==='failed'?'b-red':'b-blue'}">${esc(JOB_STATUS_LABEL[d.status]||d.status||'?')}</span>${d.error?` <span class="badge b-red">${esc(d.error)}</span>`:''}</div>
+      <div><div class="detail-label">Kod Kaynağı</div><span class="badge b-indigo">${esc(meta.diagnosis_code_source||'?')}</span> <span class="badge b-gray">${esc(meta.code_family||'')}</span></div>
+      <div><div class="detail-label">Başlangıç</div>${fmtTime(d.started_at)}</div>
+      <div><div class="detail-label">Bitiş</div>${fmtTime(d.finished_at)}</div>
+    </div>
+    <div style="margin-top:12px"><div class="detail-label">HUV Kodları</div><div class="detail-badges">${badges(asList(meta.huv_codes),'b-blue')}</div></div>
+    <div style="margin-top:8px"><div class="detail-label">SUT Kodları</div><div class="detail-badges">${badges(asList(meta.sut_codes),'b-indigo')}</div></div>
+    <div style="margin-top:8px"><div class="detail-label">Tanılar (ICD)</div><div class="detail-badges">${badges(diags,'b-green')}</div></div>
+    ${procs.length?`<div style="margin-top:8px"><div class="detail-label">İşlemler</div><table><thead><tr><th>Kod</th><th>Ad</th></tr></thead><tbody>${procs.map(p=>`<tr><td style="font-family:monospace;font-weight:600">${esc(p.code||'—')}</td><td style="font-size:11px">${esc(p.name||'—')}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${asList(meta.model_sorulari).length?`<div style="margin-top:8px"><div class="detail-label">Model Soruları</div><ul style="padding-left:16px;font-size:11px;color:var(--text2)">${asList(meta.model_sorulari).map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
+  `)}</div>`;
+
+  // Step 1: Belge Alım
+  const docs=raw.documents||{};
+  const docItems=asList(docs.items);
+  const docStats=docAggStats(docs);
+  const pipeCfg=raw.pipeline||{};
+  let docTable='';
+  if(docItems.length){
+    docTable=`<div style="margin-top:12px"><div class="detail-label" style="margin-bottom:6px">Belge Türleri</div>
+      <table><thead><tr><th>Dosya</th><th>Başlık</th><th>Tür</th><th>Rol</th><th>Güven</th><th>Sayfa</th><th>OCR</th><th>OCR Kalite</th><th>Gömülü</th><th>Karakter</th><th>OCR Hata</th><th>Hata</th></tr></thead><tbody>`;
+    docItems.forEach(di=>{
+      docTable+=`<tr>
+        <td style="font-family:monospace;font-size:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis" title="${esc(di.file||'')}">${esc((di.file||'?').split('/').pop())}</td>
+        <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis" title="${esc(di.title||'')}">${esc(di.title||'-')}</td>
+        <td>${docTypeBadge(di.doc_type,di.doc_type_confidence,di.doc_type_source)}</td>
+        <td>${evidenceRoleBadge(di.evidence_role)}</td>
+        <td><span class="badge ${di.doc_type_confidence==='low'?'b-yellow':di.doc_type_confidence==='high'?'b-green':'b-blue'}">${esc(CONFIDENCE_LABEL[di.doc_type_confidence]||di.doc_type_confidence||'?')}</span></td>
+        <td style="font-size:11px">${fmtN(di.page_count||1)}${di.needs_ocr?' <span class="badge b-yellow" style="font-size:9px">OCR?</span>':''}</td>
+        <td style="font-size:11px">${fmtN(di.ocr_pages||0)}</td>
+        <td style="font-size:11px">${devOcrQualityCell(di.ocr_quality_avg,di.ocr_low_quality_pages)}</td>
+        <td style="font-size:11px">${fmtN(di.embedded_images||0)}</td>
+        <td style="font-size:11px">${fmtN(di.text_chars||0)}</td>
+        <td style="font-size:11px">${di.ocr_error_count?`<span class="badge b-red">${di.ocr_error_count}</span>`:'—'}</td>
+        <td style="font-size:10px;color:${di.error?'var(--red)':'var(--text3)'}">${esc(di.error||'—')}</td>
+      </tr>`;
+    });
+    docTable+=`</tbody></table></div>`;
+  }
+  const missingFiles=asList(docs.missing_files);
+  h+=`<div id="dev-step-1">${stepCard(1,'Belge Alım & OCR',docs.found>0?'pass':docs.provided>0?'fail':'skip',`
+    <div class="detail-badges" style="margin-bottom:10px">
+      <span class="badge ${pipe.cls}">${esc(pipe.label)}</span>
+      ${pipeCfg.full_vision?'<span class="badge b-green">Tüm sayfalar gönderildi</span>':pipeCfg.vision_max_images>0?`<span class="badge b-yellow">Görsel sınırı: ${pipeCfg.vision_max_images}</span>`:''}
+      ${pipeCfg.ocr_all_pages?'<span class="badge b-blue">Tüm sayfalar OCR</span>':'<span class="badge b-gray">Seçili sayfa OCR</span>'}
+      ${docStats.pages?`<span class="badge b-gray">${fmtN(docStats.pages)} sayfa</span>`:''}
+      ${docStats.ocr?`<span class="badge b-gray">${fmtN(docStats.ocr)} OCR</span>`:''}
+      ${docStats.embedded?`<span class="badge b-gray">${fmtN(docStats.embedded)} gömülü görsel</span>`:''}
+    </div>
+    <div class="detail-grid">
+      <div><div class="detail-label">Sağlanan / Bulunan</div><strong>${docs.provided??0}</strong> belge sağlandı, <strong>${docs.found??0}</strong> bulundu${docs.missing?`, <span style="color:var(--red)">${docs.missing} eksik</span>`:''}</div>
+      <div><div class="detail-label">Analiz Durumu</div>${docs.analysis_failed?'<span class="badge b-red">Analiz başarısız</span>':'<span class="badge b-green">Başarılı</span>'}</div>
+    </div>
+    ${missingFiles.length?`<div style="margin-top:8px"><div class="detail-label">Eksik Belgeler</div><div class="detail-badges">${missingFiles.map(f=>`<span class="badge b-red">${esc(f)}</span>`).join(' ')}</div></div>`:''}
+    <div class="dev-sec-title" style="margin-top:14px">OCR kalite özeti</div>
+    ${devOcrSummaryHtml(docs)}
+    ${docTable}
+  `)}</div>`;
+
+  // Step 2: Belge-Hasta
+  const bh=d.belge_hasta;
+  if(bh){
+    const bdocs=asList(bh.detail&&bh.detail.documents);
+    let body=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(bh.message||'')}</div>`;
+    if(bdocs.length){
+      body+=`<table><thead><tr><th>Belge</th><th>Sonuç</th><th>İsim</th><th>TC</th><th>Sicil</th><th>Detay</th></tr></thead><tbody>`;
+      bdocs.forEach(x=>{
+        const det=x.detail||{};
+        const vb={match:'b-green',uncertain:'b-yellow',mismatch:'b-red',exempt:'b-gray'};
+        const extra=x.verdict!=='match'?`<div style="font-size:10px;color:var(--text3);margin-top:4px">${esc(x.reason||'')}<br><code style="font-size:9px">${esc((det.corpus_preview||'').slice(0,120))}</code></div>`:'';
+        body+=`<tr>
+          <td style="font-weight:600">${esc(x.title||'?')}</td>
+          <td><span class="badge ${vb[x.verdict]||'b-gray'}">${esc(VERDICT_LABEL[x.verdict]||x.verdict||'?')}</span></td>
+          <td style="font-size:11px">${badges(asList(det.name_hits),'b-green')}</td>
+          <td>${det.tc_found?'<span class="badge b-green">✓</span>':'<span class="badge b-gray">✗</span>'}</td>
+          <td>${det.id_found?'<span class="badge b-green">✓</span>':'<span class="badge b-gray">✗</span>'}</td>
+          <td style="font-size:10px">${extra||'—'}${det.corpus_len!=null?` <span class="badge b-gray">${det.corpus_len} chr</span>`:''}</td>
+        </tr>`;
+      });
+      body+=`</tbody></table>`;
+    }
+    h+=`<div id="dev-step-2">${stepCard(2,'Belge–Hasta Eşleşmesi',bh.status,body)}</div>`;
+  }else{h+=`<div id="dev-step-2">${stepCard(2,'Belge–Hasta Eşleşmesi','skip','<div style="color:var(--text3);font-size:12px">Belge bulunamadı, adım atlandı.</div>')}</div>`}
+
+  // Step 3: Zorunlu Evrak
+  const ze=d.zorunlu_evrak;
+  if(ze){
+    const zd=ze.detail||{};
+    h+=`<div id="dev-step-3">${stepCard(3,'Zorunlu Evrak Kontrolü',ze.status,`
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px">${esc(ze.message||'')}</div>
+      <div class="detail-badges">
+        <span class="badge ${zd.requires_document?'b-yellow':'b-green'}">${zd.requires_document?'Belge gerekli':'Belge gerekmiyor'}</span>
+        ${zd.documents_present?'<span class="badge b-green">Belgeler mevcut</span>':''}
+        ${(asList(zd.requiring_codes)).length?`<span class="badge b-blue">Gerektiren: ${asList(zd.requiring_codes).join(', ')}</span>`:''}
+      </div>
+      ${Object.keys(zd).length?`<div style="margin-top:10px"><div class="detail-label">Detay</div><div class="json-box" style="max-height:120px">${esc(JSON.stringify(zd,null,2))}</div></div>`:''}
+    `)}</div>`;
+  }else{h+=`<div id="dev-step-3">${stepCard(3,'Zorunlu Evrak','skip','<div style="color:var(--text3);font-size:12px">Adım atlandı.</div>')}</div>`}
+
+  // Step 4: HUV Tanı Kuralı
+  const tk=d.tani_kurali;
+  if(tk){
+    const tdt=tk.detail||{};
+    const result=tdt.result||{};
+    const items=asList(result.items);
+    const evalItems=items.filter(it=>!isTzhCode(it.huv_code||''));
+    const summaryLine=devTaniCountSummary(evalItems,'huv_code');
+    let body=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(tk.message||'')}</div>`;
+    body+=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">Girilen ICD-10 provizyon genelindedir; her satır ilgili HUV kodunun Qdrant tanı kuralına göre ayrı değerlendirilir.</div>`;
+    if(diags.length) body+=`<div class="detail-badges" style="margin-bottom:10px"><span class="detail-label" style="margin-right:6px">Girilen ICD-10:</span>${badges(diags,'b-green')}</div>`;
+    body+=`<div class="detail-badges" style="margin-bottom:10px">
+      ${tdt.missing_diagnosis?'<span class="badge b-red">Tanı eksik</span>':''}
+      ${tdt.diagnosis_mismatch?'<span class="badge b-red">Tanı uyumsuz</span>':''}
+      ${tdt.review_required?'<span class="badge b-yellow">Manuel inceleme</span>':''}
+      ${!tdt.missing_diagnosis&&!tdt.diagnosis_mismatch&&!tdt.review_required?'<span class="badge b-green">Tanı uygun</span>':''}
+      <span class="badge b-blue">Genel: ${esc(devOverallTaniLabel(tdt.overall_status||'?'))}</span>
+      <span class="badge b-green">Kural veritabanı</span>
+      ${summaryLine?`<span class="badge b-gray">${esc(summaryLine)}</span>`:''}
+      ${asList(tdt.skipped_tzh_codes).length?`<span class="badge b-gray">TZH atlandı: ${asList(tdt.skipped_tzh_codes).join(', ')}</span>`:''}
+    </div>`;
+    if(items.length){
+      body+=`<table><thead><tr><th>HUV</th><th>İşlem</th><th>Tanı zorunlu</th><th>Sonuç</th><th>Politika</th><th>Güven</th><th>Eşleşen tanı</th><th>Beklenen / not</th></tr></thead><tbody>`;
+      items.forEach(it=>{ body+=devTaniRowHtml(it,'huv_code'); });
+      body+=`</tbody></table>`;
+    }
+    const tzhSkipped=[...new Set([
+      ...asList(tdt.skipped_tzh_codes),
+      ...asList(tdt.blocking_items).map(it=>it.huv_code||it.code).filter(isTzhCode),
+      ...items.map(it=>it.huv_code).filter(isTzhCode),
+    ])];
+    if(tzhSkipped.length){
+      body+=`<div style="margin-top:8px;font-size:11px;color:var(--text2)"><strong>TZH meta kodları:</strong> ${tzhSkipped.map(c=>`<span class="badge b-gray">${esc(c)} — tanı kuralı dışı, atlandı</span>`).join(' ')}</div>`;
+    }
+    const blk=asList(tdt.blocking_items).filter(it=>!isTzhCode(it.huv_code||it.code));
+    if(blk.length){body+=`<div style="margin-top:8px;font-size:11px;color:var(--red)"><strong>Bloke işlemler:</strong> ${blk.map(it=>esc(it.huv_code||JSON.stringify(it))).join(', ')}</div>`}
+    h+=`<div id="dev-step-4">${stepCard(4,'HUV Tanı Kuralı (Qdrant)',tk.status,body)}</div>`;
+  }else{h+=`<div id="dev-step-4">${stepCard(4,'HUV Tanı Kuralı','skip','<div style="color:var(--text3);font-size:12px">Adım atlandı.</div>')}</div>`}
+
+  // Step 5: SUT Tanı Kuralı
+  const stk=d.sut_tani_kurali;
+  if(stk){
+    const sdt=stk.detail||{};
+    const result=sdt.result||{};
+    const items=asList(result.items);
+    const evalItems=items.filter(it=>!isTzhCode(it.sut_code||''));
+    const summaryLine=devTaniCountSummary(evalItems,'sut_code');
+    let body=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(stk.message||'')}</div>`;
+    body+=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">EK-2B tanı kuralları işlem satırı bazında değerlendirilir.</div>`;
+    if(diags.length) body+=`<div class="detail-badges" style="margin-bottom:10px"><span class="detail-label" style="margin-right:6px">Girilen ICD-10:</span>${badges(diags,'b-green')}</div>`;
+    body+=`<div class="detail-badges" style="margin-bottom:10px">
+      ${sdt.missing_diagnosis?'<span class="badge b-red">Tanı eksik</span>':''}
+      ${sdt.diagnosis_mismatch?'<span class="badge b-red">Tanı uyumsuz</span>':''}
+      ${sdt.review_required?'<span class="badge b-yellow">Manuel inceleme</span>':''}
+      ${!sdt.missing_diagnosis&&!sdt.diagnosis_mismatch&&!sdt.review_required?'<span class="badge b-green">Tanı uygun</span>':''}
+      <span class="badge b-blue">Genel: ${esc(devOverallTaniLabel(sdt.overall_status||'?'))}</span>
+      ${summaryLine?`<span class="badge b-gray">${esc(summaryLine)}</span>`:''}
+    </div>`;
+    if(items.length){
+      body+=`<table><thead><tr><th>SUT</th><th>İşlem</th><th>Tanı zorunlu</th><th>Sonuç</th><th>Politika</th><th>Güven</th><th>Eşleşen tanı</th><th>Beklenen / not</th></tr></thead><tbody>`;
+      items.forEach(it=>{ body+=devTaniRowHtml(it,'sut_code'); });
+      body+=`</tbody></table>`;
+    }
+    const blk=asList(sdt.blocking_items);
+    if(blk.length){body+=`<div style="margin-top:8px;font-size:11px;color:var(--red)"><strong>Bloke işlemler:</strong> ${blk.map(it=>esc(it.sut_code||JSON.stringify(it))).join(', ')}</div>`}
+    h+=`<div id="dev-step-5">${stepCard(5,'SUT Tanı Kuralı (EK-2B)',stk.status,body)}</div>`;
+  }else{h+=`<div id="dev-step-5">${stepCard(5,'SUT Tanı Kuralı','skip','<div style="color:var(--text3);font-size:12px">Adım atlandı.</div>')}</div>`}
+
+  // Step 6: SUT İşlem Kuralı
+  const sk=d.sut_kurali;
+  if(sk){
+    const sdt=sk.detail||{};
+    let body=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(sk.message||'')}</div>`;
+    const rs=asList(sdt.resolved_services);
+    if(rs.length){
+      body+=`<table><thead><tr><th>HUV</th><th>SUT</th><th>Tür</th><th>Güven</th><th>Durum</th></tr></thead><tbody>`;
+      rs.forEach(s=>{
+        const cb={high:'b-green',medium:'b-yellow',low:'b-red'};
+        body+=`<tr>
+          <td style="font-weight:700;font-family:monospace">${esc(s.input_code||'')}<div style="font-size:10px;color:var(--text3)">${esc((s.input_name||'').slice(0,30))}</div></td>
+          <td style="font-family:monospace">${esc(s.sut_code||'—')}<div style="font-size:10px;color:var(--text3)">${esc((s.sut_name||'').slice(0,30))}</div></td>
+          <td style="font-size:11px">${esc(s.relation_type||'')}</td>
+          <td><span class="badge ${cb[s.confidence]||'b-gray'}">${esc(CONFIDENCE_LABEL[s.confidence]||s.confidence||'?')}</span></td>
+          <td>${s.review_recommended?'<span class="badge b-yellow">İnceleme</span>':'<span class="badge b-green">Uygun</span>'}</td>
+        </tr>`;
+      });
+      body+=`</tbody></table>`;
+    }
+    if(sdt.skipped_reason)body+=`<div class="detail-badges" style="margin-top:8px"><span class="badge b-gray">${esc(sdt.skipped_reason)}</span></div>`;
+    const bf=asList(sdt.blocking_findings);
+    if(bf.length)body+=`<div style="margin-top:8px;font-size:11px;color:var(--red)"><strong>Bloke:</strong> ${bf.map(x=>esc(typeof x==='string'?x:JSON.stringify(x))).join('; ')}</div>`;
+    if(sdt.qdrant_used!=null)body+=`<div class="detail-badges" style="margin-top:8px"><span class="badge ${sdt.qdrant_used?'b-green':'b-gray'}">Kural veritabanı: ${sdt.qdrant_used?'Kullanıldı':'Kullanılmadı'}</span></div>`;
+    h+=`<div id="dev-step-6">${stepCard(6,'SUT İşlem Kuralı',sk.status,body)}</div>`;
+  }else{h+=`<div id="dev-step-6">${stepCard(6,'SUT Kuralı','skip','<div style="color:var(--text3);font-size:12px">Adım atlandı.</div>')}</div>`}
+
+  // Step 7: Hasta Bağlamı
+  const pc=raw.patient_context;
+  if(pc){
+    let body=`<div class="detail-badges" style="margin-bottom:10px">
+      <span class="badge b-green">Geçmiş kayıt: ${pc.history_count||0}</span>
+      <span class="badge b-blue">Benzer vaka: ${pc.similar_count||0}</span>
+    </div>`;
+    const hist=asList(pc.history);
+    if(hist.length){
+      body+=`<div class="detail-label" style="margin-bottom:4px">Aynı Hasta Geçmişi</div>
+      <table><thead><tr><th>Provizyon</th><th>Hasta/TC</th><th>Karar</th><th>Tarih</th></tr></thead><tbody>`;
+      hist.forEach(r=>{body+=`<tr><td>${esc(r.provizyon_id||'')}</td><td>${esc(r.hasta_id||r.tc_kimlik||'—')}</td><td><span class="badge ${KARAR_BADGE[r.nihai_karar]||'b-blue'}">${esc(r.nihai_karar||'')}</span></td><td style="font-size:11px">${fmtTime(r.finished_at)}</td></tr>`});
+      body+=`</tbody></table>`;
+    }
+    const sim=asList(pc.similar);
+    if(sim.length){
+      body+=`<div class="detail-label" style="margin:10px 0 4px">Benzer Vakalar</div>
+      <table><thead><tr><th>Provizyon</th><th>Hasta/TC</th><th>Karar</th><th>Skor</th></tr></thead><tbody>`;
+      sim.forEach(r=>{body+=`<tr><td>${esc(r.provizyon_id||'')}</td><td>${esc(r.hasta_id||r.tc_kimlik||'—')}</td><td><span class="badge ${KARAR_BADGE[r.nihai_karar]||'b-blue'}">${esc(r.nihai_karar||'')}</span></td><td>${r.score!=null?r.score.toFixed(3):'—'}</td></tr>`});
+      body+=`</tbody></table>`;
+    }
+    if(asList(pc.notes).length)body+=`<div style="margin-top:8px;font-size:11px;color:var(--text3)">${asList(pc.notes).map(n=>esc(n)).join(' · ')}</div>`;
+    h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı (Qdrant)','pass',body)}</div>`;
+  }else{h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı','skip','<div style="color:var(--text3);font-size:12px">Hasta bağlamı yüklenmedi veya ilk kayıt.</div>')}</div>`}
+
+  // Step 8: MedGemma
+  const mg=d.medgemma;
+  const mgLayer=raw.medgemma_layer||{};
+  const mgEvidence=raw.medgemma_evidence||{};
+  if(mg){
+    const qa=medgemmaQA(mg,raw);
+    let body=devVisionStatusHtml(mgEvidence,mgLayer,d.warnings);
+    body+=devMedgemmaEvidenceHtml(mgEvidence,pipeCfg,pipe);
+    body+=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(mg.gerekce||'')}</div>`;
+    body+=`<div class="detail-grid">
+      <div><div class="detail-label">Güven Seviyesi</div><span class="badge ${mg.guven==='high'?'b-green':mg.guven==='medium'?'b-yellow':'b-red'}">${esc(CONFIDENCE_LABEL[mg.guven]||mg.guven||'?')}</span></div>
+      <div><div class="detail-label">Manuel İnceleme</div>${mg.manuel_inceleme_gerekli?'<span class="badge b-yellow">Gerekli</span>':'<span class="badge b-green">Gerekli değil</span>'}</div>
+      <div><div class="detail-label">İşlem Belge Destekli</div>${bvPos(mg.islem_belge_destekli)}</div>
+      <div><div class="detail-label">Tanı Belge Destekli</div>${bvPos(mg.tani_belge_destekli)}</div>
+      <div><div class="detail-label">Yaş/Cinsiyet Uygun</div>${bvPos(mg.yas_cinsiyet_uygun)}</div>
+      <div><div class="detail-label">Klinik Çelişki</div>${bvNeg(mg.klinik_celiski)} <span style="font-size:10px;color:var(--text3)">${esc(triboolLabel(mg.klinik_celiski))}</span></div>
+      <div><div class="detail-label">Eksik Evrak</div>${bvNeg(mg.eksik_evrak)} <span style="font-size:10px;color:var(--text3)">${esc(triboolLabel(mg.eksik_evrak))}</span></div>
+    </div>`;
+    body+=`<div style="margin-top:14px"><div class="detail-label" style="margin-bottom:8px">Klinik Soru – Cevap</div>
+      <table><thead><tr><th style="width:42%">Soru</th><th>Cevap</th></tr></thead><tbody>`;
+    qa.forEach(x=>{
+      body+=`<tr><td style="font-weight:600;color:var(--text)">${esc(x.soru||'')}</td><td style="color:var(--text2);white-space:pre-wrap">${esc(x.cevap||'—')}</td></tr>`;
+    });
+    body+=`</tbody></table></div>`;
+    body+=devMedgemmaRawHtml(mg,mgLayer);
+    if(mgLayer.message)body+=`<div style="margin-top:8px;font-size:11px;color:var(--text2)">AI değerlendirme notu: ${esc(mgLayer.message)}</div>`;
+    const mgStatus=(mgLayer.status||'pass');
+    h+=`<div id="dev-step-8">${stepCard(8,'AI Klinik Değerlendirme (MedGemma)',mgStatus,body)}</div>`;
+  }else{
+    const reason=asList(d.warnings).find(w=>w.includes('MedGemma'))||'MedGemma değerlendirmesi yapılmadı.';
+    h+=`<div id="dev-step-8">${stepCard(8,'MedGemma','skip',`<div style="color:var(--text3);font-size:12px">${esc(reason)}</div>`)}</div>`;
+  }
+
+  // Step 9: Nihai Karar
+  const tree=buildDecisionTree(d);
+  let treeHtml=`<table style="margin-top:10px"><thead><tr><th>Sıra</th><th>Değerlendirme</th><th>Sonuç</th><th>Etkisi</th><th>Açıklama</th></tr></thead><tbody>`;
+  tree.forEach(r=>{
+    treeHtml+=`<tr${r.decisive?' style="background:var(--yellow-bg)"':''}><td>${r.prio}</td><td>${esc(r.label)}</td><td><span class="badge ${STATUS_BADGE[r.status]||'b-gray'}">${esc(STATUS_LABEL[r.status]||r.status)}</span></td><td>${r.decisive?'<span class="badge b-yellow">Belirleyici</span>':'—'}</td><td style="font-size:10px;color:var(--text2)">${esc(r.message)}</td></tr>`;
+  });
+  treeHtml+=`</tbody></table>`;
+  h+=`<div id="dev-step-9">${stepCard(9,'Nihai Karar Birleştirme',karar==='uygun'?'pass':(cls==='denied'?'fail':'review'),`
+    <div class="detail-grid">
+      <div><div class="detail-label">Karar</div><span class="badge ${KARAR_BADGE[karar]||'b-blue'}" style="font-size:12px;padding:4px 12px">${esc(label)}</span></div>
+      <div><div class="detail-label">Gerekçe</div><div style="font-size:12px;color:var(--text2)">${esc(d.gerekce||'—')}</div></div>
+    </div>
+    <div class="detail-label" style="margin:12px 0 6px">Karar ağacı (öncelik sırası)</div>
+    ${treeHtml}
+  `)}</div>`;
+
+  // Step 10: Persist
+  const pers=raw.persistence||{};
+  const PERSIST_LAYERS=['nihai_karar','belge_hasta','zorunlu_evrak','tani_kurali','sut_tani_kurali','sut_kurali','medgemma'];
+  h+=`<div id="dev-step-10">${stepCard(10,'Veri Kayıt (Qdrant)',pers.written>0?'pass':'skip',`
+    <div class="detail-grid">
+      <div><div class="detail-label">Yazılan Nokta</div><strong>${pers.written??0}</strong> patient_findings kaydı</div>
+      <div><div class="detail-label">Benzer Vaka Paylaşımı</div>${pers.rag_allowed?'<span class="badge b-green">Açık</span>':'<span class="badge b-yellow">Kapalı</span>'}</div>
+      ${asList(pers.errors).length?`<div><div class="detail-label">Hatalar</div><div style="color:var(--red);font-size:11px">${asList(pers.errors).map(e=>esc(e)).join('<br>')}</div></div>`:''}
+    </div>
+    <div style="margin-top:10px"><div class="detail-label">Yazılan katmanlar</div><div class="detail-badges">${PERSIST_LAYERS.map(l=>`<span class="badge b-blue">${l}</span>`).join(' ')}</div></div>
+  `)}</div>`;
+
+  // Warnings
+  const warns=asList(d.warnings);
+  if(warns.length){
+    h+=`<div class="step-card open" style="border-color:var(--yellow-border)">
+      <div class="step-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="step-num" style="background:var(--yellow)">!</span>
+        <span class="step-title">Uyarılar (${warns.length})</span>
+        <span class="step-arrow">▶</span>
+      </div>
+      <div class="step-body"><ul style="padding-left:16px;font-size:12px;color:var(--text2)">${warns.map(w=>`<li style="margin-bottom:4px">${esc(w)}</li>`).join('')}</ul></div>
+    </div>`;
+  }
+
+  // Raw JSON
+  h+=`<div class="step-card">
+    <div class="step-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="step-num" style="background:var(--text3)">{}</span>
+      <span class="step-title">Teknik Detay (Ham Veri)</span>
+      <span class="step-arrow">▶</span>
+    </div>
+    <div class="step-body"><div class="json-box">${esc(JSON.stringify(d,null,2))}</div></div>
+  </div>`;
+
+  el.innerHTML=h;
+}
+
+function stepCard(num,title,status,body){
+  const st=status||'skip';
+  const colors={pass:'var(--green)',fail:'var(--red)',review:'var(--yellow)',insufficient:'var(--yellow)',skipped:'var(--text3)',skip:'var(--text3)'};
+  const statusBadge=STATUS_BADGE[st]||'b-gray';
+  const statusLabel={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',skip:'Atlandı'}[st]||st;
+  const open=st!=='skip'&&st!=='skipped';
+  return `<div class="step-card${open?' open':''}">
+    <div class="step-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="step-num" style="background:${colors[st]||'var(--text3)'}">${num}</span>
+      <span class="step-title">${esc(title)}</span>
+      <span class="badge ${statusBadge} step-status">${statusLabel}</span>
+      <span class="step-arrow">▶</span>
+    </div>
+    <div class="step-body">${body}</div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
+// System health
+// ════════════════════════════════════════════════════
+
+let _lastHealth=null;
+
+async function refreshDashboard(){
+  try{
+    const d=await(await fetch(API+'/system/health')).json();
+    _lastHealth=d;
+    updateSysBadge(d.services,d.system);
+    renderSystemHealth(d);
+    const lu=document.getElementById('lastUpdate');
+    if(lu) lu.textContent=new Date().toLocaleTimeString('tr-TR');
+  }catch(e){updateSysBadge([],null)}
+}
+
+function updateSysBadge(svcs,sys){
+  const b=document.getElementById('sysBadge'),t=document.getElementById('sysText');
+  if(!b||!t)return;
+  const down=(svcs||[]).filter(s=>s.status!=='ok').length;
+  if(!svcs||!svcs.length){b.className='sys-badge warn';t.textContent='Bağlantı bekleniyor';return}
+  if(down>0){b.className='sys-badge warn';t.textContent=down+' servis kapalı'}
+  else{b.className='sys-badge ok';t.textContent='Tüm servisler çalışıyor'}
+}
+
+function renderSystemHealth(d){
+  const grid=document.getElementById('sysHealthGrid');
+  const ts=document.getElementById('sysHealthTs');
+  if(!grid)return;
+  if(ts) ts.textContent=new Date().toLocaleTimeString('tr-TR');
+
+  const svcs=d.services||[];
+  const sys=d.system||{};
+  const diag=d.diagnosis_stats||{};
+  const catalog=d.catalog_stats||{};
+  const gpu=d.gpu||{};
+  const qdrant=d.qdrant_collections||[];
+
+  const svcOk=svcs.filter(s=>s.status==='ok').length;
+  const svcTotal=svcs.length;
+
+  const items=[];
+
+  items.push({val:`${svcOk}/${svcTotal}`,lbl:'Servis çalışıyor',cls:svcOk===svcTotal?'':'warn'});
+
+  svcs.forEach(s=>{
+    const ok=s.status==='ok';
+    items.push({val:ok?'✓':'✗',lbl:s.name||'?',cls:ok?'':'warn'});
+  });
+
+  if(diag.huv_auto_rules!=null){
+    items.push({val:fmtN(diag.huv_auto_rules||0),lbl:'HUV kural (auto)'});
+    items.push({val:fmtN(diag.huv_review_rules||0),lbl:'HUV kural (review)'});
+  }
+  if(diag.sut_auto_rules!=null){
+    items.push({val:fmtN(diag.sut_auto_rules||0),lbl:'SUT kural (auto)'});
+    items.push({val:fmtN(diag.sut_review_rules||0),lbl:'SUT kural (review)'});
+  }
+
+  qdrant.forEach(c=>{
+    items.push({val:fmtN(c.points||0),lbl:`Qdrant: ${c.name||'?'}`});
+  });
+
+  if(sys.cpu_pct!=null){
+    items.push({val:sys.cpu_pct+'%',lbl:'CPU yükü',cls:sys.cpu_pct>80?'warn':''});
+  }
+  if(sys.ram_pct!=null){
+    items.push({val:sys.ram_pct+'%',lbl:'RAM kullanımı',cls:sys.ram_pct>85?'warn':''});
+  }
+  if(gpu.mem_used_mb!=null){
+    const gpuLabel=gpu.utilization_pct!=null?`GPU (${gpu.utilization_pct}%)`:'GPU';
+    items.push({val:`${gpu.mem_used_mb}/${gpu.mem_total_mb||'?'} MB`,lbl:gpuLabel});
+  }
+
+  grid.innerHTML=items.map(i=>`<div class="sys-item"><div class="sys-item-val${i.cls?' '+i.cls:''}">${esc(String(i.val))}</div><div class="sys-item-lbl">${esc(i.lbl)}</div></div>`).join('');
+}
+
+// ── Auto refresh ──
+let _timer=null;
+function startAutoRefresh(){
+  if(_timer)clearInterval(_timer);
+  _timer=setInterval(()=>{
+    const cb=document.getElementById('autoRefresh');
+    if(cb&&cb.checked)loadRecent();
+  },6000);
+}
+
+// ════════════════════════════════════════════════════
+// TAB NAVIGATION
+// ════════════════════════════════════════════════════
+
+let _analyticsLoaded=false;
+
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',i===(id==='prov'?0:1));
+  });
+  document.getElementById('tabProv').classList.toggle('active',id==='prov');
+  document.getElementById('tabAnaliz').classList.toggle('active',id==='analiz');
+  if(id==='analiz'&&!_analyticsLoaded){
+    loadAnalytics();
+  }
+}
+
+// ════════════════════════════════════════════════════
+// ANALYTICS — Vektör DB Analiz & Rapor
+// ════════════════════════════════════════════════════
+
+const AN_KARAR_COLORS={
+  uygun:'#10b981',
+  manuel_inceleme:'#f59e0b',
+  tani_uyumsuz:'#ef4444',
+  tani_eksik:'#f97316',
+  evrak_eksik:'#8b5cf6',
+  klinik_uyumsuzluk:'#ec4899',
+  belge_kaniti_yetersiz:'#6366f1',
+  belge_analizi_tamamlanamadi:'#64748b',
+  yanlis_hasta_belgesi:'#dc2626',
+};
+
+const AN_KARAR_LABELS={
+  uygun:'Uygun',
+  manuel_inceleme:'Manuel İnceleme',
+  tani_uyumsuz:'Tanı Uyumsuz',
+  tani_eksik:'Tanı Eksik',
+  evrak_eksik:'Evrak Eksik',
+  klinik_uyumsuzluk:'Klinik Uyumsuzluk',
+  belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz',
+  belge_analizi_tamamlanamadi:'Analiz Tamamlanamadı',
+  yanlis_hasta_belgesi:'Yanlış Hasta Belgesi',
+};
+
+const AN_STATUS_COLORS={pass:'#10b981',fail:'#ef4444',review:'#f59e0b',insufficient:'#f97316',skipped:'#94a3b8'};
+const AN_STATUS_LABELS={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı'};
+
+async function loadAnalytics(){
+  try{
+    const d=await(await fetch(PROV_API+'/analytics/findings')).json();
+    if(d.error){
+      document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">'+esc(d.error)+'</span>';
+      return;
+    }
+    _analyticsLoaded=true;
+    document.getElementById('anLoading').style.display='none';
+    document.getElementById('anContent').style.display='block';
+    renderAnalytics(d);
+  }catch(e){
+    document.getElementById('anLoading').innerHTML='<span style="color:var(--red)">Analiz yüklenemedi: '+esc(String(e))+'</span>';
+  }
+}
+
+function renderAnalytics(d){
+  document.getElementById('anTotal').textContent=fmtN(d.toplam_provizyon||0);
+  document.getElementById('anTotalSub').textContent=`HUV: ${fmtN(d.huv_kayit||0)} · SUT: ${fmtN(d.sut_kayit||0)}`;
+  document.getElementById('anPoints').textContent=fmtN(d.toplam_nokta||0);
+  document.getElementById('anHuv').textContent=fmtN(d.huv_kayit||0);
+  document.getElementById('anSut').textContent=fmtN(d.sut_kayit||0);
+
+  renderDonut(d.karar_dagilimi||{},d.toplam_provizyon||0);
+  renderLayerBars(d.layer_status||{});
+  renderGroupBars('anYasBars',d.yas_grubu||{},d.toplam_provizyon||0);
+  renderGroupBars('anCinsBars',d.cinsiyet||{},d.toplam_provizyon||0);
+  renderGroupBars('anFacBars',d.kurum_tipi||{},d.toplam_provizyon||0);
+  renderKurumTable(d.kurum_bazli||[]);
+  renderFailTable(d.tani_fail_ornekler||[]);
+}
+
+function renderDonut(karar,total){
+  const entries=Object.entries(karar).sort((a,b)=>b[1]-a[1]);
+  if(!entries.length)return;
+
+  let angle=0;
+  const stops=[];
+  entries.forEach(([k,v])=>{
+    const pct=v/Math.max(total,1)*100;
+    const color=AN_KARAR_COLORS[k]||'#94a3b8';
+    stops.push(`${color} ${angle}deg ${angle+pct*3.6}deg`);
+    angle+=pct*3.6;
+  });
+
+  const donut=document.getElementById('anDonut');
+  donut.style.background=`conic-gradient(${stops.join(',')})`;
+  donut.innerHTML=`<div class="donut-hole"><div class="donut-center">${fmtN(total)}</div><div class="donut-center-sub">provizyon</div></div>`;
+
+  const legend=document.getElementById('anLegend');
+  legend.innerHTML=entries.map(([k,v])=>{
+    const pct=(v/Math.max(total,1)*100).toFixed(1);
+    const color=AN_KARAR_COLORS[k]||'#94a3b8';
+    const label=AN_KARAR_LABELS[k]||k.replace(/_/g,' ');
+    return `<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>${esc(label)}: ${fmtN(v)} (${pct}%)</div>`;
+  }).join('');
+}
+
+function renderLayerBars(layerStatus){
+  const el=document.getElementById('anLayerBars');
+  const layerLabels={tani_kurali:'HUV Tanı Kuralı',sut_tani_kurali:'SUT Tanı Kuralı',sut_kurali:'SUT İşlem Kuralı',medgemma:'MedGemma Klinik'};
+  let html='';
+
+  for(const[layer,statuses] of Object.entries(layerStatus)){
+    const total=Object.values(statuses).reduce((s,v)=>s+v,0);
+    if(!total)continue;
+    const lbl=layerLabels[layer]||layer;
+    html+=`<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">${esc(lbl)} <span style="color:var(--text3);font-weight:400">(${fmtN(total)})</span></div>`;
+    html+='<div style="display:flex;height:24px;border-radius:4px;overflow:hidden">';
+    const ordered=['pass','review','fail','insufficient','skipped'];
+    for(const st of ordered){
+      const v=statuses[st];
+      if(!v)continue;
+      const pct=(v/total*100);
+      const color=AN_STATUS_COLORS[st]||'#94a3b8';
+      const label=AN_STATUS_LABELS[st]||st;
+      html+=`<div style="width:${pct}%;background:${color};display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;min-width:${pct>5?'0':'20px'}" title="${label}: ${v} (${pct.toFixed(1)}%)">${pct>8?v:''}</div>`;
+    }
+    html+='</div>';
+    html+='<div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">';
+    for(const st of ordered){
+      const v=statuses[st];
+      if(!v)continue;
+      const color=AN_STATUS_COLORS[st]||'#94a3b8';
+      const label=AN_STATUS_LABELS[st]||st;
+      html+=`<span style="font-size:10px;color:var(--text2)"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${color};vertical-align:middle;margin-right:3px"></span>${label}: ${fmtN(v)}</span>`;
+    }
+    html+='</div></div>';
+  }
+  el.innerHTML=html||'<span style="color:var(--text3);font-size:12px">Veri yok</span>';
+}
+
+function renderGroupBars(elId,groupData,total){
+  const el=document.getElementById(elId);
+  const entries=Object.entries(groupData);
+  if(!entries.length){el.innerHTML='<span style="color:var(--text3);font-size:12px">Veri yok</span>';return}
+
+  const groupLabels={pediatrik:'Pediatrik',erişkin:'Erişkin',geriatrik:'Geriatrik',erkek:'Erkek',kadin:'Kadın',bilinmiyor:'Bilinmiyor','özel':'Özel',üniversite:'Üniversite'};
+  let html='<div class="bar-chart">';
+  for(const[group,kararCounts] of entries){
+    const gTotal=Object.values(kararCounts).reduce((s,v)=>s+v,0);
+    const uygun=kararCounts.uygun||0;
+    const uygunPct=(uygun/Math.max(gTotal,1)*100).toFixed(1);
+    const lbl=groupLabels[group]||group;
+    const barW=Math.max(gTotal/Math.max(total,1)*100*2,4);
+
+    html+=`<div class="bar-row">
+      <div class="bar-label">${esc(lbl)}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${barW}%;background:linear-gradient(90deg,var(--green) ${uygunPct}%,var(--red) ${uygunPct}%)"></div>
+      </div>
+      <div class="bar-val">${fmtN(gTotal)} <span style="color:var(--green);font-size:10px">${uygunPct}%</span></div>
+    </div>`;
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function renderKurumTable(kurumlar){
+  const tb=document.getElementById('anKurumTb');
+  if(!kurumlar.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:16px">Veri yok</td></tr>';return}
+  tb.innerHTML=kurumlar.map(k=>{
+    const oranColor=k.uygun_oran>=60?'var(--green)':k.uygun_oran>=40?'var(--yellow)':'var(--red)';
+    return `<tr>
+      <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(k.kurum)}">${esc(k.kurum)}</td>
+      <td class="num">${fmtN(k.toplam)}</td>
+      <td class="num" style="color:var(--green)">${fmtN(k.uygun)}</td>
+      <td class="num" style="color:var(--red)">${fmtN(k.tani_uyumsuz)}</td>
+      <td class="num" style="color:var(--orange)">${fmtN(k.tani_eksik)}</td>
+      <td class="num" style="color:var(--yellow)">${fmtN(k.manuel_inceleme)}</td>
+      <td class="num">${fmtN(k.diger_red)}</td>
+      <td class="num"><span class="an-oran-bar" style="width:${k.uygun_oran}px;background:${oranColor}"></span><span style="color:${oranColor}">${k.uygun_oran}%</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderFailTable(fails){
+  const tb=document.getElementById('anFailTb');
+  if(!fails.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:16px">Tanı uyumsuzluğu kaydı yok</td></tr>';return}
+  const kbMap={tani_uyumsuz:'b-red',tani_eksik:'b-orange',manuel_inceleme:'b-yellow'};
+  tb.innerHTML=fails.slice(0,30).map(f=>{
+    const layerLbl=f.layer==='tani_kurali'?'HUV':'SUT';
+    const layerCls=f.layer==='tani_kurali'?'b-cyan':'b-violet';
+    const kararLbl=AN_KARAR_LABELS[f.nihai_karar]||f.nihai_karar;
+    const kararCls=kbMap[f.nihai_karar]||'b-gray';
+    return `<tr>
+      <td style="font-weight:600;font-size:11px">${esc(f.provizyon_id)}</td>
+      <td><span class="badge ${layerCls}">${layerLbl}</span></td>
+      <td style="font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(f.kurum)}">${esc(f.kurum)}</td>
+      <td><span class="badge ${kararCls}">${esc(kararLbl)}</span></td>
+      <td style="font-size:11px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(f.message)}">${esc(f.message)}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function clearOldResults(){
+  if(!confirm('Tamamlanan ve eski sonuçlar listeden silinsin mi?\n(Kuyruktaki bekleyen işler korunur.)'))return;
+  try{
+    const r=await fetch(PROV_API+'/queue/results?keep_active=true',{method:'DELETE'});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.detail||('HTTP '+r.status));
+    _activeId=null;
+    const hint=document.getElementById('jobDetail');
+    if(hint)hint.innerHTML='<div class="detail-empty-hint">'+(d.deleted||0)+' kayıt silindi. Listeden bir provizyon seçin.</div>';
+    await loadRecent();
+  }catch(e){
+    alert('Temizlik hatası: '+(e.message||e));
+  }
+}
+
+// ── Init ──
+refreshDashboard();
+loadRecent().then(()=>{
+  if(_recentItems.length&&!_activeId){
+    const firstDone=_recentItems.find(x=>x.status==='done')||_recentItems[0];
+    selectJob(firstDone.provizyon_id);
+  }
+});
+startAutoRefresh();
+setInterval(refreshDashboard,30000);
+const _clrBtn=document.getElementById('btnClearRecent');
+if(_clrBtn)_clrBtn.onclick=clearOldResults;
+</script>
+</body>
+</html>

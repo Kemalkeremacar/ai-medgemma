@@ -1,0 +1,36 @@
+{
+  "decision_id": "expert-huv-34.53153-pending",
+  "procedure_code": "34.53153",
+  "procedure_code_system": "HUV",
+  "procedure_name": "Kan sayımı (Tam kan sayımı / Hemogram / CBC)",
+  "verdict": "approve_shadow_scope",
+  "include_diagnoses": [],
+  "exclude_diagnoses": [],
+  "exceptions": [
+    "Bu işlem için tanı zorunluluğu önerilmiyor (rutin laboratuvar).",
+    "Paket/panel içindeki diğer işlemler ayrı değerlendirilir."
+  ],
+  "decision_if_missing_diagnosis": "PASS",
+  "rationale": "UZMAN DOLDURACAK: Bu HUV lab işleminin tanı aranmadan (diagnosis_policy=not_required) shadow pilot'a alınması medikal-policy olarak uygun mu? Dayanak ve istisnalar buraya.",
+  "source_refs": [
+    {
+      "label": "2026-07-21 belgesiz 100'lük batch lab shadow proposal",
+      "url_or_doc_id": "data/handoffs/review_reduction_lab_not_required_shadow_proposal_20260721",
+      "list_version": ""
+    }
+  ],
+  "confidence": "medium",
+  "valid_from": null,
+  "valid_to": null,
+  "shadow_pilot_approved": false,
+  "live_apply_approved": false,
+  "decided_by": {
+    "name": "UZMAN_ADI",
+    "role": "medikal-policy",
+    "organization": "Vakıf",
+    "authority_id": ""
+  },
+  "decided_at": "2026-07-21T00:00:00Z",
+  "notes": "Batch kanıtı: 53 tani-review vakanın 18 tanesinde blocking. Canlı sistem hâlâ review_required. Form onaylanmadan overlay açılmamalı.",
+  "related_proposal_path": "data/handoffs/review_reduction_lab_not_required_shadow_proposal_20260721"
+}

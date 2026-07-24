@@ -1,0 +1,73 @@
+DGX TRANSFER BUNDLE - REVIEW REDUCTION SHADOW WORK
+=================================================
+
+This bundle is curated for DGX-side analysis and handoff.
+It is not a live apply package and does not authorize Qdrant writes.
+
+Important directories:
+- artifacts/: curated aggregate/shadow outputs
+- scripts/: reproducibility scripts
+- qdrant_shadow/: preview-only JSONL and collection contract
+- BUNDLE_STRUCTURE.md: bundle inventory, precedence, and safety semantics
+
+703790 correction:
+- Read artifacts/review_reduction_703790_shadow_policy_proposal_20260720 first.
+- The recommended cohort is H40-only shadow observation: 146/212 historical REVIEW rows.
+- The earlier 199-row broad AI result is counterfactual only and must not be promoted.
+- H52/H04/H18/H43 remain manual-review; H46/H47.5/H35.3 remain observation-only.
+- The runtime result remains REVIEW_REQUIRED.
+
+Excluded on purpose:
+- SUT/generated/dgx_handoff/rule_engine_results.csv
+- any case-level export or case_id list
+
+Headline:
+YONETIM OZETI
+=============
+Calisma, 2.36M historical provision rule-engine sonucundan review-reduction firsatlarini bulmak icin yapildi.
+Canli karar katmani degistirilmedi; deterministik rule engine halen tek karar katmani olarak kalmali.
+MedGemma sadece shadow reviewer, triage assistant ve AI-only provisional medical-policy reviewer olarak kullanildi.
+AI ciktilari insan/admin/expert onayi degildir; final paket apply-ready degildir.
+
+ANA SAYILAR
+===========
+Historical rows: 2358495
+Baseline REVIEW rows: 239281
+Initial top50 policy candidates: 50
+MedGemma top50 fast-track to expert: 19
+Mapping backlog before policy: 16
+Manual-review/invalid hold: 15
+Operational expert fast-track rows: 19
+AI provisional expert responses: 19 responses, 17 valid
+AI-only shadow candidates after guardrails: 3
+Shadow preview candidate-code occurrences: 505
+Shadow preview full REVIEW-row release candidates: 32
+Shadow preview partial-resolution rows still REVIEW: 473
+
+EN NET ADAY
+===========
+703790, eye_ear temasi icinde en guclu AI-only shadow pilot adayidir.
+Confidence score: 0.9
+Historical review-code rows: 212
+AI provisional shadow-pass occurrence rows: 199
+Full row-level release candidates: 16
+Bu aday bile apply-ready degildir; sadece human/admin governance review icin hazir shadow-only pilot onerisi sayilmalidir.
+
+SON KARAR
+=========
+Canli kurala alinacak bir sonuc yok.
+703790 icin shadow-only policy proposal hazirlanabilir ve insan/admin governance onayina sunulabilir.
+907440 ve 906510 conditional shadow backlog olarak tutulmali.
+908115 ve 704530, MedGemma approve demesine ragmen confidence guardrail nedeniyle bloklandi.
+Mapping backlog cozulmeden lokal/HUV dotted code adaylari icin policy refinement yapilmamali.
+
+GUVENLIK SINIRLARI
+==================
+human_admin_approval_present=false
+apply_ready=false
+auto_apply=false
+writes_to_production_db=false
+writes_to_qdrant=false
+live_runtime_override=false
+exports_case_level_rows=false
+MedGemma output is not human/admin/expert approval.

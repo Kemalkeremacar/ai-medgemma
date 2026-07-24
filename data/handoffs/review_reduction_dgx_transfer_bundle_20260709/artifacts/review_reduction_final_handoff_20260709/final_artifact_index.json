@@ -1,0 +1,66 @@
+[
+  {
+    "artifact_group": "source",
+    "artifact_name": "Historical rule engine results",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\rule_engine_results.csv",
+    "purpose": "Source aggregate/historical decision stream used for mining and shadow preview.",
+    "contains_case_level_rows": true,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "policy_pack",
+    "artifact_name": "Review reduction policy candidates top50",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_policy_pack_20260709\\review_reduction_policy_candidates_top50.csv",
+    "purpose": "Empirical review-reduction candidate list from full historical rule-engine output.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "medgemma_shadow",
+    "artifact_name": "MedGemma top50 triage",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_medgemma_shadow_merge_top50_combined_20260709\\medgemma_review_reduction_shadow_triage_top50_combined.csv",
+    "purpose": "AI shadow triage into expert fast-track, mapping backlog, manual-review hold.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "operational_packs",
+    "artifact_name": "Expert fast-track all19",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\expert_fast_track_review_pack\\expert_fast_track_candidates_all19.csv",
+    "purpose": "Expert-review worklist; later used for AI-only provisional review because no expert was available.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "operational_packs",
+    "artifact_name": "Mapping backlog all16",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_operational_packs_20260709\\mapping_backlog_pack\\mapping_backlog_candidates_all16.csv",
+    "purpose": "Local/HUV mapping candidates that must be resolved before policy refinement.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "ai_provisional_expert_review",
+    "artifact_name": "AI provisional expert decisions all19",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.csv",
+    "purpose": "MedGemma expert-surrogate output; not human/admin approval.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "ai_provisional_shadow_preview",
+    "artifact_name": "AI provisional shadow preview summary",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_summary.csv",
+    "purpose": "Aggregate deterministic preview of AI-only candidate-code impact.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  },
+  {
+    "artifact_group": "final_handoff",
+    "artifact_name": "Final handoff package",
+    "path": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_final_handoff_20260709",
+    "purpose": "Final consolidated summary, decision register, next steps, and artifact index.",
+    "contains_case_level_rows": false,
+    "apply_ready": false
+  }
+]

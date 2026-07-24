@@ -1,0 +1,26 @@
+{
+  "provizyon_id": "demo-red-yanlis-hasta",
+  "hasta_id": "RED004",
+  "patient_name": "Demo Red Yanlis Hasta",
+  "tc_kimlik": "22222222222",
+  "yas": 40,
+  "cinsiyet": "erkek",
+  "code_family": "HUV",
+  "huv_codes": [
+    "34.53153"
+  ],
+  "diagnoses": [
+    "Z00.0"
+  ],
+  "notes": [
+    "Demo RED: belgede başka hasta → yanlis_hasta_belgesi"
+  ],
+  "documents": [
+    {
+      "path": "epikriz.txt",
+      "doc_type": "epikriz",
+      "title": "Epikriz",
+      "declared_hasta_id": "H999"
+    }
+  ]
+}

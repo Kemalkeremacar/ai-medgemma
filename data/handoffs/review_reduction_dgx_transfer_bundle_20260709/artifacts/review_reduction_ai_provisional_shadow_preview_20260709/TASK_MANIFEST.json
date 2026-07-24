@@ -1,0 +1,60 @@
+{
+  "schema_version": "review_reduction_ai_provisional_shadow_preview.v1",
+  "generated_at": "2026-07-09T19:44:11",
+  "mode": "aggregate_only_deterministic_shadow_preview",
+  "inputs": {
+    "rule_engine_results_csv": "C:\\Projects\\ADDQ\\SUT\\generated\\dgx_handoff\\rule_engine_results.csv",
+    "ai_provisional_candidates_json": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_shadow_staging_candidates.json",
+    "ai_provisional_decisions_json": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_expert_review_20260709\\ai_provisional_expert_decisions_all19.json"
+  },
+  "out_dir": "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709",
+  "counts": {
+    "historical_rows_scanned": 2358495,
+    "baseline_decision_counts": {
+      "PASS": 1477473,
+      "NO_PROCEDURE": 262291,
+      "REVIEW": 239281,
+      "SKIPPED": 366381,
+      "NO_RULE": 12792,
+      "FAIL": 277
+    },
+    "row_transition_counts": {
+      "unchanged_non_review": 2119214,
+      "unchanged_review_no_candidate_code": 238711,
+      "review_to_ai_provisional_shadow_pass_candidate": 32,
+      "unchanged_review_candidate_code_not_resolved": 65,
+      "review_partial_resolution_still_review": 473
+    },
+    "candidate_count": 3,
+    "row_level_full_release_rows": 32,
+    "row_level_partial_resolution_rows": 473,
+    "candidate_shadow_pass_occurrence_rows": 505,
+    "guardrail_hold_rows": 16
+  },
+  "safety": {
+    "writes_to_production_db": false,
+    "writes_to_qdrant": false,
+    "live_runtime_override": false,
+    "auto_apply": false,
+    "exports_case_level_rows": false,
+    "exports_case_ids": false,
+    "human_admin_approval_present": false,
+    "preview_only": true
+  },
+  "interpretation": {
+    "candidate_shadow_pass_occurrence_rows": "Rows where the candidate code itself would be treated as AI-provisional shadow-pass for the approved prefix set.",
+    "row_level_full_release_rows": "Conservative aggregate estimate of REVIEW rows whose entire review_codes set would be resolved by this AI-only preview.",
+    "row_level_partial_resolution_rows": "Rows where at least one candidate code is resolved but the row remains REVIEW because another review code remains.",
+    "not_apply_ready": "All outputs remain AI-only preview; human/admin approval is absent."
+  },
+  "generated_files": [
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_summary.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_summary.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_by_prefix.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_by_prefix.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_guardrail_holds.json",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_guardrail_holds.csv",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\ai_provisional_shadow_preview_dashboard.html",
+    "C:\\Projects\\ADDQ\\SUT\\generated\\shadow_quality_gate\\review_reduction_ai_provisional_shadow_preview_20260709\\TASK_MANIFEST.json"
+  ]
+}
