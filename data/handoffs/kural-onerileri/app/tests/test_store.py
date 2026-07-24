@@ -21,10 +21,21 @@ class DataStoreTests(unittest.TestCase):
     def test_summary_counts(self) -> None:
         summary = self.store.get_summary()
         self.assertEqual(summary["counts"]["deterministicProposals"], 799)
+        self.assertEqual(summary["base"]["deterministicProposals"], 799)
+        self.assertEqual(summary["base"]["officialEvidence"], 1391)
+        self.assertNotIn("completedPackets", summary["base"])
         self.assertEqual(summary["counts"]["completedPackets"], 1639)
         self.assertEqual(summary["counts"]["stage"]["rule_synthesis"], 223)
         self.assertEqual(summary["counts"]["stage"]["crosswalk_adjudication"], 1416)
         self.assertEqual(summary["counts"]["status"]["accepted"], 843)
+        ai = summary["aiSnapshot"]
+        self.assertEqual(ai["completedPackets"], 1639)
+        self.assertEqual(ai["status"]["accepted"], 843)
+        self.assertEqual(ai["status"]["blocked"], 795)
+        self.assertEqual(ai["status"]["call_or_parse_error"], 1)
+        self.assertEqual(ai["stage"]["crosswalk_adjudication"], 1416)
+        self.assertEqual(ai["stage"]["rule_synthesis"], 223)
+        self.assertEqual(ai["aiRuleHypotheses"], 159)
         self.assertTrue(summary["safety"]["partialSnapshot"])
         self.assertFalse(summary["safety"]["rawEnabled"])
 

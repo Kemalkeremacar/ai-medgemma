@@ -270,10 +270,60 @@ class DataStore:
             with cov_csv.open("r", encoding="utf-8", newline="") as fh:
                 self.coverage_csv_rows = max(sum(1 for _ in csv.reader(fh)) - 1, 0)
 
+    def _ai_snapshot(self) -> dict[str, Any]:
+        """AI layer from demo-summary / ai-partial-results — not merged into base counts."""
+        counts = self.summary.get("counts") or {}
+        progress_counts = self.progress.get("counts") or {}
+        stage = dict(counts.get("stage") or progress_counts.get("stage") or {})
+        status = dict(counts.get("status") or progress_counts.get("status") or {})
+        completed = counts.get("completedPackets")
+        if completed is None:
+            completed = progress_counts.get("completedPackets")
+        if completed is None:
+            completed = len(self.ai_results)
+
+        ai_rule_hypotheses = 0
+        for row in self.ai_results:
+            if row.get("stage") != "rule_synthesis":
+                continue
+            if row.get("status") != "accepted":
+                continue
+            syn = row.get("synthesis") or {}
+            if syn.get("outcome") == "proposal":
+                ai_rule_hypotheses += 1
+
+        return {
+            "completedPackets": int(completed or 0),
+            "status": {
+                "accepted": int(status.get("accepted") or 0),
+                "blocked": int(status.get("blocked") or 0),
+                "call_or_parse_error": int(status.get("call_or_parse_error") or 0),
+            },
+            "stage": {
+                "crosswalk_adjudication": int(stage.get("crosswalk_adjudication") or 0),
+                "rule_synthesis": int(stage.get("rule_synthesis") or 0),
+            },
+            "aiRuleHypotheses": ai_rule_hypotheses,
+            "sourceState": self.summary.get("sourceState")
+            or self.progress.get("sourceState"),
+            "snapshotCreatedAt": self.summary.get("snapshotCreatedAt")
+            or self.progress.get("snapshotCreatedAt"),
+        }
+
     def get_summary(self) -> dict[str, Any]:
         counts = dict(self.summary.get("counts") or {})
+        # Base (deterministic) counters — do not fold AI packets into proposal/evidence totals.
+        base = {
+            "deterministicProposals": counts.get("deterministicProposals"),
+            "procedureCoverage": counts.get("procedureCoverage"),
+            "officialEvidence": counts.get("officialEvidence"),
+            "engineSignals": counts.get("engineSignals"),
+        }
+        ai_snapshot = self._ai_snapshot()
         return {
             "counts": counts,
+            "base": base,
+            "aiSnapshot": ai_snapshot,
             "limitations": self.summary.get("limitations") or [],
             "labels": dict(self.summary.get("recommendedUiLabels") or LABELS),
             "snapshotCreatedAt": self.summary.get("snapshotCreatedAt"),

@@ -458,31 +458,59 @@
     setActiveNav("dashboard");
     showView("dashboard");
     const s = state.summary;
-    const c = s.counts || {};
-    const stage = c.stage || {};
-    const status = c.status || {};
+    const base = s.base || s.counts || {};
+    const ai = s.aiSnapshot || {
+      completedPackets: (s.counts || {}).completedPackets,
+      status: (s.counts || {}).status || {},
+      stage: (s.counts || {}).stage || {},
+      aiRuleHypotheses: null,
+    };
+    const stage = ai.stage || {};
+    const status = ai.status || {};
     views.dashboard.innerHTML = `<div class="panel"><div class="muted">Yükleniyor…</div></div>`;
     const help = await api("/api/help").catch(() => ({ markdown: "" }));
     if (isRouteStale(gen)) return;
     views.dashboard.innerHTML = `
       <div class="banner info">
         Bu ekran canlı kural yazmaz. HUV ve SUT önerilerini <strong>ayrı ayrı</strong> inceleyin.
+        Deterministik sayaçlar ile AI snapshot <strong>birleştirilmez</strong>.
         <code>accepted</code> insan onayı değildir.
       </div>
-      <div class="grid-stats">
-        <div class="stat"><div class="label">Kural önerisi</div><div class="value">${esc(c.deterministicProposals)}</div></div>
-        <div class="stat"><div class="label">İşlem</div><div class="value">${esc(c.procedureCoverage)}</div></div>
-        <div class="stat"><div class="label">Resmî kanıt</div><div class="value">${esc(c.officialEvidence)}</div></div>
-        <div class="stat"><div class="label">AI paket</div><div class="value">${esc(c.completedPackets)}</div></div>
-      </div>
+
       <div class="panel">
-        <h3 style="margin:0 0 10px">AI aşama / durum</h3>
-        <div class="chips">
+        <h3 class="section-title">Deterministik / base</h3>
+        <p class="muted section-note">Motor aday listesi ve resmî evidence — AI paketleri buraya eklenmez.</p>
+        <div class="grid-stats">
+          <div class="stat"><div class="label">Kural önerisi</div><div class="value">${esc(base.deterministicProposals)}</div></div>
+          <div class="stat"><div class="label">İşlem</div><div class="value">${esc(base.procedureCoverage)}</div></div>
+          <div class="stat"><div class="label">Resmî kanıt</div><div class="value">${esc(base.officialEvidence)}</div></div>
+        </div>
+      </div>
+
+      <div class="panel ai-snapshot">
+        <h3 class="section-title">AI Snapshot</h3>
+        <p class="muted section-note">
+          Kaynak: <code>demo-summary.json</code> + <code>engine-proposals.ai-partial-results.json</code>.
+          Hipotez kartı = <code>rule_synthesis</code> + <code>accepted</code> + <code>outcome=proposal</code>.
+        </p>
+        <div class="grid-stats grid-stats-ai">
+          <div class="stat"><div class="label">Tamamlanan AI paket</div><div class="value">${esc(ai.completedPackets)}</div></div>
+          <div class="stat accent"><div class="label">AI kural hipotezi</div><div class="value">${esc(ai.aiRuleHypotheses)}</div>
+            <div class="hint">accepted rule_synthesis · outcome=proposal</div>
+          </div>
+          <div class="stat"><div class="label">Teknik geçti</div><div class="value">${esc(status.accepted || 0)}</div>
+            <div class="hint">accepted</div>
+          </div>
+          <div class="stat"><div class="label">Engellendi</div><div class="value">${esc(status.blocked || 0)}</div>
+            <div class="hint">blocked</div>
+          </div>
+          <div class="stat"><div class="label">Çağrı / parse hatası</div><div class="value">${esc(status.call_or_parse_error || 0)}</div>
+            <div class="hint">call_or_parse_error</div>
+          </div>
+        </div>
+        <div class="chips" style="margin-top:14px">
+          <span class="pill muted-pill">crosswalk_adjudication ${esc(stage.crosswalk_adjudication || 0)}</span>
           <span class="pill ai">rule_synthesis ${esc(stage.rule_synthesis || 0)}</span>
-          <span class="pill muted-pill">crosswalk ${esc(stage.crosswalk_adjudication || 0)}</span>
-          <span class="pill ok">geçti ${esc(status.accepted || 0)}</span>
-          <span class="pill warn">engellendi ${esc(status.blocked || 0)}</span>
-          ${status.call_or_parse_error ? `<span class="pill danger">hata ${esc(status.call_or_parse_error)}</span>` : ""}
         </div>
         <p class="muted" style="margin:12px 0 0">Öneri detayında yalnız <strong>rule_synthesis</strong> hipotezi gösterilir. Crosswalk sonuçları HUV↔SUT birleştirme UI’si değildir.</p>
         <div class="chips" style="margin-top:14px">
@@ -491,6 +519,7 @@
           <a class="btn secondary" href="#/oneri-ai">Öneri AI</a>
         </div>
       </div>
+
       <div class="panel help-doc">
         ${mdToHtml(help.markdown || "")}
       </div>
