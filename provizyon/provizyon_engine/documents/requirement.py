@@ -130,8 +130,18 @@ def _has_usable_document(job: ProvizyonJob) -> bool:
     return len(job.documents) > 0
 
 
-def check_requirement(job: ProvizyonJob, *, documents_present: bool | None = None) -> LayerResult:
-    """İşlem(ler) belge gerektiriyor mu, gerekiyorsa belge var mı?"""
+def check_requirement(
+    job: ProvizyonJob,
+    *,
+    documents_present: bool | None = None,
+    enable_huv_sut_crosswalk: bool = False,
+) -> LayerResult:
+    """İşlem(ler) belge gerektiriyor mu, gerekiyorsa belge var mı?
+
+    ``enable_huv_sut_crosswalk=False`` iken HUV kodları SUT'a çevrilmez;
+    yalnızca doğrudan SUT kodları ve HUV için document_requirements
+    exact/prefix override'ları kullanılır.
+    """
 
     if documents_present is None:
         documents_present = _has_usable_document(job)
@@ -155,7 +165,7 @@ def check_requirement(job: ProvizyonJob, *, documents_present: bool | None = Non
         elif result is None and not _is_direct_sut_code(code):
             undetermined_huv.append(code)
 
-    if undetermined_huv:
+    if undetermined_huv and enable_huv_sut_crosswalk:
         sut_equivalents = _resolve_huv_to_sut(undetermined_huv)
         for sut_code in sut_equivalents:
             result = _code_requires_document(sut_code, exact, prefixes, required_codes)

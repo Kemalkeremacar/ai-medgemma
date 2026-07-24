@@ -62,6 +62,8 @@ class OrchestratorConfig:
     enable_patient_context: bool = True
     use_qdrant_rag: bool = True
     include_vision: bool = True
+    # HUV→SUT catalog eşleştirmesi; varsayılan settings'ten (genelde kapalı).
+    enable_huv_sut_crosswalk: bool = False
 
 
 class ProvizyonOrchestrator:
@@ -74,7 +76,13 @@ class ProvizyonOrchestrator:
         findings_writer: Any | None = None,
         findings_reader: Any | None = None,
     ) -> None:
-        self.config = config or OrchestratorConfig()
+        if config is None:
+            from . import settings as _settings
+
+            config = OrchestratorConfig(
+                enable_huv_sut_crosswalk=_settings.ENABLE_HUV_SUT_CROSSWALK,
+            )
+        self.config = config
         self.document_source = document_source or FilesystemDocumentSource()
         self._medgemma_client = medgemma_client
         self._findings_writer = findings_writer
@@ -230,7 +238,11 @@ class ProvizyonOrchestrator:
         else:
             from .documents.requirement import check_requirement
 
-            zorunlu = check_requirement(job, documents_present=documents_present)
+            zorunlu = check_requirement(
+                job,
+                documents_present=documents_present,
+                enable_huv_sut_crosswalk=self.config.enable_huv_sut_crosswalk,
+            )
             result.zorunlu_evrak = zorunlu
             if zorunlu.status == LayerStatus.FAIL:
                 return self._finalize(
@@ -269,7 +281,11 @@ class ProvizyonOrchestrator:
         if self.config.enable_sut_rules:
             from .engines.sut_rules import check_sut_rules
 
-            result.sut_kurali = check_sut_rules(job, use_qdrant=self.config.use_qdrant_rag)
+            result.sut_kurali = check_sut_rules(
+                job,
+                use_qdrant=self.config.use_qdrant_rag,
+                enable_huv_sut_crosswalk=self.config.enable_huv_sut_crosswalk,
+            )
 
         # Adım 8: MedGemma klinik değerlendirme (belge varsa ve analiz başarılıysa)
         # Tanı FAIL -> sonuç zaten belli (TANI_EKSIK/TANI_UYUMSUZ); MedGemma ~25sn boşa gider.

@@ -1,8 +1,8 @@
 """SUT deterministic kural motoru adaptörü (karar sırası.txt Adım 4).
 
-Mevcut ``unified_catalog.unified_advisor.advise`` akışını sarar: HUV/SUT
-çözümleme + Qdrant RAG + ``SUTEvaluator`` ile birlikte ödenmezlik, frekans,
-kurum basamağı vb. kuralları uygular.
+Mevcut ``unified_catalog.unified_advisor.advise`` akışını sarar.
+HUV→SUT crosswalk eşleştirmesi ``enable_huv_sut_crosswalk`` ile kontrol edilir
+(varsayılan kapalı). Doğrudan SUT kodları bu bayraktan bağımsız değerlendirilir.
 """
 
 from __future__ import annotations
@@ -55,8 +55,25 @@ def _local_sut_candidates(huv_codes: list[str]) -> list[dict[str, Any]]:
     return resolved
 
 
-def _early_skip_sut(job: ProvizyonJob, procedures: list[dict[str, Any]]) -> LayerResult | None:
-    """TZH-only veya yerel katalogda SUT eşlemesi yoksa ağır advise() çağrısını atla."""
+def _sut_only_procedures(procedures: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Crosswalk kapalıyken yalnızca doğrudan SUT kodlu işlemleri bırak."""
+
+    out: list[dict[str, Any]] = []
+    for proc in procedures:
+        code = str(proc.get("code") or "").strip()
+        code_type = str(proc.get("code_type") or "").strip().upper()
+        if _is_sut_code(code) or code_type == "SUT":
+            out.append(proc)
+    return out
+
+
+def _early_skip_sut(
+    job: ProvizyonJob,
+    procedures: list[dict[str, Any]],
+    *,
+    enable_huv_sut_crosswalk: bool,
+) -> LayerResult | None:
+    """TZH-only, crosswalk-kapalı HUV-only veya eşlemesiz durumlarda advise() atla."""
 
     codes = [str(p.get("code") or "").strip() for p in procedures if p.get("code")]
     if not codes:
@@ -79,6 +96,20 @@ def _early_skip_sut(job: ProvizyonJob, procedures: list[dict[str, Any]]) -> Laye
             detail={"skipped_reason": "tzh_only"},
         )
 
+    if not enable_huv_sut_crosswalk:
+        return LayerResult(
+            layer="sut_kurali",
+            status=LayerStatus.SKIPPED,
+            message=(
+                "HUV→SUT eşleştirmesi kapalı; doğrudan SUT kodu olmadığı için "
+                "SUT işlem kuralı atlandı. HUV kuralları ayrı değerlendirilir."
+            ),
+            detail={
+                "skipped_reason": "huv_sut_crosswalk_disabled",
+                "huv_codes": job.all_huv_codes() or numeric_huv,
+            },
+        )
+
     huv_codes = job.all_huv_codes() or numeric_huv
     local = _local_sut_candidates(huv_codes)
     if not _has_evaluable_sut_mapping(local):
@@ -94,13 +125,33 @@ def _early_skip_sut(job: ProvizyonJob, procedures: list[dict[str, Any]]) -> Laye
     return None
 
 
-def check_sut_rules(job: ProvizyonJob, *, use_qdrant: bool = True) -> LayerResult:
+def check_sut_rules(
+    job: ProvizyonJob,
+    *,
+    use_qdrant: bool = True,
+    enable_huv_sut_crosswalk: bool = False,
+) -> LayerResult:
     """İşlemler arası SUT kurallarını değerlendirir, LayerResult döner."""
 
     procedures = _procedures_payload(job)
-    skipped = _early_skip_sut(job, procedures)
+    skipped = _early_skip_sut(
+        job, procedures, enable_huv_sut_crosswalk=enable_huv_sut_crosswalk
+    )
     if skipped is not None:
         return skipped
+
+    if not enable_huv_sut_crosswalk:
+        procedures = _sut_only_procedures(procedures)
+        if not procedures:
+            return LayerResult(
+                layer="sut_kurali",
+                status=LayerStatus.SKIPPED,
+                message=(
+                    "HUV→SUT eşleştirmesi kapalı; doğrudan SUT kodu olmadığı için "
+                    "SUT işlem kuralı atlandı."
+                ),
+                detail={"skipped_reason": "huv_sut_crosswalk_disabled"},
+            )
 
     if not settings.SUT_RULES_PATH.exists():
         return LayerResult(
@@ -118,12 +169,13 @@ def check_sut_rules(job: ProvizyonJob, *, use_qdrant: bool = True) -> LayerResul
             out_dir=settings.SUT_OUT_DIR,
             rules_path=settings.SUT_RULES_PATH,
             sut_index=settings.SUT_INDEX_PATH,
-            use_qdrant=use_qdrant,
+            use_qdrant=use_qdrant and enable_huv_sut_crosswalk,
             collection=settings.SUT_UNIFIED_COLLECTION,
             qdrant_url=settings.QDRANT_URL,
             tei_url=settings.TEI_URL,
             provizyon_context=_context_payload(job),
             input_services=procedures,
+            allow_huv_crosswalk=enable_huv_sut_crosswalk,
         )
     except Exception as exc:  # RAG/motor hatası kuyruğu durdurmasın
         return LayerResult(
@@ -146,9 +198,31 @@ def check_sut_rules(job: ProvizyonJob, *, use_qdrant: bool = True) -> LayerResul
     # TZH HUV kodlarında SGK SUT eşlemesi olmayabilir; kural motoru çalışmadıysa atla.
     if status == LayerStatus.PASS and not _has_evaluable_sut_mapping(resolved_services):
         status = LayerStatus.SKIPPED
-        message = (
-            "HUV kodları için güvenilir SGK SUT eşlemesi yok; "
-            "TZH provizyonunda SUT kural kontrolü atlandı."
+        if not enable_huv_sut_crosswalk:
+            message = (
+                "HUV→SUT eşleştirmesi kapalı; değerlendirilebilir doğrudan SUT "
+                "işlemi bulunamadı."
+            )
+            skipped_reason = "huv_sut_crosswalk_disabled"
+        else:
+            message = (
+                "HUV kodları için güvenilir SGK SUT eşlemesi yok; "
+                "TZH provizyonunda SUT kural kontrolü atlandı."
+            )
+            skipped_reason = "no_local_sut_mapping"
+        return LayerResult(
+            layer="sut_kurali",
+            status=status,
+            message=message,
+            detail={
+                "overall_status": overall,
+                "summary": summary,
+                "blocking_findings": blocking,
+                "resolved_services": resolved_services,
+                "warnings": result_warnings,
+                "skipped_reason": skipped_reason,
+                "result": result,
+            },
         )
 
     return LayerResult(
@@ -161,6 +235,7 @@ def check_sut_rules(job: ProvizyonJob, *, use_qdrant: bool = True) -> LayerResul
             "blocking_findings": blocking,
             "resolved_services": resolved_services,
             "warnings": result_warnings,
+            "huv_sut_crosswalk_enabled": enable_huv_sut_crosswalk,
             "result": result,
         },
     )

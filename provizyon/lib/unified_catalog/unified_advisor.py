@@ -38,25 +38,37 @@ def advise(
     context_limit: int = 8,
     provizyon_context: dict[str, Any] | None = None,
     input_services: list[dict[str, Any]] | None = None,
+    allow_huv_crosswalk: bool = False,
 ) -> dict[str, Any]:
-    retriever = UnifiedCatalogRetriever(
-        out_dir=out_dir,
-        use_qdrant=use_qdrant,
-        collection=collection,
-        qdrant_url=qdrant_url,
-        tei_url=tei_url,
-        context_limit=context_limit,
-    )
-    retrieved = retriever.retrieve(question, limit=context_limit)
     sut_records = sut_by_code(load_sut_records(sut_index)) if sut_index.exists() else {}
-    input_huv_codes = extract_huv_codes(question)
-    input_sut_codes = _clean_sut_codes(question, input_huv_codes)
+    extracted_huv_codes = extract_huv_codes(question)
+    input_sut_codes = _clean_sut_codes(question, extracted_huv_codes)
+    input_sut_codes = _merge_sut_codes(input_sut_codes, input_services or [])
 
-    resolved = _resolved_from_retrieval(
-        retrieved,
-        input_huv_codes,
-        allow_semantic=not (input_huv_codes or input_sut_codes),
-    )
+    retrieved: list = []
+    qdrant_error: str | None = None
+    if allow_huv_crosswalk:
+        input_huv_codes = extracted_huv_codes
+        retriever = UnifiedCatalogRetriever(
+            out_dir=out_dir,
+            use_qdrant=use_qdrant,
+            collection=collection,
+            qdrant_url=qdrant_url,
+            tei_url=tei_url,
+            context_limit=context_limit,
+        )
+        retrieved = retriever.retrieve(question, limit=context_limit)
+        qdrant_error = retriever.qdrant_error
+        resolved = _resolved_from_retrieval(
+            retrieved,
+            input_huv_codes,
+            allow_semantic=not (input_huv_codes or input_sut_codes),
+        )
+    else:
+        # HUV→SUT crosswalk kapalı: yalnızca doğrudan SUT kodları kural motoruna alınır.
+        input_huv_codes = []
+        resolved = []
+
     resolved.extend(_direct_sut_resolved(input_sut_codes, sut_records))
     resolved = _dedupe_resolved(resolved)
 
@@ -71,15 +83,21 @@ def advise(
         evaluator_input
     )
     rule_lookup = _rules_for_codes(rules, [service["code"] for service in services_for_eval])
-    warnings = _advisor_warnings(resolved, services_for_eval, retriever.qdrant_error)
+    warnings = _advisor_warnings(resolved, services_for_eval, qdrant_error)
+    if not allow_huv_crosswalk and extracted_huv_codes:
+        warnings = [
+            *warnings,
+            "HUV→SUT crosswalk kapalı; HUV kodları SUT’a çevrilmedi.",
+        ]
     return {
         "question": question,
         "input_huv_codes": input_huv_codes,
         "input_sut_codes": input_sut_codes,
+        "allow_huv_crosswalk": allow_huv_crosswalk,
         "retrieval": {
-            "qdrant_enabled": use_qdrant,
+            "qdrant_enabled": use_qdrant and allow_huv_crosswalk,
             "qdrant_collection": collection,
-            "qdrant_error": retriever.qdrant_error,
+            "qdrant_error": qdrant_error,
             "result_count": len(retrieved),
             "results": [entry.to_dict() for entry in retrieved],
         },
@@ -318,6 +336,27 @@ def _clean_sut_codes(question: str, huv_codes: list[str]) -> list[str]:
         code for code in extract_sut_codes(question)
         if code not in huv_suffixes
     ]
+
+
+def _merge_sut_codes(codes: list[str], input_services: list[dict[str, Any]]) -> list[str]:
+    """Soru metnindeki SUT kodlarına input_services'teki doğrudan SUT kodlarını ekle."""
+
+    seen = {c.upper() for c in codes}
+    merged = list(codes)
+    for service in input_services:
+        code = str(
+            service.get("code")
+            or service.get("service_code")
+            or service.get("islem_kodu")
+            or ""
+        ).strip().upper()
+        code_type = str(service.get("code_type") or "").strip().upper()
+        if not code or code in seen:
+            continue
+        if code_type == "SUT" or (len(code) == 6 and code.isdigit() and not code.startswith("0")):
+            seen.add(code)
+            merged.append(code)
+    return merged
 
 
 def to_json(result: dict[str, Any]) -> str:

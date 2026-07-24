@@ -769,6 +769,15 @@ def _catalog_stats() -> dict[str, Any]:
             crosswalk is not None and qdrant_pts is not None and crosswalk == qdrant_pts
         ),
         "generated_at": generated_at,
+        # Katalog dosyası diskte kalır; runtime HUV→SUT eşleştirme ayrı bayrakla kontrol edilir.
+        "huv_sut_crosswalk_runtime_enabled": bool(
+            getattr(settings, "ENABLE_HUV_SUT_CROSSWALK", False)
+        ),
+        "huv_sut_crosswalk_note": (
+            "runtime eşleştirme açık"
+            if getattr(settings, "ENABLE_HUV_SUT_CROSSWALK", False)
+            else "runtime eşleştirme kapalı (PROVIZYON_ENABLE_HUV_SUT_CROSSWALK=0)"
+        ),
     }
 
 

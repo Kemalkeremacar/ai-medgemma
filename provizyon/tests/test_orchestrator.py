@@ -1481,5 +1481,109 @@ class DiagnosisQdrantTests(unittest.TestCase):
         self.assertEqual(rule["diagnosis_policy"], "not_required")
 
 
+class HuvSutCrosswalkDisableTests(unittest.TestCase):
+    """HUV→SUT runtime crosswalk kapalıyken beklenen davranış."""
+
+    def test_huv_only_skips_sut_rules_with_reason(self):
+        from provizyon_engine.engines.sut_rules import check_sut_rules
+
+        job = ProvizyonJob(
+            provizyon_id="P-XW-HUV",
+            huv_codes=["24.73601"],
+            code_family="HUV",
+        )
+        result = check_sut_rules(job, use_qdrant=False, enable_huv_sut_crosswalk=False)
+        self.assertEqual(result.status, LayerStatus.SKIPPED)
+        self.assertEqual(result.detail.get("skipped_reason"), "huv_sut_crosswalk_disabled")
+
+    def test_direct_sut_still_runs_advise(self):
+        from unittest.mock import patch
+
+        from provizyon_engine.engines import sut_rules as sut_mod
+
+        job = ProvizyonJob(
+            provizyon_id="P-XW-SUT",
+            sut_codes=["530140"],
+            code_family="SUT",
+            procedures=[ProcedureInput(code="530140", code_type="SUT")],
+        )
+        fake_advice = {
+            "resolved_services": [
+                {
+                    "input_kind": "SUT",
+                    "input_code": "530140",
+                    "sut_code": "530140",
+                    "relation_type": "direct_sut",
+                    "rule_eval_allowed": True,
+                }
+            ],
+            "warnings": [],
+            "sut_rule_evaluation": {
+                "overall_status": "PASS",
+                "summary": {},
+                "service_results": [],
+            },
+        }
+        with patch.object(sut_mod, "settings") as fake_settings:
+            fake_settings.SUT_RULES_PATH.exists.return_value = True
+            fake_settings.SUT_OUT_DIR = Path("/tmp")
+            fake_settings.SUT_INDEX_PATH = Path("/tmp")
+            fake_settings.SUT_UNIFIED_COLLECTION = "test"
+            fake_settings.QDRANT_URL = "http://localhost"
+            fake_settings.TEI_URL = "http://localhost"
+            with patch(
+                "unified_catalog.unified_advisor.advise",
+                return_value=fake_advice,
+            ) as advise_mock:
+                result = sut_mod.check_sut_rules(
+                    job, use_qdrant=False, enable_huv_sut_crosswalk=False
+                )
+
+        self.assertNotEqual(result.status, LayerStatus.SKIPPED)
+        self.assertEqual(result.status, LayerStatus.PASS)
+        advise_mock.assert_called_once()
+        kwargs = advise_mock.call_args.kwargs
+        self.assertFalse(kwargs.get("allow_huv_crosswalk"))
+        services = kwargs.get("input_services") or []
+        self.assertTrue(any(str(s.get("code")) == "530140" for s in services))
+
+    def test_requirement_skips_huv_to_sut_resolve(self):
+        from unittest.mock import patch
+
+        job = ProvizyonJob(
+            provizyon_id="P-XW-REQ",
+            huv_codes=["24.73601"],
+            code_family="HUV",
+        )
+
+        def _undetermined(code, *args, **kwargs):
+            # HUV için belirsiz → crosswalk yolu; aksi halde belge zorunlu değil.
+            return None if not requirement_mod._is_direct_sut_code(code) else False
+
+        with patch.object(
+            requirement_mod, "_code_requires_document", side_effect=_undetermined
+        ):
+            with patch.object(requirement_mod, "_resolve_huv_to_sut") as resolve_off:
+                resolve_off.return_value = ["530140"]
+                requirement_mod.check_requirement(
+                    job,
+                    documents_present=False,
+                    enable_huv_sut_crosswalk=False,
+                )
+            resolve_off.assert_not_called()
+
+            with patch.object(requirement_mod, "_resolve_huv_to_sut") as resolve_on:
+                resolve_on.return_value = []
+                requirement_mod.check_requirement(
+                    job,
+                    documents_present=False,
+                    enable_huv_sut_crosswalk=True,
+                )
+            resolve_on.assert_called_once_with(["24.73601"])
+
+    def test_orchestrator_default_config_disables_crosswalk(self):
+        self.assertFalse(OrchestratorConfig().enable_huv_sut_crosswalk)
+
+
 if __name__ == "__main__":
     unittest.main()

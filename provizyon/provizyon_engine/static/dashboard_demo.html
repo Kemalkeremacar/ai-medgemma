@@ -1589,9 +1589,18 @@ function renderJobDetailDev(d){
   if(sk){
     const sdt=sk.detail||{};
     let body=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">${esc(sk.message||'')}</div>`;
-    const rs=asList(sdt.resolved_services);
+    const SKIP_REASON_TR={
+      huv_sut_crosswalk_disabled:'HUV→SUT eşleştirmesi kapalı (doğrudan SUT yok)',
+      no_local_sut_mapping:'Yerel SUT eşlemesi yok',
+      tzh_only:'Yalnızca TZH meta kodları',
+    };
+    const rs=asList(sdt.resolved_services).filter(s=>{
+      // Crosswalk kapalıyken HUV→SUT satırlarını gösterme; yalnızca doğrudan SUT.
+      if(sdt.huv_sut_crosswalk_enabled===false && String(s.relation_type||'')!=='direct_sut' && String(s.input_kind||'').toUpperCase()==='HUV') return false;
+      return true;
+    });
     if(rs.length){
-      body+=`<table><thead><tr><th>HUV</th><th>SUT</th><th>Tür</th><th>Güven</th><th>Durum</th></tr></thead><tbody>`;
+      body+=`<table><thead><tr><th>Giriş</th><th>SUT</th><th>Tür</th><th>Güven</th><th>Durum</th></tr></thead><tbody>`;
       rs.forEach(s=>{
         const cb={high:'b-green',medium:'b-yellow',low:'b-red'};
         body+=`<tr>
@@ -1604,7 +1613,10 @@ function renderJobDetailDev(d){
       });
       body+=`</tbody></table>`;
     }
-    if(sdt.skipped_reason)body+=`<div class="detail-badges" style="margin-top:8px"><span class="badge b-gray">${esc(sdt.skipped_reason)}</span></div>`;
+    if(sdt.skipped_reason){
+      const skipLabel=SKIP_REASON_TR[sdt.skipped_reason]||sdt.skipped_reason;
+      body+=`<div class="detail-badges" style="margin-top:8px"><span class="badge b-gray" title="${esc(sdt.skipped_reason)}">${esc(skipLabel)}</span></div>`;
+    }
     const bf=asList(sdt.blocking_findings);
     if(bf.length)body+=`<div style="margin-top:8px;font-size:11px;color:var(--red)"><strong>Bloke:</strong> ${bf.map(x=>esc(typeof x==='string'?x:JSON.stringify(x))).join('; ')}</div>`;
     if(sdt.qdrant_used!=null)body+=`<div class="detail-badges" style="margin-top:8px"><span class="badge ${sdt.qdrant_used?'b-green':'b-gray'}">Kural veritabanı: ${sdt.qdrant_used?'Kullanıldı':'Kullanılmadı'}</span></div>`;

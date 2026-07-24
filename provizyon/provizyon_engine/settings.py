@@ -137,6 +137,10 @@ SUT_OUT_DIR = Path(_env("PROVIZYON_SUT_OUT_DIR", str(_DATA_GENERATED / "unified_
 SUT_RULES_PATH = Path(_env("PROVIZYON_SUT_RULES", str(_DATA_GENERATED / "sut_rules_merged.json")))
 SUT_INDEX_PATH = Path(_env("PROVIZYON_SUT_INDEX", str(_DATA_GENERATED / "sut_index_core.json")))
 SUT_UNIFIED_COLLECTION = _env("PROVIZYON_SUT_COLLECTION", "huv_sut_unified_catalog")
+# HUV→SUT crosswalk runtime eşleştirmesi (varsayılan kapalı).
+# True iken Adım 5/7 HUV kodlarını SUT'a çevirerek kural/evrak değerlendirebilir.
+# Doğrudan SUT kodları bu bayraktan bağımsız çalışır.
+ENABLE_HUV_SUT_CROSSWALK = _env_bool("PROVIZYON_ENABLE_HUV_SUT_CROSSWALK", False)
 
 # --- MSSQL veritabanı -----------------------------------------------------
 MSSQL_HOST = _env("MSSQL_HOST", "178.157.14.208")
