@@ -1,0 +1,103 @@
+{
+  "createdAt": "2026-07-27T08:37:49.133875+00:00",
+  "delta": {
+    "addedPackets": 2083,
+    "changedExistingPackets": 1,
+    "changedPackets": [
+      {
+        "currentResultSha256": "06af63dc2df2e88a0c07bc88f17a213e21f189fce242cad97e5b8e93ee4606c4",
+        "packetId": "engine-ai-rule_synthesis-2ed9fdf7c638b02d03c15d4f",
+        "previousResultSha256": "a61892b0f680e87e19720ddd0fb5a1cd93494415dff70ce8e43886ac5bf04ef0"
+      }
+    ],
+    "fromCompletedPackets": 1639,
+    "key": "packetId",
+    "path": "data/delta/engine-proposals.ai-results.delta.json",
+    "removedPackets": 0,
+    "toCompletedPackets": 3722,
+    "upsertPackets": 2084
+  },
+  "expectedTarget": {
+    "minimumExistingSnapshotPackets": 1639,
+    "proposalPackageSha256": "3580ac21f05b513c117794bc645520eb24477d641384015ac93750c07d5e4f33",
+    "requiredPaths": [
+      "app/server.py",
+      "data/base/engine-proposals.json",
+      "data/snapshot/engine-proposals.ai-partial-results.json",
+      "data/snapshot/engine-proposals.partial-enriched.json"
+    ]
+  },
+  "files": [
+    {
+      "bytes": 4494144,
+      "path": "data/delta/engine-proposals.ai-results.delta.json",
+      "sha256": "a4b66ecfca14dfa505cfbe1ceb09988fc9e74dfb6a43b65d0f1a0b92b31ff037"
+    },
+    {
+      "bytes": 68810,
+      "path": "data/snapshot/demo-sample.json",
+      "sha256": "d87f78a32cf4dcd7326bbea25e3037a00b08c5b19ffbc120bac5209f0bb5504f"
+    },
+    {
+      "bytes": 1663,
+      "path": "data/snapshot/demo-summary.json",
+      "sha256": "b60b35916db86f38f4c039afcba71a748a91e98b1225dfbb02e41d3d10067df1"
+    },
+    {
+      "bytes": 8264668,
+      "path": "data/snapshot/engine-proposals.ai-partial-results.json",
+      "sha256": "5595fbf81e9ffa68928f660d471986fae01d2d3b3da945097091d31f3f8f6fd4"
+    },
+    {
+      "bytes": 1272,
+      "path": "data/snapshot/engine-proposals.ai-progress.snapshot.json",
+      "sha256": "c7946560e9fc8dec27c478e42100a4264a4d77ac350bd147ec6ce4d9a762a5b5"
+    },
+    {
+      "bytes": 18420116,
+      "path": "data/snapshot/engine-proposals.partial-enriched.json",
+      "sha256": "e9d128f416f2e3c949aa733d3327b22d49faecf3530902d9d0a18d3fd6a1d582"
+    },
+    {
+      "bytes": 4704,
+      "path": "DGX_FINAL_UPDATE_AGENT_PROMPT.md",
+      "sha256": "fea0a16aecd705dfca53a23dca43420b491283977c54ba566c790d1ae53ab5bc"
+    },
+    {
+      "bytes": 10395,
+      "path": "scripts/apply_snapshot_update.py",
+      "sha256": "eeffca964322675c77cde0f3327672f8ff4fbec55c1d44aeb9ba901787a8240b"
+    },
+    {
+      "bytes": 3834,
+      "path": "scripts/validate_update.py",
+      "sha256": "7271f2a178e07baae414d9df4315ff1614776cd98978de31ad9e1b444e73a66e"
+    }
+  ],
+  "safety": {
+    "callsModel": false,
+    "containsBaseLayer": false,
+    "containsRawModelResponses": false,
+    "containsSecrets": false,
+    "requiresHumanReview": true,
+    "touchesApp": false,
+    "writesToDatabase": false
+  },
+  "schemaVersion": "outpatient_rule_engine_dgx_snapshot_update.v1",
+  "snapshot": {
+    "completedPackets": 3722,
+    "sourceCheckpointSha256": "99c350eabf29be3d4af003b8150f5186b4caa28247e565bbe803e8d48b07b563",
+    "sourceState": "complete",
+    "stage": {
+      "crosswalk_adjudication": 1416,
+      "proposal_rescue": 1507,
+      "rule_synthesis": 799
+    },
+    "status": {
+      "accepted": 2828,
+      "blocked": 892,
+      "call_or_parse_error": 2
+    }
+  },
+  "updateMode": "replace_snapshot_layer"
+}

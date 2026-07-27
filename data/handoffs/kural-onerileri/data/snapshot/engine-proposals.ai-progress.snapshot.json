@@ -6,6 +6,7 @@
     "requestConfig": {
       "maxTokens": 4096,
       "responseFormatJson": true,
+      "responseJsonSchema": "outpatient_rule_engine_ai_response_v1",
       "temperature": 0.1,
       "timeoutSeconds": 900
     },
@@ -15,15 +16,16 @@
     }
   },
   "counts": {
-    "completedPackets": 1639,
+    "completedPackets": 3722,
     "stage": {
       "crosswalk_adjudication": 1416,
-      "rule_synthesis": 223
+      "proposal_rescue": 1507,
+      "rule_synthesis": 799
     },
     "status": {
-      "accepted": 843,
-      "blocked": 795,
-      "call_or_parse_error": 1
+      "accepted": 2828,
+      "blocked": 892,
+      "call_or_parse_error": 2
     }
   },
   "safety": {
@@ -33,7 +35,7 @@
     "writesToDatabase": false
   },
   "schemaVersion": "outpatient_rule_engine_ai_progress_snapshot.v1",
-  "snapshotCreatedAt": "2026-07-24T13:23:49.847027+00:00",
-  "sourceCheckpointSha256": "0451a8b560748ee7b9013cb1dc41f23e497e877ca52e6c87a677e20cbb609d5e",
-  "sourceState": "running"
+  "snapshotCreatedAt": "2026-07-27T08:37:49.133875+00:00",
+  "sourceCheckpointSha256": "99c350eabf29be3d4af003b8150f5186b4caa28247e565bbe803e8d48b07b563",
+  "sourceState": "complete"
 }

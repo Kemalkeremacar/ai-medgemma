@@ -103,9 +103,13 @@ html.embedded .content{padding-top:16px}
 .card:hover{box-shadow:var(--shadow-md)}
 .card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-table-wrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.card-table-wrap table th:first-child,.card-table-wrap table td:first-child{padding-left:16px}
-.card-table-wrap table th:last-child,.card-table-wrap table td:last-child{padding-right:16px}
+.card-table-wrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto;max-height:min(340px,calc(100vh - 360px));background:var(--bg2)}
+.card-table-wrap table{border-collapse:separate;border-spacing:0}
+.card-table-wrap thead th{position:sticky;top:0;z-index:2;box-shadow:0 1px 0 var(--border)}
+.card-table-wrap table th,.card-table-wrap table td{padding:7px 10px}
+.card-table-wrap table th:first-child,.card-table-wrap table td:first-child{padding-left:14px}
+.card-table-wrap table th:last-child,.card-table-wrap table td:last-child{padding-right:14px}
+.card-table-wrap .list-meta{font-size:11px;color:var(--text3);padding:6px 14px;border-top:1px solid var(--border);background:var(--bg3);position:sticky;bottom:0}
 
 /* Badge */
 .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.02em}
@@ -310,8 +314,8 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
   <div class="header-left">
     <div class="logo">PV</div>
     <div class="header-titles">
-      <h1><span>Sistem</span> <span style="font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.02em">HASTA GİZLİ</span></h1>
-      <div class="header-sub">Provizyonlar + Kurum Analiz · hasta bilgileri anonimleştirilmiştir</div>
+      <h1><span>Sistem</span> <span style="font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.02em">TEKNİK · HASTA GİZLİ</span></h1>
+      <div class="header-sub">Operatör değerlendirme paneli · tüm pipeline detayı · kimlik alanları maskeli</div>
     </div>
   </div>
   <div class="header-right">
@@ -325,12 +329,12 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
 <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
   <div>
     <div class="page-title">Sistem</div>
-    <div class="page-desc">Provizyonlar ve Kurum Analiz görünümü; kimlik alanları maskeli (sunum / dış paylaşım).</div>
+    <div class="page-desc">Kendi değerlendirme denetim ekranın: OCR, kurallar, MedGemma, hasta geçmişi, benzer vaka, persist — tam teknik detay. Sunum için ana menüdeki Provizyonlar sekmesini kullan.</div>
   </div>
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('prov')">Provizyonlar</button>
+  <button class="tab-btn active" onclick="switchTab('prov')">Değerlendirmeler</button>
   <button class="tab-btn" onclick="switchTab('analiz')">Kurum Analiz</button>
 </div>
 
@@ -340,7 +344,7 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
     <div class="kpi"><div class="kpi-label">Toplam</div><div class="kpi-val" id="kpiTotal" style="color:var(--indigo)">—</div><div class="kpi-sub" id="kpiTotalSub"></div></div>
     <div class="kpi"><div class="kpi-label">Ort. Klinik Skor</div><div class="kpi-val" id="kpiSkor" style="color:var(--cyan)">—</div><div class="kpi-sub" id="kpiSkorSub"></div></div>
     <div class="kpi"><div class="kpi-label">Uygun</div><div class="kpi-val" id="kpiOk" style="color:var(--green)">—</div><div class="kpi-sub" id="kpiOkSub"></div></div>
-    <div class="kpi"><div class="kpi-label">Reddedilen</div><div class="kpi-val" id="kpiDenied" style="color:var(--red)">—</div><div class="kpi-sub" id="kpiDeniedSub"></div></div>
+    <div class="kpi"><div class="kpi-label">Red</div><div class="kpi-val" id="kpiDenied" style="color:var(--red)">—</div><div class="kpi-sub" id="kpiDeniedSub"></div></div>
     <div class="kpi"><div class="kpi-label">Kuyruk</div><div class="kpi-val" id="kpiQueue" style="color:var(--blue)">—</div><div class="kpi-sub" id="kpiQueueSub"></div></div>
   </div>
 
@@ -363,6 +367,7 @@ tr.row-active td{background:var(--indigo-bg)!important;box-shadow:inset 3px 0 0 
       <thead><tr><th style="width:100px">Provizyon</th><th>Hasta</th><th>Durum</th><th>Klinik Skor</th><th>Karar</th><th>Risk</th><th style="max-width:200px">Gerekçe</th><th>Süre</th><th>Zaman</th></tr></thead>
       <tbody id="recentTb"><tr><td colspan="9" class="empty-text" style="text-align:center;padding:20px">Yükleniyor…</td></tr></tbody>
     </table>
+    <div class="list-meta" id="recentListMeta">Kaydırarak tüm provizyonları seçin</div>
     </div>
   </div>
 
@@ -668,18 +673,48 @@ function anonScrub(obj){
   _collectIdentifiers(clone);
   return _scrubDeep(clone);
 }
-const KARAR_CLS={uygun:'allowed',tani_eksik:'denied',tani_uyumsuz:'denied',evrak_eksik:'denied',yanlis_hasta_belgesi:'denied',klinik_uyumsuzluk:'denied',belge_kaniti_yetersiz:'denied'};
-const KARAR_LABEL={uygun:'Uygun',manuel_inceleme:'Manuel İnceleme',tani_eksik:'Tanı Eksik',tani_uyumsuz:'Tanı Uyumsuz',evrak_eksik:'Evrak Eksik',yanlis_hasta_belgesi:'Yanlış Hasta Belgesi',klinik_uyumsuzluk:'Klinik Uyumsuzluk',belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz'};
-const KARAR_BADGE={uygun:'b-green',tani_eksik:'b-red',tani_uyumsuz:'b-red',evrak_eksik:'b-red',yanlis_hasta_belgesi:'b-red',klinik_uyumsuzluk:'b-red',belge_kaniti_yetersiz:'b-yellow',manuel_inceleme:'b-yellow'};
+const DENIED_KARAR=new Set(['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz']);
+const REVIEW_KARAR=new Set(['manuel_inceleme','ai_yorumu_bekleniyor','belge_analizi_tamamlanamadi']);
+const KARAR_CLS={
+  uygun:'allowed',
+  tani_eksik:'denied',tani_uyumsuz:'denied',evrak_eksik:'denied',yanlis_hasta_belgesi:'denied',
+  klinik_uyumsuzluk:'denied',belge_kaniti_yetersiz:'denied',
+  manuel_inceleme:'review',ai_yorumu_bekleniyor:'review',belge_analizi_tamamlanamadi:'review'
+};
+const KARAR_LABEL={
+  uygun:'Uygun',manuel_inceleme:'Manuel İnceleme',
+  tani_eksik:'Tanı Eksik',tani_uyumsuz:'Tanı Uyumsuz',evrak_eksik:'Evrak Eksik',
+  yanlis_hasta_belgesi:'Yanlış Hasta Belgesi',klinik_uyumsuzluk:'Klinik Uyumsuzluk',
+  belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz',
+  ai_yorumu_bekleniyor:'AI Yorumu Bekleniyor',belge_analizi_tamamlanamadi:'Belge Analizi Tamamlanamadı'
+};
+const KARAR_BADGE={
+  uygun:'b-green',manuel_inceleme:'b-yellow',
+  tani_eksik:'b-red',tani_uyumsuz:'b-red',evrak_eksik:'b-red',yanlis_hasta_belgesi:'b-red',
+  klinik_uyumsuzluk:'b-red',belge_kaniti_yetersiz:'b-red',
+  ai_yorumu_bekleniyor:'b-yellow',belge_analizi_tamamlanamadi:'b-gray'
+};
 const STATUS_BADGE={pass:'b-green',fail:'b-red',review:'b-yellow',insufficient:'b-yellow',skipped:'b-gray',skip:'b-gray'};
-const STATUS_LABEL={pass:'Başarılı',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',skip:'Atlandı'};
+const STATUS_LABEL={pass:'Geçti',fail:'Başarısız',review:'İnceleme',insufficient:'Yetersiz',skipped:'Atlandı',skip:'Atlandı'};
 const JOB_STATUS_LABEL={done:'Tamamlandı',failed:'Hatalı',queued:'Kuyrukta',processing:'İşleniyor',pending:'Bekliyor'};
 const VERDICT_LABEL={match:'Eşleşti',uncertain:'Belirsiz',mismatch:'Uyuşmadı',exempt:'Muaf'};
 const CONFIDENCE_LABEL={high:'Yüksek',medium:'Orta',low:'Düşük'};
-const RISK_LEVEL_BADGE={green:'b-green',blue:'b-blue',yellow:'b-yellow',orange:'b-orange',red:'b-red',gray:'b-gray'};
-const RISK_LEVEL_LABEL={green:'Düşük',blue:'Düşük',yellow:'Dikkat',orange:'İnceleme',red:'Yüksek',gray:'Belirsiz'};
-const DECISION_TYPE_LABEL={automatic_defensible:'Savunulabilir',manual_review:'Manuel',low_risk:'Düşük Risk'};
+const RISK_LEVEL_BADGE={green:'b-green',blue:'b-blue',yellow:'b-yellow',orange:'b-orange',red:'b-red',gray:'b-gray',low:'b-green',medium:'b-yellow',high:'b-red',critical:'b-red'};
+const RISK_LEVEL_LABEL={green:'Düşük risk',blue:'İzleme',yellow:'Dikkat',orange:'İnceleme',red:'Yüksek risk',gray:'Belirsiz',low:'Düşük',medium:'Orta',high:'Yüksek',critical:'Kritik'};
+const DECISION_TYPE_LABEL={automatic_defensible:'Otomatik savunulabilir',manual_review:'Manuel inceleme',low_risk:'Düşük risk'};
 const DECISION_TYPE_BADGE={automatic_defensible:'b-red',manual_review:'b-orange',low_risk:'b-green'};
+/** Nihai karar → hangi katman(lar) tipik olarak belirleyici (tahmin değil; eşleme tablosu). */
+const KARAR_LAYER_HINT={
+  yanlis_hasta_belgesi:['belge_hasta'],
+  evrak_eksik:['zorunlu_evrak'],
+  tani_eksik:['tani_kurali','sut_tani_kurali'],
+  tani_uyumsuz:['tani_kurali','sut_tani_kurali'],
+  klinik_uyumsuzluk:['medgemma'],
+  belge_kaniti_yetersiz:['medgemma'],
+  ai_yorumu_bekleniyor:['medgemma'],
+  belge_analizi_tamamlanamadi:['_docs'],
+  manuel_inceleme:['tani_kurali','sut_tani_kurali','sut_kurali','medgemma']
+};
 
 function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
 function fmtN(n){return typeof n==='number'?n.toLocaleString('tr-TR'):'—'}
@@ -702,19 +737,72 @@ function evidenceRoleBadge(role){
   return `<span class="badge ${EVIDENCE_ROLE_BADGE[role]||'b-gray'}">${esc(EVIDENCE_ROLE_LABEL[role]||role)}</span>`;
 }
 function medgemmaQA(mg,raw){
+  /** Yalnızca modelin ürettiği gerçek soru-cevap; sahte satır üretilmez. */
   const layer=(raw.medgemma_layer&&raw.medgemma_layer.detail)||{};
   let qa=asList(mg&&mg.ozel_soru_cevaplari);
   if(!qa.length) qa=asList(layer.ozel_soru_cevaplari);
-  if(qa.length) return qa;
-  return [
-    {soru:'Hasta yaşı nedir?',cevap:(raw.job_meta&&raw.job_meta.yas!=null)?String(raw.job_meta.yas):'Belirsiz'},
-    {soru:'Hasta cinsiyeti nedir?',cevap:(raw.job_meta&&raw.job_meta.cinsiyet)||'Belirsiz'},
-    {soru:'İşlem belge tarafından destekleniyor mu?',cevap:triboolLabel(mg&&mg.islem_belge_destekli)},
-    {soru:'Tanı belge tarafından destekleniyor mu?',cevap:triboolLabel(mg&&mg.tani_belge_destekli)},
-    {soru:'Yaş/cinsiyet klinik olarak uygun mu?',cevap:triboolLabel(mg&&mg.yas_cinsiyet_uygun)},
-    {soru:'Klinik çelişki var mı?',cevap:triboolLabel(mg&&mg.klinik_celiski)},
-    {soru:'Eksik evrak var mı?',cevap:triboolLabel(mg&&mg.eksik_evrak)},
-  ];
+  return qa.filter(x=>x&&(x.soru||x.cevap));
+}
+function riskLevelBadge(rl){
+  if(!rl) return '';
+  const cls=RISK_LEVEL_BADGE[rl]||'b-gray';
+  const lbl=RISK_LEVEL_LABEL[rl]||rl;
+  return `<span class="badge ${cls}" title="risk_level=${esc(rl)}">${esc(lbl)}</span>`;
+}
+function taniOutcomeBadges(tdt, layerStatus){
+  const st=layerStatus||'';
+  if(st==='skipped'||st==='skip') return '<span class="badge b-gray">Atlandı</span>';
+  let h='';
+  if(tdt.missing_diagnosis) h+='<span class="badge b-red">Tanı eksik</span>';
+  if(tdt.diagnosis_mismatch) h+='<span class="badge b-red">Tanı uyumsuz</span>';
+  if(tdt.review_required) h+='<span class="badge b-yellow">Manuel inceleme</span>';
+  if(!tdt.missing_diagnosis&&!tdt.diagnosis_mismatch&&!tdt.review_required){
+    if(st==='pass'||tdt.overall_status==='allowed') h+='<span class="badge b-green">Tanı uygun</span>';
+    else if(st==='fail') h+='<span class="badge b-red">Tanı uygun değil</span>';
+    else if(st==='review'||st==='insufficient') h+='<span class="badge b-yellow">İnceleme</span>';
+  }
+  return h;
+}
+function taniLookupBadge(tdt){
+  const src=tdt.lookup_source||tdt.collection||tdt.rule_source||'';
+  if(!src) return '<span class="badge b-gray">Kural kaynağı: belirtilmedi</span>';
+  const used=/qdrant|vector|collection/i.test(String(src));
+  return `<span class="badge ${used?'b-green':'b-blue'}" title="${esc(src)}">Kural kaynağı: ${esc(src)}</span>`;
+}
+function docsAnalysisBadge(docs, documentsMode){
+  if((documentsMode||'')==='skipped_full_pipeline') return '<span class="badge b-gray">Belgesiz değerlendirme</span>';
+  const provided=Number(docs.provided||0), found=Number(docs.found||0);
+  if(!provided&&!found) return '<span class="badge b-gray">Belge yok</span>';
+  if(docs.analysis_failed) return '<span class="badge b-red">Analiz başarısız</span>';
+  if(found>0) return '<span class="badge b-green">Analiz tamam</span>';
+  return '<span class="badge b-yellow">Belge bulunamadı</span>';
+}
+function inferPersistLayers(d, pers){
+  const written=asList(pers.layers_written).filter(Boolean);
+  if(written.length) return {written, attempted:asList(pers.layers_attempted), inferred:false};
+  const attempted=asList(pers.layers_attempted).filter(Boolean);
+  if(attempted.length) return {written:attempted.slice(0, Number(pers.written)||0), attempted, inferred:true};
+  // Eski sonuçlar: yazılan katman listesi yok — rag kapalıysa yalnız nihai_karar
+  if(pers.rag_allowed===false) return {written:Number(pers.written)>0?['nihai_karar']:[], attempted:['nihai_karar'], inferred:true};
+  const guess=['nihai_karar'];
+  ['belge_hasta','zorunlu_evrak','tani_kurali','sut_tani_kurali','sut_kurali'].forEach(k=>{if(d[k]) guess.push(k)});
+  if(d.medgemma||(d.raw||{}).medgemma_layer) guess.push('medgemma');
+  return {written:Number(pers.written)>0?guess:[], attempted:guess, inferred:true};
+}
+function persistStepStatus(pers){
+  if(pers.error) return 'fail';
+  if(asList(pers.errors).length && !(Number(pers.written)>0)) return 'fail';
+  if(Number(pers.written)>0) return asList(pers.errors).length?'review':'pass';
+  return 'skip';
+}
+function patientCtxStepStatus(pc){
+  if(!pc) return 'skip';
+  if(pc.enabled===false) return 'skip';
+  const notes=asList(pc.notes);
+  if(notes.some(n=>/okunamadı|başarısız|hata/i.test(String(n)))) return 'review';
+  const hc=Number(pc.history_count||0), sc=Number(pc.similar_count||0);
+  if(hc>0||sc>0) return 'pass';
+  return 'skip';
 }
 function isTzhCode(code){return /^TZH\./i.test(String(code||'').trim())}
 const PIPELINE_LABEL={'v4 tam':'Tam analiz','v4 kısmi':'Kısmi analiz','v3 kısmi':'Kısmi (eski)','v4':'Standart','legacy':'Eski'};
@@ -790,27 +878,42 @@ function devOcrSummaryHtml(docs){
   </div>`;
 }
 
-function devVisionStatusHtml(mgEvidence,mgLayer,warnings){
+function devVisionStatusHtml(mgEvidence,mgLayer,warnings,mgEx){
   const det=(mgLayer&&mgLayer.detail)||{};
-  const req=det.vision_requested??mgEvidence.vision_requested??mgEvidence.image_count??0;
-  const sent=det.vision_sent??mgEvidence.vision_sent??mgEvidence.image_count??0;
+  const mode=(mgEx&&mgEx.mode)||det.mode||'';
+  const reqRaw=det.vision_requested??mgEvidence.vision_requested;
+  const sentRaw=det.vision_sent??mgEvidence.vision_sent;
+  const req=reqRaw!=null?Number(reqRaw):(mgEvidence.image_count!=null?Number(mgEvidence.image_count):null);
+  const sent=sentRaw!=null?Number(sentRaw):(mgEvidence.image_count!=null?Number(mgEvidence.image_count):null);
   const dropped=!!(det.vision_dropped||mgEvidence.vision_dropped);
   const partial=!!mgEvidence.partial_vision;
-  let statusLabel='Tüm görseller gönderildi',statusCls='b-green';
-  if(dropped){statusLabel='Görsel gönderilemedi (yalnızca metin)';statusCls='b-red'}
-  else if(Number(sent)<Number(req)){statusLabel='Kısmi görsel gönderildi';statusCls='b-yellow'}
-  else if(partial){statusLabel='Seçili sayfalar gönderildi';statusCls='b-yellow'}
-  const pct=req?Math.round((Number(sent)/Number(req))*100):100;
-  const fillCls=dropped?'q-red':Number(sent)<Number(req)?'q-yellow':'q-green';
+  const noVision=mode==='docless'||req===0||(req==null&&sent==null&&!(mgEvidence.image_count>0));
+  let statusLabel,statusCls,pct,fillCls;
+  if(noVision){
+    statusLabel=mode==='docless'?'Görsel yok (belgesiz / üstveri)':'Görsel gönderilmedi';
+    statusCls='b-gray'; pct=0; fillCls='q-red';
+  }else if(dropped){
+    statusLabel='Görsel gönderilemedi (yalnızca metin)'; statusCls='b-red';
+    pct=req?Math.round(((sent||0)/req)*100):0; fillCls='q-red';
+  }else if(req!=null&&sent!=null&&sent<req){
+    statusLabel='Kısmi görsel gönderildi'; statusCls='b-yellow';
+    pct=Math.round((sent/req)*100); fillCls='q-yellow';
+  }else if(partial){
+    statusLabel='Seçili sayfalar gönderildi'; statusCls='b-yellow';
+    pct=req?Math.round(((sent||0)/req)*100):100; fillCls='q-yellow';
+  }else{
+    statusLabel='Tüm görseller gönderildi'; statusCls='b-green';
+    pct=100; fillCls='q-green';
+  }
   return `<div class="dev-vision-block">
     <div class="dev-sec-title">Görsel analiz durumu</div>
     <div class="detail-badges" style="margin-bottom:10px">
       <span class="badge ${statusCls}">${esc(statusLabel)}</span>
-      <span class="badge b-blue">${fmtN(sent)} / ${fmtN(req)} görsel gönderildi</span>
+      ${!noVision?`<span class="badge b-blue">${fmtN(sent??0)} / ${fmtN(req??0)} görsel gönderildi</span>`:'<span class="badge b-gray">0 görsel</span>'}
       ${det.attempts?`<span class="badge b-gray">${det.attempts} deneme</span>`:''}
       ${det.json_mode_used===false?'<span class="badge b-yellow">Yapılandırılmış çıktı kapalı (yedek mod)</span>':''}
     </div>
-    <div class="dev-qbar wide"><div class="dev-qfill ${fillCls}" style="width:${pct}%"></div></div>
+    ${!noVision?`<div class="dev-qbar wide"><div class="dev-qfill ${fillCls}" style="width:${pct}%"></div></div>`:''}
     ${det.fallback_reason?`<div class="dev-hint warn">${esc(String(det.fallback_reason).slice(0,220))}</div>`:''}
     ${asList(warnings).filter(w=>/vision/i.test(w)).map(w=>`<div class="dev-hint warn">${esc(w)}</div>`).join('')}
   </div>`;
@@ -849,29 +952,60 @@ function devStepStatus(d,s){
   const raw=d.raw||{};
   const karar=d.nihai_karar||'';
   const cls=KARAR_CLS[karar]||'review';
-  if(s.key==='_input') return 'pass';
-  if(s.key==='_docs'){const dd=raw.documents||{};return dd.found>0?'pass':dd.provided>0?'fail':'skip'}
-  if(s.key==='_ctx'){return raw.patient_context?'pass':'skip'}
-  if(s.key==='_mg'){return d.medgemma?'pass':'skip'}
+  if(s.key==='_input') return d.status==='failed'?'fail':'pass';
+  if(s.key==='_docs'){
+    if((raw.documents_mode||'')==='skipped_full_pipeline') return 'skip';
+    const dd=raw.documents||{};
+    if(dd.analysis_failed) return 'fail';
+    if(dd.found>0) return 'pass';
+    if(dd.provided>0) return 'fail';
+    return 'skip';
+  }
+  if(s.key==='_ctx') return patientCtxStepStatus(raw.patient_context);
+  if(s.key==='_mg'){
+    if(!d.medgemma && !(raw.medgemma_layer)) return 'skip';
+    const st=rawMedgemmaLayerStatus(d);
+    return st||(d.medgemma?'pass':'skip');
+  }
   if(s.key==='_karar'){return karar==='uygun'?'pass':(cls==='denied'?'fail':'review')}
-  if(s.key==='_persist'){const p=raw.persistence||{};return p.written>0?'pass':'skip'}
+  if(s.key==='_persist') return persistStepStatus(raw.persistence||{});
   const layer=d[s.key];
   if(!layer) return 'skip';
   return layer.status||'skip';
 }
 
 function devStepMessage(d,s){
-  if(s.key==='_input') return 'Provizyon iş girdisi yüklendi';
+  if(s.key==='_input') return d.status==='failed'?(d.error||'İş başarısız'):'Provizyon iş girdisi yüklendi';
   if(s.key==='_docs'){
     const raw=d.raw||{};
     if((raw.documents_mode||'')==='skipped_full_pipeline') return 'Belgesiz · belge yok';
     const dd=raw.documents||{};
+    if(dd.analysis_failed) return 'Belge analizi başarısız';
     return `${dd.found??0}/${dd.provided??0} belge`;
   }
-  if(s.key==='_ctx'){const pc=(d.raw||{}).patient_context;return pc?`${pc.history_count||0} geçmiş · ${pc.similar_count||0} benzer`:'İlk kayıt'}
-  if(s.key==='_mg'){const ev=(d.raw||{}).medgemma_evidence||{};return d.medgemma?`${ev.image_count||0} görsel`:'Atlandı'}
+  if(s.key==='_ctx'){
+    const pc=(d.raw||{}).patient_context;
+    if(!pc) return 'Bağlam yüklenmedi';
+    if(pc.enabled===false) return 'Hasta bağlamı kapalı';
+    const hc=pc.history_count||0, sc=pc.similar_count||0;
+    if(!hc&&!sc) return pc.source==='live'?'Canlı: geçmiş/benzer yok':'Geçmiş/benzer yok';
+    return `${hc} geçmiş · ${sc} benzer`;
+  }
+  if(s.key==='_mg'){
+    const raw=d.raw||{};
+    const ev=raw.medgemma_evidence||{};
+    const st=rawMedgemmaLayerStatus(d);
+    if(!d.medgemma&&!raw.medgemma_layer) return 'Atlandı';
+    const mode=(raw.medgemma_exchange||{}).mode||'';
+    const vis=mode==='docless'?'belgesiz':`${ev.image_count||0} görsel`;
+    return `${STATUS_LABEL[st]||st} · ${vis}`;
+  }
   if(s.key==='_karar') return d.gerekce||'—';
-  if(s.key==='_persist'){const p=(d.raw||{}).persistence||{};return `${p.written??0} nokta yazıldı`}
+  if(s.key==='_persist'){
+    const p=(d.raw||{}).persistence||{};
+    if(p.error) return String(p.error).slice(0,80);
+    return `${p.written??0} nokta yazıldı`;
+  }
   const layer=d[s.key];
   if(s.key==='sut_kurali' && layer && (layer.detail||{}).skipped_reason==='huv_sut_crosswalk_disabled'){
     return 'HUV→SUT eşleştirme kapalı · doğrudan SUT yok';
@@ -929,28 +1063,35 @@ function decisionTypeBadge(dt){
 
 function buildDecisionTree(d){
   const rows=[
-    {prio:1,layer:'belge_hasta',label:'Belge–hasta uyumu',fail:'yanlis_hasta_belgesi'},
-    {prio:2,layer:'zorunlu_evrak',label:'Zorunlu evrak',fail:'evrak_eksik'},
-    {prio:3,layer:'tani_kurali',label:'HUV tanı kuralı',fail:'tani_eksik/uyumsuz'},
-    {prio:4,layer:'sut_tani_kurali',label:'SUT tanı kuralı',fail:'tani_eksik/uyumsuz'},
-    {prio:5,layer:'medgemma',label:'MedGemma klinik',fail:'klinik/belge'},
-    {prio:6,layer:'sut_kurali',label:'SUT işlem kuralı',fail:'manuel_inceleme'},
+    {prio:1,layer:'belge_hasta',label:'Belge–hasta uyumu'},
+    {prio:2,layer:'zorunlu_evrak',label:'Zorunlu evrak'},
+    {prio:3,layer:'tani_kurali',label:'HUV tanı kuralı'},
+    {prio:4,layer:'sut_tani_kurali',label:'SUT tanı kuralı'},
+    {prio:5,layer:'medgemma',label:'MedGemma klinik'},
+    {prio:6,layer:'sut_kurali',label:'SUT işlem kuralı'},
   ];
   const karar=d.nihai_karar||'';
+  const hintLayers=new Set(KARAR_LAYER_HINT[karar]||[]);
   return rows.map(r=>{
     let st='skip',msg='—';
     if(r.layer==='medgemma'){
-      st=d.medgemma?rawMedgemmaLayerStatus(d):'skip';
-      msg=d.medgemma?(d.medgemma.gerekce||'').slice(0,80):'Atlandı';
+      const hasMg=!!(d.medgemma||(d.raw||{}).medgemma_layer);
+      st=hasMg?rawMedgemmaLayerStatus(d):'skip';
+      msg=d.medgemma?(d.medgemma.gerekce||'').slice(0,80):(hasMg?(((d.raw||{}).medgemma_layer||{}).message||'—').slice(0,80):'Atlandı');
     }else{
       const L=d[r.layer];
       if(L){st=L.status||'skip';msg=(L.message||'').slice(0,80)}
     }
-    const decisive=(st==='fail'&&karar!=='uygun')||(st==='review'&&karar==='manuel_inceleme');
-    return {...r,status:st,message:msg,decisive};
+    // "Kararla ilişkili" — sahte nedensellik yok; yalnızca karar↔katman eşlemesi + katman aktif
+    const related=hintLayers.has(r.layer) && st!=='skip' && st!=='skipped' && karar && karar!=='uygun';
+    return {...r,status:st,message:msg,related};
   });
 }
-function rawMedgemmaLayerStatus(d){return ((d.raw||{}).medgemma_layer||{}).status||'pass'}
+function rawMedgemmaLayerStatus(d){
+  const st=((d.raw||{}).medgemma_layer||{}).status;
+  if(st) return st;
+  return d.medgemma?'pass':'skip';
+}
 
 function devFormatJsonRaw(raw){
   if(!raw) return '';
@@ -1024,6 +1165,97 @@ function devMedgemmaRawHtml(mg,mgLayer){
     </div>`;
   }
   return h;
+}
+
+function devCtxRecordRows(records,{showScore}){
+  return records.map(r=>{
+    const layers=asList(r.layers);
+    const layerBadges=layers.length
+      ? layers.map(L=>{
+          const st=L.status||'';
+          const cls=st==='pass'?'b-green':st==='fail'?'b-red':(st==='review'||st==='insufficient')?'b-yellow':'b-gray';
+          return `<span class="badge ${cls}" title="${esc(L.message||L.gerekce||'')}">${esc(L.layer||'?')}${st?': '+esc(st):''}</span>`;
+        }).join(' ')
+      : '<span class="badge b-gray">katman yok</span>';
+    const msg=(layers.find(L=>L.layer==='medgemma')||layers[0]||{});
+    const snippet=String(msg.message||msg.gerekce||'').slice(0,220);
+    return `<tr>
+      <td style="font-family:monospace;font-weight:700">${esc(r.provizyon_id||'')}</td>
+      <td style="font-size:11px">${esc(r.hasta_id||'—')}<div style="color:var(--text3)">${esc(r.tc_kimlik||'')}</div></td>
+      <td><span class="badge ${KARAR_BADGE[r.nihai_karar]||'b-blue'}">${esc(KARAR_LABEL[r.nihai_karar]||r.nihai_karar||'—')}</span></td>
+      ${showScore?`<td style="font-family:monospace">${r.score!=null?Number(r.score).toFixed(3):'—'}</td>`:''}
+      <td style="font-size:11px">${fmtTime(r.finished_at)}</td>
+      <td><div class="detail-badges" style="margin-bottom:4px">${layerBadges}</div>
+        ${snippet?`<div style="font-size:11px;color:var(--text2);max-width:420px;line-height:1.4">${esc(snippet)}${String(msg.message||msg.gerekce||'').length>220?'…':''}</div>`:''}
+        ${layers.length?`<details style="margin-top:4px"><summary style="cursor:pointer;font-size:11px;color:var(--indigo)">Katman detayı (${layers.length})</summary>
+          <pre class="json-box" style="margin-top:6px;max-height:200px">${esc(JSON.stringify(layers,null,2))}</pre></details>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function devPatientContextHtml(raw){
+  const pc=raw.patient_context;
+  const atEval=raw.patient_context_at_eval;
+  if(!pc && !atEval){
+    return stepCard(7,'Hasta Bağlamı','skip','<div style="color:var(--text3);font-size:12px">Hasta bağlamı yüklenmedi (kapalı, kimlik yok veya Qdrant boş).</div>');
+  }
+  const src=pc||atEval||{};
+  const hist=asList(src.history);
+  const sim=asList(src.similar);
+  const hc=src.history_count!=null?src.history_count:hist.length;
+  const sc=src.similar_count!=null?src.similar_count:sim.length;
+  const hasData=hc>0||sc>0||asList(src.notes).length>0;
+  const st=hasData?'pass':'skip';
+
+  let body=`<div class="detail-badges" style="margin-bottom:10px">
+    <span class="badge ${src.source==='live'?'b-indigo':'b-gray'}">${src.source==='live'?'Canlı Qdrant':'Değerlendirme anı'}</span>
+    <span class="badge ${hc>0?'b-green':'b-gray'}">Geçmiş: ${hc}</span>
+    <span class="badge ${sc>0?'b-blue':'b-gray'}">Benzer vaka: ${sc}</span>
+    ${src.enabled===false?'<span class="badge b-red">bağlam kapalı</span>':''}
+    ${src.similar_enabled===false?'<span class="badge b-yellow">benzer vaka kapalı</span>':''}
+  </div>`;
+
+  if(atEval && src.source==='live'){
+    const eh=atEval.history_count||0, es=atEval.similar_count||0;
+    if(eh!==hc || es!==sc){
+      body+=`<div class="dev-hint" style="margin-bottom:10px">Değerlendirme anında: ${eh} geçmiş · ${es} benzer — canlı sayılar güncellendi.</div>`;
+    }else{
+      body+=`<div class="dev-hint" style="margin-bottom:10px">Değerlendirme anı ile canlı Qdrant sayıları aynı (${eh} / ${es}).</div>`;
+    }
+  }
+
+  if(!hc && !sc){
+    body+=`<div style="font-size:12px;color:var(--text2);margin-bottom:10px">Bu hasta için önceki provizyon bulunamadı (ilk kayıt) veya benzer vaka araması sonuç vermedi. Persist adımı yazdıysa sonraki başvurularda geçmiş burada görünür.</div>`;
+  }
+
+  if(hist.length){
+    body+=`<div class="detail-label" style="margin-bottom:4px">Aynı Hasta Geçmişi (patient_findings)</div>
+      <table><thead><tr><th>Provizyon</th><th>Hasta / TC</th><th>Karar</th><th>Tarih</th><th>Katmanlar</th></tr></thead><tbody>
+      ${devCtxRecordRows(hist,{showScore:false})}
+      </tbody></table>`;
+  }
+  if(sim.length){
+    body+=`<div class="detail-label" style="margin:12px 0 4px">Benzer Vakalar (vektör arama)</div>
+      <table><thead><tr><th>Provizyon</th><th>Hasta / TC</th><th>Karar</th><th>Skor</th><th>Tarih</th><th>Katmanlar</th></tr></thead><tbody>
+      ${devCtxRecordRows(sim,{showScore:true})}
+      </tbody></table>`;
+  }
+  if(asList(src.notes).length){
+    body+=`<div style="margin-top:10px;font-size:11px;color:var(--yellow)"><strong>Notlar:</strong> ${asList(src.notes).map(n=>esc(n)).join(' · ')}</div>`;
+  }
+  if(atEval && src.source==='live'){
+    body+=`<details style="margin-top:12px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
+      <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Değerlendirme anındaki hasta bağlamı (snapshot)</summary>
+      <pre class="json-box" style="margin-top:8px;max-height:240px">${esc(JSON.stringify(atEval,null,2))}</pre>
+    </details>`;
+  }
+  body+=`<details style="margin-top:8px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
+    <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Ham patient_context JSON</summary>
+    <pre class="json-box" style="margin-top:8px;max-height:280px">${esc(JSON.stringify(src,null,2))}</pre>
+  </details>`;
+
+  return stepCard(7,'Hasta Bağlamı (Qdrant geçmiş + benzer)',st,body);
 }
 
 function toggleAllDevSteps(open){
@@ -1221,10 +1453,11 @@ function renderKpis(q,items){
   const scored=done.filter(x=>x.klinik_skor!=null);
   const legacy=done.filter(x=>x.klinik_skor==null);
   const ok=done.filter(x=>x.nihai_karar==='uygun').length;
-  const denied=done.filter(x=>['tani_eksik','tani_uyumsuz','evrak_eksik','yanlis_hasta_belgesi','klinik_uyumsuzluk','belge_kaniti_yetersiz'].includes(x.nihai_karar)).length;
+  const denied=done.filter(x=>DENIED_KARAR.has(x.nihai_karar)).length;
+  const review=done.filter(x=>REVIEW_KARAR.has(x.nihai_karar)).length;
   document.getElementById('kpiTotal').textContent=items.length;
   const totSub=document.getElementById('kpiTotalSub');
-  if(totSub) totSub.textContent=`${done.length} tamam · ${legacy.length} eski skorsuz`;
+  if(totSub) totSub.textContent=`listede ${items.length} · ${done.length} tamam · ${legacy.length} skorsuz`;
   document.getElementById('kpiOk').textContent=ok;
   document.getElementById('kpiDenied').textContent=denied;
   const skorEl=document.getElementById('kpiSkor'), skorSub=document.getElementById('kpiSkorSub');
@@ -1235,9 +1468,9 @@ function renderKpis(q,items){
     }else{skorEl.textContent='—';if(skorSub)skorSub.textContent='Henüz yeni skor yok'}
   }
   const okSub=document.getElementById('kpiOkSub');
-  if(okSub) okSub.textContent='';
+  if(okSub) okSub.textContent=done.length?`${Math.round(ok*100/done.length)}% uygun`:'';
   const denSub=document.getElementById('kpiDeniedSub');
-  if(denSub) denSub.textContent='';
+  if(denSub) denSub.textContent=`${review} inceleme`;
   if(q&&q.depth){
     const p=(q.depth.pending||0)+(q.depth.processing||0);
     document.getElementById('kpiQueue').textContent=p;
@@ -1251,6 +1484,12 @@ function renderKpis(q,items){
 function renderRecent(all){
   const items=filterItemsDemo(all,_listFilt);
   const tb=document.getElementById('recentTb');
+  const meta=document.getElementById('recentListMeta');
+  if(meta){
+    meta.textContent=items.length
+      ? `${items.length} provizyon · kaydırarak seçin (toplam ${all.length})`
+      : 'Bu filtrede kayıt yok';
+  }
   if(!items.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:20px">Bu filtrede kayıt yok</td></tr>';return}
   tb.innerHTML=items.map(it=>{
     const kb=KARAR_BADGE[it.nihai_karar]||'b-blue';
@@ -1299,6 +1538,16 @@ async function selectJob(id){
       return;
     }
     const d=anonScrub(await r.json());
+    d.raw=d.raw||{};
+    d.raw.patient_context_at_eval=d.raw.patient_context||null;
+    try{
+      const cr=await fetch(PROV_API+'/provizyon/'+encodeURIComponent(id)+'/patient-context');
+      if(cr.ok){
+        const live=anonScrub(await cr.json());
+        live.source=live.source||'live';
+        d.raw.patient_context=live;
+      }
+    }catch(_){/* değerlendirme anındaki kopya ile devam */}
     _jobData=d;
     try{renderJobDetailDev(d)}catch(err){
       console.error(err);
@@ -1327,20 +1576,26 @@ function renderJobDetailDev(d){
   h+=`<div class="result-banner ${cls}" style="margin-bottom:var(--gap)">
     <div class="result-icon">${cls==='allowed'?'✓':cls==='denied'?'✗':'!'}</div>
     <div class="result-text">
-      <h3>${esc(label)}${klinikSkor!=null?` <span class="badge ${skorCls}">Skor ${esc(klinikSkor)}/100</span>`:''}${d.decision_type?` ${decisionTypeBadge(d.decision_type)}`:''}${d.risk_level?` <span class="badge b-gray">${esc(d.risk_level)}</span>`:''}</h3>
+      <h3>${esc(label)}${klinikSkor!=null?` <span class="badge ${skorCls}">Skor ${esc(klinikSkor)}/100</span>`:''}${d.decision_type?` ${decisionTypeBadge(d.decision_type)}`:''}${d.risk_level?` ${riskLevelBadge(d.risk_level)}`:''}</h3>
       ${buildResultBannerBody(d)}
       ${d.skor_dayanak?`<div style="margin-top:8px;font-size:12px;color:var(--text2)"><strong>Skor dayanağı:</strong> ${esc(d.skor_dayanak)}</div>`:''}
     </div>
   </div>`;
 
   if((raw.documents_mode||'')==='skipped_full_pipeline'){
-    const skReason=((d.sut_kurali||{}).detail||{}).skipped_reason||'';
+    const skDet=((d.sut_kurali||{}).detail)||{};
+    const skReason=skDet.skipped_reason||'';
+    const xwalk=skDet.huv_sut_crosswalk_enabled;
+    const xwalkTxt=xwalk===false
+      ?'<strong>HUV→SUT eşleştirme kapalı</strong> (bu işte).'
+      :xwalk===true
+        ?'<strong>HUV→SUT eşleştirme açık</strong> (bu işte).'
+        :'HUV→SUT eşleştirme durumu bu kayıtta belirtilmemiş.';
     h+=`<div class="card" style="margin-bottom:var(--gap);padding:12px 16px;border-left:3px solid var(--indigo);background:#f8fafc">
       <div style="font-size:13px;font-weight:600;margin-bottom:4px">Belgesiz değerlendirme</div>
       <div style="font-size:12px;color:var(--text2);line-height:1.5">
         Belge–hasta ve zorunlu evrak <span class="badge b-gray">SKIPPED</span>.
-        HUV tanı ve (doğrudan SUT varsa) SUT kuralları ayrı çalışır;
-        <strong>HUV→SUT eşleştirme kapalı</strong>.
+        HUV tanı ve (doğrudan SUT varsa) SUT kuralları ayrı çalışır. ${xwalkTxt}
         ${skReason==='huv_sut_crosswalk_disabled'?' SUT işlem kuralı: yalnız HUV olduğu için atlandı.':''}
         MedGemma üstveri + kural özetiyle çalıştı.
       </div>
@@ -1361,17 +1616,23 @@ function renderJobDetailDev(d){
     </div>`;
   }
 
-  // Kimlik Bilgileri
+  // Kimlik Bilgileri (maskeli kopya)
   h+=`<div class="card" style="margin-bottom:var(--gap);padding:16px 20px">
-    <div class="card-title" style="margin-bottom:10px">Kimlik Bilgileri</div>
+    <div class="card-header" style="margin-bottom:10px">
+      <span class="card-title">Kimlik Bilgileri</span>
+      <span class="badge b-orange">maskeli</span>
+    </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;font-size:12px">
       <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Provizyon ID</span><strong>${esc(d.provizyon_id||'—')}</strong></div>
       <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Hasta Adı</span><strong>${esc(meta.patient_name||'—')}</strong></div>
-      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Hasta ID (Sicil)</span><strong>${esc(d.hasta_id||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Hasta ID (Sicil)</span><strong>${esc(d.hasta_id||meta.hasta_id||'—')}</strong></div>
       <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">TC Kimlik</span><strong>${esc(meta.tc_kimlik||'—')}</strong></div>
       <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Yaş</span><strong>${meta.yas!=null?meta.yas:'—'}</strong></div>
       <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Cinsiyet</span><strong>${esc(meta.cinsiyet&&meta.cinsiyet!=='bilinmiyor'?meta.cinsiyet:'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Kurum</span><strong>${esc(meta.institution_name||'—')}</strong></div>
+      <div><span style="color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block">Kurum tipi</span><strong>${esc(meta.facility_level||'—')}</strong></div>
     </div>
+    ${asList(meta.notes).length?`<div style="margin-top:10px"><div class="detail-label">İş notları</div><ul style="padding-left:16px;font-size:11px;color:var(--text2);margin:4px 0 0">${asList(meta.notes).map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`:''}
   </div>`;
 
   // Patient info bar
@@ -1506,7 +1767,7 @@ function renderJobDetailDev(d){
     </div>
     <div class="detail-grid">
       <div><div class="detail-label">Sağlanan / Bulunan</div><strong>${docs.provided??0}</strong> belge sağlandı, <strong>${docs.found??0}</strong> bulundu${docs.missing?`, <span style="color:var(--red)">${docs.missing} eksik</span>`:''}</div>
-      <div><div class="detail-label">Analiz Durumu</div>${docs.analysis_failed?'<span class="badge b-red">Analiz başarısız</span>':'<span class="badge b-green">Başarılı</span>'}</div>
+      <div><div class="detail-label">Analiz Durumu</div>${docsAnalysisBadge(docs, raw.documents_mode)}</div>
     </div>
     ${missingFiles.length?`<div style="margin-top:8px"><div class="detail-label">Eksik Belgeler</div><div class="detail-badges">${missingFiles.map(f=>`<span class="badge b-red">${esc(f)}</span>`).join(' ')}</div></div>`:''}
     <div class="dev-sec-title" style="margin-top:14px">OCR kalite özeti</div>
@@ -1566,12 +1827,9 @@ function renderJobDetailDev(d){
     body+=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">Girilen ICD-10 provizyon genelindedir; her satır ilgili HUV kodunun Qdrant tanı kuralına göre ayrı değerlendirilir.</div>`;
     if(diags.length) body+=`<div class="detail-badges" style="margin-bottom:10px"><span class="detail-label" style="margin-right:6px">Girilen ICD-10:</span>${badges(diags,'b-green')}</div>`;
     body+=`<div class="detail-badges" style="margin-bottom:10px">
-      ${tdt.missing_diagnosis?'<span class="badge b-red">Tanı eksik</span>':''}
-      ${tdt.diagnosis_mismatch?'<span class="badge b-red">Tanı uyumsuz</span>':''}
-      ${tdt.review_required?'<span class="badge b-yellow">Manuel inceleme</span>':''}
-      ${!tdt.missing_diagnosis&&!tdt.diagnosis_mismatch&&!tdt.review_required?'<span class="badge b-green">Tanı uygun</span>':''}
+      ${taniOutcomeBadges(tdt, tk.status)}
       <span class="badge b-blue">Genel: ${esc(devOverallTaniLabel(tdt.overall_status||'?'))}</span>
-      <span class="badge b-green">Kural veritabanı</span>
+      ${taniLookupBadge(tdt)}
       ${summaryLine?`<span class="badge b-gray">${esc(summaryLine)}</span>`:''}
       ${asList(tdt.skipped_tzh_codes).length?`<span class="badge b-gray">TZH atlandı: ${asList(tdt.skipped_tzh_codes).join(', ')}</span>`:''}
     </div>`;
@@ -1605,11 +1863,9 @@ function renderJobDetailDev(d){
     body+=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">EK-2B tanı kuralları işlem satırı bazında değerlendirilir.</div>`;
     if(diags.length) body+=`<div class="detail-badges" style="margin-bottom:10px"><span class="detail-label" style="margin-right:6px">Girilen ICD-10:</span>${badges(diags,'b-green')}</div>`;
     body+=`<div class="detail-badges" style="margin-bottom:10px">
-      ${sdt.missing_diagnosis?'<span class="badge b-red">Tanı eksik</span>':''}
-      ${sdt.diagnosis_mismatch?'<span class="badge b-red">Tanı uyumsuz</span>':''}
-      ${sdt.review_required?'<span class="badge b-yellow">Manuel inceleme</span>':''}
-      ${!sdt.missing_diagnosis&&!sdt.diagnosis_mismatch&&!sdt.review_required?'<span class="badge b-green">Tanı uygun</span>':''}
+      ${taniOutcomeBadges(sdt, stk.status)}
       <span class="badge b-blue">Genel: ${esc(devOverallTaniLabel(sdt.overall_status||'?'))}</span>
+      ${taniLookupBadge(sdt)}
       ${summaryLine?`<span class="badge b-gray">${esc(summaryLine)}</span>`:''}
     </div>`;
     if(items.length){
@@ -1661,30 +1917,8 @@ function renderJobDetailDev(d){
     h+=`<div id="dev-step-6">${stepCard(6,'SUT İşlem Kuralı',sk.status,body)}</div>`;
   }else{h+=`<div id="dev-step-6">${stepCard(6,'SUT Kuralı','skip','<div style="color:var(--text3);font-size:12px">Adım atlandı.</div>')}</div>`}
 
-  // Step 7: Hasta Bağlamı
-  const pc=raw.patient_context;
-  if(pc){
-    let body=`<div class="detail-badges" style="margin-bottom:10px">
-      <span class="badge b-green">Geçmiş kayıt: ${pc.history_count||0}</span>
-      <span class="badge b-blue">Benzer vaka: ${pc.similar_count||0}</span>
-    </div>`;
-    const hist=asList(pc.history);
-    if(hist.length){
-      body+=`<div class="detail-label" style="margin-bottom:4px">Aynı Hasta Geçmişi</div>
-      <table><thead><tr><th>Provizyon</th><th>Hasta/TC</th><th>Karar</th><th>Tarih</th></tr></thead><tbody>`;
-      hist.forEach(r=>{body+=`<tr><td>${esc(r.provizyon_id||'')}</td><td>${esc(r.hasta_id||r.tc_kimlik||'—')}</td><td><span class="badge ${KARAR_BADGE[r.nihai_karar]||'b-blue'}">${esc(r.nihai_karar||'')}</span></td><td style="font-size:11px">${fmtTime(r.finished_at)}</td></tr>`});
-      body+=`</tbody></table>`;
-    }
-    const sim=asList(pc.similar);
-    if(sim.length){
-      body+=`<div class="detail-label" style="margin:10px 0 4px">Benzer Vakalar</div>
-      <table><thead><tr><th>Provizyon</th><th>Hasta/TC</th><th>Karar</th><th>Skor</th></tr></thead><tbody>`;
-      sim.forEach(r=>{body+=`<tr><td>${esc(r.provizyon_id||'')}</td><td>${esc(r.hasta_id||r.tc_kimlik||'—')}</td><td><span class="badge ${KARAR_BADGE[r.nihai_karar]||'b-blue'}">${esc(r.nihai_karar||'')}</span></td><td>${r.score!=null?r.score.toFixed(3):'—'}</td></tr>`});
-      body+=`</tbody></table>`;
-    }
-    if(asList(pc.notes).length)body+=`<div style="margin-top:8px;font-size:11px;color:var(--text3)">${asList(pc.notes).map(n=>esc(n)).join(' · ')}</div>`;
-    h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı (Qdrant)','pass',body)}</div>`;
-  }else{h+=`<div id="dev-step-7">${stepCard(7,'Hasta Bağlamı','skip','<div style="color:var(--text3);font-size:12px">Hasta bağlamı yüklenmedi veya ilk kayıt.</div>')}</div>`}
+  // Step 7: Hasta Bağlamı (canlı Qdrant + değerlendirme anı kopyası)
+  h+=`<div id="dev-step-7">${devPatientContextHtml(raw)}</div>`;
 
   // Step 8: MedGemma — ana klinik açıklama
   const mg=d.medgemma;
@@ -1705,7 +1939,7 @@ function renderJobDetailDev(d){
       <div style="font-size:14px;line-height:1.55;color:var(--text);white-space:pre-wrap">${esc(mg.gerekce||'')}</div>
       ${(mg.skor_dayanak||(mgEx.parsed&&mgEx.parsed.skor_dayanak))?`<div style="margin-top:8px;font-size:12px;color:var(--text2)"><strong>Skor dayanağı:</strong> ${esc(mg.skor_dayanak||mgEx.parsed.skor_dayanak)}</div>`:''}
     </div>`;
-    body+=devVisionStatusHtml(mgEvidence,mgLayer,d.warnings);
+    body+=devVisionStatusHtml(mgEvidence,mgLayer,d.warnings,mgEx);
     body+=devMedgemmaEvidenceHtml(mgEvidence,pipeCfg,pipe);
     body+=`<div class="detail-grid">
       <div><div class="detail-label">Güven Seviyesi</div><span class="badge ${mg.guven==='high'?'b-green':mg.guven==='medium'?'b-yellow':'b-red'}">${esc(CONFIDENCE_LABEL[mg.guven]||mg.guven||'?')}</span></div>
@@ -1715,16 +1949,26 @@ function renderJobDetailDev(d){
       <div><div class="detail-label">Yaş/Cinsiyet Uygun</div>${bvPos(mg.yas_cinsiyet_uygun)}</div>
       <div><div class="detail-label">Klinik Çelişki</div>${bvNeg(mg.klinik_celiski)} <span style="font-size:10px;color:var(--text3)">${esc(triboolLabel(mg.klinik_celiski))}</span></div>
       <div><div class="detail-label">Eksik Evrak</div>${bvNeg(mg.eksik_evrak)} <span style="font-size:10px;color:var(--text3)">${esc(triboolLabel(mg.eksik_evrak))}</span></div>
+      <div><div class="detail-label">Katman durumu</div><span class="badge ${STATUS_BADGE[mgLayer.status||'pass']||'b-gray'}">${esc(STATUS_LABEL[mgLayer.status||'pass']||mgLayer.status||'?')}</span></div>
     </div>`;
-    body+=`<div style="margin-top:14px"><div class="detail-label" style="margin-bottom:8px">Klinik Soru – Cevap</div>
-      <table><thead><tr><th style="width:42%">Soru</th><th>Cevap</th></tr></thead><tbody>`;
-    qa.forEach(x=>{
-      body+=`<tr><td style="font-weight:600;color:var(--text)">${esc(x.soru||'')}</td><td style="color:var(--text2);white-space:pre-wrap">${esc(x.cevap||'—')}</td></tr>`;
-    });
-    body+=`</tbody></table></div>`;
+    const asked=asList(mgEx.questions);
+    if(asked.length){
+      body+=`<div style="margin-top:14px"><div class="detail-label" style="margin-bottom:6px">Modele iletilen sorular (${asked.length})</div>
+        <ul style="padding-left:16px;font-size:11px;color:var(--text2)">${asked.map(q=>`<li>${esc(typeof q==='string'?q:(q.soru||JSON.stringify(q)))}</li>`).join('')}</ul></div>`;
+    }
+    body+=`<div style="margin-top:14px"><div class="detail-label" style="margin-bottom:8px">Model özel soru–cevap</div>`;
+    if(qa.length){
+      body+=`<table><thead><tr><th style="width:42%">Soru</th><th>Cevap</th></tr></thead><tbody>`;
+      qa.forEach(x=>{
+        body+=`<tr><td style="font-weight:600;color:var(--text)">${esc(x.soru||'')}</td><td style="color:var(--text2);white-space:pre-wrap">${esc(x.cevap||'—')}</td></tr>`;
+      });
+      body+=`</tbody></table></div>`;
+    }else{
+      body+=`<div class="dev-hint">Özel soru–cevap yok (model üretmedi veya soru gönderilmedi). Yukarıdaki alanlar yapılandırılmış çıktıdır; uydurulmuş Q&amp;A gösterilmez.</div></div>`;
+    }
     if(mgEx.user_prompt||mgEx.raw_response){
       body+=`<details style="margin-top:12px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
-        <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Modele giden paket (${mgEx.user_prompt_chars||0} karakter)</summary>
+        <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--indigo)">Modele giden paket (${mgEx.user_prompt_chars||0} karakter) · maskeli</summary>
         <pre class="json-box" style="margin-top:8px;max-height:260px">${esc(mgEx.user_prompt||'')}</pre>
       </details>
       <details style="margin-top:8px;border:1px dashed var(--border);border-radius:8px;padding:8px 10px">
@@ -1734,42 +1978,89 @@ function renderJobDetailDev(d){
     }
     body+=devMedgemmaRawHtml(mg,mgLayer);
     if(mgLayer.message)body+=`<div style="margin-top:8px;font-size:11px;color:var(--text2)">AI değerlendirme notu: ${esc(mgLayer.message)}</div>`;
-    const mgStatus=(mgLayer.status||'pass');
-    h+=`<div id="dev-step-8">${stepCard(8,'AI Klinik Değerlendirme (MedGemma) — ana açıklama',mgStatus,body)}</div>`;
+    const mgStatus=rawMedgemmaLayerStatus(d);
+    h+=`<div id="dev-step-8">${stepCard(8,'AI Klinik Değerlendirme (MedGemma)',mgStatus,body)}</div>`;
   }else{
-    const reason=asList(d.warnings).find(w=>w.includes('MedGemma'))||'MedGemma değerlendirmesi yapılmadı.';
+    const reason=asList(d.warnings).find(w=>/MedGemma|medgemma/i.test(w))||'MedGemma değerlendirmesi yapılmadı.';
     h+=`<div id="dev-step-8">${stepCard(8,'MedGemma','skip',`<div style="color:var(--text3);font-size:12px">${esc(reason)}</div>`)}</div>`;
   }
 
-  // Step 9: Nihai Karar
+  // Step 9: Nihai Karar + sinyaller
   const tree=buildDecisionTree(d);
-  let treeHtml=`<table style="margin-top:10px"><thead><tr><th>Sıra</th><th>Değerlendirme</th><th>Sonuç</th><th>Etkisi</th><th>Açıklama</th></tr></thead><tbody>`;
+  let treeHtml=`<table style="margin-top:10px"><thead><tr><th>Sıra</th><th>Değerlendirme</th><th>Sonuç</th><th>Kararla ilişkili</th><th>Açıklama</th></tr></thead><tbody>`;
   tree.forEach(r=>{
-    treeHtml+=`<tr${r.decisive?' style="background:var(--yellow-bg)"':''}><td>${r.prio}</td><td>${esc(r.label)}</td><td><span class="badge ${STATUS_BADGE[r.status]||'b-gray'}">${esc(STATUS_LABEL[r.status]||r.status)}</span></td><td>${r.decisive?'<span class="badge b-yellow">Belirleyici</span>':'—'}</td><td style="font-size:10px;color:var(--text2)">${esc(r.message)}</td></tr>`;
+    treeHtml+=`<tr${r.related?' style="background:var(--yellow-bg)"':''}><td>${r.prio}</td><td>${esc(r.label)}</td><td><span class="badge ${STATUS_BADGE[r.status]||'b-gray'}">${esc(STATUS_LABEL[r.status]||r.status)}</span></td><td>${r.related?'<span class="badge b-yellow" title="Bu karar tipi için tipik katman">İlişkili</span>':'—'}</td><td style="font-size:10px;color:var(--text2)">${esc(r.message)}</td></tr>`;
   });
-  treeHtml+=`</tbody></table>`;
+  treeHtml+=`</tbody></table>
+    <div class="dev-hint" style="margin-top:8px">“İlişkili” işareti öncelik motorunun kesin nedenselliği değildir; nihai karar tipi ↔ katman eşlemesidir.</div>`;
   const nihaiSkor=d.klinik_skor!=null?d.klinik_skor:((d.medgemma||{}).klinik_skor);
   const nihaiSkorCls=nihaiSkor==null?'b-gray':nihaiSkor>=85?'b-green':nihaiSkor>=70?'b-blue':nihaiSkor>=50?'b-yellow':'b-red';
+  const riskReasons=asList(d.risk_reasons);
+  let riskHtml='';
+  if(riskReasons.length){
+    riskHtml=`<div class="detail-label" style="margin:12px 0 6px">Kod bazlı risk gerekçeleri (${riskReasons.length})</div>
+      <table><thead><tr><th>Kod</th><th>Risk</th><th>Tip</th><th>Mesaj</th></tr></thead><tbody>`;
+    riskReasons.forEach(r=>{
+      riskHtml+=`<tr>
+        <td style="font-family:monospace;font-weight:600">${esc(r.code||r.procedure_code||'—')}</td>
+        <td>${riskLevelBadge(r.risk_level)}</td>
+        <td style="font-size:11px">${esc(DECISION_TYPE_LABEL[r.decision_type]||r.decision_type||'—')}</td>
+        <td style="font-size:11px;color:var(--text2)">${esc(r.message||'')}</td>
+      </tr>`;
+    });
+    riskHtml+=`</tbody></table>`;
+  }
+  const paySig=asList(raw.diagnosis_payment_signals);
+  const priorSig=asList(raw.prior_rejection_signals);
+  let sigHtml='';
+  if(paySig.length||priorSig.length||raw.deterministic_summary){
+    const sigBits=[];
+    if(paySig.length) sigBits.push(`${paySig.length} ödeme/tanı`);
+    if(priorSig.length) sigBits.push(`${priorSig.length} önceki ret`);
+    if(raw.deterministic_summary) sigBits.push('özet var');
+    sigHtml=`<details style="margin-top:12px;border:1px solid var(--border);border-radius:8px;padding:8px 12px;background:var(--bg3)">
+      <summary style="cursor:pointer;font-weight:600;font-size:12px;color:var(--text);list-style-position:outside">
+        Deterministik sinyaller
+        <span class="badge b-gray" style="margin-left:8px;font-weight:600">${esc(sigBits.join(' · ')||'var')}</span>
+      </summary>
+      <div style="margin-top:10px">
+        <div class="detail-badges" style="margin-bottom:8px">
+          ${paySig.length?`<span class="badge b-yellow">Ödeme/tanı sinyali: ${paySig.length}</span>`:''}
+          ${priorSig.length?`<span class="badge b-red">Önceki ret sinyali: ${priorSig.length}</span>`:''}
+        </div>
+        ${raw.deterministic_summary?`<div style="font-size:12px;color:var(--text2);white-space:pre-wrap;margin-bottom:8px">${esc(typeof raw.deterministic_summary==='string'?raw.deterministic_summary:JSON.stringify(raw.deterministic_summary,null,2))}</div>`:''}
+        ${(paySig.length||priorSig.length)?`<pre class="json-box" style="max-height:220px">${esc(JSON.stringify({diagnosis_payment_signals:paySig,prior_rejection_signals:priorSig},null,2))}</pre>`:''}
+      </div>
+    </details>`;
+  }
   h+=`<div id="dev-step-9">${stepCard(9,'Nihai Karar Birleştirme',karar==='uygun'?'pass':(cls==='denied'?'fail':'review'),`
     <div class="detail-grid">
       <div><div class="detail-label">Karar</div><span class="badge ${KARAR_BADGE[karar]||'b-blue'}" style="font-size:12px;padding:4px 12px">${esc(label)}</span></div>
+      <div><div class="detail-label">Karar tipi / Risk</div>${d.decision_type?decisionTypeBadge(d.decision_type):'—'} ${d.risk_level?riskLevelBadge(d.risk_level):''}</div>
       <div><div class="detail-label">Klinik skor (MedGemma)</div>${nihaiSkor!=null?`<span class="badge ${nihaiSkorCls}" style="font-size:12px;padding:4px 12px">${esc(nihaiSkor)}/100</span>`:'<span class="badge b-gray">—</span>'}${d.skor_dayanak?`<div style="font-size:11px;color:var(--text2);margin-top:4px">${esc(d.skor_dayanak)}</div>`:''}</div>
       <div><div class="detail-label">Gerekçe</div><div style="font-size:12px;color:var(--text2)">${esc(d.gerekce||'—')}</div></div>
     </div>
-    <div class="detail-label" style="margin:12px 0 6px">Karar ağacı (öncelik sırası)</div>
+    ${riskHtml}
+    ${sigHtml}
+    <div class="detail-label" style="margin:12px 0 6px">Katman özeti (öncelik sırası)</div>
     ${treeHtml}
   `)}</div>`;
 
   // Step 10: Persist
   const pers=raw.persistence||{};
-  const PERSIST_LAYERS=['nihai_karar','belge_hasta','zorunlu_evrak','tani_kurali','sut_tani_kurali','sut_kurali','medgemma'];
-  h+=`<div id="dev-step-10">${stepCard(10,'Veri Kayıt (Qdrant)',pers.written>0?'pass':'skip',`
+  const pl=inferPersistLayers(d, pers);
+  const pStatus=persistStepStatus(pers);
+  h+=`<div id="dev-step-10">${stepCard(10,'Veri Kayıt (Qdrant)',pStatus,`
     <div class="detail-grid">
       <div><div class="detail-label">Yazılan Nokta</div><strong>${pers.written??0}</strong> patient_findings kaydı</div>
-      <div><div class="detail-label">Benzer Vaka Paylaşımı</div>${pers.rag_allowed?'<span class="badge b-green">Açık</span>':'<span class="badge b-yellow">Kapalı</span>'}</div>
-      ${asList(pers.errors).length?`<div><div class="detail-label">Hatalar</div><div style="color:var(--red);font-size:11px">${asList(pers.errors).map(e=>esc(e)).join('<br>')}</div></div>`:''}
+      <div><div class="detail-label">Benzer Vaka Paylaşımı (RAG)</div>${pers.rag_allowed?'<span class="badge b-green">Açık — katmanlar yazılır</span>':pers.rag_allowed===false?'<span class="badge b-yellow">Kapalı — yalnız nihai karar</span>':'<span class="badge b-gray">Belirtilmedi</span>'}</div>
+      ${pers.error?`<div><div class="detail-label">Hata</div><div style="color:var(--red);font-size:11px">${esc(pers.error)}</div></div>`:''}
+      ${asList(pers.errors).length?`<div><div class="detail-label">Embed / yazım uyarıları</div><div style="color:var(--red);font-size:11px">${asList(pers.errors).map(e=>esc(e)).join('<br>')}</div></div>`:''}
     </div>
-    <div style="margin-top:10px"><div class="detail-label">Yazılan katmanlar</div><div class="detail-badges">${PERSIST_LAYERS.map(l=>`<span class="badge b-blue">${l}</span>`).join(' ')}</div></div>
+    <div style="margin-top:10px"><div class="detail-label">Yazılan katmanlar ${pl.inferred?'<span class="badge b-gray">eski kayıttan çıkarıldı</span>':''}</div>
+      <div class="detail-badges">${pl.written.length?pl.written.map(l=>`<span class="badge b-blue">${esc(l)}</span>`).join(' '):'<span class="badge b-gray">yazılmadı</span>'}</div>
+    </div>
+    ${pl.attempted.length&&pl.inferred===false&&pl.attempted.length!==pl.written.length?`<div style="margin-top:8px"><div class="detail-label">Denenen katmanlar</div><div class="detail-badges">${pl.attempted.map(l=>`<span class="badge b-gray">${esc(l)}</span>`).join(' ')}</div></div>`:''}
   `)}</div>`;
 
   // Warnings
@@ -1789,10 +2080,13 @@ function renderJobDetailDev(d){
   h+=`<div class="step-card">
     <div class="step-header" onclick="this.parentElement.classList.toggle('open')">
       <span class="step-num" style="background:var(--text3)">{}</span>
-      <span class="step-title">Teknik Detay (Ham Veri)</span>
+      <span class="step-title">Teknik Detay (Ham Veri · kimlik maskeli)</span>
       <span class="step-arrow">▶</span>
     </div>
-    <div class="step-body"><div class="json-box">${esc(JSON.stringify(d,null,2))}</div></div>
+    <div class="step-body">
+      <div class="dev-hint" style="margin-bottom:8px">Bu JSON ekranda anonimleştirilmiş kopyadır; ad/TC/sicil metin içinde kısaltılmış olabilir. Klinik kodlar ve katman durumları korunur.</div>
+      <div class="json-box">${esc(JSON.stringify(d,null,2))}</div>
+    </div>
   </div>`;
 
   el.innerHTML=h;
@@ -1934,6 +2228,7 @@ const AN_KARAR_COLORS={
   belge_kaniti_yetersiz:'#6366f1',
   belge_analizi_tamamlanamadi:'#64748b',
   yanlis_hasta_belgesi:'#dc2626',
+  ai_yorumu_bekleniyor:'#eab308',
 };
 
 const AN_KARAR_LABELS={
@@ -1944,8 +2239,9 @@ const AN_KARAR_LABELS={
   evrak_eksik:'Evrak Eksik',
   klinik_uyumsuzluk:'Klinik Uyumsuzluk',
   belge_kaniti_yetersiz:'Belge Kanıtı Yetersiz',
-  belge_analizi_tamamlanamadi:'Analiz Tamamlanamadı',
+  belge_analizi_tamamlanamadi:'Belge Analizi Tamamlanamadı',
   yanlis_hasta_belgesi:'Yanlış Hasta Belgesi',
+  ai_yorumu_bekleniyor:'AI Yorumu Bekleniyor',
 };
 
 const AN_STATUS_COLORS={pass:'#10b981',fail:'#ef4444',review:'#f59e0b',insufficient:'#f97316',skipped:'#94a3b8'};

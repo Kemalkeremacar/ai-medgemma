@@ -34,11 +34,13 @@ python3 app/server.py --host 127.0.0.1 --port 8080 --enable-raw
 |----------|--------|
 | Dashboard sayaçları | `data/snapshot/demo-summary.json` |
 | Ana UI girdisi | `data/snapshot/engine-proposals.partial-enriched.json` |
-| AI paket sonuçları | `data/snapshot/engine-proposals.ai-partial-results.json` (1639 paket; 223 `rule_synthesis`) |
+| AI paket sonuçları | `data/snapshot/engine-proposals.ai-partial-results.json` (3722 paket; final `complete`) |
 | Schema / base | `data/base/*` |
 | Ham cevaplar (opt-in) | `restricted/engine-proposals.ai-raw-responses.json` |
 
-Öneri detayında **3. AI kural hipotezi** katmanı yalnız `rule_synthesis` sonuçlarını gösterir. Liste filtresi: `hasAi=1`.
+Final AI dağılımı: `rule_synthesis=799` (637 hipotez kartı), `crosswalk_adjudication=1416`, `proposal_rescue=1507` (hepsi `insufficient_evidence`). Deterministik öneri sayısı **799** kalır.
+
+Öneri detayında **3. AI kural hipotezi** katmanı yalnız `rule_synthesis` sonuçlarını gösterir. Liste filtresi: `hasAi=1` (finalde 799 önerinin tümü AI değerlendirmeli).
 
 Kaynak JSON/CSV dosyaları değiştirilmez.
 

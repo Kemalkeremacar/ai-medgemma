@@ -205,16 +205,21 @@ class ProvizyonOrchestrator:
         result.raw["job_meta"] = {
             "tc_kimlik": job.tc_kimlik,
             "patient_name": job.patient_name,
+            "hasta_id": job.hasta_id,
             "yas": job.yas,
             "cinsiyet": job.cinsiyet.value,
+            "facility_level": job.facility_level,
+            "institution_name": job.institution_label(),
+            "notes": list(job.notes or []),
             "model_sorulari": job.model_sorulari,
             "diagnosis_code_source": job.diagnosis_code_source(),
             "code_family": job.code_family,
             "huv_codes": job.all_huv_codes(),
             "sut_codes": job.all_sut_codes(),
             "diagnoses": list(job.diagnoses),
+            "documents_mode": job.documents_mode,
             "procedures": [
-                {"code": p.code, "name": p.name}
+                {"code": p.code, "name": p.name, "code_type": getattr(p, "code_type", None)}
                 for p in job.procedures
                 if p.code or p.name
             ],

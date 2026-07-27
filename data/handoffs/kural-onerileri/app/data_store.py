@@ -283,14 +283,28 @@ class DataStore:
             completed = len(self.ai_results)
 
         ai_rule_hypotheses = 0
+        rescue_insufficient = 0
         for row in self.ai_results:
-            if row.get("stage") != "rule_synthesis":
-                continue
-            if row.get("status") != "accepted":
-                continue
+            stage_name = row.get("stage")
             syn = row.get("synthesis") or {}
-            if syn.get("outcome") == "proposal":
+            if (
+                stage_name == "rule_synthesis"
+                and row.get("status") == "accepted"
+                and syn.get("outcome") == "proposal"
+            ):
                 ai_rule_hypotheses += 1
+            if (
+                stage_name == "proposal_rescue"
+                and syn.get("outcome") == "insufficient_evidence"
+            ):
+                rescue_insufficient += 1
+
+        source_state = self.summary.get("sourceState") or self.progress.get(
+            "sourceState"
+        )
+        stage_status = dict(
+            counts.get("stageStatus") or progress_counts.get("stageStatus") or {}
+        )
 
         return {
             "completedPackets": int(completed or 0),
@@ -302,10 +316,12 @@ class DataStore:
             "stage": {
                 "crosswalk_adjudication": int(stage.get("crosswalk_adjudication") or 0),
                 "rule_synthesis": int(stage.get("rule_synthesis") or 0),
+                "proposal_rescue": int(stage.get("proposal_rescue") or 0),
             },
+            "stageStatus": stage_status,
             "aiRuleHypotheses": ai_rule_hypotheses,
-            "sourceState": self.summary.get("sourceState")
-            or self.progress.get("sourceState"),
+            "proposalRescueInsufficientEvidence": rescue_insufficient,
+            "sourceState": source_state,
             "snapshotCreatedAt": self.summary.get("snapshotCreatedAt")
             or self.progress.get("snapshotCreatedAt"),
         }
@@ -373,7 +389,10 @@ class DataStore:
                 "writesToDatabase": False,
                 "callsModel": False,
                 "rawEnabled": self.enable_raw,
-                "partialSnapshot": True,
+                "partialSnapshot": (
+                    (self.summary.get("sourceState") or self.progress.get("sourceState"))
+                    not in {"complete", "final"}
+                ),
                 "crosswalkUiDisabled": True,
             },
         }

@@ -1260,10 +1260,11 @@
   "selection": {
     "currentStageLimitation": [
       "crosswalk_adjudication",
+      "proposal_rescue",
       "rule_synthesis"
     ],
     "method": "deterministic first 15 accepted and first 15 blocked results after owner/stage sorting",
     "representativeClinicalSample": false
   },
-  "snapshotCreatedAt": "2026-07-24T13:23:49.847027+00:00"
+  "snapshotCreatedAt": "2026-07-27T08:37:49.133875+00:00"
 }

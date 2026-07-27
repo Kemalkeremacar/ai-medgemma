@@ -488,10 +488,16 @@
       </div>
 
       <div class="panel ai-snapshot">
-        <h3 class="section-title">AI Snapshot</h3>
+        <h3 class="section-title">AI Snapshot
+          <span class="pill ${ai.sourceState === "complete" ? "ai" : "muted-pill"}" style="margin-left:8px;font-weight:600">
+            ${esc(ai.sourceState || "—")}
+          </span>
+        </h3>
         <p class="muted section-note">
           Kaynak: <code>demo-summary.json</code> + <code>engine-proposals.ai-partial-results.json</code>.
           Hipotez kartı = <code>rule_synthesis</code> + <code>accepted</code> + <code>outcome=proposal</code>.
+          <code>proposal_rescue</code> yeni kural eklemez; çoğu <code>insufficient_evidence</code>.
+          Deterministik 799 öneriye eklenmez.
         </p>
         <div class="grid-stats grid-stats-ai">
           <div class="stat"><div class="label">Tamamlanan AI paket</div><div class="value">${esc(ai.completedPackets)}</div></div>
@@ -499,7 +505,7 @@
             <div class="hint">accepted rule_synthesis · outcome=proposal</div>
           </div>
           <div class="stat"><div class="label">Teknik geçti</div><div class="value">${esc(status.accepted || 0)}</div>
-            <div class="hint">accepted</div>
+            <div class="hint">accepted ≠ insan onayı</div>
           </div>
           <div class="stat"><div class="label">Engellendi</div><div class="value">${esc(status.blocked || 0)}</div>
             <div class="hint">blocked</div>
@@ -507,15 +513,19 @@
           <div class="stat"><div class="label">Çağrı / parse hatası</div><div class="value">${esc(status.call_or_parse_error || 0)}</div>
             <div class="hint">call_or_parse_error</div>
           </div>
+          <div class="stat"><div class="label">Rescue · kanıt yetersiz</div><div class="value">${esc(ai.proposalRescueInsufficientEvidence ?? stage.proposal_rescue ?? 0)}</div>
+            <div class="hint">proposal_rescue · insufficient_evidence</div>
+          </div>
         </div>
         <div class="chips" style="margin-top:14px">
           <span class="pill muted-pill">crosswalk_adjudication ${esc(stage.crosswalk_adjudication || 0)}</span>
           <span class="pill ai">rule_synthesis ${esc(stage.rule_synthesis || 0)}</span>
+          <span class="pill muted-pill">proposal_rescue ${esc(stage.proposal_rescue || 0)}</span>
         </div>
-        <p class="muted" style="margin:12px 0 0">Öneri detayında yalnız <strong>rule_synthesis</strong> hipotezi gösterilir. Crosswalk sonuçları HUV↔SUT birleştirme UI’si değildir.</p>
+        <p class="muted" style="margin:12px 0 0">Öneri detayında yalnız <strong>rule_synthesis</strong> hipotezi gösterilir. Crosswalk / rescue HUV↔SUT birleştirme veya yeni öneri sayısı değildir.</p>
         <div class="chips" style="margin-top:14px">
           <a class="btn primary" href="#/proposals">Önerilere git</a>
-          <a class="btn secondary" href="#/proposals?hasAi=1">AI hipotezi olanlar</a>
+          <a class="btn secondary" href="#/proposals?hasAi=1">AI değerlendirmeli (799)</a>
           <a class="btn secondary" href="#/oneri-ai">Öneri AI</a>
         </div>
       </div>

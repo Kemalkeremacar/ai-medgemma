@@ -6,12 +6,14 @@ Konum: `data/handoffs/kural-onerileri/`
 (Üst indeks: `../README.md`)
 
 ## Snapshot özeti
-- Deterministik kural önerisi: 799
+- Deterministik kural önerisi: 799 *(değişmez)*
 - İşlem coverage kaydı: 2060
 - Resmî evidence: 1391
-- Tamamlanan AI paketi: 1639 *(2026-07-24 delta ile 297 → 1639)*
-- Aşama dağılımı: `crosswalk_adjudication=1416`, `rule_synthesis=223`
-- Durum dağılımı: `accepted=843`, `blocked=795`, `call_or_parse_error=1`
+- Tamamlanan AI paketi: **3722** · `sourceState=complete` *(2026-07-27 final: 1639 → 3722)*
+- Aşama: `crosswalk_adjudication=1416`, `rule_synthesis=799`, `proposal_rescue=1507`
+- Durum: `accepted=2828`, `blocked=892`, `call_or_parse_error=2`
+- AI kural hipotezi (kart): **637** (`rule_synthesis` + `accepted` + `outcome=proposal`)
+- `proposal_rescue`: 1507 · hepsi `insufficient_evidence` (yeni öneri sayısı değildir)
 
 `accepted` insan onayı değildir; yalnız şema / canonical constraint doğrulamasının geçtiğini gösterir.
 

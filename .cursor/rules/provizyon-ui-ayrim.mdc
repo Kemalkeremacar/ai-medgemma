@@ -1,0 +1,20 @@
+---
+description: Provizyonlar (sunum) vs Sistem (teknik) UI ayrımı — karıştırma
+alwaysApply: true
+---
+
+# Provizyon paneli ayrımı
+
+Bu ürün dilinde iki ekran **bilinçli olarak farklı** tutulur. Karıştırma.
+
+| Nav / rota | Kim için | Ne olmalı |
+|---|---|---|
+| **Provizyonlar** (`dashboard.html` ana görünüm) | Sunum, yönetici, son kullanıcı | **Sade.** Özet karar, skor, gerekçe. Teknik pipeline / hasta geçmişi / benzer vaka / ham JSON dump **yok**. |
+| **Sistem** (`/dashboard/demo` → `dashboard_demo.html`) | Operatör / kendi değerlendirme denetimi | **Tam teknik detay zorunlu.** OCR, kurallar, MedGemma exchange, `patient_context` (geçmiş + benzer), persist, uyarılar, ham veri. |
+
+## Kurallar
+
+1. Sunum için sadeleştirme isteği → sadece **Provizyonlar**. Sistem’i boşaltma.
+2. Teknik alan / Qdrant geçmiş / benzer vaka / katman detayı → sadece **Sistem**.
+3. Sistem’de kimlik maskesi (HASTA GİZLİ) kalabilir; teknik içerik maskelenmez.
+4. Yeni değerlendirme alanı eklenecekse Sistem’e tamamını koy; Provizyonlar’a yalnız sunuma uygun özeti taşı.

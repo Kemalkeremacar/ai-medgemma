@@ -1,0 +1,12 @@
+{
+  "appliedAt": "2026-07-27T09:28:08.861193+00:00",
+  "backupDirectory": "/home/monassist1/GemmaApp/data/handoffs/kural-onerileri/backups/snapshot-pre-update-20260727-092808-cdb7da37",
+  "baseSha256": "3580ac21f05b513c117794bc645520eb24477d641384015ac93750c07d5e4f33",
+  "callsModel": false,
+  "currentPackets": 3722,
+  "previousPackets": 1639,
+  "restartRequired": true,
+  "schemaVersion": "outpatient_rule_engine_dgx_snapshot_update_receipt.v1",
+  "targetRoot": "/home/monassist1/GemmaApp/data/handoffs/kural-onerileri",
+  "writesToDatabase": false
+}

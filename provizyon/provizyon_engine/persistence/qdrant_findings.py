@@ -244,7 +244,19 @@ class PatientFindingsWriter(_FindingsStoreBase):
             client.upsert(collection_name=self.collection, points=points, wait=True)
             self._delete_deprecated_layers(client, result.provizyon_id)
 
-        return {"written": len(points), "errors": errors, "rag_allowed": allow_document_rag}
+        layers_attempted = [layer_name for layer_name, _text, _payload in layers]
+        layers_written = [
+            str((getattr(p, "payload", None) or {}).get("layer") or "")
+            for p in points
+            if (getattr(p, "payload", None) or {}).get("layer")
+        ]
+        return {
+            "written": len(points),
+            "errors": errors,
+            "rag_allowed": allow_document_rag,
+            "layers_attempted": layers_attempted,
+            "layers_written": layers_written,
+        }
 
     def _delete_deprecated_layers(self, client, provizyon_id: str) -> None:
         from qdrant_client.models import PointIdsList
@@ -398,23 +410,36 @@ class PatientFindingsReader(_FindingsStoreBase):
         tc_kimlik: str | None,
         exclude_provizyon_id: str | None = None,
     ):
-        """TC öncelikli hasta filtresi: TC varsa sadece TC ile ara, yoksa hasta_id fallback."""
+        """Aynı hasta filtresi: TC ve/veya hasta_id eşleşmesi (OR).
+
+        Eski kayıtlar yalnız hasta_id, yeniler TC taşıyabilir; tek kimlik
+        anahtarına kilitlenmek geçmişi kaçırıyordu.
+        """
         from qdrant_client.models import FieldCondition, Filter, MatchValue
 
-        must: list[FieldCondition] = []
+        should: list[FieldCondition] = []
         if tc_kimlik:
-            must.append(FieldCondition(key="tc_kimlik", match=MatchValue(value=tc_kimlik)))
-        elif hasta_id:
-            must.append(FieldCondition(key="hasta_id", match=MatchValue(value=hasta_id)))
-        else:
+            should.append(
+                FieldCondition(key="tc_kimlik", match=MatchValue(value=str(tc_kimlik).strip()))
+            )
+        if hasta_id:
+            should.append(
+                FieldCondition(key="hasta_id", match=MatchValue(value=str(hasta_id).strip()))
+            )
+        if not should:
             return None
 
         must_not = []
         if exclude_provizyon_id:
             must_not.append(
-                FieldCondition(key="provizyon_id", match=MatchValue(value=exclude_provizyon_id))
+                FieldCondition(
+                    key="provizyon_id",
+                    match=MatchValue(value=str(exclude_provizyon_id).strip()),
+                )
             )
-        return Filter(must=must, must_not=must_not or None)
+        if len(should) == 1:
+            return Filter(must=should, must_not=must_not or None)
+        return Filter(should=should, must_not=must_not or None)
 
     def fetch_by_patient(
         self,

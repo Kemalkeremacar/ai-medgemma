@@ -24,19 +24,24 @@ class DataStoreTests(unittest.TestCase):
         self.assertEqual(summary["base"]["deterministicProposals"], 799)
         self.assertEqual(summary["base"]["officialEvidence"], 1391)
         self.assertNotIn("completedPackets", summary["base"])
-        self.assertEqual(summary["counts"]["completedPackets"], 1639)
-        self.assertEqual(summary["counts"]["stage"]["rule_synthesis"], 223)
+        self.assertEqual(summary["counts"]["completedPackets"], 3722)
+        self.assertEqual(summary["counts"]["stage"]["rule_synthesis"], 799)
         self.assertEqual(summary["counts"]["stage"]["crosswalk_adjudication"], 1416)
-        self.assertEqual(summary["counts"]["status"]["accepted"], 843)
+        self.assertEqual(summary["counts"]["stage"]["proposal_rescue"], 1507)
+        self.assertEqual(summary["counts"]["status"]["accepted"], 2828)
+        self.assertEqual(summary["sourceState"], "complete")
         ai = summary["aiSnapshot"]
-        self.assertEqual(ai["completedPackets"], 1639)
-        self.assertEqual(ai["status"]["accepted"], 843)
-        self.assertEqual(ai["status"]["blocked"], 795)
-        self.assertEqual(ai["status"]["call_or_parse_error"], 1)
+        self.assertEqual(ai["completedPackets"], 3722)
+        self.assertEqual(ai["status"]["accepted"], 2828)
+        self.assertEqual(ai["status"]["blocked"], 892)
+        self.assertEqual(ai["status"]["call_or_parse_error"], 2)
         self.assertEqual(ai["stage"]["crosswalk_adjudication"], 1416)
-        self.assertEqual(ai["stage"]["rule_synthesis"], 223)
-        self.assertEqual(ai["aiRuleHypotheses"], 159)
-        self.assertTrue(summary["safety"]["partialSnapshot"])
+        self.assertEqual(ai["stage"]["rule_synthesis"], 799)
+        self.assertEqual(ai["stage"]["proposal_rescue"], 1507)
+        self.assertEqual(ai["aiRuleHypotheses"], 637)
+        self.assertEqual(ai["proposalRescueInsufficientEvidence"], 1507)
+        self.assertEqual(ai["sourceState"], "complete")
+        self.assertFalse(summary["safety"]["partialSnapshot"])
         self.assertFalse(summary["safety"]["rawEnabled"])
 
     def test_help_markdown(self) -> None:
@@ -99,8 +104,9 @@ class DataStoreTests(unittest.TestCase):
         self.assertIn("labels", detail)
 
     def test_rule_synthesis_on_proposals(self) -> None:
+        # Final snapshot: every deterministic proposal has a rule_synthesis packet.
         with_ai = self.store.list_proposals(has_ai="1", page=1, page_size=5)
-        self.assertEqual(with_ai["total"], 223)
+        self.assertEqual(with_ai["total"], 799)
         self.assertTrue(all(i.get("hasAiHypothesis") for i in with_ai["items"]))
         pid = with_ai["items"][0]["proposalId"]
         detail = self.store.get_proposal(pid)
@@ -124,6 +130,17 @@ class DataStoreTests(unittest.TestCase):
         # blocked + outcome yok iken "henüz işlenmedi" dememeli
         self.assertNotEqual(detail.get("outcomeLabel"), "Henüz işlenmedi")
 
+    def test_proposal_rescue_not_counted_as_hypothesis(self) -> None:
+        rescue = self.store.list_ai(stage="proposal_rescue", page=1, page_size=5)
+        self.assertEqual(rescue["total"], 1507)
+        self.assertTrue(all(i.get("stage") == "proposal_rescue" for i in rescue["items"]))
+        # Rescue accepted packets are insufficient_evidence, not rule hypotheses.
+        detail = self.store.get_ai(rescue["items"][0]["packetId"])
+        assert detail is not None
+        syn = (detail.get("result") or {}).get("synthesis") or {}
+        self.assertEqual(syn.get("outcome"), "insufficient_evidence")
+        self.assertEqual(detail.get("outcomeLabel"), "Kanıt yetersiz")
+
     def test_liste_tipi_filter(self) -> None:
         huv = self.store.list_proposals(liste_tipi="HUV", page=1, page_size=5)
         self.assertGreater(huv["total"], 0)
@@ -142,7 +159,7 @@ class DataStoreTests(unittest.TestCase):
         self.assertIn("structured", raw)
 
     def test_redact_secrets(self) -> None:
-        text = 'Authorization: Bearer secret-token-123 api_key=abcd'
+        text = "Authorization: Bearer secret-token-123 api_key=abcd"
         redacted = _redact_secrets(text)
         self.assertNotIn("secret-token-123", redacted)
         self.assertIn("[REDACTED]", redacted)

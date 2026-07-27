@@ -15,7 +15,8 @@ Endpoint'ler:
   GET  /dashboard              -> kontrol paneli UI
   GET  /copilot                -> Finansal Risk UI
   GET  /dashboard/yonetici     -> Ne Yaptık? UI
-  GET  /dashboard/demo         -> Sistem (maskeli Provizyonlar + Kurum Analiz)
+  GET  /dashboard/demo         -> Sistem (teknik değerlendirme paneli; kimlik maskeli)
+  GET  /provizyon/{id}/patient-context -> canlı Qdrant hasta geçmişi / benzer vaka
   GET  /dashboard/demo-sunum   -> Diyagram (animasyonlu provizyon akışı)
   GET  /dashboard/kural-onerileri -> DGX kural önerileri demo (read-only handoff)
   GET  /rule-proposal-demo/...    -> demo static + JSON API köprüsü
@@ -345,6 +346,68 @@ def get_result(provizyon_id: str) -> dict[str, Any]:
     # Eski sonuçlarda da salt okunur gölge tavsiyeyi hesapla (canlı karar değişmez).
     attach_shadow_advice_to_result(result)
     return result
+
+
+@app.get("/provizyon/{provizyon_id}/patient-context")
+def get_patient_context_live(provizyon_id: str) -> dict[str, Any]:
+    """Sistem paneli için canlı Qdrant hasta bağlamı (değerlendirme anındaki kopyadan bağımsız)."""
+    queue = get_queue()
+    result = queue.get_result(provizyon_id)
+    if result is None:
+        raise HTTPException(404, f"Sonuç bulunamadı: {provizyon_id}")
+
+    raw = result.get("raw") or {}
+    meta = raw.get("job_meta") if isinstance(raw.get("job_meta"), dict) else {}
+    procs = meta.get("procedures") or []
+    job = ProvizyonJob(
+        provizyon_id=str(provizyon_id),
+        hasta_id=result.get("hasta_id") or meta.get("hasta_id"),
+        tc_kimlik=meta.get("tc_kimlik") or result.get("tc_kimlik"),
+        patient_name=result.get("patient_name") or meta.get("patient_name"),
+        yas=meta.get("yas"),
+        cinsiyet=meta.get("cinsiyet") or "bilinmiyor",
+        facility_level=meta.get("facility_level"),
+        huv_codes=list(meta.get("huv_codes") or []),
+        sut_codes=list(meta.get("sut_codes") or []),
+        diagnoses=list(meta.get("diagnoses") or result.get("diagnoses") or []),
+        procedures=procs if isinstance(procs, list) else [],
+        code_family=meta.get("code_family"),
+        notes=list(meta.get("notes") or []),
+    )
+
+    from .persistence.patient_context import load_patient_context
+
+    try:
+        ctx = load_patient_context(job)
+    except Exception as exc:
+        return {
+            "history_count": 0,
+            "similar_count": 0,
+            "history": [],
+            "similar": [],
+            "notes": [f"Canlı hasta bağlamı okunamadı: {exc}"],
+            "source": "live",
+            "enabled": bool(settings.ENABLE_PATIENT_CONTEXT),
+            "similar_enabled": bool(settings.ENABLE_SIMILAR_CASES),
+        }
+
+    if ctx is None:
+        return {
+            "history_count": 0,
+            "similar_count": 0,
+            "history": [],
+            "similar": [],
+            "notes": ["Hasta bağlamı kapalı veya kimlik/geçmiş bulunamadı."],
+            "source": "live",
+            "enabled": bool(settings.ENABLE_PATIENT_CONTEXT),
+            "similar_enabled": bool(settings.ENABLE_SIMILAR_CASES),
+        }
+
+    out = ctx.to_dict()
+    out["source"] = "live"
+    out["enabled"] = bool(settings.ENABLE_PATIENT_CONTEXT)
+    out["similar_enabled"] = bool(settings.ENABLE_SIMILAR_CASES)
+    return out
 
 
 @app.get("/queue/stats")
@@ -965,7 +1028,7 @@ def dashboard_page():
 
 @app.get("/dashboard/demo", include_in_schema=False)
 def dashboard_demo_page():
-    """Sistem — Provizyonlar + Kurum Analiz, kimlik alanları maskeli."""
+    """Sistem — operatör teknik değerlendirme paneli (kimlik maskeli, pipeline tam detay)."""
     return _serve_static_html("dashboard_demo.html")
 
 
