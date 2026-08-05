@@ -94,6 +94,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(body["proposal"]["proposalId"], pid)
         self.assertIn("officialEvidence", body)
+        self.assertIn("presentation", body)
+        self.assertIn("targetProcedures", body["presentation"])
 
     def test_raw_forbidden_without_flag(self) -> None:
         _, listing = self._get("/api/ai?page=1&pageSize=1")

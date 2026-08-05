@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import importlib.util
 import os
+import sys
 import threading
-from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +17,10 @@ from . import settings
 
 DEFAULT_HANDOFF_REL = Path("data/handoffs/kural-onerileri")
 API_MOUNT = "/rule-proposal-demo"
+_HANDOFF_MODULE_NAMES = (
+    "example_rules",
+    "dgx_rule_proposal_data_store",
+)
 
 
 class RuleProposalHandoffError(Exception):
@@ -52,39 +56,70 @@ def static_dir() -> Path:
     return path
 
 
-@lru_cache(maxsize=1)
-def _load_data_store_class():
-    root = resolve_handoff_root()
-    module_path = root / "app" / "data_store.py"
-    if not module_path.is_file():
+def _import_handoff_module(module_name: str, path: Path):
+    """Load a handoff app module from disk (fresh), registering it in sys.modules."""
+    if not path.is_file():
         raise RuleProposalHandoffError(
-            f"Handoff app/data_store.py yok: {module_path}. "
-            "Zip'i açın veya PROVIZYON_RULE_PROPOSAL_HANDOFF_ROOT ayarlayın.",
+            f"Handoff modülü yok: {path}",
             status_code=503,
         )
-    spec = importlib.util.spec_from_file_location(
-        "dgx_rule_proposal_data_store", module_path
-    )
+    sys.modules.pop(module_name, None)
+    spec = importlib.util.spec_from_file_location(module_name, path)
     if spec is None or spec.loader is None:
-        raise RuleProposalHandoffError("data_store yüklenemedi", status_code=503)
+        raise RuleProposalHandoffError(
+            f"Handoff modülü yüklenemedi: {path}",
+            status_code=503,
+        )
     module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
-    return module.DataStore
+    return module
+
+
+def _load_data_store_class():
+    """Load example_rules + data_store from handoff app/ (not a stale sys.modules copy)."""
+    root = resolve_handoff_root()
+    app_dir = root / "app"
+    # Drop previous handoff modules so sibling imports resolve to this package.
+    for name in _HANDOFF_MODULE_NAMES:
+        sys.modules.pop(name, None)
+    # example_rules first — data_store imports it by bare name.
+    _import_handoff_module("example_rules", app_dir / "example_rules.py")
+    store_mod = _import_handoff_module(
+        "dgx_rule_proposal_data_store", app_dir / "data_store.py"
+    )
+    return store_mod.DataStore
 
 
 _store = None
 _store_lock = threading.Lock()
 _store_raw_flag: bool | None = None
+_store_root: Path | None = None
+
+
+def reset_store() -> None:
+    """Drop cached DataStore (e.g. after handoff code/data update)."""
+    global _store, _store_raw_flag, _store_root
+    with _store_lock:
+        _store = None
+        _store_raw_flag = None
+        _store_root = None
+        for name in _HANDOFF_MODULE_NAMES:
+            sys.modules.pop(name, None)
 
 
 def get_store():
     """Lazy singleton DataStore (read-only indexes)."""
-    global _store, _store_raw_flag
+    global _store, _store_raw_flag, _store_root
     enable_raw = raw_enabled()
     with _store_lock:
-        if _store is not None and _store_raw_flag == enable_raw:
-            return _store
         root = resolve_handoff_root()
+        if (
+            _store is not None
+            and _store_raw_flag == enable_raw
+            and _store_root == root
+        ):
+            return _store
         if not (root / "HANDOFF_MANIFEST.json").is_file():
             raise RuleProposalHandoffError(
                 f"Kural önerisi handoff yok: {root}. "
@@ -95,6 +130,7 @@ def get_store():
         DataStore = _load_data_store_class()
         _store = DataStore(root=root, enable_raw=enable_raw)
         _store_raw_flag = enable_raw
+        _store_root = root
         return _store
 
 

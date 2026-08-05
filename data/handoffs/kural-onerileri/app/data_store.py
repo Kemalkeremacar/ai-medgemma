@@ -13,7 +13,7 @@ _APP_DIR = Path(__file__).resolve().parent
 if str(_APP_DIR) not in sys.path:
     sys.path.insert(0, str(_APP_DIR))
 
-from example_rules import build_example_rules  # noqa: E402
+from example_rules import build_example_rules, build_presentation  # noqa: E402
 
 HANDOFF_ROOT = _APP_DIR.parent
 LABELS = {
@@ -49,12 +49,14 @@ FIELD_LABELS = {
     "periyotDeger": "Periyot değeri",
     "surePeriyot": "Periyot birimi",
     "islemlerGrupMu": "İşlemler grup mu?",
-    "sourceSutCode": "Kaynak SUT kodu",
-    "targetSutCodes": "Hedef SUT kodları",
+    "sourceSutCode": "Kaynak SUT (eşleme)",
+    "targetSutCodes": "Kaynak kuraldaki SUT hedefleri",
     "evrakBazliMi": "Evrak bazlı mı?",
     "yasBaslangic": "Yaş başlangıç",
     "yasBitis": "Yaş bitiş",
     "yasBirimi": "Yaş birimi",
+    "resolvedTargetCodes": "Birlikte ödenmez hedef işlemler",
+    "targetResolution": "Hedef çözüm yolu",
 }
 
 PERIOD_VALUE_LABELS = {
@@ -72,9 +74,20 @@ QUALITY_FLAG_LABELS = {
     "frequency_period_or_limit_incomplete": "Frekans / süre bilgisi eksik",
     "explicit_age_bounds_not_parsed": "Yaş sınırları ayrıştırılamadı",
     "official_source_verification_failed": "Resmî kaynak doğrulanamadı",
-    "unresolved_target_sut_codes": "Hedef SUT kodları çözülemedi",
-    "ambiguous_target_sut_codes": "Hedef SUT kodları belirsiz",
+    "unresolved_target_sut_codes": "Kaynak kuraldaki SUT hedefleri çözülemedi",
+    "ambiguous_target_sut_codes": "Kaynak kuraldaki SUT hedefleri belirsiz",
+    "cross_list_together_targets_blocked": "Birlikte ödenmez için HUV–SUT karışımı engellendi",
 }
+
+# Machine validation codes (field_not_allowed:…, rule_synthesis_forbids_…)
+# are never shown to experts — only a short note when status is blocked.
+AI_BLOCKED_NOTE = "Model çıktısı teknik doğrulamayı geçmedi; hipotez olarak okuyun."
+
+
+def _ai_validation_note(status: str | None, errors: list[Any] | None) -> str | None:
+    if status == "blocked" or (errors and len(errors) > 0):
+        return AI_BLOCKED_NOTE
+    return None
 
 
 def quality_flag_label(flag: str) -> str:
@@ -89,6 +102,8 @@ def quality_flag_label(flag: str) -> str:
         codes = raw.split(":", 1)[1] if ":" in raw else ""
         base = QUALITY_FLAG_LABELS["ambiguous_target_sut_codes"]
         return f"{base}: {codes}" if codes else base
+    if raw.startswith("cross_list_together_targets_blocked"):
+        return QUALITY_FLAG_LABELS["cross_list_together_targets_blocked"]
     if raw.startswith("official_source_verification_failed"):
         return QUALITY_FLAG_LABELS["official_source_verification_failed"]
     return QUALITY_FLAG_LABELS.get(raw, raw.replace("_", " "))
@@ -479,6 +494,7 @@ class DataStore:
         # Strip embedded AI from proposal payload; expose curated rule_synthesis only.
         proposal_view = {k: v for k, v in p.items() if k != "aiSyntheses"}
         ai_hypotheses = self._rule_synthesis_for_proposal(proposal_id, p)
+        presentation = build_presentation(p, signals=signals)
         return {
             "proposal": proposal_view,
             "ownerId": owner,
@@ -486,6 +502,7 @@ class DataStore:
             "engineSignals": signals,
             "existingRules": existing,
             "aiHypotheses": ai_hypotheses,
+            "presentation": presentation,
             "labels": LABELS,
             "ruleTypeLabel": RULE_TYPE_LABELS.get(p.get("targetRuleType") or "", p.get("targetRuleType")),
             "listeTipi": proc.get("listeTipi"),
@@ -540,6 +557,7 @@ class DataStore:
             seen.add(packet_id)
             status = (result or {}).get("status") or syn.get("status")
             outcome = syn.get("outcome")
+            raw_errors = (result or {}).get("errors") or syn.get("errors") or []
             items.append(
                 {
                     "packetId": packet_id,
@@ -558,7 +576,9 @@ class DataStore:
                     "proposedFields": syn.get("proposedFields") or {},
                     "officialEvidenceIds": syn.get("officialEvidenceIds") or [],
                     "existingRuleRelation": syn.get("existingRuleRelation"),
-                    "errors": (result or {}).get("errors") or syn.get("errors") or [],
+                    # Do not expose machine codes like field_not_allowed:sourceSutCode
+                    "errors": [],
+                    "validationNote": _ai_validation_note(status, raw_errors),
                     "hypothesisOnly": syn.get("hypothesisOnly", True),
                 }
             )
@@ -602,7 +622,8 @@ class DataStore:
                 "statusLabel": LABELS.get(r.get("status") or "", r.get("status")),
                 "outcome": syn.get("outcome"),
                 "outcomeLabel": LABELS.get(syn.get("outcome") or "", syn.get("outcome")),
-                "errors": r.get("errors") or [],
+                "errors": [],
+                "validationNote": _ai_validation_note(r.get("status"), r.get("errors") or []),
                 "selectedCrosswalkId": syn.get("selectedCrosswalkId"),
                 "reviewRecommended": (syn.get("proposedFields") or {}).get("reviewRecommended"),
                 "hasRaw": r.get("packetId") in self.raw_by_packet if self.enable_raw else False,

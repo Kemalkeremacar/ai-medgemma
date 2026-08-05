@@ -51,6 +51,8 @@ class DataStoreTests(unittest.TestCase):
         self.assertIn("Durum", md)
         self.assertIn("HUV", md)
         self.assertIn("SUT", md)
+        self.assertIn("tamamen ayrı", md)
+        self.assertIn("birlikte ödenmez", md.lower())
         self.assertNotIn("Crosswalk", md)
 
     def test_proposal_display_title(self) -> None:
@@ -102,6 +104,10 @@ class DataStoreTests(unittest.TestCase):
         self.assertNotIn("aiSyntheses", detail["proposal"])
         self.assertIn("aiHypotheses", detail)
         self.assertIn("labels", detail)
+        self.assertIn("presentation", detail)
+        self.assertIn("targetProcedures", detail["presentation"])
+        self.assertIn("sourceSut", detail["presentation"])
+        self.assertIn("mappingTrust", detail["presentation"])
 
     def test_rule_synthesis_on_proposals(self) -> None:
         # Final snapshot: every deterministic proposal has a rule_synthesis packet.
@@ -115,6 +121,44 @@ class DataStoreTests(unittest.TestCase):
         hyp = detail["aiHypotheses"][0]
         self.assertEqual(hyp["stage"], "rule_synthesis")
         self.assertIn(hyp["status"], {"accepted", "blocked", "call_or_parse_error"})
+
+    def test_ai_hypotheses_hide_machine_error_codes(self) -> None:
+        blocked = self.store.list_ai(status="blocked", stage="rule_synthesis", page=1, page_size=20)
+        self.assertGreater(blocked["total"], 0)
+        # Find a proposal whose synthesis was blocked with machine codes in raw data.
+        pid = None
+        for row in blocked["items"]:
+            owner = row.get("ownerId") or ""
+            if owner.startswith("engine_proposal_"):
+                pid = owner
+                break
+        if pid is None:
+            # ownerId may be procedure key; scan proposals for blocked hyp
+            for p in self.store.proposal_list[:50]:
+                detail = self.store.get_proposal(p["proposalId"])
+                assert detail is not None
+                for h in detail["aiHypotheses"]:
+                    if h.get("status") == "blocked" or h.get("validationNote"):
+                        pid = p["proposalId"]
+                        break
+                if pid:
+                    break
+        self.assertIsNotNone(pid)
+        detail = self.store.get_proposal(pid)
+        assert detail is not None
+        for h in detail["aiHypotheses"]:
+            self.assertEqual(h.get("errors"), [])
+            blob = " ".join(
+                [
+                    h.get("validationNote") or "",
+                    h.get("rationale") or "",
+                    h.get("statusLabel") or "",
+                ]
+            )
+            self.assertNotIn("field_not_allowed", blob)
+            self.assertNotIn("rule_synthesis_forbids", blob)
+            if h.get("status") == "blocked":
+                self.assertTrue(h.get("validationNote"))
 
     def test_ai_labels_and_status(self) -> None:
         accepted = self.store.list_ai(status="accepted", page=1, page_size=5)

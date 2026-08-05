@@ -40,12 +40,14 @@
     periyotDeger: "Periyot değeri",
     surePeriyot: "Periyot birimi",
     islemlerGrupMu: "İşlemler grup mu?",
-    sourceSutCode: "Kaynak SUT kodu",
-    targetSutCodes: "Hedef SUT kodları",
+    sourceSutCode: "Kaynak SUT (eşleme)",
+    targetSutCodes: "Kaynak kuraldaki SUT hedefleri",
     evrakBazliMi: "Evrak bazlı mı?",
     yasBaslangic: "Yaş başlangıç",
     yasBitis: "Yaş bitiş",
     yasBirimi: "Yaş birimi",
+    resolvedTargetCodes: "Birlikte ödenmez hedef işlemler",
+    targetResolution: "Hedef çözüm yolu",
   };
 
   const FALLBACK_PERIOD_LABELS = { G: "Gün", H: "Hafta", M: "Ay", Y: "Yıl" };
@@ -58,8 +60,16 @@
     frequency_period_or_limit_incomplete: "Frekans / süre bilgisi eksik",
     explicit_age_bounds_not_parsed: "Yaş sınırları ayrıştırılamadı",
     official_source_verification_failed: "Resmî kaynak doğrulanamadı",
-    unresolved_target_sut_codes: "Hedef SUT kodları çözülemedi",
-    ambiguous_target_sut_codes: "Hedef SUT kodları belirsiz",
+    unresolved_target_sut_codes: "Kaynak kuraldaki SUT hedefleri çözülemedi",
+    ambiguous_target_sut_codes: "Kaynak kuraldaki SUT hedefleri belirsiz",
+    cross_list_together_targets_blocked: "Birlikte ödenmez için HUV–SUT karışımı engellendi",
+  };
+
+  const RESOLUTION_LABELS = {
+    procedureRefs: "Aynı listedeki işlem referansları",
+    targetSutCodes: "SUT hedef kodları (SUT kuralı)",
+    sut_targets_cross_list_blocked: "SUT hedefleri var — HUV kuralı olarak onaylanamaz",
+    none: "Aynı listede hedef yok",
   };
 
   const AI_STATUS_LABELS = {
@@ -135,6 +145,9 @@
       const codes = raw.includes(":") ? raw.split(":").slice(1).join(":") : "";
       const base = FALLBACK_FLAG_LABELS.ambiguous_target_sut_codes;
       return codes ? `${base}: ${codes}` : base;
+    }
+    if (raw.startsWith("cross_list_together_targets_blocked")) {
+      return FALLBACK_FLAG_LABELS.cross_list_together_targets_blocked;
     }
     if (raw.startsWith("official_source_verification_failed")) {
       return FALLBACK_FLAG_LABELS.official_source_verification_failed;
@@ -472,7 +485,7 @@
     if (isRouteStale(gen)) return;
     views.dashboard.innerHTML = `
       <div class="banner info">
-        Bu ekran canlı kural yazmaz. HUV ve SUT önerilerini <strong>ayrı ayrı</strong> inceleyin.
+        Bu ekran canlı kural yazmaz. Birlikte ödenmez <strong>HUV↔HUV</strong> veya <strong>SUT↔SUT</strong>; çapraz liste yok.
         Deterministik sayaçlar ile AI snapshot <strong>birleştirilmez</strong>.
         <code>accepted</code> insan onayı değildir.
       </div>
@@ -695,6 +708,57 @@
     if (relation && relation !== "Yeni aday") summaryPairs.push(["Mevcut kural", esc(relation)]);
     if (notes.length) summaryPairs.push(["Not", esc(notes.join(" · "))]);
 
+    const presentation = data.presentation || {};
+    const targetProc = presentation.targetProcedures || {};
+    const sourceSut = presentation.sourceSut || {};
+    const mappingTrust = presentation.mappingTrust || {};
+    const targetCodes = targetProc.codes || [];
+    const targetListe = targetProc.listeTipi || proc.listeTipi || "—";
+    const resolutionLabel = RESOLUTION_LABELS[targetProc.resolution] || targetProc.resolution || "—";
+    let targetHtml = "";
+    if (targetProc.applicable) {
+      const canApprove = targetProc.canApproveSameList === true;
+      if (targetCodes.length && canApprove) {
+        targetHtml = `
+          <div class="chips" style="margin-top:8px">
+            ${targetCodes.map((c) => `<span class="pill liste">${esc(targetListe)} ${esc(c)}</span>`).join("")}
+          </div>
+          <p class="muted" style="margin:8px 0 0">Çözüm: ${esc(resolutionLabel)} · Aynı listede onaylanabilir</p>`;
+      } else if (targetProc.resolution === "sut_targets_cross_list_blocked") {
+        const sutOnly = targetProc.provenanceSutTargets || sourceSut.targetSutCodes || [];
+        targetHtml = `
+          <div class="banner danger" style="margin-top:8px">
+            HUV birlikte-ödenmez olarak <strong>onaylanamaz</strong> — hedef işlemler HUV listesinde yok.
+            HUV–SUT karıştırılmaz.
+          </div>
+          <p class="muted" style="margin:8px 0 0">Çözüm: ${esc(resolutionLabel)}</p>
+          ${sutOnly.length ? `<p class="muted">Ayrı SUT adayı hedefleri: ${esc(sutOnly.join(", "))}</p>` : ""}`;
+      } else {
+        targetHtml = `
+          <div class="empty" style="margin-top:8px">Aynı liste tipinde hedef işlem yok — HUV A↔HUV B tanımlanmalı.</div>
+          <p class="muted" style="margin:8px 0 0">Çözüm: ${esc(resolutionLabel)}</p>`;
+      }
+    } else {
+      targetHtml = `<p class="muted" style="margin:8px 0 0">Bu kural tipinde birlikte-ödenmez hedef listesi yok.</p>`;
+    }
+
+    const sourcePairs = [];
+    if (sourceSut.sourceSutCode) sourcePairs.push(["Kaynak SUT (eşleme)", esc(sourceSut.sourceSutCode)]);
+    if ((sourceSut.targetSutCodes || []).length) {
+      sourcePairs.push(["Kaynak kuraldaki SUT hedefleri", esc(sourceSut.targetSutCodes.join(", "))]);
+    }
+    const sourceHtml = sourcePairs.length
+      ? kvRows(sourcePairs)
+      : `<p class="muted" style="margin:8px 0 0">Kaynak SUT alanı yok (doğrudan HUV notu olabilir).</p>`;
+
+    const trustPairs = [
+      ["Özet", esc(mappingTrust.trustLabel || "—")],
+      ["Sinyal kaynağı", esc((mappingTrust.origins || []).join(", ") || "—")],
+      ["Motor kural tipi", esc((mappingTrust.engineRuleTypes || []).join(", ") || "—")],
+      ["mappingStatus", esc((mappingTrust.mappingStatuses || []).join(", ") || "—")],
+      ["Eşleme güvenilir", mappingTrust.crosswalkTrusted === false ? "Hayır" : "Evet / uyarı yok"],
+    ];
+
     const evidenceHtml = (data.officialEvidence || []).length
       ? data.officialEvidence.map((e) => {
           const meta = [];
@@ -724,7 +788,7 @@
           const statusClass = h.status === "accepted" ? "ok" : h.status === "blocked" ? "warn" : "danger";
           const gaps = (h.evidenceGaps || []).filter(Boolean);
           const questions = (h.expertQuestions || []).filter(Boolean);
-          const errors = (h.errors || []).filter(Boolean);
+          const validationNote = h.validationNote || "";
           const hasFields = h.proposedFields && Object.keys(h.proposedFields).length;
           return `
           <div class="ai-card">
@@ -738,7 +802,7 @@
             ${hasFields ? `<h4>AI önerilen alanlar</h4>${fieldsTable(h.proposedFields)}` : ""}
             ${gaps.length ? `<h4>Kanıt boşlukları</h4><ul class="ai-list">${gaps.map((g) => `<li>${esc(g)}</li>`).join("")}</ul>` : ""}
             ${questions.length ? `<h4>Uzman soruları</h4><ul class="ai-list">${questions.map((g) => `<li>${esc(g)}</li>`).join("")}</ul>` : ""}
-            ${errors.length ? `<div class="banner danger" style="margin-top:10px">${errors.map((e) => esc(e)).join(" · ")}</div>` : ""}
+            ${validationNote ? `<div class="banner warn" style="margin-top:10px">${esc(validationNote)}</div>` : ""}
           </div>`;
         }).join("")
       : `<div class="empty">Bu öneri için rule_synthesis hipotezi yok.</div>`;
@@ -772,7 +836,15 @@
       <div class="layer deterministic">
         <div class="layer-head"><h3>2. Önerilen alanlar</h3></div>
         ${kvRows(summaryPairs)}
+        <h4 style="margin-top:14px">Hedef işlemler (aynı liste)</h4>
+        ${targetHtml}
+        <h4 style="margin-top:14px">Ayrı SUT izi (peer değil)</h4>
+        <p class="muted" style="margin:0 0 8px">${esc(sourceSut.label || "SUT kodları HUV birlikte-ödenmez hedefi değildir")}</p>
+        ${sourceSut.separateSutCandidate ? `<div class="banner warn" style="margin-bottom:8px">Bu kayıtta SUT hedefleri ayrı aday olarak duruyor; HUV kuralına yazılmaz.</div>` : ""}
+        ${sourceHtml}
         <div style="margin-top:12px">${fieldsTable(p.proposedFields || {})}</div>
+        <h4 style="margin-top:14px">Eşleme güveni</h4>
+        ${kvRows(trustPairs)}
         ${existingHtml ? `<h4>Mevcut kural</h4>${existingHtml}` : ""}
       </div>
 

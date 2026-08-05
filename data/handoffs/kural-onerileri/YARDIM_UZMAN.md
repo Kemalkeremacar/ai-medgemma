@@ -14,10 +14,15 @@ Seçtiğiniz kayıtlar otomatik olarak canlı kurala yazılmaz.
 
 ---
 
-## Önemli ayrım
+## HUV ve SUT tamamen ayrı
 
-- **HUV** ve **SUT** önerileri ayrı incelenir.  
-- Birini diğerine “çevirerek” tek kural yapmaya çalışmayın.
+Birlikte ödenmez kuralı **aynı liste + aynı sözleşme** içindedir:
+
+- Kurum HUV çalışıyorsa: A (HUV) yapıldıysa, sözleşmedeki B (HUV) birlikte ödenmez.  
+- Kurum SUT çalışıyorsa: aynı mantık SUT–SUT.  
+- HUV işlemi ile SUT kodunu tek birlikte-ödenmez kuralında birleştirmezsiniz.
+
+Örnek metin ve hedef listesi buna göre üretilir. Kayıtta yalnız SUT hedefleri varsa bu bir **HUV kuralı olarak onaylanamaz**; ayrı SUT adayı olarak not edilir.
 
 ---
 
@@ -31,13 +36,15 @@ Seçtiğiniz kayıtlar otomatik olarak canlı kurala yazılmaz.
 | **Kanıt** | Resmî alıntı sayısı (0 ise dayanak zayıf) |
 | **Durum** | Tam / Kısmi; uyarı varsa kısa açıklama |
 
+Detayda: **hedef işlemler (aynı liste)**, **ayrı SUT izi (peer değil)**, **eşleme / sinyal notu**.
+
 ---
 
 ## Ne zaman beklemeliyim?
 
 - Kanıt = 0  
-- Durum **Kısmi** ve kritik alanlar boş  
-- Uyarı metni yoğunsa
+- Durum **Kısmi** ve aynı listede hedef yok  
+- “HUV–SUT karışımı engellendi” / çapraz liste uyarısı
 
 ---
 
@@ -45,4 +52,5 @@ Seçtiğiniz kayıtlar otomatik olarak canlı kurala yazılmaz.
 
 - Kanıt okumadan kural girmeyin.  
 - Örnek metni olduğu gibi canlıya yapıştırmayın.  
-- Buradaki notu resmi onay sanmayın.
+- Buradaki notu resmi onay sanmayın.  
+- HUV kuralına SUT hedef kodu yazmayın.

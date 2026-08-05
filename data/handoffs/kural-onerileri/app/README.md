@@ -48,11 +48,17 @@ Kaynak JSON/CSV dosyaları değiştirilmez.
 
 1. Özet — sayaçlar + uzman rehberi (`YARDIM_UZMAN.md`)  
 2. Öneriler listesi — arama, filtre (liste tipi HUV/SUT), pagination  
-3. Öneri detayı — kanıt / önerilen alanlar / örnek kural taslağı  
+3. Öneri detayı — kanıt / önerilen alanlar (hedef işlemler · kaynak SUT · eşleme güveni) / örnek kural taslağı  
 4. Kararlarım — local storage + JSON export  
 5. Öneri AI — uzman sohbeti (Provizyon API: kural motoru / HUV-SUT / provizyon / MedGemma)
 
-HUV↔SUT crosswalk karşılaştırması bu demoda **yoktur**; HUV ve SUT kuralları ayrı incelenir.  
+### HUV / SUT ayrımı (birlikte ödenmez)
+
+- Birlikte ödenmez **yalnız aynı liste**: HUV↔HUV veya SUT↔SUT (aynı sözleşme alanı).  
+- SUT→HUV reverse / projeksiyon **yapılmaz**. HUV primary + yalnız `targetSutCodes` → HUV kuralı olarak onaylanamaz; ayrı SUT adayı notu.  
+- `sourceSutCode` / SUT hedefleri peer değildir; UI’da ayrı blokta gösterilir.  
+- Ayrı HUV↔SUT karşılaştırma ekranı bu demoda **yoktur**.
+
 Kolon başlıklarında kısa tooltip vardır; ayrıntı Özet sekmesindedir.  
 
 
